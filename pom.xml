@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.investtools.fix.atdl</groupId>
+	<version>1.0-SNAPSHOT</version>
+	<artifactId>atdl4j-ui</artifactId>
+	<packaging>pom</packaging>
+	<name>atdl4j-ui</name>
+	<developers>
+		<developer>
+			<id>danilo.tuler</id>
+			<name>Danilo Tuler</name>
+			<email>tuler@investtools.com.br</email>
+			<organization>Investtools</organization>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>renacto</id>
+			<name>Renato Gallart</name>
+			<email>renato.gallart@investtools.com.br</email>
+			<organization>Investtools</organization>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.jvnet.wagon-svn</groupId>
+				<artifactId>wagon-svn</artifactId>
+				<version>1.8</version>
+			</extension>
+		</extensions>
+	</build>
+	<repositories>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+	</repositories>    
+	<modules>
+		<module>atdl4j-ui-swt</module>
+	</modules>
+	<scm>
+		<connection>
+			scm:svn:http://atdl4j.googlecode.com/svn/atdl4j-ui/trunk
+		</connection>
+		<developerConnection>
+			scm:svn:https://atdl4j.googlecode.com/svn/atdl4j-ui/trunk
+		</developerConnection>
+	</scm>
+	<distributionManagement>
+		<repository>
+			<id>googlecode</id>
+			<name>atdl4j googlecode</name>
+			<url>
+				svn:https://atdl4j.googlecode.com/svn/repo
+			</url>
+		</repository>
+		<snapshotRepository>
+			<id>googlecode-snapshots</id>
+			<name>atdl4j googlecode Snapshots</name>
+			<url>
+				svn:https://atdl4j.googlecode.com/svn/repo
+			</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>
