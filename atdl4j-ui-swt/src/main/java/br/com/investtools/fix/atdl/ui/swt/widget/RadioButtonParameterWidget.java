@@ -14,7 +14,7 @@ import br.com.investtools.fix.atdl.core.xmlbeans.EnumPairT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 
-public class RadioButtonParameterWidget implements ParameterWidget {
+public class RadioButtonParameterWidget implements ParameterWidget<String> {
 
 	private ParameterT parameter;
 
@@ -54,7 +54,7 @@ public class RadioButtonParameterWidget implements ParameterWidget {
 		return parameter.getName();
 	}
 
-	private String getValue() {
+	public String getValue() {
 		for (int i = 0; i < this.radioButton.size(); i++) {
 			Button b = radioButton.get(i);
 			if (b.getSelection()) {
@@ -79,6 +79,16 @@ public class RadioButtonParameterWidget implements ParameterWidget {
 			return "958=" + name + delimiter + "959=" + type + delimiter
 					+ "960=" + value;
 		}
+	}
+
+	@Override
+	public String convertValue(String value) {
+		return null;
+	}
+
+	@Override
+	public ParameterT getParameter() {
+		return parameter;
 	}
 
 }

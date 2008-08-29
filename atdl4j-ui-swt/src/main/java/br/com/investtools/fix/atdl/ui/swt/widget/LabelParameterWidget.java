@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Widget;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 
-public class LabelParameterWidget implements ParameterWidget {
+public class LabelParameterWidget implements ParameterWidget<String> {
 
 	@Override
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
@@ -29,6 +29,21 @@ public class LabelParameterWidget implements ParameterWidget {
 
 	@Override
 	public String getFIXValue() {
+		return null;
+	}
+
+	@Override
+	public String convertValue(String value) {
+		return null;
+	}
+
+	@Override
+	public ParameterT getParameter() {
+		return null;
+	}
+
+	@Override
+	public String getValue() {
 		return null;
 	}
 

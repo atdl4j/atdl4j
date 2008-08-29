@@ -1,5 +1,7 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
+import java.math.BigDecimal;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -13,7 +15,7 @@ import br.com.investtools.fix.atdl.core.xmlbeans.EnumPairT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 
-public class DualSpinnerParameterWidget implements ParameterWidget {
+public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 
 	private ParameterT parameter;
 
@@ -82,24 +84,33 @@ public class DualSpinnerParameterWidget implements ParameterWidget {
 		return parameter.getName();
 	}
 
-	private String getValue() {
-		// TODO: nao eh exatamente isso, pois tem casas decimais
-		return Integer.toString(dualSpinner.getSelection());
+	public BigDecimal getValue() {
+		return new BigDecimal(dualSpinner.getSelection());
 	}
 
 	@Override
 	public String getFIXValue() {
 		if (parameter.getFixTag() != null) {
 			return Integer.toString(parameter.getFixTag().intValue()) + "="
-					+ getValue();
+					+ getValue().toString();
 		} else {
 			String name = parameter.getName();
 			String type = Integer.toString(parameter.getType());
-			String value = getValue();
+			String value = getValue().toString();
 			char delimiter = '\001';
 			return "958=" + name + delimiter + "959=" + type + delimiter
 					+ "960=" + value;
 		}
+	}
+
+	@Override
+	public BigDecimal convertValue(String value) {
+		return new BigDecimal(value);
+	}
+
+	@Override
+	public ParameterT getParameter() {
+		return parameter;
 	}
 
 }

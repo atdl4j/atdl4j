@@ -1,6 +1,7 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import org.eclipse.swt.widgets.Widget;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 
-public class ClockParameterWidget implements ParameterWidget {
+public class ClockParameterWidget implements ParameterWidget<Date> {
 
 	private ParameterT parameter;
 
@@ -50,11 +51,19 @@ public class ClockParameterWidget implements ParameterWidget {
 		return parameter.getName();
 	}
 
-	private String getValue() {
+	public Date getValue() {
 		// TODO: verificar se conversão é essa mesma
-		DateFormat fixDateFormat = new SimpleDateFormat("yyyyMMdd");
-		Date now = new Date();
-		return fixDateFormat.format(now) + "-" + Integer.toString(clock.getHours()) + ":" + Integer.toString(clock.getMinutes()) + ":" + Integer.toString(clock.getSeconds());
+
+		String value = Integer.toString(clock.getDay()) + "/" + Integer.toString(clock.getMonth()) + "/" + Integer.toString(clock.getYear())  + "-" + Integer.toString(clock.getHours()) + ":" + Integer.toString(clock.getMinutes()) + ":" + Integer.toString(clock.getSeconds());
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-hh:mm:ss");
+		
+		try {
+			return dateFormat.parse(value);
+		} catch (ParseException e) {
+			// XXX malformed value
+		}
+		return new Date();
+		
 	}
 
 	@Override
@@ -65,11 +74,31 @@ public class ClockParameterWidget implements ParameterWidget {
 		} else {
 			String name = parameter.getName();
 			String type = Integer.toString(parameter.getType());
-			String value = getValue();
+			DateFormat fixDateFormat = new SimpleDateFormat("yyyyMMdd");
+			Date now = new Date();
+			String value = fixDateFormat.format(now) + "-" + Integer.toString(clock.getHours()) + ":" + Integer.toString(clock.getMinutes()) + ":" + Integer.toString(clock.getSeconds());
 			char delimiter = '\001';
 			return "958=" + name + delimiter + "959=" + type + delimiter
 					+ "960=" + value;
 		}
 	}
+
+	@Override
+	public Date convertValue(String value) {
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-hh:mm:ss");
+		try {
+			return dateFormat.parse(value);
+		} catch (ParseException e) {
+			// XXX malformed value
+		}
+		return new Date();
+
+	}
+
+	@Override
+	public ParameterT getParameter() {
+		return parameter;
+	}
+
 
 }

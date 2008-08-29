@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Layout;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
-import br.com.investtools.fix.atdl.layout.xmlbeans.ComponentT;
 import br.com.investtools.fix.atdl.layout.xmlbeans.PanelOrientationT;
 import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyPanelDocument.StrategyPanel;
 
@@ -23,11 +22,10 @@ public class SWTFactory implements WidgetFactory, PanelFactory {
 	}
 
 	@Override
-	public ParameterWidget create(Composite parent, ParameterT parameter,
+	public ParameterWidget<?> create(Composite parent, ParameterT parameter,
 			int style) {
-		ComponentT.Enum controlType = parameter.getControlType();
-		ParameterWidget parameterWidget = parameterWidgetFactory
-				.create(controlType);
+		ParameterWidget<?> parameterWidget = parameterWidgetFactory
+				.create(parameter);
 		if (parameterWidget != null) {
 			parameterWidget.createWidget(parent, parameter, style);
 		} else {
@@ -39,9 +37,9 @@ public class SWTFactory implements WidgetFactory, PanelFactory {
 	}
 
 	@Override
-	public Map<String, ParameterWidget> create(Composite parent,
+	public Map<String, ParameterWidget<?>> create(Composite parent,
 			StrategyPanel panel, int style) {
-		Map<String, ParameterWidget> parameterWidgets = new HashMap<String, ParameterWidget>();
+		Map<String, ParameterWidget<?>> parameterWidgets = new HashMap<String, ParameterWidget<?>>();
 
 		if (panel.getTitle() == null || "".equals(panel.getTitle())) {
 			// use simple composite
@@ -51,12 +49,14 @@ public class SWTFactory implements WidgetFactory, PanelFactory {
 			// XXX debug
 			c.setToolTipText(panel.toString());
 
-			// build panels and parameters widgets recursively
+			// build panels widgets recursively
 			for (StrategyPanel p : panel.getStrategyPanelArray()) {
 				parameterWidgets.putAll(create(c, p, style));
 			}
+
+			// build parameters widgets recursively
 			for (ParameterT parameter : panel.getParameterArray()) {
-				ParameterWidget pw = create(c, parameter, style);
+				ParameterWidget<?> pw = create(c, parameter, style);
 				if (pw != null) {
 					parameterWidgets.put(parameter.getName(), pw);
 				} else {
@@ -76,7 +76,7 @@ public class SWTFactory implements WidgetFactory, PanelFactory {
 				parameterWidgets.putAll(create(c, p, style));
 			}
 			for (ParameterT parameter : panel.getParameterArray()) {
-				ParameterWidget pw = create(c, parameter, style);
+				ParameterWidget<?> pw = create(c, parameter, style);
 				if (pw != null) {
 					parameterWidgets.put(parameter.getName(), pw);
 				} else {

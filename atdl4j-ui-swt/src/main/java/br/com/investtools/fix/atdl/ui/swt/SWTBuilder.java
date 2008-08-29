@@ -1,129 +1,158 @@
 package br.com.investtools.fix.atdl.ui.swt;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
+import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.core.xmlbeans.StrategiesDocument;
 import br.com.investtools.fix.atdl.core.xmlbeans.StrategyT;
-import br.com.investtools.fix.atdl.core.xmlbeans.StrategiesDocument.Strategies;
-import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyPanelDocument.StrategyPanel;
-import br.com.investtools.fix.atdl.valid.xmlbeans.EditDocument.Edit;
-import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
+import br.com.investtools.fix.atdl.ui.StrategiesUI;
+import br.com.investtools.fix.atdl.ui.StrategiesUIFactory;
 
 public class SWTBuilder {
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(SWTBuilder.class);
+	private static TabFolder tabFolder;
+	private static Shell shell;
+
+	private static StrategiesDocument strategiesDocument;
+	private static StrategiesUI strategiesUI;
+	private static StrategyT selectedStrategy;
+
 	public static void main(String[] args) {
-		if (args.length < 1) {
-			System.err.println("SWTBuilder <filename>");
-			return;
-		}
-
-		String pathname = args[0];
-		File file = new File(pathname);
-		StrategiesDocument strategiesDocument;
-
 		Display display = new Display();
-		Shell shell = new Shell(display);
-		shell.setLayout(new FillLayout());
+		shell = new Shell(display);
+		RowLayout shellLayout = new RowLayout(SWT.VERTICAL);
+		shellLayout.fill = true;
+		shell.setLayout(shellLayout);
 
-		SWTFactory factory = new SWTFactory();
+		// header
+		Composite headerComposite = new Composite(shell, SWT.NONE);
+		GridLayout headerLayout = new GridLayout(2, false);
+		headerComposite.setLayout(headerLayout);
+		final Text filepathText = new Text(headerComposite, SWT.BORDER);
+		GridData filepathTextData = new GridData(SWT.FILL, SWT.CENTER, true,
+				true);
+		filepathText.setLayoutData(filepathTextData);
+		Button browseButton = new Button(headerComposite, SWT.NONE);
+		browseButton.setText("...");
+		browseButton.addSelectionListener(new SelectionAdapter() {
 
-		try {
-			strategiesDocument = StrategiesDocument.Factory.parse(file);
-			Strategies strategies = strategiesDocument.getStrategies();
-
-			// create tab folder for all strategies
-			TabFolder tabFolder = new TabFolder(shell, SWT.BORDER);
-
-			for (StrategyT strategy : strategies.getStrategyArray()) {
-
-				// create tab item for strategy
-				TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-				tabItem.setText(getText(strategy));
-				Composite parent = new Composite(tabFolder, SWT.NONE);
-				parent.setLayout(new FillLayout());
-
-				Map<String, ParameterWidget> pwMap = new HashMap<String, ParameterWidget>();
-				try {
-					// build panels
-					for (StrategyPanel panel : strategy.getStrategyLayout()
-							.getStrategyPanelArray()) {
-						pwMap.putAll(factory.create(parent, panel, SWT.NONE));
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dialog = new FileDialog(shell, SWT.OPEN);
+				String filepath = dialog.open();
+				if (filepath != null) {
+					filepathText.setText(filepath);
+					try {
+						strategiesUI = parse(filepath);
+					} catch (XmlException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
+				}
+			}
+		});
 
-					// build parameters
-					for (ParameterT parameter : strategy.getParameterArray()) {
-						pwMap.put(parameter.getName(), factory.create(parent,
-								parameter, SWT.NONE));
-					}
+		tabFolder = new TabFolder(shell, SWT.NONE);
+		tabFolder.setBackground(new Color(null, 0, 255, 255));
+		tabFolder.addSelectionListener(new SelectionAdapter() {
 
-					parent.pack();
-					tabItem.setControl(parent);
-					
-					// handles validation rules
-					for (StrategyEdit se : strategy.getStrategyEditArray()) {
-						Edit edit = se.getEdit();
-						if (edit.getOperator() != null) {
-							String field = edit.getField();
-							ParameterWidget pw = pwMap.get(field);
-							if (pw != null) {
-								// TODO
-							} else {
-								// XXX: reference to a field not found
-							}
-
-						} else if (edit.getLogicOperator() != null) {
-							// TODO
-						} else {
-							// XXX: invalid tag
-						}
-					}
-
-					// handle flows
-					// TODO
-
-					// generate FIX message
-					System.out.println(pwMap.toString());
-					for (ParameterWidget pw : pwMap.values()) {
-						System.out.println(pw.getFIXValue());
-					}
-
-				} catch (UnsupportedOperationException e) {
-					// yahoo!
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				int index = tabFolder.getSelectionIndex();
+				if (strategiesDocument != null) {
+					selectedStrategy = strategiesDocument.getStrategies()
+							.getStrategyArray(index);
 				}
 
 			}
+		});
 
-			tabFolder.pack();
-			shell.pack();
-			shell.open();
-
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch())
-					display.sleep();
+		if (args.length > 0) {
+			try {
+				strategiesUI = parse(args[0]);
+			} catch (XmlException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			display.dispose();
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+
+		// footer
+		Composite footer = new Composite(shell, SWT.NONE);
+		footer.setBackground(new Color(null, 255, 0, 0));
+		footer.setLayout(new GridLayout(1, true));
+		Button submit = new Button(footer, SWT.NONE);
+		submit.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		submit.setText("Validate!");
+		submit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				logger.info("Validating strategy \"{}\"", selectedStrategy
+						.getName());
+				try {
+					strategiesUI.validate(selectedStrategy);
+				} catch (ValidationException ex) {
+					MessageBox messageBox = new MessageBox(shell, SWT.OK
+							| SWT.ICON_ERROR);
+					messageBox.setMessage(ex.getMessage());
+					messageBox.open();
+				}
+			}
+		});
+		// submit.addSelectionListener(new StrategySubmitListener(pwMap,
+		// strategy.getStrategyEditArray()));
+
+		tabFolder.pack();
+		shell.pack();
+		shell.open();
+
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch())
+				display.sleep();
+		}
+		display.dispose();
 	}
 
-	private static String getText(StrategyT strategy) {
-		if (strategy.getUiRep() != null) {
-			return strategy.getUiRep();
+	protected static StrategiesUI parse(String filepath) throws XmlException,
+			IOException {
+		// remove all tabs
+		for (TabItem tabs : tabFolder.getItems()) {
+			tabs.dispose();
 		}
-		return strategy.getName();
+
+		// parses the XML document and build an object model
+		File file = new File(filepath);
+		strategiesDocument = StrategiesDocument.Factory.parse(file);
+		StrategiesUIFactory factory = new SWTStrategiesUIFactory(tabFolder);
+		StrategiesUI strategiesUI = factory.create(strategiesDocument);
+		shell.pack();
+		return strategiesUI;
 	}
 }

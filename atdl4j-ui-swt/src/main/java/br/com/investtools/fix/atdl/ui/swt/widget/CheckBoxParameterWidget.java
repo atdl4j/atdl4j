@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Widget;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 
-public class CheckBoxParameterWidget implements ParameterWidget {
+public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 
 	private static final String BOOLEAN_FALSE = "0";
 
@@ -50,11 +50,11 @@ public class CheckBoxParameterWidget implements ParameterWidget {
 		return parameter.getName();
 	}
 
-	private String getValue() {
+	public Boolean getValue() {
 		if (checkBox.getSelection()) 
-			return BOOLEAN_TRUE;
+			return Boolean.TRUE;
 		else
-			return BOOLEAN_FALSE;
+			return Boolean.FALSE;
 	}	
 
 	@Override
@@ -65,11 +65,44 @@ public class CheckBoxParameterWidget implements ParameterWidget {
 		} else {
 			String name = parameter.getName();
 			String type = Integer.toString(parameter.getType());
-			String value = getValue();
+			String value = getBooleanAsString(getValue());
 			char delimiter = '\001';
 			return "958=" + name + delimiter + "959=" + type + delimiter
 					+ "960=" + value;
 		}
+	}
+
+	private String getBooleanAsString(Boolean value) {
+		if (value != null) {
+			if (value.booleanValue()) {
+				return BOOLEAN_TRUE;
+			} else {
+				return BOOLEAN_FALSE;
+			}
+		} else {
+			// TODO: what to do?
+			return BOOLEAN_FALSE;
+		}
+	}
+
+	@Override
+	public Boolean convertValue(String value) {
+
+		if (value.equalsIgnoreCase("true") || value.equals("1")) {
+			return new Boolean(true);
+		} else if (value.equalsIgnoreCase("false") || value.equals("0")){
+			return new Boolean(false);
+		} else {
+			// TODO: what to do?
+			return new Boolean(false);
+		}
+		
+	}
+
+	@Override
+	public ParameterT getParameter() {
+		// TODO Auto-generated method stub
+		return parameter;
 	}
 
 }

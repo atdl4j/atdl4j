@@ -34,12 +34,23 @@
 		<dependency>
 			<groupId>br.com.investtools.fix.atdl</groupId>
 			<artifactId>atdl4j-parser-xmlbeans</artifactId>
-			<version>1.1-beta-2.4.7-SNAPSHOT</version>
+			<version>1.1-beta-2.4.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.swt.win32.win32</groupId>
 			<artifactId>x86</artifactId>
 			<version>3.3.3-v3349</version>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+
 	</dependencies>
 </project>
