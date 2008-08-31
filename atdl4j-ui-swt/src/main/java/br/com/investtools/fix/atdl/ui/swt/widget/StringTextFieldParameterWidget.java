@@ -3,7 +3,7 @@ package br.com.investtools.fix.atdl.ui.swt.widget;
 import java.text.DecimalFormat;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -24,73 +24,69 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
 		this.parameter = parameter;
 
-		Composite c = new Composite(parent, SWT.NONE);
-		c.setLayout(new FillLayout());
-
 		// label
-		Label l = new Label(c, SWT.NONE);
+		Label l = new Label(parent, SWT.NONE);
 		l.setText(getLabelText(parameter));
 
 		// textField
-		Text textField = new Text(c, style | SWT.BORDER);
-		
+		Text textField = new Text(parent, style | SWT.BORDER);
+		textField
+				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
 		switch (parameter.getType()) {
-		
-			// type Int_T
-			case 1:
-				if (parameter instanceof IntT) {
-					IntT intt = (IntT) parameter;
-					Integer minValue = null;
-					Integer maxValue = null;
-					
-					if (intt.isSetMinValue())
-						minValue = intt.getMinValue();
-					
-					if (intt.isSetMaxValue())
-						maxValue = intt.getMaxValue();
-					
-					textField.addVerifyListener(new IntTTypeListener(new DecimalFormat("#"), false, minValue, maxValue));
-					
-					if (intt.isSetInitValue())
-						textField.setText(Integer.toString(intt.getInitValue()));
-				} else {
-					// XXX not an IntT type
-				}
+
+		// type Int_T
+		case 1:
+			if (parameter instanceof IntT) {
+				IntT intt = (IntT) parameter;
+				Integer minValue = null;
+				Integer maxValue = null;
+
+				if (intt.isSetMinValue())
+					minValue = intt.getMinValue();
+
+				if (intt.isSetMaxValue())
+					maxValue = intt.getMaxValue();
+
+				textField.addVerifyListener(new IntTTypeListener(
+						new DecimalFormat("#"), false, minValue, maxValue));
+
+				if (intt.isSetInitValue())
+					textField.setText(Integer.toString(intt.getInitValue()));
+			} else {
+				// XXX not an IntT type
+			}
 			break;
 
-			// type Float_T
-			case 2:
-				if (parameter instanceof FloatT) {
-					FloatT floatt = (FloatT) parameter;
-					Float minValue = null;
-					Float maxValue = null;
+		// type Float_T
+		case 2:
+			if (parameter instanceof FloatT) {
+				FloatT floatt = (FloatT) parameter;
+				Float minValue = null;
+				Float maxValue = null;
 
-					if (floatt.isSetMinValue())
-						minValue = floatt.getMinValue();
-					
-					if (floatt.isSetMaxValue())
-						maxValue = floatt.getMaxValue();
+				if (floatt.isSetMinValue())
+					minValue = floatt.getMinValue();
 
-					textField.addVerifyListener(new FloatTTypeListener(new DecimalFormat("0.0"), false, minValue, maxValue));
-					
-					if (floatt.isSetInitValue())
-						textField.setText(Float.toString(floatt.getInitValue()));
+				if (floatt.isSetMaxValue())
+					maxValue = floatt.getMaxValue();
 
-					
-				} else {
-					// XXX not an FloatT type
-				}
+				textField.addVerifyListener(new FloatTTypeListener(
+						new DecimalFormat("0.0"), false, minValue, maxValue));
 
-				
+				if (floatt.isSetInitValue())
+					textField.setText(Float.toString(floatt.getInitValue()));
+
+			} else {
+				// XXX not an FloatT type
+			}
+
 			break;
-	
-			default:
-				break;
+
+		default:
+			break;
 		}
-		
 
-		
-		
 		this.textField = textField;
 
 		// tooltip
@@ -98,7 +94,7 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 		textField.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
-		return c;
+		return parent;
 	}
 
 	public String getLabelText(ParameterT parameter) {

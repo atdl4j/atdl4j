@@ -25,56 +25,51 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
 		this.parameter = parameter;
 
+		// label
+		Label l = new Label(parent, SWT.NONE);
+		l.setText(getLabelText(parameter));
+
 		Composite c = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
+		gridLayout.numColumns = 2;
 		gridLayout.horizontalSpacing = 0;
 		gridLayout.verticalSpacing = 0;
 		c.setLayout(gridLayout);
-
-		// label
-		Label l = new Label(c, SWT.NONE);
-		l.setText(getLabelText(parameter));
-		
-		GridData labelData = new GridData();
-		labelData.verticalSpan = 2;
-		l.setLayoutData(labelData);
-
+		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		// dualSpinner
 		Spinner dualSpinner = new Spinner(c, style | SWT.BORDER);
-		
-		GridData spinnerData = new GridData();
+		GridData spinnerData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		spinnerData.verticalSpan = 2;
 		dualSpinner.setLayoutData(spinnerData);
-		
+
 		int outerStepSize = 0;
-		
+
 		EnumPairT[] enumPairArray = parameter.getEnumPairArray();
 		for (EnumPairT enumPair : enumPairArray) {
-			if (enumPair.getUiRep().equals("InnerStepSize") ){
+			if (enumPair.getUiRep().equals("InnerStepSize")) {
 				dualSpinner.setIncrement(new Integer(enumPair.getWireValue()));
-			} else if (enumPair.getUiRep().equals("OuterStepSize") ){
+			} else if (enumPair.getUiRep().equals("OuterStepSize")) {
 				outerStepSize = new Integer(enumPair.getWireValue());
 			}
 		}
-		
+
 		this.dualSpinner = dualSpinner;
-		
+
 		Button buttonUp = new Button(c, SWT.ARROW | SWT.UP);
 		Button buttonDown = new Button(c, SWT.ARROW | SWT.DOWN);
 
-		buttonUp.addSelectionListener(new DualSpinnerSelection(dualSpinner, outerStepSize));
-		buttonDown.addSelectionListener(new DualSpinnerSelection(dualSpinner, outerStepSize));
-
-
+		buttonUp.addSelectionListener(new DualSpinnerSelection(dualSpinner,
+				outerStepSize));
+		buttonDown.addSelectionListener(new DualSpinnerSelection(dualSpinner,
+				outerStepSize));
 
 		// tooltip
 		String tooltip = parameter.getTooltip();
 		dualSpinner.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
-		return c;
+		return parent;
 	}
 
 	public String getLabelText(ParameterT parameter) {

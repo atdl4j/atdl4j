@@ -1,6 +1,7 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Widget;
@@ -12,12 +13,17 @@ public class LabelParameterWidget implements ParameterWidget<String> {
 
 	@Override
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
-		
+
 		// label
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(getLabelText(parameter));
 
-		return l;
+		// make it span two columns because there is no input control
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gridData.horizontalSpan = 2;
+		l.setLayoutData(gridData);
+
+		return parent;
 	}
 
 	public String getLabelText(ParameterT parameter) {

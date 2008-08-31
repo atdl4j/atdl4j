@@ -1,7 +1,6 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -24,15 +23,12 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
 		this.parameter = parameter;
 
-		Composite c = new Composite(parent, SWT.NONE);
-		c.setLayout(new FillLayout());
-
 		// label
-		Label l = new Label(c, SWT.NONE);
+		Label l = new Label(parent, SWT.NONE);
 		l.setText(getLabelText(parameter));
 
 		// checkBox
-		Button checkBox = new Button(c, style | SWT.CHECK);
+		Button checkBox = new Button(parent, style | SWT.CHECK);
 		this.checkBox = checkBox;
 
 		// tooltip
@@ -40,7 +36,7 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 		checkBox.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
-		return c;
+		return parent;
 	}
 
 	public String getLabelText(ParameterT parameter) {

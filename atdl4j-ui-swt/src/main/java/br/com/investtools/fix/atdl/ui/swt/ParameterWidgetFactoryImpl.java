@@ -15,6 +15,11 @@ import br.com.investtools.fix.atdl.ui.swt.widget.SingleSpinnerParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.SliderParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.StringTextFieldParameterWidget;
 
+/**
+ * Factory that creates the appropriate ParameterWidget depending on the
+ * parameter control type and value type.
+ * 
+ */
 public class ParameterWidgetFactoryImpl implements ParameterWidgetFactory {
 
 	@Override
@@ -24,6 +29,8 @@ public class ParameterWidgetFactoryImpl implements ParameterWidgetFactory {
 			return new CheckBoxParameterWidget();
 		} else if (type == ComponentT.COMBO_BOX) {
 			return new ComboBoxParameterWidget();
+		} else if (type == ComponentT.EDITABLE_COMBO_BOX) {
+			return new ComboBoxParameterWidget(true);
 		} else if (type == ComponentT.RADIO_BUTTON) {
 			return new RadioButtonParameterWidget();
 		} else if (type == ComponentT.LABEL) {
@@ -45,10 +52,9 @@ public class ParameterWidgetFactoryImpl implements ParameterWidgetFactory {
 			return new SingleSpinnerParameterWidget();
 		} else if (type == ComponentT.DUAL_SPINNER) {
 			return new DualSpinnerParameterWidget();
-		} 
- 
+		}
 
-		// TODO: todos os outros componentes
+		// TODO: throw an exception, unsupported control type
 		return null;
 	}
 

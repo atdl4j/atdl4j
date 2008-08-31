@@ -24,12 +24,12 @@ public class MultiCheckBoxParameterWidget implements ParameterWidget<String> {
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
 		this.parameter = parameter;
 
+		// label
+		Label l = new Label(parent, SWT.NONE);
+		l.setText(getLabelText(parameter));
+
 		Composite c = new Composite(parent, SWT.NONE);
 		c.setLayout(new FillLayout());
-
-		// label
-		Label l = new Label(c, SWT.NONE);
-		l.setText(getLabelText(parameter));
 
 		// tooltip
 		String tooltip = parameter.getTooltip();
@@ -44,7 +44,7 @@ public class MultiCheckBoxParameterWidget implements ParameterWidget<String> {
 			multiCheckBox.add(checkBox);
 		}
 
-		return c;
+		return parent;
 	}
 
 	public String getLabelText(ParameterT parameter) {

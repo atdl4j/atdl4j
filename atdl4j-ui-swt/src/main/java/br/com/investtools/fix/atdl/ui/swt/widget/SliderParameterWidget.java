@@ -3,6 +3,9 @@ package br.com.investtools.fix.atdl.ui.swt.widget;
 import java.math.BigDecimal;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -23,33 +26,40 @@ public class SliderParameterWidget implements ParameterWidget<BigDecimal> {
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
 		this.parameter = parameter;
 
-		Composite c = new Composite(parent, SWT.NONE);
-		c.setLayout(new RowLayout());
-
 		// label
-		Label l = new Label(c, SWT.NONE);
+		Label l = new Label(parent, SWT.NONE);
 		l.setText(getLabelText(parameter));
+
+		Composite c = new Composite(parent, SWT.NONE);
+		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+		int numColumns = parameter.getEnumPairArray() != null ? parameter
+				.getEnumPairArray().length : 1;
+		c.setLayout(new GridLayout(numColumns, true));
 
 		// slider
 		Scale slider = new Scale(c, style | SWT.HORIZONTAL);
 		slider.setIncrement(1);
 		slider.setPageIncrement(1);
-		
-		EnumPairT[] enumPairArray = parameter.getEnumPairArray();
-		int i;
-		for (i = 0; i < enumPairArray.length ; i++) {
-		}
-		
-		slider.setMaximum(--i);
-		
+		GridData sliderData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		sliderData.horizontalSpan = numColumns;
+		slider.setLayoutData(sliderData);
+		slider.setMaximum(numColumns - 1);
 		this.slider = slider;
+
+		for (int i = 0; i < parameter.getEnumPairArray().length; i++) {
+			Label label = new Label(c, SWT.NONE);
+			label.setText(parameter.getEnumPairArray(i).getUiRep());
+			label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false,
+					false));
+		}
 
 		// tooltip
 		String tooltip = parameter.getTooltip();
 		slider.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
-		return c;
+		return parent;
 	}
 
 	public String getLabelText(ParameterT parameter) {

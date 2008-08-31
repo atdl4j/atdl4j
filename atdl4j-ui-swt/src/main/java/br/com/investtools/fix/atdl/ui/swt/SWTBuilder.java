@@ -7,14 +7,15 @@ import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -27,6 +28,7 @@ import br.com.investtools.fix.atdl.core.xmlbeans.StrategiesDocument;
 import br.com.investtools.fix.atdl.core.xmlbeans.StrategyT;
 import br.com.investtools.fix.atdl.ui.StrategiesUI;
 import br.com.investtools.fix.atdl.ui.StrategiesUIFactory;
+import br.com.investtools.fix.atdl.ui.swt.widget.DebugMouseTrackListener;
 
 public class SWTBuilder {
 
@@ -78,7 +80,6 @@ public class SWTBuilder {
 		});
 
 		tabFolder = new TabFolder(shell, SWT.NONE);
-		tabFolder.setBackground(new Color(null, 0, 255, 255));
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -106,7 +107,6 @@ public class SWTBuilder {
 
 		// footer
 		Composite footer = new Composite(shell, SWT.NONE);
-		footer.setBackground(new Color(null, 255, 0, 0));
 		footer.setLayout(new GridLayout(1, true));
 		Button submit = new Button(footer, SWT.NONE);
 		submit.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
@@ -153,6 +153,23 @@ public class SWTBuilder {
 		StrategiesUIFactory factory = new SWTStrategiesUIFactory(tabFolder);
 		StrategiesUI strategiesUI = factory.create(strategiesDocument);
 		shell.pack();
+
+		// XXX debug
+		addDebugMouseTrackListener(tabFolder);
+
 		return strategiesUI;
+	}
+
+	private static void addDebugMouseTrackListener(Control control) {
+		if (!(control.getClass().equals(Composite.class) || control.getClass()
+				.equals(Group.class))) {
+			control.addMouseTrackListener(new DebugMouseTrackListener(control));
+		}
+		if (control instanceof Composite) {
+			Composite composite = (Composite) control;
+			for (Control child : composite.getChildren()) {
+				addDebugMouseTrackListener(child);
+			}
+		}
 	}
 }

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
@@ -25,15 +25,13 @@ public class ClockParameterWidget implements ParameterWidget<Date> {
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
 		this.parameter = parameter;
 
-		Composite c = new Composite(parent, SWT.NONE);
-		c.setLayout(new FillLayout());
-
 		// label
-		Label l = new Label(c, SWT.NONE);
+		Label l = new Label(parent, SWT.NONE);
 		l.setText(getLabelText(parameter));
 
 		// clock
-		DateTime clock = new DateTime(c, style | SWT.BORDER | SWT.TIME);
+		DateTime clock = new DateTime(parent, style | SWT.BORDER | SWT.TIME);
+		clock.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		this.clock = clock;
 
 		// tooltip
@@ -41,7 +39,7 @@ public class ClockParameterWidget implements ParameterWidget<Date> {
 		clock.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
-		return c;
+		return parent;
 	}
 
 	public String getLabelText(ParameterT parameter) {
@@ -54,16 +52,21 @@ public class ClockParameterWidget implements ParameterWidget<Date> {
 	public Date getValue() {
 		// TODO: verificar se conversão é essa mesma
 
-		String value = Integer.toString(clock.getDay()) + "/" + Integer.toString(clock.getMonth()) + "/" + Integer.toString(clock.getYear())  + "-" + Integer.toString(clock.getHours()) + ":" + Integer.toString(clock.getMinutes()) + ":" + Integer.toString(clock.getSeconds());
+		String value = Integer.toString(clock.getDay()) + "/"
+				+ Integer.toString(clock.getMonth()) + "/"
+				+ Integer.toString(clock.getYear()) + "-"
+				+ Integer.toString(clock.getHours()) + ":"
+				+ Integer.toString(clock.getMinutes()) + ":"
+				+ Integer.toString(clock.getSeconds());
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-hh:mm:ss");
-		
+
 		try {
 			return dateFormat.parse(value);
 		} catch (ParseException e) {
 			// XXX malformed value
 		}
 		return new Date();
-		
+
 	}
 
 	@Override
@@ -76,7 +79,10 @@ public class ClockParameterWidget implements ParameterWidget<Date> {
 			String type = Integer.toString(parameter.getType());
 			DateFormat fixDateFormat = new SimpleDateFormat("yyyyMMdd");
 			Date now = new Date();
-			String value = fixDateFormat.format(now) + "-" + Integer.toString(clock.getHours()) + ":" + Integer.toString(clock.getMinutes()) + ":" + Integer.toString(clock.getSeconds());
+			String value = fixDateFormat.format(now) + "-"
+					+ Integer.toString(clock.getHours()) + ":"
+					+ Integer.toString(clock.getMinutes()) + ":"
+					+ Integer.toString(clock.getSeconds());
 			char delimiter = '\001';
 			return "958=" + name + delimiter + "959=" + type + delimiter
 					+ "960=" + value;
@@ -99,6 +105,5 @@ public class ClockParameterWidget implements ParameterWidget<Date> {
 	public ParameterT getParameter() {
 		return parameter;
 	}
-
 
 }
