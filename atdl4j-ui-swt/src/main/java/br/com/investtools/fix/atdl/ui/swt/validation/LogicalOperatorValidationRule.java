@@ -122,7 +122,8 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 					if (rule instanceof ParameterValidationRule) {
 						ParameterValidationRule r = (ParameterValidationRule) rule;
 						ParameterWidget<?> p = r.getParameter();
-						throw new ValidationException(p, strategyEdit.getErrorMessage());
+						throw new ValidationException(p, strategyEdit
+								.getErrorMessage());
 					} else {
 						// XXX not an instance of ParameterValidationRule
 					}
@@ -146,7 +147,8 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 				if (rule instanceof ParameterValidationRule) {
 					ParameterValidationRule r = (ParameterValidationRule) rule;
 					ParameterWidget<?> p = r.getParameter();
-					throw new ValidationException(p, strategyEdit.getErrorMessage());
+					throw new ValidationException(p, strategyEdit
+							.getErrorMessage());
 				} else {
 					// XXX not an instance of ParameterValidationRule
 				}

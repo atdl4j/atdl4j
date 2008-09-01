@@ -28,45 +28,35 @@ import br.com.investtools.fix.atdl.ui.swt.widget.FloatTTypeListener;
 
 public class TextTest {
 
-public static void main (String [] args) {
-	Display display = new Display ();
-	Shell shell = new Shell (display);
-	Text text = new Text (shell, SWT.BORDER | SWT.V_SCROLL);
-	text.setBounds (10, 10, 200, 200);
-	
-	text.addVerifyListener(new FloatTTypeListener(new DecimalFormat("0.0"), false, 0.1f, 0.9f));
-	
-/*	text.addListener (SWT.Verify, new Listener () {
-		public void handleEvent (Event e) {
-			String text = e.text;
-			char [] chars = new char [text.length ()];
-			text.getChars (0, chars.length, chars, 0);
-			for (int i=0; i<chars.length; i++) {
-				if (!('0' <= chars [i] && chars [i] <= '9')) {
-					e.doit = false;
-					return;
-				}
-			}
-						
-			// 
-			Text textField = (Text) e.widget;
-			String firstHalf = textField.getText().substring(e.start);
-			String secondHalf = textField.getText().substring(e.start, textField.getText().length());
-			String input = firstHalf + e.text + secondHalf;
-			
-			if (!"".equals(input)) {
-				int value = new Integer(input);
-				if ( value < 1 || value > 10000000 )
-					e.doit = false;
-					return;
-			}					
+	public static void main(String[] args) {
+		Display display = new Display();
+		Shell shell = new Shell(display);
+		Text text = new Text(shell, SWT.BORDER | SWT.V_SCROLL);
+		text.setBounds(10, 10, 200, 200);
 
+		text.addVerifyListener(new FloatTTypeListener(new DecimalFormat("0.0"),
+				false, 0.1f, 0.9f));
+
+		/*
+		 * text.addListener (SWT.Verify, new Listener () { public void
+		 * handleEvent (Event e) { String text = e.text; char [] chars = new
+		 * char [text.length ()]; text.getChars (0, chars.length, chars, 0); for
+		 * (int i=0; i<chars.length; i++) { if (!('0' <= chars [i] && chars [i] <=
+		 * '9')) { e.doit = false; return; } }
+		 *  // Text textField = (Text) e.widget; String firstHalf =
+		 * textField.getText().substring(e.start); String secondHalf =
+		 * textField.getText().substring(e.start, textField.getText().length());
+		 * String input = firstHalf + e.text + secondHalf;
+		 * 
+		 * if (!"".equals(input)) { int value = new Integer(input); if ( value <
+		 * 1 || value > 10000000 ) e.doit = false; return; }
+		 *  } });
+		 */
+		shell.open();
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch())
+				display.sleep();
 		}
-	});*/
-	shell.open ();
-	while (!shell.isDisposed()) {
-		if (!display.readAndDispatch ()) display.sleep ();
+		display.dispose();
 	}
-	display.dispose ();
 }
-} 

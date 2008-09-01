@@ -8,6 +8,7 @@ import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyPanelDocument.Strateg
 
 public interface PanelFactory {
 
-	public Map<String, ParameterWidget<?>> create(Composite parent, StrategyPanel panel, int style);
+	public Map<String, ParameterWidget<?>> create(Composite parent,
+			StrategyPanel panel, int style);
 
 }

@@ -14,7 +14,8 @@ public class ReferencedValidationRule implements ValidationRule {
 	}
 
 	@Override
-	public void validate(StrategyEdit strategyEdit, Map<String, ValidationRule> rules,
+	public void validate(StrategyEdit strategyEdit,
+			Map<String, ValidationRule> rules,
 			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
 		ValidationRule rule = rules.get(ref);
 		if (rule != null) {

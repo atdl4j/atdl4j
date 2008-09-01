@@ -35,38 +35,37 @@ public class SpinnerTest {
 	public static void main(String[] args) {
 		Display display = new Display();
 		Shell shell = new Shell(display);
-		
+
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		gridLayout.horizontalSpacing = 0;
 		gridLayout.verticalSpacing = 0;
 		shell.setLayout(gridLayout);
-		
+
 		Label l = new Label(shell, SWT.NONE);
 		l.setText("lorem ipsum");
 
 		GridData labelData = new GridData();
 		labelData.verticalSpan = 2;
 		l.setLayoutData(labelData);
-		
-		
-		Spinner spinner = new Spinner (shell, SWT.BORDER);
+
+		Spinner spinner = new Spinner(shell, SWT.BORDER);
 		spinner.setMinimum(0);
 		spinner.setMaximum(1000);
 		spinner.setSelection(500);
 		spinner.setIncrement(1);
 		spinner.setPageIncrement(100);
-		
+
 		GridData spinnerData = new GridData();
 		spinnerData.verticalSpan = 2;
 		spinner.setLayoutData(spinnerData);
-		
+
 		Button buttonUp = new Button(shell, SWT.ARROW | SWT.UP);
 		Button buttonDown = new Button(shell, SWT.ARROW | SWT.DOWN);
-		
+
 		buttonUp.addSelectionListener(new DualSpinnerSelection(spinner, 5));
 		buttonDown.addSelectionListener(new DualSpinnerSelection(spinner, -5));
-		
+
 		shell.pack();
 		shell.open();
 		while (!shell.isDisposed()) {

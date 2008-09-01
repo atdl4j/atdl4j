@@ -60,7 +60,7 @@ public class SWTStrategyUI implements StrategyUI {
 
 		// initialize rules collection with global rules
 		rules = new HashMap<String, ValidationRule>(strategiesRules);
-		
+
 		// and add local rules
 		for (Edit edit : strategy.getEditArray()) {
 			String id = edit.getId();

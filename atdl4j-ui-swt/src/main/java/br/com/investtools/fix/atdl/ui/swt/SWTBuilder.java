@@ -118,7 +118,8 @@ public class SWTBuilder {
 				logger.info("Validating strategy \"{}\"", selectedStrategy
 						.getName());
 				try {
-					StrategyUI strategyUI = strategiesUI.getStrategyUI(selectedStrategy);
+					StrategyUI strategyUI = strategiesUI
+							.getStrategyUI(selectedStrategy);
 					strategyUI.validate();
 				} catch (ValidationException ex) {
 					MessageBox messageBox = new MessageBox(shell, SWT.OK

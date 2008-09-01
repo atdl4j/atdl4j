@@ -19,30 +19,33 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Classe que permiti a inibição de edição de um valor inválido em um campo
  * Text. A validação do texto entrado pelo usuário é feita por um NumberFormat.
- * Caso o NumberFormat consiga formatar o texto a edição é permitida, caso contrário
- * a edição é negada.
+ * Caso o NumberFormat consiga formatar o texto a edição é permitida, caso
+ * contrário a edição é negada.
  * 
- * Uma instância dessa classe deve ser adicionada aos verifyListener's de um campo Text.
+ * Uma instância dessa classe deve ser adicionada aos verifyListener's de um
+ * campo Text.
  * 
  * @author tuler
- *
+ * 
  */
 public class NumberFormatVerifyListener implements VerifyListener {
 
 	protected NumberFormat formatter;
-	
+
 	protected boolean allowEmpty;
 
 	/**
 	 * 
-	 * @param formatter formatador usado para validar o texto digitado pelo usuário.
-	 * @param allowEmpty flag que indica se um campo vazio é valido.
+	 * @param formatter
+	 *            formatador usado para validar o texto digitado pelo usuário.
+	 * @param allowEmpty
+	 *            flag que indica se um campo vazio é valido.
 	 */
 	public NumberFormatVerifyListener(NumberFormat formatter, boolean allowEmpty) {
 		this.formatter = formatter;
 		this.allowEmpty = allowEmpty;
 	}
-	
+
 	public void verifyText(VerifyEvent e) {
 		if (e.widget instanceof Text) {
 			try {
@@ -50,31 +53,31 @@ public class NumberFormatVerifyListener implements VerifyListener {
 				if (value.length() == 0 && allowEmpty) {
 					return;
 				}
-				
+
 				ParsePosition parsePosition = new ParsePosition(0);
 				formatter.parse(value, parsePosition);
 				if (parsePosition.getIndex() < value.length()) {
 					// sobrou texto, tem uma parte que nao é parseavel
-					throw new ParseException("Valor inválido", parsePosition.getIndex());
+					throw new ParseException("Valor inválido", parsePosition
+							.getIndex());
 				}
 			} catch (ParseException e1) {
 				e.doit = false;
 			}
-			
-			
+
 		}
 	}
-	
+
 	public String getFutureText(VerifyEvent e) {
-			if (e.widget instanceof Text) {
-				Text text = (Text) e.widget;
-				String old = text.getText();
-				String start = old.substring(0, e.start);
-				String end = old.substring(e.end);
-				String value = start + e.text + end;
-				return value;
-			}
-			return "";
+		if (e.widget instanceof Text) {
+			Text text = (Text) e.widget;
+			String old = text.getText();
+			String start = old.substring(0, e.start);
+			String end = old.substring(e.end);
+			String value = start + e.text + end;
+			return value;
+		}
+		return "";
 	}
 
 }

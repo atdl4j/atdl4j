@@ -40,11 +40,11 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 	}
 
 	public Boolean getValue() {
-		if (checkBox.getSelection()) 
+		if (checkBox.getSelection())
 			return Boolean.TRUE;
 		else
 			return Boolean.FALSE;
-	}	
+	}
 
 	@Override
 	public String getFIXValue() {
@@ -79,13 +79,13 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 
 		if (value.equalsIgnoreCase("true") || value.equals("1")) {
 			return new Boolean(true);
-		} else if (value.equalsIgnoreCase("false") || value.equals("0")){
+		} else if (value.equalsIgnoreCase("false") || value.equals("0")) {
 			return new Boolean(false);
 		} else {
 			// TODO: what to do?
 			return new Boolean(false);
 		}
-		
+
 	}
 
 	@Override
