@@ -9,7 +9,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -35,6 +34,7 @@ public class SWTBuilder {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(SWTBuilder.class);
+
 	private static TabFolder tabFolder;
 	private static Shell shell;
 
@@ -45,14 +45,15 @@ public class SWTBuilder {
 	public static void main(String[] args) {
 		Display display = new Display();
 		shell = new Shell(display);
-		RowLayout shellLayout = new RowLayout(SWT.VERTICAL);
-		shellLayout.fill = true;
+		GridLayout shellLayout = new GridLayout(1, true);
 		shell.setLayout(shellLayout);
 
 		// header
 		Composite headerComposite = new Composite(shell, SWT.NONE);
 		GridLayout headerLayout = new GridLayout(2, false);
 		headerComposite.setLayout(headerLayout);
+		headerComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false));
 		final Text filepathText = new Text(headerComposite, SWT.BORDER);
 		GridData filepathTextData = new GridData(SWT.FILL, SWT.CENTER, true,
 				true);
@@ -85,6 +86,7 @@ public class SWTBuilder {
 		});
 
 		tabFolder = new TabFolder(shell, SWT.NONE);
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -117,6 +119,7 @@ public class SWTBuilder {
 		// footer
 		Composite footer = new Composite(shell, SWT.NONE);
 		footer.setLayout(new GridLayout(1, true));
+		footer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		Button submit = new Button(footer, SWT.NONE);
 		submit.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		submit.setText("Validate!");
@@ -137,10 +140,7 @@ public class SWTBuilder {
 				}
 			}
 		});
-		// submit.addSelectionListener(new StrategySubmitListener(pwMap,
-		// strategy.getStrategyEditArray()));
 
-		tabFolder.pack();
 		shell.pack();
 		shell.open();
 
