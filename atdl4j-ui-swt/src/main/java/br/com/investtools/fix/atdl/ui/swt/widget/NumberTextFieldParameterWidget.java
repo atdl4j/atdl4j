@@ -56,7 +56,7 @@ public class NumberTextFieldParameterWidget implements
 				if (intt.isSetInitValue())
 					textField.setText(Integer.toString(intt.getInitValue()));
 			} else {
-				// XXX not an IntT type
+				// TODO not an IntT type
 			}
 			break;
 
@@ -80,7 +80,7 @@ public class NumberTextFieldParameterWidget implements
 					textField.setText(Float.toString(floatt.getInitValue()));
 
 			} else {
-				// XXX not an FloatT type
+				// TODO not an FloatT type
 			}
 
 			break;

@@ -1,5 +1,7 @@
 package br.com.investtools.fix.atdl.ui.swt;
 
+import org.apache.xmlbeans.XmlException;
+
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.layout.xmlbeans.ComponentT;
 import br.com.investtools.fix.atdl.layout.xmlbeans.ComponentT.Enum;
@@ -7,6 +9,7 @@ import br.com.investtools.fix.atdl.ui.swt.widget.CheckBoxParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.ClockParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.ComboBoxParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.DualSpinnerParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.widget.HiddenParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.LabelParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.MultiCheckBoxParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.NumberTextFieldParameterWidget;
@@ -23,7 +26,7 @@ import br.com.investtools.fix.atdl.ui.swt.widget.StringTextFieldParameterWidget;
 public class ParameterWidgetFactoryImpl implements ParameterWidgetFactory {
 
 	@Override
-	public ParameterWidget<?> create(ParameterT parameter) {
+	public ParameterWidget<?> create(ParameterT parameter) throws XmlException {
 		Enum type = parameter.getControlType();
 		if (type == ComponentT.CHECK_BOX) {
 			return new CheckBoxParameterWidget();
@@ -38,6 +41,7 @@ public class ParameterWidgetFactoryImpl implements ParameterWidgetFactory {
 		} else if (type == ComponentT.TEXT_FIELD) {
 			switch (parameter.getType()) {
 			case 1:
+			case 6:
 				return new NumberTextFieldParameterWidget();
 			case 14:
 				return new StringTextFieldParameterWidget();
@@ -53,9 +57,15 @@ public class ParameterWidgetFactoryImpl implements ParameterWidgetFactory {
 		} else if (type == ComponentT.DUAL_SPINNER) {
 			return new DualSpinnerParameterWidget();
 		}
+		
+		if (type == null) {
+			// TODO later: always hidden?
+			return new HiddenParameterWidget(parameter);
+		}
 
-		// TODO: throw an exception, unsupported control type
-		return null;
+		throw new XmlException("Unsupported control type: " + type
+				+ " for ParameterT: " + parameter.getName());
+
 	}
 
 }

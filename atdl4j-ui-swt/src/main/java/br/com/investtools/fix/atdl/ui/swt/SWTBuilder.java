@@ -70,11 +70,15 @@ public class SWTBuilder {
 					try {
 						strategiesUI = parse(filepath);
 					} catch (XmlException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						MessageBox messageBox = new MessageBox(shell, SWT.OK
+								| SWT.ICON_ERROR);
+						messageBox.setMessage(e1.getMessage());
+						messageBox.open();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						MessageBox messageBox = new MessageBox(shell, SWT.OK
+								| SWT.ICON_ERROR);
+						messageBox.setMessage(e1.getMessage());
+						messageBox.open();
 					}
 				}
 			}
@@ -98,11 +102,15 @@ public class SWTBuilder {
 			try {
 				strategiesUI = parse(args[0]);
 			} catch (XmlException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				MessageBox messageBox = new MessageBox(shell, SWT.OK
+						| SWT.ICON_ERROR);
+				messageBox.setMessage(e1.getMessage());
+				messageBox.open();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				MessageBox messageBox = new MessageBox(shell, SWT.OK
+						| SWT.ICON_ERROR);
+				messageBox.setMessage(e1.getMessage());
+				messageBox.open();
 			}
 		}
 

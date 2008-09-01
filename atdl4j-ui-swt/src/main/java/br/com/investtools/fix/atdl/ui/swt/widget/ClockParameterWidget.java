@@ -83,7 +83,7 @@ public class ClockParameterWidget implements ParameterWidget<Date> {
 		try {
 			return dateFormat.parse(value);
 		} catch (ParseException e) {
-			// XXX malformed value
+			// TODO malformed value
 		}
 		return new Date();
 

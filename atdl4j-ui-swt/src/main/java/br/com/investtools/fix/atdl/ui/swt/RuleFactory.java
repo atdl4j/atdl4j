@@ -23,7 +23,8 @@ public abstract class RuleFactory {
 				for (Edit innerEdit : edit.getEditArray()) {
 					rule.addRule(createRule(innerEdit));
 				}
-			} else if (edit.getEditRefArray() != null) {
+			}
+			if (edit.getEditRefArray() != null) {
 				for (EditRefT innerRefEdit : edit.getEditRefArray()) {
 					rule.addRule(createRule(innerRefEdit));
 				}

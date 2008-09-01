@@ -54,12 +54,12 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 				if (intt.isSetInitValue())
 					textField.setText(Integer.toString(intt.getInitValue()));
 			} else {
-				// XXX not an IntT type
+				// TODO not an IntT type
 			}
 			break;
 
 		// type Float_T
-		case 2:
+		case 6:
 			if (parameter instanceof FloatT) {
 				FloatT floatt = (FloatT) parameter;
 				Float minValue = null;
@@ -78,7 +78,7 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 					textField.setText(Float.toString(floatt.getInitValue()));
 
 			} else {
-				// XXX not an FloatT type
+				// TODO not an FloatT type
 			}
 
 			break;

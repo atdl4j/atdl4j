@@ -44,7 +44,7 @@ public class SWTStrategiesUI implements StrategiesUI {
 
 		for (StrategyT strategy : strategies.getStrategyArray()) {
 			// create tab item for strategy
-			// TODO: do not impose tab folder
+			// TODO later: do not impose tab folder
 			TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
 			tabItem.setText(getText(strategy));
 			Composite strategyComposite = new Composite(tabFolder, SWT.NONE);

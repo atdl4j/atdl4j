@@ -2,6 +2,7 @@ package br.com.investtools.fix.atdl.ui.swt;
 
 import java.util.Map;
 
+import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.widgets.Composite;
 
 import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyPanelDocument.StrategyPanel;
@@ -9,6 +10,6 @@ import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyPanelDocument.Strateg
 public interface PanelFactory {
 
 	public Map<String, ParameterWidget<?>> create(Composite parent,
-			StrategyPanel panel, int style);
+			StrategyPanel panel, int style) throws XmlException;
 
 }

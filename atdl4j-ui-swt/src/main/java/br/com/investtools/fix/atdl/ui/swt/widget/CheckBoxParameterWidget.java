@@ -90,7 +90,6 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 
 	@Override
 	public ParameterT getParameter() {
-		// TODO Auto-generated method stub
 		return parameter;
 	}
 

@@ -54,8 +54,7 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 				return parameter.getEnumPairArray(i).getWireValue();
 			}
 		}
-		// XXX item not found
-		return "";
+		return " ";
 
 	}
 

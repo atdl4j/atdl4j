@@ -60,14 +60,14 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 	}
 
 	public String getValue() {
-		// TODO: verificar
+		// TODO: ???
 		int selection = comboBox.getSelectionIndex();
 
 		if (selection > 0) {
 			EnumPairT e = parameter.getEnumPairArray(selection);
 			return e.getWireValue();
 		} else
-			// XXX no item selected
+			// TODO no item selected
 			return "";
 	}
 

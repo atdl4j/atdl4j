@@ -22,9 +22,6 @@ import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyE
  */
 public class LogicalOperatorValidationRule implements ValidationRule {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(LogicalOperatorValidationRule.class);
-
 	private Enum operator;
 
 	private List<ValidationRule> rules;
@@ -118,15 +115,18 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 				}
 
 				if (i == this.rules.size() - 1) {
-					ValidationRule rule = this.rules.get(0);
-					if (rule instanceof ParameterValidationRule) {
-						ParameterValidationRule r = (ParameterValidationRule) rule;
-						ParameterWidget<?> p = r.getParameter();
-						throw new ValidationException(p, strategyEdit
-								.getErrorMessage());
-					} else {
-						// XXX not an instance of ParameterValidationRule
+					
+					ParameterWidget<?> parameter = null;
+					for (int j = 0; j < this.rules.size(); j++) {
+						ValidationRule rule = this.rules.get(i);
+						if (rule instanceof ParameterValidationRule) {
+							ParameterValidationRule r = (ParameterValidationRule) rule;
+							parameter = r.getParameter();
+						} 
 					}
+					throw new ValidationException(parameter, strategyEdit
+							.getErrorMessage());
+
 				}
 
 			}
@@ -143,23 +143,18 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 			}
 
 			if (ex == null) {
+
 				ValidationRule rule = this.rules.get(0);
+				ParameterWidget<?> parameter = null;
 				if (rule instanceof ParameterValidationRule) {
 					ParameterValidationRule r = (ParameterValidationRule) rule;
-					ParameterWidget<?> p = r.getParameter();
-					throw new ValidationException(p, strategyEdit
-							.getErrorMessage());
-				} else {
-					// XXX not an instance of ParameterValidationRule
+					parameter = r.getParameter();
 				}
+				throw new ValidationException(parameter, strategyEdit
+						.getErrorMessage());
+				
 			}
 
-			break;
-
-		default:
-			// Supposed to never happen, since the schema enforces an
-			// enumerated base restriction.
-			logger.error("Invalid logical operator.");
 			break;
 
 		}

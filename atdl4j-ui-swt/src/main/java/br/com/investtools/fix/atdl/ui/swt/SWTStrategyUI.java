@@ -1,6 +1,7 @@
 package br.com.investtools.fix.atdl.ui.swt;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.xmlbeans.XmlException;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.core.xmlbeans.StrategyT;
+import br.com.investtools.fix.atdl.iterators.StrategyIterator;
+import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyLayoutDocument.StrategyLayout;
 import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyPanelDocument.StrategyPanel;
 import br.com.investtools.fix.atdl.ui.StrategyUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.RootValidationRule;
@@ -44,18 +47,21 @@ public class SWTStrategyUI implements StrategyUI {
 		SWTFactory factory = new SWTFactory();
 		parameters = new HashMap<String, ParameterWidget<?>>();
 
-		// TODO: use iterator to traverse in correct order
+		// use iterator to traverse in correct order
 
-		// build panels
-		for (StrategyPanel panel : strategy.getStrategyLayout()
-				.getStrategyPanelArray()) {
-			parameters.putAll(factory.create(parent, panel, SWT.NONE));
-		}
-
-		// build parameters
-		for (ParameterT parameter : strategy.getParameterArray()) {
-			parameters.put(parameter.getName(), factory.create(parent,
-					parameter, SWT.NONE));
+		Iterator<Object> it = new StrategyIterator(strategy);
+		while (it.hasNext()) {
+			Object obj = it.next();
+			if (obj instanceof ParameterT) {
+				ParameterT parameter = (ParameterT) obj;
+				parameters.put(parameter.getName(), factory.create(parent,
+						parameter, SWT.NONE));
+			} else if (obj instanceof StrategyLayout) {
+				for (StrategyPanel panel : strategy.getStrategyLayout()
+						.getStrategyPanelArray()) {
+					parameters.putAll(factory.create(parent, panel, SWT.NONE));
+				}
+			}
 		}
 
 		// initialize rules collection with global rules
@@ -87,7 +93,7 @@ public class SWTStrategyUI implements StrategyUI {
 			}
 		}
 
-		// TODO: handle flows
+		// TODO later: handle flows
 	}
 
 	@Override
