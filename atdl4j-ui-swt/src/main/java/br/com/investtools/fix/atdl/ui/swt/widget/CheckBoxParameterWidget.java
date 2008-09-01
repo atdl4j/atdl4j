@@ -25,7 +25,7 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 
 		// label
 		Label l = new Label(parent, SWT.NONE);
-		l.setText(getLabelText(parameter));
+		l.setText(WidgetHelper.getLabelText(parameter));
 
 		// checkBox
 		Button checkBox = new Button(parent, style | SWT.CHECK);
@@ -37,13 +37,6 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 		l.setToolTipText(tooltip);
 
 		return parent;
-	}
-
-	public String getLabelText(ParameterT parameter) {
-		if (parameter.getUiRep() != null) {
-			return parameter.getUiRep();
-		}
-		return parameter.getName();
 	}
 
 	public Boolean getValue() {

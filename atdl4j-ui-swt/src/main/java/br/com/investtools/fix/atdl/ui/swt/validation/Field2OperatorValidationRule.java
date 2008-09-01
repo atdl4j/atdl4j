@@ -12,9 +12,9 @@ import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyE
  * 
  * @author renato.gallart
  * 
- * @param <E>
  */
-public class Field2OperatorValidationRule<E extends Comparable<E>> extends OperatorValidationRuleAbstract<E> {
+public class Field2OperatorValidationRule extends
+		AbstractOperatorValidationRule {
 
 	private String field;
 
@@ -22,7 +22,8 @@ public class Field2OperatorValidationRule<E extends Comparable<E>> extends Opera
 
 	private String field2;
 
-	public Field2OperatorValidationRule(String field, Enum operator, String field2) {
+	public Field2OperatorValidationRule(String field, Enum operator,
+			String field2) {
 		this.field = field;
 		this.operator = operator;
 		this.field2 = field2;
@@ -30,7 +31,8 @@ public class Field2OperatorValidationRule<E extends Comparable<E>> extends Opera
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void validate(StrategyEdit strategyEdit, Map<String, ValidationRule> rules,
+	public void validate(StrategyEdit strategyEdit,
+			Map<String, ValidationRule> rules,
 			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
 
 		// get the widget from context using field name
@@ -41,7 +43,7 @@ public class Field2OperatorValidationRule<E extends Comparable<E>> extends Opera
 							+ "\" in this context");
 		}
 		Object fieldValue = widget.getValue();
-		
+
 		// get the widget from context using field2 name
 		ParameterWidget<?> widget2 = widgets.get(field2);
 		if (widget2 == null) {
@@ -51,8 +53,8 @@ public class Field2OperatorValidationRule<E extends Comparable<E>> extends Opera
 		}
 		Object fieldValue2 = widget2.getValue();
 
+		// compare both values
 		validateValues(strategyEdit, widget, fieldValue, operator, fieldValue2);
 	}
-
 
 }

@@ -1,5 +1,6 @@
 package br.com.investtools.fix.atdl.ui.swt;
 
+import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.widgets.TabFolder;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.StrategiesDocument;
@@ -15,7 +16,7 @@ public class SWTStrategiesUIFactory implements StrategiesUIFactory {
 	}
 
 	@Override
-	public StrategiesUI create(StrategiesDocument document) {
+	public StrategiesUI create(StrategiesDocument document) throws XmlException {
 		StrategiesUI strategiesUI = new SWTStrategiesUI(document, tabFolder);
 		return strategiesUI;
 	}

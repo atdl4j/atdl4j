@@ -28,7 +28,7 @@ public class NumberTextFieldParameterWidget implements
 
 		// label
 		Label l = new Label(parent, SWT.NONE);
-		l.setText(getLabelText(parameter));
+		l.setText(WidgetHelper.getLabelText(parameter));
 
 		// textField
 		Text textField = new Text(parent, style | SWT.BORDER);
@@ -97,13 +97,6 @@ public class NumberTextFieldParameterWidget implements
 		l.setToolTipText(tooltip);
 
 		return parent;
-	}
-
-	public String getLabelText(ParameterT parameter) {
-		if (parameter.getUiRep() != null) {
-			return parameter.getUiRep();
-		}
-		return parameter.getName();
 	}
 
 	@Override

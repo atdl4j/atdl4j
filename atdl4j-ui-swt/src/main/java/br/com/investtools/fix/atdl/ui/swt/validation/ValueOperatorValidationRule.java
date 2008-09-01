@@ -11,18 +11,16 @@ import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyE
  * Validator that validates input against a constant value.
  * 
  * @author renato.gallart
- * 
- * @param <E>
  */
-public class ValueOperatorValidationRule<E extends Comparable<E>> extends OperatorValidationRuleAbstract<E> {
+public class ValueOperatorValidationRule extends AbstractOperatorValidationRule {
 
 	private String field;
 
 	private Enum operator;
 
-	private E value;
+	private String value;
 
-	public ValueOperatorValidationRule(String field, Enum operator, E value) {
+	public ValueOperatorValidationRule(String field, Enum operator, String value) {
 		this.field = field;
 		this.operator = operator;
 		this.value = value;
@@ -30,7 +28,8 @@ public class ValueOperatorValidationRule<E extends Comparable<E>> extends Operat
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void validate(StrategyEdit strategyEdit, Map<String, ValidationRule> rules,
+	public void validate(StrategyEdit strategyEdit,
+			Map<String, ValidationRule> rules,
 			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
 
 		// get the widget from context using field name
@@ -42,9 +41,8 @@ public class ValueOperatorValidationRule<E extends Comparable<E>> extends Operat
 		}
 
 		Object fieldValue = widget.getValue();
-		
-		validateValues(strategyEdit, widget, fieldValue, operator, value);
+		Object v = value != null ? widget.convertValue(value) : null;
+		validateValues(strategyEdit, widget, fieldValue, operator, v);
 	}
-
 
 }

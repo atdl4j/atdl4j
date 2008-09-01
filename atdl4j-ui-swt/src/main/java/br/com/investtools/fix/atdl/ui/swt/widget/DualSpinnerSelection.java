@@ -4,6 +4,10 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Spinner;
 
+/**
+ * SelectionListener that implements the dual spinner behaviour.
+ * 
+ */
 public class DualSpinnerSelection implements SelectionListener {
 
 	private Spinner spinner;

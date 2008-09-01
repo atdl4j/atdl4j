@@ -26,7 +26,7 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 
 		// label
 		Label l = new Label(parent, SWT.NONE);
-		l.setText(getLabelText(parameter));
+		l.setText(WidgetHelper.getLabelText(parameter));
 
 		Composite c = new Composite(parent, SWT.NONE);
 		c.setLayout(new FillLayout());
@@ -45,13 +45,6 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 		}
 
 		return c;
-	}
-
-	public String getLabelText(ParameterT parameter) {
-		if (parameter.getUiRep() != null) {
-			return parameter.getUiRep();
-		}
-		return parameter.getName();
 	}
 
 	public String getValue() {

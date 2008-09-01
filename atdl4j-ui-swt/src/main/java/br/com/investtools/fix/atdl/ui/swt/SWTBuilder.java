@@ -28,6 +28,7 @@ import br.com.investtools.fix.atdl.core.xmlbeans.StrategiesDocument;
 import br.com.investtools.fix.atdl.core.xmlbeans.StrategyT;
 import br.com.investtools.fix.atdl.ui.StrategiesUI;
 import br.com.investtools.fix.atdl.ui.StrategiesUIFactory;
+import br.com.investtools.fix.atdl.ui.StrategyUI;
 import br.com.investtools.fix.atdl.ui.swt.widget.DebugMouseTrackListener;
 
 public class SWTBuilder {
@@ -117,7 +118,8 @@ public class SWTBuilder {
 				logger.info("Validating strategy \"{}\"", selectedStrategy
 						.getName());
 				try {
-					strategiesUI.validate(selectedStrategy);
+					StrategyUI strategyUI = strategiesUI.getStrategyUI(selectedStrategy);
+					strategyUI.validate();
 				} catch (ValidationException ex) {
 					MessageBox messageBox = new MessageBox(shell, SWT.OK
 							| SWT.ICON_ERROR);

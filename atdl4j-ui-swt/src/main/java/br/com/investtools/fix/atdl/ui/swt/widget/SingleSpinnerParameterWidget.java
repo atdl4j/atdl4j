@@ -30,7 +30,7 @@ public class SingleSpinnerParameterWidget implements
 
 		// label
 		Label l = new Label(parent, SWT.NONE);
-		l.setText(getLabelText(parameter));
+		l.setText(WidgetHelper.getLabelText(parameter));
 
 		// spinner
 		Spinner spinner = new Spinner(parent, style | SWT.BORDER);
@@ -43,13 +43,6 @@ public class SingleSpinnerParameterWidget implements
 		l.setToolTipText(tooltip);
 
 		return parent;
-	}
-
-	public static String getLabelText(ParameterT parameter) {
-		if (parameter.getUiRep() != null) {
-			return parameter.getUiRep();
-		}
-		return parameter.getName();
 	}
 
 	public BigDecimal getValue() {

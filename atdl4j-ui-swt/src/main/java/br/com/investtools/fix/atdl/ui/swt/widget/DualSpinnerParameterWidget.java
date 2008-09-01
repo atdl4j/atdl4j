@@ -27,7 +27,7 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 
 		// label
 		Label l = new Label(parent, SWT.NONE);
-		l.setText(getLabelText(parameter));
+		l.setText(WidgetHelper.getLabelText(parameter));
 
 		Composite c = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
@@ -70,13 +70,6 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 		l.setToolTipText(tooltip);
 
 		return parent;
-	}
-
-	public String getLabelText(ParameterT parameter) {
-		if (parameter.getUiRep() != null) {
-			return parameter.getUiRep();
-		}
-		return parameter.getName();
 	}
 
 	public BigDecimal getValue() {

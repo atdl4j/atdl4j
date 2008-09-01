@@ -131,8 +131,7 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 
 	@Override
 	public ParameterT getParameter() {
-		// TODO Auto-generated method stub
-		return null;
+		return parameter;
 	}
 
 }

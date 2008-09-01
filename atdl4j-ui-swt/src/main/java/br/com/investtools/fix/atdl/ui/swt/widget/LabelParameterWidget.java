@@ -16,7 +16,7 @@ public class LabelParameterWidget implements ParameterWidget<String> {
 
 		// label
 		Label l = new Label(parent, SWT.NONE);
-		l.setText(getLabelText(parameter));
+		l.setText(WidgetHelper.getLabelText(parameter));
 
 		// make it span two columns because there is no input control
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -24,13 +24,6 @@ public class LabelParameterWidget implements ParameterWidget<String> {
 		l.setLayoutData(gridData);
 
 		return parent;
-	}
-
-	public String getLabelText(ParameterT parameter) {
-		if (parameter.getUiRep() != null) {
-			return parameter.getUiRep();
-		}
-		return parameter.getName();
 	}
 
 	@Override

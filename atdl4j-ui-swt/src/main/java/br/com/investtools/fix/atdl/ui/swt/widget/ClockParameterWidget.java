@@ -3,6 +3,7 @@ package br.com.investtools.fix.atdl.ui.swt.widget;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.swt.SWT;
@@ -27,7 +28,7 @@ public class ClockParameterWidget implements ParameterWidget<Date> {
 
 		// label
 		Label l = new Label(parent, SWT.NONE);
-		l.setText(getLabelText(parameter));
+		l.setText(WidgetHelper.getLabelText(parameter));
 
 		// clock
 		DateTime clock = new DateTime(parent, style | SWT.BORDER | SWT.TIME);
@@ -42,31 +43,16 @@ public class ClockParameterWidget implements ParameterWidget<Date> {
 		return parent;
 	}
 
-	public String getLabelText(ParameterT parameter) {
-		if (parameter.getUiRep() != null) {
-			return parameter.getUiRep();
-		}
-		return parameter.getName();
-	}
-
 	public Date getValue() {
-		// TODO: verificar se conversão é essa mesma
-
-		String value = Integer.toString(clock.getDay()) + "/"
-				+ Integer.toString(clock.getMonth()) + "/"
-				+ Integer.toString(clock.getYear()) + "-"
-				+ Integer.toString(clock.getHours()) + ":"
-				+ Integer.toString(clock.getMinutes()) + ":"
-				+ Integer.toString(clock.getSeconds());
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-hh:mm:ss");
-
-		try {
-			return dateFormat.parse(value);
-		} catch (ParseException e) {
-			// XXX malformed value
-		}
-		return new Date();
-
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.YEAR, clock.getYear());
+		c.set(Calendar.MONTH, clock.getMonth());
+		c.set(Calendar.DAY_OF_MONTH, clock.getDay());
+		c.set(Calendar.HOUR_OF_DAY, clock.getHours());
+		c.set(Calendar.MINUTE, clock.getMinutes());
+		c.set(Calendar.SECOND, clock.getSeconds());
+		c.clear(Calendar.MILLISECOND);
+		return c.getTime();
 	}
 
 	@Override
@@ -75,6 +61,7 @@ public class ClockParameterWidget implements ParameterWidget<Date> {
 			return Integer.toString(parameter.getFixTag().intValue()) + "="
 					+ getValue();
 		} else {
+			// TODO: value must be UTC
 			String name = parameter.getName();
 			String type = Integer.toString(parameter.getType());
 			DateFormat fixDateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -91,6 +78,7 @@ public class ClockParameterWidget implements ParameterWidget<Date> {
 
 	@Override
 	public Date convertValue(String value) {
+		// TODO: value must be UTC
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-hh:mm:ss");
 		try {
 			return dateFormat.parse(value);
