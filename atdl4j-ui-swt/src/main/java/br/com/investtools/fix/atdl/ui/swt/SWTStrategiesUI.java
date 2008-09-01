@@ -20,7 +20,6 @@ import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyPanelDocument.Strateg
 import br.com.investtools.fix.atdl.ui.StrategiesUI;
 import br.com.investtools.fix.atdl.ui.swt.test.candidates.Field2OperatorValidationRule;
 import br.com.investtools.fix.atdl.ui.swt.test.candidates.LogicalOperatorValidationRule;
-import br.com.investtools.fix.atdl.ui.swt.test.candidates.OperatorValidationRule;
 import br.com.investtools.fix.atdl.ui.swt.test.candidates.RootValidationRule;
 import br.com.investtools.fix.atdl.ui.swt.test.candidates.ValidationRule;
 import br.com.investtools.fix.atdl.ui.swt.test.candidates.ValueOperatorValidationRule;
@@ -50,9 +49,6 @@ public class SWTStrategiesUI implements StrategiesUI {
 			// create repository for global rules
 			strategiesRules = new HashMap<String, ValidationRule>();
 
-			// create repository for rules of each strategy
-			strategyRules = new HashMap<StrategyT, RootValidationRule>();
-
 			for (Edit edit : strategies.getEditArray()) {
 				String id = edit.getId();
 				if (id != null) {
@@ -61,9 +57,10 @@ public class SWTStrategiesUI implements StrategiesUI {
 				} else {
 					logger.warn("Strategies-scoped edit without id");
 				}
-
-				// TODO: recursively traverse edit childs
 			}
+
+			// create repository for rules of each strategy
+			strategyRules = new HashMap<StrategyT, RootValidationRule>();
 
 			// create repository for all parameters
 			strategiesParameters = new HashMap<StrategyT, Map<String, ParameterWidget<?>>>();
@@ -78,6 +75,8 @@ public class SWTStrategiesUI implements StrategiesUI {
 
 				Map<String, ParameterWidget<?>> strategyParameters = new HashMap<String, ParameterWidget<?>>();
 				try {
+					// TODO: use iterator to traverse in correct order
+
 					// build panels
 					for (StrategyPanel panel : strategy.getStrategyLayout()
 							.getStrategyPanelArray()) {
@@ -105,13 +104,7 @@ public class SWTStrategiesUI implements StrategiesUI {
 					for (StrategyEdit se : strategy.getStrategyEditArray()) {
 						String errorMessage = se.getErrorMessage();
 						if (se.isSetEdit()) {
-
-							Edit innerEdit = se.getEdit();
-							
-							for (Edit edit : innerEdit.getEditArray()) {
-								// TODO
-							}
-							
+							strategyRule.putRule(se, createRule(se.getEdit()));
 						}
 
 						// reference for a previously defined rule
@@ -144,40 +137,31 @@ public class SWTStrategiesUI implements StrategiesUI {
 	}
 
 	private ValidationRule createRule(EditRefT editRef) throws XmlException {
-		
-		if ( editRef.getId() != null ) {
+		if (editRef.getId() != null) {
 			String id = editRef.getId();
 			return new ReferencedValidationRule(id);
-
 		} else {
-				
-			// XXX reference without an ID
-			
+			throw new XmlException("EditRef without an id");
 		}
-		
-		return null;
 	}
-	
+
 	private ValidationRule createRule(Edit edit) throws XmlException {
 		if (edit.isSetLogicOperator()) {
 			// edit represents a logical operator [AND|OR|NOT|XOR]
-			
 			LogicOperatorT.Enum operator = edit.getLogicOperator();
-			LogicalOperatorValidationRule nestedRule = new LogicalOperatorValidationRule(operator);
+			LogicalOperatorValidationRule rule = new LogicalOperatorValidationRule(
+					operator);
 			if (edit.getEditArray() != null) {
-				
-				for (Edit innerEdit : edit.getEditArray()){
-					nestedRule.addRule(createRule(innerEdit));
+				for (Edit innerEdit : edit.getEditArray()) {
+					rule.addRule(createRule(innerEdit));
 				}
-				
 			} else if (edit.getEditRefArray() != null) {
-				
 				for (EditRefT innerRefEdit : edit.getEditRefArray()) {
-					nestedRule.addRule(createRule(innerRefEdit));
+					rule.addRule(createRule(innerRefEdit));
 				}
-				
 			}
-			
+			return rule;
+
 		} else if (edit.isSetOperator()) {
 			// edit represents a simple operator [EX|NX|EQ|LT|GT|NE|LE|GE]
 			OperatorT.Enum operator = edit.getOperator();
@@ -191,10 +175,10 @@ public class SWTStrategiesUI implements StrategiesUI {
 
 				} else if (edit.isSetField2()) {
 					// validates against another field value
-					String field2 = edit.getValue();
+					String field2 = edit.getField2();
 					return new Field2OperatorValidationRule<String>(field,
 							operator, field2);
-					
+
 				} else {
 					// must be EX or NX
 					if (operator.intValue() == OperatorT.INT_EX
@@ -215,7 +199,6 @@ public class SWTStrategiesUI implements StrategiesUI {
 					"No logic operator or operator set for edit \""
 							+ edit.getId() + "\"");
 		}
-		return null;
 	}
 
 	private static String getText(StrategyT strategy) {
@@ -239,85 +222,50 @@ public class SWTStrategiesUI implements StrategiesUI {
 		}
 	}
 
-/*	private static RootValidationRule generateValidator(StrategyEdit se,
-			Map<String, ParameterWidget<?>> pwMap, Edit edit) {
-
-		RootValidationRule rule = new RootValidationRule();
-
-		String id = null;
-
-		if (edit.isSetLogicOperator()) {
-
-			if (edit.getEditArray() != null) {
-
-				for (Edit innerEdit : edit.getEditArray()) {
-
-					if (edit.isSetId()) {
-						id = edit.getId();
-						// mainRule.getRefRules().put(id,
-						// generateValidator(mainRule, se, pwMap, innerEdit));
-					}
-
-					// rule.getRules().add(generateValidator(mainRule, se,
-					// pwMap, innerEdit));
-
-				}
-
-			}
-
-			if (edit.getEditRefArray() != null) {
-
-				for (EditRefT innerRefEdit : edit.getEditRefArray()) {
-
-				}
-
-			}
-
-		} else if (edit.isSetField() && edit.isSetOperator()
-				&& (edit.isSetField2() ^ edit.isSetValue())) {
-
-			String field = edit.getField();
-			ParameterWidget<?> pw = pwMap.get(field);
-			Enum operator = edit.getOperator();
-
-			if (pw != null) {
-				// TODO
-				if (edit.isSetValue()) {
-					// compare with constant value
-					String value = edit.getValue();
-
-					switch (pw.getParameter().getType()) {
-					case 1:
-						ParameterWidget<BigDecimal> pw2 = (ParameterWidget<BigDecimal>) pw;
-						BigDecimal o = (BigDecimal) pw.convertValue(value);
-						ValueOperatorValidationRuleOld<BigDecimal> r = new ValueOperatorValidationRuleOld<BigDecimal>(
-								se, pw2, operator, o);
-						// rule.getRules().add(r);
-
-					default:
-						break;
-					}
-
-				} else if (edit.isSetField2()) {
-					// compare with other field
-					ParameterWidget<?> pw2 = pwMap.get(edit.getField2());
-					if (pw2 != null) {
-						Field2OperatorValidationRuleOld r = new Field2OperatorValidationRuleOld(
-								se, pw, operator, pw2);
-						// rule.getRules().add(r);
-					} else {
-						logger.error("{} field2 not found.", edit.getField2());
-					}
-				}
-
-			} else {
-				logger.error("{} field1 not found.", edit.getField());
-			}
-
-		} else {
-			logger.error("No logic operator or operator set.");
-		}
-		return rule;
-	}
-*/
+	/*
+	 * private static RootValidationRule generateValidator(StrategyEdit se, Map<String,
+	 * ParameterWidget<?>> pwMap, Edit edit) {
+	 * 
+	 * RootValidationRule rule = new RootValidationRule();
+	 * 
+	 * String id = null;
+	 * 
+	 * if (edit.isSetLogicOperator()) {
+	 * 
+	 * if (edit.getEditArray() != null) {
+	 * 
+	 * for (Edit innerEdit : edit.getEditArray()) {
+	 * 
+	 * if (edit.isSetId()) { id = edit.getId(); //
+	 * mainRule.getRefRules().put(id, // generateValidator(mainRule, se, pwMap,
+	 * innerEdit)); } // rule.getRules().add(generateValidator(mainRule, se, //
+	 * pwMap, innerEdit)); } }
+	 * 
+	 * if (edit.getEditRefArray() != null) {
+	 * 
+	 * for (EditRefT innerRefEdit : edit.getEditRefArray()) { } } } else if
+	 * (edit.isSetField() && edit.isSetOperator() && (edit.isSetField2() ^
+	 * edit.isSetValue())) {
+	 * 
+	 * String field = edit.getField(); ParameterWidget<?> pw =
+	 * pwMap.get(field); Enum operator = edit.getOperator();
+	 * 
+	 * if (pw != null) { // TODO if (edit.isSetValue()) { // compare with
+	 * constant value String value = edit.getValue();
+	 * 
+	 * switch (pw.getParameter().getType()) { case 1: ParameterWidget<BigDecimal>
+	 * pw2 = (ParameterWidget<BigDecimal>) pw; BigDecimal o = (BigDecimal)
+	 * pw.convertValue(value); ValueOperatorValidationRuleOld<BigDecimal> r =
+	 * new ValueOperatorValidationRuleOld<BigDecimal>( se, pw2, operator, o); //
+	 * rule.getRules().add(r);
+	 * 
+	 * default: break; } } else if (edit.isSetField2()) { // compare with other
+	 * field ParameterWidget<?> pw2 = pwMap.get(edit.getField2()); if (pw2 !=
+	 * null) { Field2OperatorValidationRuleOld r = new
+	 * Field2OperatorValidationRuleOld( se, pw, operator, pw2); //
+	 * rule.getRules().add(r); } else { logger.error("{} field2 not found.",
+	 * edit.getField2()); } } } else { logger.error("{} field1 not found.",
+	 * edit.getField()); } } else { logger.error("No logic operator or operator
+	 * set."); } return rule; }
+	 */
 }

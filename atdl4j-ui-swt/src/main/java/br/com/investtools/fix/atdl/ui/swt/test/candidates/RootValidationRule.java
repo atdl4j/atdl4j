@@ -34,7 +34,9 @@ public class RootValidationRule implements ValidationRule {
 	public void validate(Map<String, ValidationRule> rules,
 			Map<String, ParameterWidget<?>> widgets) {
 		for (Entry<StrategyEdit, ValidationRule> entry : this.rules.entrySet()) {
-			entry.getValue().validate(entry.getKey(), rules, widgets);
+			StrategyEdit strategyEdit = entry.getKey();
+			ValidationRule rule = entry.getValue();
+			rule.validate(strategyEdit, rules, widgets);
 		}
 	}
 

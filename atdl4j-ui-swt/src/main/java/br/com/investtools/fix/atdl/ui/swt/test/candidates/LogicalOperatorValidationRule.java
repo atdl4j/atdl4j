@@ -25,7 +25,6 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 	private static final Logger logger = LoggerFactory
 			.getLogger(LogicalOperatorValidationRule.class);
 
-
 	private Enum operator;
 
 	private List<ValidationRule> rules;

@@ -44,7 +44,7 @@ public class Field2OperatorValidationRule<E extends Comparable<E>> extends Opera
 		
 		// get the widget from context using field2 name
 		ParameterWidget<?> widget2 = widgets.get(field2);
-		if (widget == null) {
+		if (widget2 == null) {
 			throw new ValidationException(null,
 					"No widget defined for field2 \"" + field2
 							+ "\" in this context");
