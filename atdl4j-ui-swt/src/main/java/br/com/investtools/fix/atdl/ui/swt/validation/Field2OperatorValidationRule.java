@@ -1,4 +1,4 @@
-package br.com.investtools.fix.atdl.ui.swt.test.candidates;
+package br.com.investtools.fix.atdl.ui.swt.validation;
 
 import java.util.Map;
 
@@ -8,24 +8,24 @@ import br.com.investtools.fix.atdl.valid.xmlbeans.OperatorT.Enum;
 import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
 
 /**
- * Validator that validates input against a constant value.
+ * Validator that validates input against another existing field.
  * 
  * @author renato.gallart
  * 
  * @param <E>
  */
-public class ValueOperatorValidationRule<E extends Comparable<E>> extends OperatorValidationRuleAbstract<E> {
+public class Field2OperatorValidationRule<E extends Comparable<E>> extends OperatorValidationRuleAbstract<E> {
 
 	private String field;
 
 	private Enum operator;
 
-	private E value;
+	private String field2;
 
-	public ValueOperatorValidationRule(String field, Enum operator, E value) {
+	public Field2OperatorValidationRule(String field, Enum operator, String field2) {
 		this.field = field;
 		this.operator = operator;
-		this.value = value;
+		this.field2 = field2;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -40,10 +40,18 @@ public class ValueOperatorValidationRule<E extends Comparable<E>> extends Operat
 					"No widget defined for field \"" + field
 							+ "\" in this context");
 		}
-
 		Object fieldValue = widget.getValue();
 		
-		validateValues(strategyEdit, widget, fieldValue, operator, value);
+		// get the widget from context using field2 name
+		ParameterWidget<?> widget2 = widgets.get(field2);
+		if (widget2 == null) {
+			throw new ValidationException(null,
+					"No widget defined for field2 \"" + field2
+							+ "\" in this context");
+		}
+		Object fieldValue2 = widget2.getValue();
+
+		validateValues(strategyEdit, widget, fieldValue, operator, fieldValue2);
 	}
 
 

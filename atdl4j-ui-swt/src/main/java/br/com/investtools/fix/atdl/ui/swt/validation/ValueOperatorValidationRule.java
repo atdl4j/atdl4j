@@ -1,4 +1,4 @@
-package br.com.investtools.fix.atdl.ui.swt.test.candidates;
+package br.com.investtools.fix.atdl.ui.swt.validation;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyE
  * 
  * @param <E>
  */
-public class OperatorValidationRule<E extends Comparable<E>> extends OperatorValidationRuleAbstract<E> {
+public class ValueOperatorValidationRule<E extends Comparable<E>> extends OperatorValidationRuleAbstract<E> {
 
 	private String field;
 
@@ -22,7 +22,7 @@ public class OperatorValidationRule<E extends Comparable<E>> extends OperatorVal
 
 	private E value;
 
-	public OperatorValidationRule(String field, Enum operator, String field2, E value) {
+	public ValueOperatorValidationRule(String field, Enum operator, E value) {
 		this.field = field;
 		this.operator = operator;
 		this.value = value;
@@ -42,7 +42,7 @@ public class OperatorValidationRule<E extends Comparable<E>> extends OperatorVal
 		}
 
 		Object fieldValue = widget.getValue();
-
+		
 		validateValues(strategyEdit, widget, fieldValue, operator, value);
 	}
 

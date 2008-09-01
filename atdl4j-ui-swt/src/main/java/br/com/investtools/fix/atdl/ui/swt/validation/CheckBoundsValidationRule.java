@@ -1,4 +1,4 @@
-package br.com.investtools.fix.atdl.ui.swt.test.candidates;
+package br.com.investtools.fix.atdl.ui.swt.validation;
 
 import java.math.BigDecimal;
 import java.util.Map;

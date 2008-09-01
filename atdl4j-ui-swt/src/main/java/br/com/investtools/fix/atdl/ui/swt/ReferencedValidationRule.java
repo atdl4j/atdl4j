@@ -2,7 +2,7 @@ package br.com.investtools.fix.atdl.ui.swt;
 
 import java.util.Map;
 
-import br.com.investtools.fix.atdl.ui.swt.test.candidates.ValidationRule;
+import br.com.investtools.fix.atdl.ui.swt.validation.ValidationRule;
 import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
 
 public class ReferencedValidationRule implements ValidationRule {
