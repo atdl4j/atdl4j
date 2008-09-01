@@ -49,9 +49,9 @@ public class Field2OperatorValidationRule<E extends Comparable<E>> extends Opera
 					"No widget defined for field2 \"" + field2
 							+ "\" in this context");
 		}
-		Object field2 = widget2.getValue();
+		Object fieldValue2 = widget2.getValue();
 
-		validateValues(strategyEdit, widget, fieldValue, operator, field2);
+		validateValues(strategyEdit, widget, fieldValue, operator, fieldValue2);
 	}
 
 
