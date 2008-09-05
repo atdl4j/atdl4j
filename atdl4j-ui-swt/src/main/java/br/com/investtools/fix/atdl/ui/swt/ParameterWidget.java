@@ -1,5 +1,6 @@
 package br.com.investtools.fix.atdl.ui.swt;
 
+import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
@@ -14,13 +15,13 @@ import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
  */
 public interface ParameterWidget<E extends Comparable<E>> {
 
-	public Widget createWidget(Composite parent, ParameterT parameter, int style);
+	public Widget createWidget(Composite parent, ParameterT parameter, int style) throws XmlException;
 
 	public E getValue();
 
 	public ParameterT getParameter();
 
-	public E convertValue(String value);
+	public E convertValue(String value) throws XmlException;
 
 	public String getFIXValue();
 }

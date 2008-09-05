@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.xmlbeans.XmlException;
+
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.LogicOperatorT;
@@ -35,7 +37,7 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 	@Override
 	public void validate(StrategyEdit strategyEdit,
 			Map<String, ValidationRule> rules,
-			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
+			Map<String, ParameterWidget<?>> widgets) throws ValidationException, XmlException {
 
 		ValidationException ex = null;
 
@@ -43,12 +45,18 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 		case LogicOperatorT.INT_AND:
 
 			// AND com curto circuito
-			/*
-			 * for (ValidationRule rule : rules) { rule.validate(); }
-			 */
+			
+			  for (ValidationRule rule : this.rules) { 
+					try {
+						rule.validate(strategyEdit, rules, widgets);
+					} catch (ValidationException e) {
+						throw e;
+					}
+			  }
+			 
 
 			// AND sem curto circuito, relancando o ultimo erro
-			for (ValidationRule rule : this.rules) {
+			/*for (ValidationRule rule : this.rules) {
 				try {
 					rule.validate(strategyEdit, rules, widgets);
 				} catch (ValidationException e) {
@@ -57,9 +65,9 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 			}
 			if (ex != null) {
 				throw ex;
-			}
+			}*/
 
-			break;
+		break;
 
 		case LogicOperatorT.INT_OR:
 

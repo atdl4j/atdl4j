@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.xmlbeans.XmlException;
+
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
@@ -32,7 +34,7 @@ public class RootValidationRule implements ValidationRule {
 	}
 
 	public void validate(Map<String, ValidationRule> rules,
-			Map<String, ParameterWidget<?>> widgets) {
+			Map<String, ParameterWidget<?>> widgets) throws ValidationException, XmlException {
 		for (Entry<StrategyEdit, ValidationRule> entry : this.rules.entrySet()) {
 			StrategyEdit strategyEdit = entry.getKey();
 			ValidationRule rule = entry.getValue();

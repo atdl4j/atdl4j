@@ -2,6 +2,8 @@ package br.com.investtools.fix.atdl.ui.swt.validation;
 
 import java.util.Map;
 
+import org.apache.xmlbeans.XmlException;
+
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.OperatorT.Enum;
@@ -30,7 +32,7 @@ public class ValueOperatorValidationRule extends AbstractOperatorValidationRule 
 	@Override
 	public void validate(StrategyEdit strategyEdit,
 			Map<String, ValidationRule> rules,
-			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
+			Map<String, ParameterWidget<?>> widgets) throws ValidationException, XmlException {
 
 		// get the widget from context using field name
 		ParameterWidget<?> widget = widgets.get(field);

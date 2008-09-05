@@ -3,6 +3,7 @@ package br.com.investtools.fix.atdl.ui.swt.widget;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -23,7 +24,7 @@ public class NumberTextFieldParameterWidget implements
 	private Text textField;
 
 	@Override
-	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
+	public Widget createWidget(Composite parent, ParameterT parameter, int style) throws XmlException {
 		this.parameter = parameter;
 
 		// label
@@ -41,46 +42,30 @@ public class NumberTextFieldParameterWidget implements
 		case 1:
 			if (parameter instanceof IntT) {
 				IntT intt = (IntT) parameter;
-				Integer minValue = null;
-				Integer maxValue = null;
 
-				if (intt.isSetMinValue())
-					minValue = intt.getMinValue();
-
-				if (intt.isSetMaxValue())
-					maxValue = intt.getMaxValue();
-
-				textField.addVerifyListener(new IntTTypeListener(
-						new DecimalFormat("#"), false, minValue, maxValue));
+				textField.addVerifyListener(new NumberFormatVerifyListener(
+						new DecimalFormat("#"), false));
 
 				if (intt.isSetInitValue())
 					textField.setText(Integer.toString(intt.getInitValue()));
 			} else {
-				// TODO not an IntT type
+				throw new XmlException("Parameter \"type\" set as int but \"xsi:type\" not." );
 			}
 			break;
 
 		// type Float_T
-		case 2:
+		case 6:
 			if (parameter instanceof FloatT) {
 				FloatT floatt = (FloatT) parameter;
-				Float minValue = null;
-				Float maxValue = null;
 
-				if (floatt.isSetMinValue())
-					minValue = floatt.getMinValue();
-
-				if (floatt.isSetMaxValue())
-					maxValue = floatt.getMaxValue();
-
-				textField.addVerifyListener(new FloatTTypeListener(
-						new DecimalFormat("0.0"), false, minValue, maxValue));
+				textField.addVerifyListener(new NumberFormatVerifyListener(
+						new DecimalFormat("0.0"), false));
 
 				if (floatt.isSetInitValue())
 					textField.setText(Float.toString(floatt.getInitValue()));
 
 			} else {
-				// TODO not an FloatT type
+				throw new XmlException("Parameter \"type\" set as float but \"xsi:type\" not." );
 			}
 
 			break;

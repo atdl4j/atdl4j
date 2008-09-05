@@ -7,8 +7,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Widget;
 
+import br.com.investtools.fix.atdl.core.xmlbeans.CharT;
 import br.com.investtools.fix.atdl.core.xmlbeans.EnumPairT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
+import br.com.investtools.fix.atdl.core.xmlbeans.StringT;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 
 public class ComboBoxParameterWidget implements ParameterWidget<String> {
@@ -41,11 +43,10 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 			style |= SWT.READ_ONLY;
 		}
 		Combo comboBox = new Combo(parent, style);
-		comboBox.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		this.comboBox = comboBox;
+		comboBox.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 		// comboBox itens
-
 		EnumPairT[] enumPairArray = parameter.getEnumPairArray();
 		for (EnumPairT enumPair : enumPairArray) {
 			comboBox.add(enumPair.getUiRep());
@@ -56,19 +57,46 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 		comboBox.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
+		// init value
+		String initValue = getInitValue(parameter);
+		
+		
+		if (initValue != null) {
+			String[] itens = comboBox.getItems();
+			for (int i = 0; i < itens.length; i++) {
+				if (initValue.equals(itens[i]))
+					comboBox.select(i);
+			}
+		}
+		
 		return parent;
 	}
 
+	private String getInitValue(ParameterT parameter) {
+		if (parameter instanceof CharT) {
+			CharT charT = (CharT) parameter;
+			if (charT.isSetInitValue()) 
+				return charT.getInitValue();
+			
+		} else if (parameter instanceof StringT) {
+			StringT stringT = (StringT) parameter;
+			if (stringT.isSetInitValue()) 
+				return stringT.getInitValue();
+			
+		}
+		
+		return null;
+	}
+	
 	public String getValue() {
-		// TODO: ???
 		int selection = comboBox.getSelectionIndex();
 
 		if (selection > 0) {
 			EnumPairT e = parameter.getEnumPairArray(selection);
 			return e.getWireValue();
 		} else
-			// TODO no item selected
-			return "";
+		return " ";
+		
 	}
 
 	@Override

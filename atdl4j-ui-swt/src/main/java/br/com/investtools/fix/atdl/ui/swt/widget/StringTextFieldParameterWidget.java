@@ -1,7 +1,6 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
-import java.text.DecimalFormat;
-
+import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -9,8 +8,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
-import br.com.investtools.fix.atdl.core.xmlbeans.FloatT;
-import br.com.investtools.fix.atdl.core.xmlbeans.IntT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 
@@ -21,7 +18,7 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 	private Text textField;
 
 	@Override
-	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
+	public Widget createWidget(Composite parent, ParameterT parameter, int style) throws XmlException {
 		this.parameter = parameter;
 
 		// label
@@ -32,61 +29,7 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 		Text textField = new Text(parent, style | SWT.BORDER);
 		textField
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-		switch (parameter.getType()) {
-
-		// type Int_T
-		case 1:
-			if (parameter instanceof IntT) {
-				IntT intt = (IntT) parameter;
-				Integer minValue = null;
-				Integer maxValue = null;
-
-				if (intt.isSetMinValue())
-					minValue = intt.getMinValue();
-
-				if (intt.isSetMaxValue())
-					maxValue = intt.getMaxValue();
-
-				textField.addVerifyListener(new IntTTypeListener(
-						new DecimalFormat("#"), false, minValue, maxValue));
-
-				if (intt.isSetInitValue())
-					textField.setText(Integer.toString(intt.getInitValue()));
-			} else {
-				// TODO not an IntT type
-			}
-			break;
-
-		// type Float_T
-		case 6:
-			if (parameter instanceof FloatT) {
-				FloatT floatt = (FloatT) parameter;
-				Float minValue = null;
-				Float maxValue = null;
-
-				if (floatt.isSetMinValue())
-					minValue = floatt.getMinValue();
-
-				if (floatt.isSetMaxValue())
-					maxValue = floatt.getMaxValue();
-
-				textField.addVerifyListener(new FloatTTypeListener(
-						new DecimalFormat("0.0"), false, minValue, maxValue));
-
-				if (floatt.isSetInitValue())
-					textField.setText(Float.toString(floatt.getInitValue()));
-
-			} else {
-				// TODO not an FloatT type
-			}
-
-			break;
-
-		default:
-			break;
-		}
-
+		
 		this.textField = textField;
 
 		// tooltip

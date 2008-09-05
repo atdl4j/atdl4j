@@ -97,7 +97,7 @@ public class SWTStrategyUI implements StrategyUI {
 	}
 
 	@Override
-	public void validate() throws ValidationException {
+	public void validate() throws ValidationException, XmlException {
 		if (rule != null) {
 			// delegate validation, passing all global and local rules as
 			// context information, and all my parameters

@@ -1,6 +1,7 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -11,8 +12,16 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Widget;
 
+import br.com.investtools.fix.atdl.core.xmlbeans.AmtT;
 import br.com.investtools.fix.atdl.core.xmlbeans.EnumPairT;
+import br.com.investtools.fix.atdl.core.xmlbeans.FloatT;
+import br.com.investtools.fix.atdl.core.xmlbeans.IntT;
+import br.com.investtools.fix.atdl.core.xmlbeans.NumericT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
+import br.com.investtools.fix.atdl.core.xmlbeans.PercentageT;
+import br.com.investtools.fix.atdl.core.xmlbeans.PriceOffsetT;
+import br.com.investtools.fix.atdl.core.xmlbeans.PriceT;
+import br.com.investtools.fix.atdl.core.xmlbeans.QtyT;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 
 public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
@@ -39,6 +48,7 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 
 		// dualSpinner
 		Spinner dualSpinner = new Spinner(c, style | SWT.BORDER);
+		this.dualSpinner = dualSpinner;
 		GridData spinnerData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		spinnerData.verticalSpan = 2;
 		dualSpinner.setLayoutData(spinnerData);
@@ -54,8 +64,6 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 			}
 		}
 
-		this.dualSpinner = dualSpinner;
-
 		Button buttonUp = new Button(c, SWT.ARROW | SWT.UP);
 		Button buttonDown = new Button(c, SWT.ARROW | SWT.DOWN);
 
@@ -69,9 +77,315 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 		dualSpinner.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
+		dualSpinner.setDigits(getPrecision(parameter));
+		
+		Integer minimum = getMinimum(parameter);
+		if (minimum != null)
+			dualSpinner.setMinimum(minimum);
+		
+		Integer maximum = getMaximum(parameter);
+		if (maximum != null)
+			dualSpinner.setMaximum(maximum);
+		
+		Integer initValue = getInitValue(parameter);
+		if (initValue != null)
+			dualSpinner.setSelection(initValue);
+
 		return parent;
 	}
+	
+	private Integer getPrecision(ParameterT parameter){
+		
+		BigInteger precision;
+		
+		if (parameter instanceof NumericT) {
+			NumericT numeric = (NumericT) parameter;
+			// default precision is 2 decimal places in case of FloatT
+			 precision = BigInteger.valueOf(2);
 
+			// override precision if defined by user
+			if (numeric.isSetPrecision()) {
+				precision = numeric.getPrecision();
+			}
+		} else {
+			precision = BigInteger.ZERO;
+		}
+		
+		return precision.intValue();
+		
+	}
+
+	private Integer getMinimum(ParameterT parameter) {
+
+		if (parameter instanceof FloatT) {
+			// get value defined by user
+			FloatT floatT = (FloatT) parameter;
+			
+			if (floatT.isSetMinValue()) {
+				float minValue = floatT.getMinValue();
+
+				// adjust according to precision
+				int minValueAdjusted = (int) (minValue * Math.pow(10, dualSpinner.getDigits()
+						));
+				return minValueAdjusted;
+			}
+		} else if (parameter instanceof AmtT) {
+			AmtT amtT = (AmtT) parameter;
+			
+			if (amtT.isSetMinValue()) {
+				BigDecimal minValue = amtT.getMinValue();
+				
+				int minValueAdjusted = (int) (minValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return minValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PercentageT) {
+			PercentageT percentageT = (PercentageT) parameter;
+			
+			if (percentageT.isSetMinValue()) {
+				BigDecimal minValue = percentageT.getMinValue();
+				
+				int minValueAdjusted = (int) (minValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return minValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PriceOffsetT) {
+			PriceOffsetT priceOffsetT = (PriceOffsetT) parameter;
+			
+			if (priceOffsetT.isSetMinValue()) {
+				BigDecimal minValue = priceOffsetT.getMinValue();
+				
+				int minValueAdjusted = (int) (minValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return minValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PriceT) {
+			PriceT priceT = (PriceT) parameter;
+			
+			if (priceT.isSetMinValue()) {
+				BigDecimal minValue = priceT.getMinValue();
+				
+				int minValueAdjusted = (int) (minValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return minValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PriceT) {
+			PriceT priceT = (PriceT) parameter;
+			
+			if (priceT.isSetMinValue()) {
+				BigDecimal minValue = priceT.getMinValue();
+				
+				int minValueAdjusted = (int) (minValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return minValueAdjusted;
+			}
+			
+		} else if (parameter instanceof QtyT) {
+			QtyT qtyT = (QtyT) parameter;
+			
+			if (qtyT.isSetMinValue()) {
+				BigDecimal minValue = qtyT.getMinValue();
+				
+				int minValueAdjusted = (int) (minValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return minValueAdjusted;
+			}
+		
+
+		} else if (parameter instanceof IntT) {
+			IntT intT = (IntT) parameter;
+			return intT.getMinValue();
+
+		} 
+		
+		return null;
+	}
+
+	private Integer getMaximum(ParameterT parameter) {
+
+		if (parameter instanceof FloatT) {
+			// get value defined by user
+			FloatT floatT = (FloatT) parameter;
+			
+			if (floatT.isSetMaxValue()) {
+				float maxValue = floatT.getMaxValue();
+
+				// adjust according to precision
+				int maxValueAdjusted = (int) (maxValue * Math.pow(10, dualSpinner.getDigits()
+						));
+				return maxValueAdjusted;
+			}
+		} else if (parameter instanceof AmtT) {
+			AmtT amtT = (AmtT) parameter;
+			
+			if (amtT.isSetMaxValue()) {
+				BigDecimal maxValue = amtT.getMaxValue();
+				
+				int maxValueAdjusted = (int) (maxValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return maxValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PercentageT) {
+			PercentageT percentageT = (PercentageT) parameter;
+			
+			if (percentageT.isSetMaxValue()) {
+				BigDecimal maxValue = percentageT.getMaxValue();
+				
+				int maxValueAdjusted = (int) (maxValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return maxValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PriceOffsetT) {
+			PriceOffsetT priceOffsetT = (PriceOffsetT) parameter;
+			
+			if (priceOffsetT.isSetMaxValue()) {
+				BigDecimal maxValue = priceOffsetT.getMaxValue();
+				
+				int maxValueAdjusted = (int) (maxValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return maxValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PriceT) {
+			PriceT priceT = (PriceT) parameter;
+			
+			if (priceT.isSetMaxValue()) {
+				BigDecimal maxValue = priceT.getMaxValue();
+				
+				int maxValueAdjusted = (int) (maxValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return maxValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PriceT) {
+			PriceT priceT = (PriceT) parameter;
+			
+			if (priceT.isSetMaxValue()) {
+				BigDecimal maxValue = priceT.getMaxValue();
+				
+				int maxValueAdjusted = (int) (maxValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return maxValueAdjusted;
+			}
+			
+		} else if (parameter instanceof QtyT) {
+			QtyT qtyT = (QtyT) parameter;
+			
+			if (qtyT.isSetMaxValue()) {
+				BigDecimal maxValue = qtyT.getMaxValue();
+				
+				int maxValueAdjusted = (int) (maxValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return maxValueAdjusted;
+			}
+		
+
+		} else if (parameter instanceof IntT) {
+			IntT intT = (IntT) parameter;
+			return intT.getMaxValue();
+
+		} 
+		
+		return null;
+	}
+
+	private Integer getInitValue(ParameterT parameter) {
+
+		if (parameter instanceof FloatT) {
+			// get value defined by user
+			FloatT floatT = (FloatT) parameter;
+			
+			if (floatT.isSetInitValue()) {
+				float initValue = floatT.getInitValue();
+
+				// adjust according to precision
+				int initValueAdjusted = (int) (initValue * Math.pow(10, dualSpinner.getDigits()
+						));
+				return initValueAdjusted;
+			}
+		} else if (parameter instanceof AmtT) {
+			AmtT amtT = (AmtT) parameter;
+			
+			if (amtT.isSetInitValue()) {
+				BigDecimal initValue = amtT.getInitValue();
+				
+				int initValueAdjusted = (int) (initValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return initValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PercentageT) {
+			PercentageT percentageT = (PercentageT) parameter;
+			
+			if (percentageT.isSetInitValue()) {
+				BigDecimal initValue = percentageT.getInitValue();
+				
+				int initValueAdjusted = (int) (initValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return initValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PriceOffsetT) {
+			PriceOffsetT priceOffsetT = (PriceOffsetT) parameter;
+			
+			if (priceOffsetT.isSetInitValue()) {
+				BigDecimal initValue = priceOffsetT.getInitValue();
+				
+				int initValueAdjusted = (int) (initValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return initValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PriceT) {
+			PriceT priceT = (PriceT) parameter;
+			
+			if (priceT.isSetInitValue()) {
+				BigDecimal initValue = priceT.getInitValue();
+				
+				int initValueAdjusted = (int) (initValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return initValueAdjusted;
+			}
+			
+		} else if (parameter instanceof PriceT) {
+			PriceT priceT = (PriceT) parameter;
+			
+			if (priceT.isSetInitValue()) {
+				BigDecimal initValue = priceT.getInitValue();
+				
+				int initValueAdjusted = (int) (initValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return initValueAdjusted;
+			}
+			
+		} else if (parameter instanceof QtyT) {
+			QtyT qtyT = (QtyT) parameter;
+			
+			if (qtyT.isSetInitValue()) {
+				BigDecimal initValue = qtyT.getInitValue();
+				
+				int initValueAdjusted = (int) (initValue.floatValue() * Math.pow(10, dualSpinner.getDigits()
+						));
+				return initValueAdjusted;
+			}
+		
+
+		} else if (parameter instanceof IntT) {
+			IntT intT = (IntT) parameter;
+			return intT.getInitValue();
+
+		} 
+		
+		return null;
+	}
+
+	
 	public BigDecimal getValue() {
 		return new BigDecimal(dualSpinner.getSelection());
 	}

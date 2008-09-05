@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Widget;
 
+import br.com.investtools.fix.atdl.core.xmlbeans.BooleanT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 
@@ -30,12 +31,20 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 		// checkBox
 		Button checkBox = new Button(parent, style | SWT.CHECK);
 		this.checkBox = checkBox;
-
+		
 		// tooltip
 		String tooltip = parameter.getTooltip();
 		checkBox.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
+		// init value
+		
+		BooleanT booleanT = (BooleanT) parameter;
+		
+		if (booleanT.isSetInitValue()) {
+			checkBox.setEnabled(booleanT.getInitValue());
+		}
+		
 		return parent;
 	}
 
@@ -69,7 +78,6 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 				return BOOLEAN_FALSE;
 			}
 		} else {
-			// TODO: what to do?
 			return BOOLEAN_FALSE;
 		}
 	}
@@ -82,7 +90,6 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 		} else if (value.equalsIgnoreCase("false") || value.equals("0")) {
 			return new Boolean(false);
 		} else {
-			// TODO: what to do?
 			return new Boolean(false);
 		}
 

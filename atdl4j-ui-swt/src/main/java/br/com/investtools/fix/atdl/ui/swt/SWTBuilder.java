@@ -137,6 +137,11 @@ public class SWTBuilder {
 							| SWT.ICON_ERROR);
 					messageBox.setMessage(ex.getMessage());
 					messageBox.open();
+				} catch (XmlException ex) {
+					MessageBox messageBox = new MessageBox(shell, SWT.OK
+							| SWT.ICON_ERROR);
+					messageBox.setMessage(ex.getMessage());
+					messageBox.open();
 				}
 			}
 		});
