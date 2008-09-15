@@ -5,9 +5,8 @@ import java.util.Map;
 
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.ValidationException;
-import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
 
-public class CheckBoundsValidationRule implements ValidationRule {
+public class CheckBoundsValidationRule implements EditUI {
 
 	private ParameterWidget<BigDecimal> widget;
 
@@ -23,18 +22,15 @@ public class CheckBoundsValidationRule implements ValidationRule {
 	}
 
 	@Override
-	public void validate(StrategyEdit strategyEdit,
-			Map<String, ValidationRule> rules,
+	public void validate(Map<String, EditUI> rules,
 			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
 		BigDecimal n = widget.getValue();
 
 		if (n.doubleValue() < min.doubleValue()) {
-			throw new ValidationException(widget, strategyEdit
-					.getErrorMessage());
+			throw new ValidationException(widget);
 		}
 		if (n.doubleValue() > max.doubleValue()) {
-			throw new ValidationException(widget, strategyEdit
-					.getErrorMessage());
+			throw new ValidationException(widget);
 		}
 
 	}

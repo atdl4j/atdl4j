@@ -38,6 +38,7 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 		// clock
 		DateTime clock = new DateTime(parent, style | SWT.BORDER | SWT.TIME
 				| SWT.MEDIUM);
+		this.clock = clock;
 		clock.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		
 
@@ -52,7 +53,6 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 			localMktTz = utcTimeOnly.getLocalMktTz();
 		
 		// init value
-		
 		if ( utcTimeOnly.isSetInitValue()) {
 			Calendar initValue = utcTimeOnly.getInitValue();
 			if (localMktTz != null)
@@ -61,7 +61,6 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 			clock.setMinutes(initValue.get(Calendar.MINUTE));
 			clock.setSeconds(initValue.get(Calendar.SECOND));
 		}
-		this.clock = clock;
 		
 		return parent;
 	}

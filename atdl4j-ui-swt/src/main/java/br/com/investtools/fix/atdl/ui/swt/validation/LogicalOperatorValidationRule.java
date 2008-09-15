@@ -10,7 +10,6 @@ import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.LogicOperatorT;
 import br.com.investtools.fix.atdl.valid.xmlbeans.LogicOperatorT.Enum;
-import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
 
 /**
  * ValidationRule that behaves as a composite, using on of the following
@@ -19,24 +18,23 @@ import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyE
  * @author renato.gallart
  * 
  */
-public class LogicalOperatorValidationRule implements ValidationRule {
+public class LogicalOperatorValidationRule implements EditUI {
 
 	private Enum operator;
 
-	private List<ValidationRule> rules;
+	private List<EditUI> rules;
 
 	public LogicalOperatorValidationRule(Enum operator) {
 		this.operator = operator;
-		this.rules = new ArrayList<ValidationRule>();
+		this.rules = new ArrayList<EditUI>();
 	}
 
-	public void addRule(ValidationRule rule) {
+	public void addRule(EditUI rule) {
 		this.rules.add(rule);
 	}
 
 	@Override
-	public void validate(StrategyEdit strategyEdit,
-			Map<String, ValidationRule> rules,
+	public void validate(Map<String, EditUI> rules,
 			Map<String, ParameterWidget<?>> widgets) throws ValidationException, XmlException {
 
 		ValidationException ex = null;
@@ -46,9 +44,9 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 
 			// AND com curto circuito
 			
-			  for (ValidationRule rule : this.rules) { 
+			  for (EditUI rule : this.rules) { 
 					try {
-						rule.validate(strategyEdit, rules, widgets);
+						rule.validate(rules, widgets);
 					} catch (ValidationException e) {
 						throw e;
 					}
@@ -81,9 +79,9 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 			 */
 
 			// OR com curto circuito
-			for (ValidationRule rule : this.rules) {
+			for (EditUI rule : this.rules) {
 				try {
-					rule.validate(strategyEdit, rules, widgets);
+					rule.validate(rules, widgets);
 					valid = true;
 					break;
 				} catch (ValidationException e) {
@@ -102,7 +100,7 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 
 			for (int i = 0; i < this.rules.size(); i++) {
 				try {
-					this.rules.get(i).validate(strategyEdit, rules, widgets);
+					this.rules.get(i).validate(rules, widgets);
 					if (i != 0) {
 						if (!state) {
 							break;
@@ -123,14 +121,13 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 					
 					ParameterWidget<?> parameter = null;
 					for (int j = 0; j < this.rules.size(); j++) {
-						ValidationRule rule = this.rules.get(i);
+						EditUI rule = this.rules.get(i);
 						if (rule instanceof ParameterValidationRule) {
 							ParameterValidationRule r = (ParameterValidationRule) rule;
 							parameter = r.getParameter();
 						} 
 					}
-					throw new ValidationException(parameter, strategyEdit
-							.getErrorMessage());
+					throw new ValidationException(parameter);
 
 				}
 
@@ -140,23 +137,22 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 
 		case LogicOperatorT.INT_NOT:
 
-			for (ValidationRule rule : this.rules) {
+			for (EditUI rule : this.rules) {
 				try {
-					rule.validate(strategyEdit, rules, widgets);
+					rule.validate(rules, widgets);
 				} catch (ValidationException e) {
 				}
 			}
 
 			if (ex == null) {
 
-				ValidationRule rule = this.rules.get(0);
+				EditUI rule = this.rules.get(0);
 				ParameterWidget<?> parameter = null;
 				if (rule instanceof ParameterValidationRule) {
 					ParameterValidationRule r = (ParameterValidationRule) rule;
 					parameter = r.getParameter();
 				}
-				throw new ValidationException(parameter, strategyEdit
-						.getErrorMessage());
+				throw new ValidationException(parameter);
 				
 			}
 

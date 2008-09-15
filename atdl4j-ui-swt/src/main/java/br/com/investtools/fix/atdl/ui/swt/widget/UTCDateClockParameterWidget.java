@@ -45,7 +45,6 @@ public class UTCDateClockParameterWidget implements ParameterWidget<Date> {
 		UTCDateT utcDate = (UTCDateT) parameter;
 
 		// init value
-
 		if (utcDate.isSetInitValue()) {
 			Calendar c = utcDate.getInitValue();
 			clock.setDay(c.get(Calendar.DAY_OF_MONTH));

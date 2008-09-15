@@ -6,7 +6,6 @@ import org.apache.xmlbeans.XmlException;
 
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.ValidationException;
-import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
 
 /**
  * Models a edit rule or a strategyEdit rule.
@@ -14,7 +13,7 @@ import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyE
  * @author renato.gallart
  * 
  */
-public interface ValidationRule {
+public interface EditUI {
 
 	/**
 	 * Called by the application to validate the user input. Throws a
@@ -22,10 +21,10 @@ public interface ValidationRule {
 	 * 
 	 * @param rules
 	 * @throws ValidationException
-	 * @throws XmlException 
+	 * @throws XmlException
 	 */
-	public void validate(StrategyEdit strategyEdit,
-			Map<String, ValidationRule> rules,
-			Map<String, ParameterWidget<?>> widgets) throws ValidationException, XmlException;
+	public void validate(Map<String, EditUI> rules,
+			Map<String, ParameterWidget<?>> widgets)
+			throws ValidationException, XmlException;
 
 }

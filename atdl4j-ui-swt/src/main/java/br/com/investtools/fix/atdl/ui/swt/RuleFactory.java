@@ -1,10 +1,12 @@
 package br.com.investtools.fix.atdl.ui.swt;
 
+import java.util.Map;
+
 import org.apache.xmlbeans.XmlException;
 
 import br.com.investtools.fix.atdl.ui.swt.validation.Field2OperatorValidationRule;
 import br.com.investtools.fix.atdl.ui.swt.validation.LogicalOperatorValidationRule;
-import br.com.investtools.fix.atdl.ui.swt.validation.ValidationRule;
+import br.com.investtools.fix.atdl.ui.swt.validation.EditUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.ValueOperatorValidationRule;
 import br.com.investtools.fix.atdl.valid.xmlbeans.EditRefT;
 import br.com.investtools.fix.atdl.valid.xmlbeans.LogicOperatorT;
@@ -13,7 +15,8 @@ import br.com.investtools.fix.atdl.valid.xmlbeans.EditDocument.Edit;
 
 public abstract class RuleFactory {
 
-	public static ValidationRule createRule(Edit edit) throws XmlException {
+	public static EditUI createRule(Edit edit,
+			Map<String, EditUI> strategiesRules) throws XmlException {
 		if (edit.isSetLogicOperator()) {
 			// edit represents a logical operator [AND|OR|NOT|XOR]
 			LogicOperatorT.Enum operator = edit.getLogicOperator();
@@ -21,7 +24,12 @@ public abstract class RuleFactory {
 					operator);
 			if (edit.getEditArray() != null) {
 				for (Edit innerEdit : edit.getEditArray()) {
-					rule.addRule(createRule(innerEdit));
+
+					EditUI innerRule = createRule(innerEdit,
+							strategiesRules);
+					if (innerEdit.isSetId())
+						strategiesRules.put(innerEdit.getId(), innerRule);
+					rule.addRule(innerRule);
 				}
 			}
 			if (edit.getEditRefArray() != null) {
@@ -39,21 +47,34 @@ public abstract class RuleFactory {
 				if (edit.isSetValue()) {
 					// validates against a constant value
 					String value = edit.getValue();
-					return new ValueOperatorValidationRule(field, operator,
-							value);
+					EditUI rule = new ValueOperatorValidationRule(
+							field, operator, value);
+					if (edit.isSetId())
+						strategiesRules.put(edit.getId(), rule);
+
+					return rule;
 
 				} else if (edit.isSetField2()) {
 					// validates against another field value
 					String field2 = edit.getField2();
-					return new Field2OperatorValidationRule(field, operator,
-							field2);
+					EditUI rule = new Field2OperatorValidationRule(
+							field, operator, field2);
+					if (edit.isSetId())
+						strategiesRules.put(edit.getId(), rule);
+
+					return rule;
 
 				} else {
 					// must be EX or NX
 					if (operator.intValue() == OperatorT.INT_EX
 							|| operator.intValue() == OperatorT.INT_NX) {
-						return new ValueOperatorValidationRule(field, operator,
-								null);
+
+						EditUI rule = new ValueOperatorValidationRule(
+								field, operator, null);
+						if (edit.isSetId())
+							strategiesRules.put(edit.getId(), rule);
+
+						return rule;
 					} else {
 						throw new XmlException(
 								"Operator must be EX or NX when there is no \"value\" of \"field2\" attribute");
@@ -70,7 +91,7 @@ public abstract class RuleFactory {
 		}
 	}
 
-	public static ValidationRule createRule(EditRefT editRef)
+	public static EditUI createRule(EditRefT editRef)
 			throws XmlException {
 		if (editRef.getId() != null) {
 			String id = editRef.getId();

@@ -75,7 +75,6 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 			return Integer.toString(parameter.getFixTag().intValue()) + "="
 					+ value;
 		} else {
-			// TODO date: value must be UTC
 			String name = parameter.getName();
 			String type = Integer.toString(parameter.getType());
 			char delimiter = '\001';
@@ -86,8 +85,7 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 
 	@Override
 	public Date convertValue(String value) {
-		// TODO date: value must be UTC
-
+		// TODO reset timezone here?
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-hh:mm:ss");
 		try {
 			return dateFormat.parse(value);

@@ -45,5 +45,6 @@ public class LabelParameterWidget implements ParameterWidget<String> {
 	public String getValue() {
 		return null;
 	}
+	
 
 }

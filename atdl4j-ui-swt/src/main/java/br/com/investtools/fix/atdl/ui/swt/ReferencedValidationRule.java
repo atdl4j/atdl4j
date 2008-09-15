@@ -4,10 +4,9 @@ import java.util.Map;
 
 import org.apache.xmlbeans.XmlException;
 
-import br.com.investtools.fix.atdl.ui.swt.validation.ValidationRule;
-import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
+import br.com.investtools.fix.atdl.ui.swt.validation.EditUI;
 
-public class ReferencedValidationRule implements ValidationRule {
+public class ReferencedValidationRule implements EditUI {
 
 	private String ref;
 
@@ -16,13 +15,12 @@ public class ReferencedValidationRule implements ValidationRule {
 	}
 
 	@Override
-	public void validate(StrategyEdit strategyEdit,
-			Map<String, ValidationRule> rules,
+	public void validate(Map<String, EditUI> rules,
 			Map<String, ParameterWidget<?>> widgets) throws ValidationException, XmlException {
-		ValidationRule rule = rules.get(ref);
+		EditUI rule = rules.get(ref);
 		if (rule != null) {
 			// delegate for referenced rule
-			rule.validate(strategyEdit, rules, widgets);
+			rule.validate(rules, widgets);
 		} else {
 			throw new ValidationException(null, "Rule referenced by \"" + ref
 					+ "\" not found");

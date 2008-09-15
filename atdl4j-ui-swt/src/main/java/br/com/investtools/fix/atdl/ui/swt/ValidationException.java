@@ -6,6 +6,12 @@ public class ValidationException extends RuntimeException {
 
 	private ParameterWidget<?> widget;
 
+	public ValidationException(ParameterWidget<?> widget) {
+		super();
+		this.widget = widget;
+	}
+
+	
 	public ValidationException(ParameterWidget<?> widget, String message) {
 		super(message);
 		this.widget = widget;

@@ -7,7 +7,6 @@ import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.OperatorT;
 import br.com.investtools.fix.atdl.valid.xmlbeans.OperatorT.Enum;
-import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
 
 /**
  * Base class for ValidationRule.
@@ -16,27 +15,24 @@ import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyE
  * 
  * @param <E>
  */
-public abstract class AbstractOperatorValidationRule implements ValidationRule {
+public abstract class AbstractOperatorValidationRule implements EditUI {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(AbstractOperatorValidationRule.class);
 
 	@SuppressWarnings("unchecked")
-	protected void validateValues(StrategyEdit strategyEdit,
-			ParameterWidget<?> widget, Object value1, Enum operator,
+	protected void validateValues(ParameterWidget<?> widget, Object value1, Enum operator,
 			Object value2) {
 		switch (operator.intValue()) {
 		case OperatorT.INT_EQ:
 			if (!value2.equals(value1)) {
-				throw new ValidationException(widget, strategyEdit
-						.getErrorMessage());
+				throw new ValidationException(widget);
 			}
 			break;
 
 		case OperatorT.INT_EX:
 			if (value1 == null || "".equals(value1.toString())) {
-				throw new ValidationException(widget, strategyEdit
-						.getErrorMessage());
+				throw new ValidationException(widget);
 			}
 			break;
 
@@ -44,8 +40,7 @@ public abstract class AbstractOperatorValidationRule implements ValidationRule {
 			if (value1 instanceof Comparable) {
 				Comparable c = (Comparable) value1;
 				if (c.compareTo(value2) < 0) {
-					throw new ValidationException(widget, strategyEdit
-							.getErrorMessage());
+					throw new ValidationException(widget	);
 				}
 			} else {
 				throw new ValidationException(widget, "Value is not comparable");
@@ -56,8 +51,7 @@ public abstract class AbstractOperatorValidationRule implements ValidationRule {
 			if (value1 instanceof Comparable) {
 				Comparable c = (Comparable) value1;
 				if (c.compareTo(value2) <= 0) {
-					throw new ValidationException(widget, strategyEdit
-							.getErrorMessage());
+					throw new ValidationException(widget);
 				}
 			} else {
 				throw new ValidationException(widget, "Value is not comparable");
@@ -68,8 +62,7 @@ public abstract class AbstractOperatorValidationRule implements ValidationRule {
 			if (value1 instanceof Comparable) {
 				Comparable c = (Comparable) value1;
 				if (c.compareTo(value2) > 0) {
-					throw new ValidationException(widget, strategyEdit
-							.getErrorMessage());
+					throw new ValidationException(widget);
 				}
 			} else {
 				throw new ValidationException(widget, "Value is not comparable");
@@ -80,8 +73,7 @@ public abstract class AbstractOperatorValidationRule implements ValidationRule {
 			if (value1 instanceof Comparable) {
 				Comparable c = (Comparable) value1;
 				if (c.compareTo(value2) >= 0) {
-					throw new ValidationException(widget, strategyEdit
-							.getErrorMessage());
+					throw new ValidationException(widget);
 				}
 			} else {
 				throw new ValidationException(widget, "Value is not comparable");
@@ -90,15 +82,13 @@ public abstract class AbstractOperatorValidationRule implements ValidationRule {
 
 		case OperatorT.INT_NE:
 			if (value2.equals(value1)) {
-				throw new ValidationException(widget, strategyEdit
-						.getErrorMessage());
+				throw new ValidationException(widget);
 			}
 			break;
 
 		case OperatorT.INT_NX:
 			if (value1 != null && !"".equals(value1.toString())) {
-				throw new ValidationException(widget, strategyEdit
-						.getErrorMessage());
+				throw new ValidationException(widget);
 			}
 			break;
 

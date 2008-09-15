@@ -24,4 +24,5 @@ public interface ParameterWidget<E extends Comparable<E>> {
 	public E convertValue(String value) throws XmlException;
 
 	public String getFIXValue();
+	
 }

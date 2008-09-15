@@ -5,7 +5,6 @@ import java.util.Map;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.OperatorT.Enum;
-import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
 
 /**
  * Validator that validates input against another existing field.
@@ -29,10 +28,8 @@ public class Field2OperatorValidationRule extends
 		this.field2 = field2;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void validate(StrategyEdit strategyEdit,
-			Map<String, ValidationRule> rules,
+	public void validate(Map<String, EditUI> rules,
 			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
 
 		// get the widget from context using field name
@@ -54,7 +51,7 @@ public class Field2OperatorValidationRule extends
 		Object fieldValue2 = widget2.getValue();
 
 		// compare both values
-		validateValues(strategyEdit, widget, fieldValue, operator, fieldValue2);
+		validateValues(widget, fieldValue, operator, fieldValue2);
 	}
 
 }

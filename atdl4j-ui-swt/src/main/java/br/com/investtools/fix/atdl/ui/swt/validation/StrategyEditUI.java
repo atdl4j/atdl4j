@@ -11,34 +11,38 @@ import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
 
-public class RootValidationRule implements ValidationRule {
+public class StrategyEditUI {
 
-	private Map<StrategyEdit, ValidationRule> rules;
+	private Map<StrategyEdit, EditUI> rules;
 
-	public Collection<ValidationRule> getRules() {
+	public Collection<EditUI> getRules() {
 		return rules.values();
 	}
 
-	public RootValidationRule() {
-		this.rules = new HashMap<StrategyEdit, ValidationRule>();
+	public StrategyEditUI() {
+		this.rules = new HashMap<StrategyEdit, EditUI>();
 	}
 
-	public void putRule(StrategyEdit strategyEdit, ValidationRule rule) {
+	public void putRule(StrategyEdit strategyEdit, EditUI rule) {
 		this.rules.put(strategyEdit, rule);
 	}
 
-	@Override
 	public void validate(StrategyEdit strategyEdit,
-			Map<String, ValidationRule> rules,
+			Map<String, EditUI> rules,
 			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
 	}
 
-	public void validate(Map<String, ValidationRule> rules,
+	public void validate(Map<String, EditUI> rules,
 			Map<String, ParameterWidget<?>> widgets) throws ValidationException, XmlException {
-		for (Entry<StrategyEdit, ValidationRule> entry : this.rules.entrySet()) {
+		for (Entry<StrategyEdit, EditUI> entry : this.rules.entrySet()) {
 			StrategyEdit strategyEdit = entry.getKey();
-			ValidationRule rule = entry.getValue();
-			rule.validate(strategyEdit, rules, widgets);
+			EditUI rule = entry.getValue();
+			try {
+				rule.validate(rules, widgets);
+			} catch (ValidationException e) {
+				throw new ValidationException(e.getWidget(), strategyEdit.getErrorMessage());
+			}
+			
 		}
 	}
 

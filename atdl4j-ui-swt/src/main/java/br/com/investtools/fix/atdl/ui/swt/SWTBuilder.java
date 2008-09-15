@@ -170,7 +170,7 @@ public class SWTBuilder {
 		StrategiesUI strategiesUI = factory.create(strategiesDocument);
 		shell.pack();
 
-		// XXX debug
+		// XXX paint the town red debug
 		addDebugMouseTrackListener(tabFolder);
 
 		return strategiesUI;

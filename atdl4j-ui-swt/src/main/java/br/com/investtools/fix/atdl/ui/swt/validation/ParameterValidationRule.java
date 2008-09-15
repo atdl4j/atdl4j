@@ -8,7 +8,7 @@ import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
  * @author renato.gallart
  * 
  */
-public interface ParameterValidationRule extends ValidationRule {
+public interface ParameterValidationRule extends EditUI {
 
 	public ParameterWidget<?> getParameter();
 

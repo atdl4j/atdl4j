@@ -87,5 +87,5 @@ public class SliderParameterWidget implements ParameterWidget<BigDecimal> {
 	public ParameterT getParameter() {
 		return parameter;
 	}
-
+	
 }

@@ -10,6 +10,7 @@ import java.util.TimeZone;
 import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
@@ -23,28 +24,44 @@ public class UTCTimeStampClockParameterWidget implements ParameterWidget<Date> {
 
 	private ParameterT parameter;
 
-	private DateTime clock;
+	private DateTime dateClock;
+	
+	private DateTime timeClock;
 
 	private String localMktTz;
 
 	@Override
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
 		this.parameter = parameter;
-
-		//TODO two separate controls will be needed: one for date, one for time 
 		
 		// label
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
 
-		// clock
-		DateTime clock = new DateTime(parent, style | SWT.BORDER | SWT.TIME
-				| SWT.LONG);
-		clock.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		Composite c = new Composite(parent, SWT.NONE);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		gridLayout.horizontalSpacing = 2;
+		gridLayout.verticalSpacing = 0;
+		c.setLayout(gridLayout);
+		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		
+		// time clock
+		DateTime timeClock = new DateTime(c, style | SWT.BORDER | SWT.TIME
+				| SWT.MEDIUM);
+		timeClock.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		this.timeClock = timeClock;
+		
+		// date clock
+		DateTime dateClock = new DateTime(c, style | SWT.BORDER | SWT.DATE
+				| SWT.MEDIUM);
+		dateClock.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		this.dateClock = dateClock;
 		
 		// tooltip
 		String tooltip = parameter.getTooltip();
-		clock.setToolTipText(tooltip);
+		dateClock.setToolTipText(tooltip);
+		timeClock.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 		
 		UTCTimeStampT utcTimeStamp = (UTCTimeStampT) parameter;
@@ -57,27 +74,25 @@ public class UTCTimeStampClockParameterWidget implements ParameterWidget<Date> {
 			Calendar initValue = utcTimeStamp.getInitValue();
 			if (localMktTz != null)
 				initValue.setTimeZone(getTimeZone(localMktTz));
-			clock.setYear(initValue.get(Calendar.YEAR));
-			clock.setMonth(initValue.get(Calendar.MONTH));
-			clock.setDay(initValue.get(Calendar.DAY_OF_MONTH));
-			clock.setHours(initValue.get(Calendar.HOUR));
-			clock.setMinutes(initValue.get(Calendar.MINUTE));
-			clock.setSeconds(initValue.get(Calendar.SECOND));
+			dateClock.setYear(initValue.get(Calendar.YEAR));
+			dateClock.setMonth(initValue.get(Calendar.MONTH));
+			dateClock.setDay(initValue.get(Calendar.DAY_OF_MONTH));
+			timeClock.setHours(initValue.get(Calendar.HOUR));
+			timeClock.setMinutes(initValue.get(Calendar.MINUTE));
+			timeClock.setSeconds(initValue.get(Calendar.SECOND));
 		}
-		
-		this.clock = clock;
 
 		return parent;
 	}
 
 	public Date getValue() {
 		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, clock.getYear());
-		c.set(Calendar.MONTH, clock.getMonth());
-		c.set(Calendar.DAY_OF_MONTH, clock.getDay());
-		c.set(Calendar.HOUR_OF_DAY, clock.getHours());
-		c.set(Calendar.MINUTE, clock.getMinutes());
-		c.set(Calendar.SECOND, clock.getSeconds());
+		c.set(Calendar.YEAR, dateClock.getYear());
+		c.set(Calendar.MONTH, dateClock.getMonth());
+		c.set(Calendar.DAY_OF_MONTH, dateClock.getDay());
+		c.set(Calendar.HOUR_OF_DAY, timeClock.getHours());
+		c.set(Calendar.MINUTE, timeClock.getMinutes());
+		c.set(Calendar.SECOND, timeClock.getSeconds());
 		if (localMktTz != null)
 			c.setTimeZone(getTimeZone(localMktTz));
 		c.clear(Calendar.MILLISECOND);
