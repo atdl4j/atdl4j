@@ -59,21 +59,25 @@ public class StrategyIterator implements Iterator<Object> {
 			Node node = s.getDomNode().getChildNodes().item(i);
 
 			// se if it matches with current parameter node
-			if (s.getParameterArray().length > paramIndex) {
-				Node parameterNode = s.getParameterArray(paramIndex)
-						.getDomNode();
-				if (parameterNode != null && parameterNode.equals(node)) {
-					// return it and goes to the next parameter
-					ret = s.getParameterArray(paramIndex);
-					paramIndex++;
+			if (s.getParameterArray() != null) {
+				if (s.getParameterArray().length > paramIndex) {
+					Node parameterNode = s.getParameterArray(paramIndex)
+							.getDomNode();
+					if (parameterNode != null && parameterNode.equals(node)) {
+						// return it and goes to the next parameter
+						ret = s.getParameterArray(paramIndex);
+						paramIndex++;
+					}
 				}
 			}
 
 			// se if it matches with layout node
-			Node layoutNode = s.getStrategyLayout().getDomNode();
-			if (layoutNode != null && layoutNode.equals(node)) {
-				// return it
-				ret = s.getStrategyLayout();
+			if (s.getStrategyLayout() != null) {
+				Node layoutNode = s.getStrategyLayout().getDomNode();
+				if (layoutNode != null && layoutNode.equals(node)) {
+					// return it
+					ret = s.getStrategyLayout();
+				}
 			}
 
 			i++;

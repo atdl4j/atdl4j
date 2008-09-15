@@ -62,24 +62,28 @@ public class StrategyPanelIterator implements Iterator<Object> {
 			Node node = panel.getDomNode().getChildNodes().item(i);
 
 			// se if it matches with current parameter node
-			if (panel.getParameterArray().length > paramIndex) {
-				Node parameterNode = panel.getParameterArray(paramIndex)
-						.getDomNode();
-				if (parameterNode != null && parameterNode.equals(node)) {
-					// return it and goes to the next parameter
-					ret = panel.getParameterArray(paramIndex);
-					paramIndex++;
+			if (panel.getParameterArray() != null) {
+				if (panel.getParameterArray().length > paramIndex) {
+					Node parameterNode = panel.getParameterArray(paramIndex)
+							.getDomNode();
+					if (parameterNode != null && parameterNode.equals(node)) {
+						// return it and goes to the next parameter
+						ret = panel.getParameterArray(paramIndex);
+						paramIndex++;
+					}
 				}
 			}
 
 			// se if it matches with current panel node
-			if (panel.getStrategyPanelArray().length > panelIndex) {
-				Node panelNode = panel.getStrategyPanelArray(panelIndex)
-						.getDomNode();
-				if (panelNode != null && panelNode.equals(node)) {
-					// return it and goes to the next panel
-					ret = panel.getStrategyPanelArray(panelIndex);
-					panelIndex++;
+			if (panel.getStrategyPanelArray() != null) {
+				if (panel.getStrategyPanelArray().length > panelIndex) {
+					Node panelNode = panel.getStrategyPanelArray(panelIndex)
+							.getDomNode();
+					if (panelNode != null && panelNode.equals(node)) {
+						// return it and goes to the next panel
+						ret = panel.getStrategyPanelArray(panelIndex);
+						panelIndex++;
+					}
 				}
 			}
 
