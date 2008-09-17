@@ -1,9 +1,12 @@
 package br.com.investtools.fix.atdl.ui;
 
+import org.apache.xmlbeans.XmlException;
+
 import br.com.investtools.fix.atdl.core.xmlbeans.StrategyT;
 
-public interface StrategiesUI {
+public interface StrategiesUI<T> {
 
-	public StrategyUI getStrategyUI(StrategyT strategy);
+	public StrategyUI createUI(StrategyT strategy, T parent)
+			throws XmlException;
 
 }
