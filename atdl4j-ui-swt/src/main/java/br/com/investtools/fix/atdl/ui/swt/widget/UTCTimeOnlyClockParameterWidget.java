@@ -53,11 +53,11 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 			localMktTz = utcTimeOnly.getLocalMktTz();
 		
 		// init value
-		if ( utcTimeOnly.isSetInitValue()) {
+		if (utcTimeOnly.isSetInitValue()) {
 			Calendar initValue = utcTimeOnly.getInitValue();
 			if (localMktTz != null)
 				initValue.setTimeZone(getTimeZone(localMktTz));
-			clock.setHours(initValue.get(Calendar.HOUR));
+			clock.setHours(initValue.get(Calendar.HOUR_OF_DAY));
 			clock.setMinutes(initValue.get(Calendar.MINUTE));
 			clock.setSeconds(initValue.get(Calendar.SECOND));
 		}

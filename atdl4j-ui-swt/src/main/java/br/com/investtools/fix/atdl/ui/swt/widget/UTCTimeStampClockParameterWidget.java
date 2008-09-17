@@ -77,7 +77,7 @@ public class UTCTimeStampClockParameterWidget implements ParameterWidget<Date> {
 			dateClock.setYear(initValue.get(Calendar.YEAR));
 			dateClock.setMonth(initValue.get(Calendar.MONTH));
 			dateClock.setDay(initValue.get(Calendar.DAY_OF_MONTH));
-			timeClock.setHours(initValue.get(Calendar.HOUR));
+			timeClock.setHours(initValue.get(Calendar.HOUR_OF_DAY));
 			timeClock.setMinutes(initValue.get(Calendar.MINUTE));
 			timeClock.setSeconds(initValue.get(Calendar.SECOND));
 		}
