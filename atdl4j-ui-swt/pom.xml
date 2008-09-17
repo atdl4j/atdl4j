@@ -12,6 +12,56 @@
 	<packaging>jar</packaging>
 	<name>atdl4j-ui-swt</name>
 	<url>http://atdl4j.googlecode.com</url>
+	<build>
+		<plugins>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo.webstart</groupId>
+				<artifactId>webstart-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jnlp</goal><!-- use jnlp, jnlp-inline or jnlp-single as appropriate -->
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<jnlp>
+						<mainClass>
+							br.com.investtools.fix.atdl.ui.swt.SWTBuilder
+						</mainClass>
+					</jnlp>
+					<!-- SIGNING -->
+					<!-- defining this will automatically sign the jar and its dependencies, if necessary -->
+					<!--sign>
+						<keystore>fillme</keystore>
+						<keypass>changeme</keypass>
+						<storepass>changeme</storepass>
+						<alias>fillme</alias>
+						<verify>true</verify>
+						<keystoreConfig>
+							<delete>true</delete>
+							<gen>true</gen>
+						</keystoreConfig>
+					</sign-->
+
+					<!-- BUILDING PROCESS -->
+					<pack200>true</pack200>
+					<gzip>true</gzip>
+					<outputJarVersions>true</outputJarVersions>
+					<verbose>true</verbose>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<repositories>
 		<repository>
 			<id>atdl4j-repository</id>
@@ -69,6 +119,5 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.5.2</version>
 		</dependency>
-
 	</dependencies>
 </project>
