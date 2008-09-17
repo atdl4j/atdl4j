@@ -54,12 +54,18 @@ public class SingleSpinnerParameterWidget implements
 		spinner.setDigits(getPrecision(parameter));
 		
 		Integer minimum = getMinimum(parameter);
-		if (minimum != null)
+		if (minimum != null) {
 			spinner.setMinimum(minimum);
+		} else {
+			spinner.setMinimum(-Integer.MAX_VALUE);
+		}
 		
 		Integer maximum = getMaximum(parameter);
-		if (maximum != null)
+		if (maximum != null) {
 			spinner.setMaximum(maximum);
+		} else {
+			spinner.setMaximum(Integer.MAX_VALUE);
+		}
 		
 		Integer initValue = getInitValue(parameter);
 		if (initValue != null)
@@ -172,8 +178,10 @@ public class SingleSpinnerParameterWidget implements
 
 		} else if (parameter instanceof IntT) {
 			IntT intT = (IntT) parameter;
-			return intT.getMinValue();
-
+			
+			if (intT.isSetMinValue()) {
+				return intT.getMinValue();
+			}
 		} 
 		
 		return null;
@@ -262,7 +270,10 @@ public class SingleSpinnerParameterWidget implements
 
 		} else if (parameter instanceof IntT) {
 			IntT intT = (IntT) parameter;
-			return intT.getMaxValue();
+			
+			if (intT.isSetMaxValue()) {
+				return intT.getMaxValue();
+			}
 
 		} 
 		
@@ -352,7 +363,10 @@ public class SingleSpinnerParameterWidget implements
 
 		} else if (parameter instanceof IntT) {
 			IntT intT = (IntT) parameter;
-			return intT.getInitValue();
+			
+			if (intT.isSetInitValue()) {
+				return intT.getInitValue();
+			}
 
 		} 
 		
