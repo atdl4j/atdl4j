@@ -2,11 +2,15 @@ package br.com.investtools.fix.atdl.ui.swt.widget;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Widget;
 
@@ -32,6 +36,8 @@ public class SingleSpinnerParameterWidget implements
 	private ParameterT parameter;
 
 	private Spinner spinner;
+	
+	private Label label;
 
 	@Override
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
@@ -40,6 +46,7 @@ public class SingleSpinnerParameterWidget implements
 		// label
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
+		this.label = l;
 
 		// spinner
 		Spinner spinner = new Spinner(parent, style | SWT.BORDER);
@@ -400,6 +407,19 @@ public class SingleSpinnerParameterWidget implements
 	@Override
 	public ParameterT getParameter() {
 		return parameter;
+	}
+
+	@Override
+	public void generateStateRuleListener(Listener listener) {
+		spinner.addListener(SWT.Modify, listener);
+	}
+
+	@Override
+	public List<Control> getControls() {
+		List<Control> widgets = new ArrayList<Control>();
+		widgets.add(label);
+		widgets.add(spinner);
+		return widgets;
 	}
 
 }

@@ -2,12 +2,16 @@ package br.com.investtools.fix.atdl.ui.swt.widget;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
@@ -23,16 +27,21 @@ public class NumberTextFieldParameterWidget implements
 
 	private Text textField;
 
+	private Label label;
+
 	@Override
-	public Widget createWidget(Composite parent, ParameterT parameter, int style) throws XmlException {
+	public Widget createWidget(Composite parent, ParameterT parameter, int style)
+			throws XmlException {
 		this.parameter = parameter;
 
 		// label
 		Label l = new Label(parent, SWT.NONE);
+		this.label = l;
 		l.setText(WidgetHelper.getLabelText(parameter));
 
 		// textField
 		Text textField = new Text(parent, style | SWT.BORDER);
+		this.textField = textField;
 		textField
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
@@ -49,7 +58,8 @@ public class NumberTextFieldParameterWidget implements
 				if (intt.isSetInitValue())
 					textField.setText(Integer.toString(intt.getInitValue()));
 			} else {
-				throw new XmlException("Parameter \"type\" set as int but \"xsi:type\" not." );
+				throw new XmlException(
+						"Parameter \"type\" set as int but \"xsi:type\" not.");
 			}
 			break;
 
@@ -65,7 +75,8 @@ public class NumberTextFieldParameterWidget implements
 					textField.setText(Float.toString(floatt.getInitValue()));
 
 			} else {
-				throw new XmlException("Parameter \"type\" set as float but \"xsi:type\" not." );
+				throw new XmlException(
+						"Parameter \"type\" set as float but \"xsi:type\" not.");
 			}
 
 			break;
@@ -73,8 +84,6 @@ public class NumberTextFieldParameterWidget implements
 		default:
 			break;
 		}
-
-		this.textField = textField;
 
 		// tooltip
 		String tooltip = parameter.getTooltip();
@@ -112,6 +121,19 @@ public class NumberTextFieldParameterWidget implements
 	@Override
 	public ParameterT getParameter() {
 		return parameter;
+	}
+
+	@Override
+	public void generateStateRuleListener(Listener listener) {
+		textField.addListener(SWT.Modify, listener);
+	}
+
+	@Override
+	public List<Control> getControls() {
+		List<Control> widgets = new ArrayList<Control>();
+		widgets.add(label);
+		widgets.add(textField);
+		return widgets;
 	}
 
 }

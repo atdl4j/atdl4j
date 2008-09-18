@@ -3,15 +3,19 @@ package br.com.investtools.fix.atdl.ui.swt.widget;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.LocalMktTimeT;
@@ -23,6 +27,8 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 	private ParameterT parameter;
 
 	private DateTime clock;
+	
+	private Label label;
 
 	private String localMktTz;
 
@@ -33,7 +39,8 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 		// label
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
-
+		this.label = l;
+		
 		// clock
 		DateTime clock = new DateTime(parent, style | SWT.BORDER | SWT.TIME
 				| SWT.MEDIUM);
@@ -58,6 +65,9 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 		c.set(Calendar.YEAR, clock.getYear());
 		c.set(Calendar.MONTH, clock.getMonth());
 		c.set(Calendar.DAY_OF_MONTH, clock.getDay());
+		c.set(Calendar.HOUR_OF_DAY, clock.getHours());
+		c.set(Calendar.MINUTE, clock.getMinutes());
+		c.set(Calendar.SECOND, clock.getSeconds());
 		c.clear(Calendar.MILLISECOND);
 		if (localMktTz != null)
 			c.setTimeZone(TimeZone.getTimeZone(localMktTz));
@@ -99,6 +109,19 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 	@Override
 	public ParameterT getParameter() {
 		return parameter;
+	}
+
+	@Override
+	public void generateStateRuleListener(Listener listener) {
+		clock.addListener(SWT.Selection, listener);
+	}
+
+	@Override
+	public List<Control> getControls() {
+		List<Control> widgets = new ArrayList<Control>();
+		widgets.add(label);
+		widgets.add(clock);
+		return widgets;
 	}
 
 }

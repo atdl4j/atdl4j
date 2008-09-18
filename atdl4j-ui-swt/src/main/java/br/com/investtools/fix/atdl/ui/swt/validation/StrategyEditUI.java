@@ -27,11 +27,6 @@ public class StrategyEditUI {
 		this.rules.put(strategyEdit, rule);
 	}
 
-	public void validate(StrategyEdit strategyEdit,
-			Map<String, EditUI> rules,
-			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
-	}
-
 	public void validate(Map<String, EditUI> rules,
 			Map<String, ParameterWidget<?>> widgets) throws ValidationException, XmlException {
 		for (Entry<StrategyEdit, EditUI> entry : this.rules.entrySet()) {

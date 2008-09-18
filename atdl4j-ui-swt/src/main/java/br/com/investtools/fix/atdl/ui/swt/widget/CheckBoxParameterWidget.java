@@ -1,9 +1,14 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.BooleanT;
@@ -19,6 +24,8 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 	private ParameterT parameter;
 
 	private Button checkBox;
+	
+	private Label label;
 
 	@Override
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
@@ -27,6 +34,7 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 		// label
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
+		this.label = l;
 
 		// checkBox
 		Button checkBox = new Button(parent, style | SWT.CHECK);
@@ -98,6 +106,19 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 	@Override
 	public ParameterT getParameter() {
 		return parameter;
+	}
+
+	@Override
+	public void generateStateRuleListener(Listener listener) {
+		checkBox.addListener(SWT.Selection, listener);
+	}
+
+	@Override
+	public List<Control> getControls() {
+		List<Control> widgets = new ArrayList<Control>();
+		widgets.add(label);
+		widgets.add(checkBox);
+		return widgets;
 	}
 
 }

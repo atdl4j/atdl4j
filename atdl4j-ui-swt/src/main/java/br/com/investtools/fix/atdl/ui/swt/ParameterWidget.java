@@ -1,7 +1,11 @@
 package br.com.investtools.fix.atdl.ui.swt;
 
+import java.util.List;
+
 import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
@@ -20,9 +24,13 @@ public interface ParameterWidget<E extends Comparable<E>> {
 	public E getValue();
 
 	public ParameterT getParameter();
+	
+	public List<Control> getControls();
 
 	public E convertValue(String value) throws XmlException;
 
 	public String getFIXValue();
+	
+	public void generateStateRuleListener(Listener listener);
 	
 }

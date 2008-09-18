@@ -25,12 +25,12 @@ public abstract class AbstractOperatorValidationRule implements EditUI {
 			Object value2) {
 		switch (operator.intValue()) {
 		case OperatorT.INT_EQ:
-			if (!value2.equals(value1)) {
+			if (value2.equals(value1)) {
 				throw new ValidationException(widget);
 			}
 			break;
 
-		case OperatorT.INT_EX:
+		case OperatorT.INT_NX:
 			if (value1 == null || "".equals(value1.toString())) {
 				throw new ValidationException(widget);
 			}
@@ -39,7 +39,7 @@ public abstract class AbstractOperatorValidationRule implements EditUI {
 		case OperatorT.INT_GE:
 			if (value1 instanceof Comparable) {
 				Comparable c = (Comparable) value1;
-				if (c.compareTo(value2) < 0) {
+				if (c.compareTo(value2) >= 0) {
 					throw new ValidationException(widget	);
 				}
 			} else {
@@ -50,7 +50,7 @@ public abstract class AbstractOperatorValidationRule implements EditUI {
 		case OperatorT.INT_GT:
 			if (value1 instanceof Comparable) {
 				Comparable c = (Comparable) value1;
-				if (c.compareTo(value2) <= 0) {
+				if (c.compareTo(value2) > 0) {
 					throw new ValidationException(widget);
 				}
 			} else {
@@ -61,7 +61,7 @@ public abstract class AbstractOperatorValidationRule implements EditUI {
 		case OperatorT.INT_LE:
 			if (value1 instanceof Comparable) {
 				Comparable c = (Comparable) value1;
-				if (c.compareTo(value2) > 0) {
+				if (c.compareTo(value2) <= 0) {
 					throw new ValidationException(widget);
 				}
 			} else {
@@ -72,7 +72,7 @@ public abstract class AbstractOperatorValidationRule implements EditUI {
 		case OperatorT.INT_LT:
 			if (value1 instanceof Comparable) {
 				Comparable c = (Comparable) value1;
-				if (c.compareTo(value2) >= 0) {
+				if (c.compareTo(value2) < 0) {
 					throw new ValidationException(widget);
 				}
 			} else {
@@ -81,12 +81,12 @@ public abstract class AbstractOperatorValidationRule implements EditUI {
 			break;
 
 		case OperatorT.INT_NE:
-			if (value2.equals(value1)) {
+			if (!value2.equals(value1)) {
 				throw new ValidationException(widget);
 			}
 			break;
 
-		case OperatorT.INT_NX:
+		case OperatorT.INT_EX:
 			if (value1 != null && !"".equals(value1.toString())) {
 				throw new ValidationException(widget);
 			}

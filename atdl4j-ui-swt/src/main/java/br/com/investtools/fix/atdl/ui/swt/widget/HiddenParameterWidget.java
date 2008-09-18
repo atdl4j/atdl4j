@@ -1,6 +1,10 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
+import java.util.List;
+
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.BooleanT;
@@ -124,6 +128,15 @@ public class HiddenParameterWidget implements ParameterWidget<String> {
 	@Override
 	public String getValue() {
 		return value;
+	}
+
+	@Override
+	public void generateStateRuleListener(Listener listener) {
+	}
+
+	@Override
+	public List<Control> getControls() {
+		return null;
 	}
 
 

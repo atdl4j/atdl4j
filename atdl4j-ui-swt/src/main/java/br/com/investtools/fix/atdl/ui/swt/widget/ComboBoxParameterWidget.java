@@ -1,10 +1,15 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.CharT;
@@ -18,6 +23,8 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 	private ParameterT parameter;
 
 	private Combo comboBox;
+	
+	private Label label;
 
 	private boolean editable;
 
@@ -36,7 +43,8 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 		// label
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
-
+		this.label = l;
+		
 		// comboBox
 		style = style | SWT.BORDER;
 		if (!editable) {
@@ -122,6 +130,20 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 	@Override
 	public ParameterT getParameter() {
 		return parameter;
+	}
+
+	@Override
+	public void generateStateRuleListener(Listener listener) {
+		comboBox.addListener(SWT.Modify, listener);
+		comboBox.addListener(SWT.Selection, listener);
+	}
+
+	@Override
+	public List<Control> getControls() {
+		List<Control> widgets = new ArrayList<Control>();
+		widgets.add(label);
+		widgets.add(comboBox);
+		return widgets;
 	}
 
 }

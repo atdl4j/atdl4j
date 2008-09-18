@@ -2,13 +2,17 @@ package br.com.investtools.fix.atdl.ui.swt.widget;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Widget;
 
@@ -29,6 +33,12 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 	private ParameterT parameter;
 
 	private Spinner dualSpinner;
+	
+	private Label label;
+	
+	private Button buttonUp;
+	
+	private Button buttonDown;
 
 	@Override
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
@@ -37,7 +47,8 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 		// label
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
-
+		this.label = l;
+		
 		Composite c = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -65,8 +76,10 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 		}
 
 		Button buttonUp = new Button(c, SWT.ARROW | SWT.UP);
+		this.buttonUp = buttonUp;
 		Button buttonDown = new Button(c, SWT.ARROW | SWT.DOWN);
-
+		this.buttonDown = buttonDown;
+		
 		buttonUp.addSelectionListener(new DualSpinnerSelection(dualSpinner,
 				outerStepSize));
 		buttonDown.addSelectionListener(new DualSpinnerSelection(dualSpinner,
@@ -80,12 +93,18 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 		dualSpinner.setDigits(getPrecision(parameter));
 		
 		Integer minimum = getMinimum(parameter);
-		if (minimum != null)
+		if (minimum != null) {
 			dualSpinner.setMinimum(minimum);
+		} else {
+			dualSpinner.setMinimum(-Integer.MAX_VALUE);
+		}
 		
 		Integer maximum = getMaximum(parameter);
-		if (maximum != null)
+		if (maximum != null) {
 			dualSpinner.setMaximum(maximum);
+		} else {
+			dualSpinner.setMaximum(Integer.MAX_VALUE);
+		}
 		
 		Integer initValue = getInitValue(parameter);
 		if (initValue != null)
@@ -198,8 +217,11 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 
 		} else if (parameter instanceof IntT) {
 			IntT intT = (IntT) parameter;
-			return intT.getMinValue();
-
+			
+			if (intT.isSetMinValue()) {
+				return intT.getMinValue();
+			}
+			
 		} 
 		
 		return null;
@@ -288,7 +310,11 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 
 		} else if (parameter instanceof IntT) {
 			IntT intT = (IntT) parameter;
-			return intT.getMaxValue();
+			
+			if (intT.isSetMaxValue()) {
+				return intT.getMaxValue();
+			}
+
 
 		} 
 		
@@ -378,7 +404,11 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 
 		} else if (parameter instanceof IntT) {
 			IntT intT = (IntT) parameter;
-			return intT.getInitValue();
+			
+			if (intT.isSetInitValue()) {
+				return intT.getInitValue();
+			}
+
 
 		} 
 		
@@ -413,6 +443,21 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 	@Override
 	public ParameterT getParameter() {
 		return parameter;
+	}
+
+	@Override
+	public void generateStateRuleListener(Listener listener) {
+		dualSpinner.addListener( SWT.Modify, listener);
+	}
+
+	@Override
+	public List<Control> getControls() {
+		List<Control> widgets = new ArrayList<Control>();
+		widgets.add(label);
+		widgets.add(dualSpinner);
+		widgets.add(buttonUp);
+		widgets.add(buttonDown);
+		return widgets;
 	}
 
 }

@@ -7,7 +7,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.EnumPairT;
@@ -19,6 +21,8 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 	private ParameterT parameter;
 
 	private List<Button> radioButton = new ArrayList<Button>();
+	
+	private Label label;
 
 	@Override
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
@@ -27,7 +31,8 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 		// label
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
-
+		this.label = l;
+		
 		Composite c = new Composite(parent, SWT.NONE);
 		c.setLayout(new FillLayout());
 
@@ -81,6 +86,22 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 	@Override
 	public ParameterT getParameter() {
 		return parameter;
+	}
+
+	@Override
+	public void generateStateRuleListener(Listener listener) {
+		for (Button radioElement : radioButton) {
+			radioElement.addListener(SWT.Selection, listener);
+		}
+		
+	}
+
+	@Override
+	public List<Control> getControls() {
+		List<Control> widgets = new ArrayList<Control>();
+		widgets.add(label);
+		widgets.addAll(radioButton);
+		return widgets;
 	}
 
 }
