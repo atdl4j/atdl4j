@@ -125,36 +125,42 @@ public class StateGroupUI {
 
 		private void setBehaviorAsStateRule(Boolean state) {
 
-			// TODO resolve the parameter widget index and change its state
-			// accordingly
+			Boolean enabled;
+			Boolean visible;
 
-			/*
-			 * Boolean enabled; Boolean visible;
-			 * 
-			 * if (enumItem.isSetEnabled()) { enabled = enumItem.getEnabled();
-			 * for (Control control : affectedWidget.getControls()) {
-			 * control.setEnabled(!(enabled ^ state)); } }
-			 * 
-			 * if (enumItem.isSetVisible()) { visible = enumItem.getVisible();
-			 * for (Control control : affectedWidget.getControls()) {
-			 * control.setVisible(!(visible ^ state)); } }
-			 * 
-			 * if (enumItem.isSetBehavior()) { for (Control control :
-			 * affectedWidget.getControls()) { BehaviorT.Enum behaviorT =
-			 * enumItem.getBehavior();
-			 * 
-			 * if (behaviorT.equals(BehaviorT.DISABLE)) {
-			 * control.setEnabled(!(false ^ state)); } else if
-			 * (behaviorT.equals(BehaviorT.ENABLE)) { control.setEnabled(!(true
-			 * ^ state)); } else if (behaviorT.equals(BehaviorT.HIDE)) {
-			 * control.setVisible(!(false ^ state)); } else if
-			 * (behaviorT.equals(BehaviorT.UNHIDE)) { control.setVisible(!(true
-			 * ^ state)); } }
-			 * 
-			 * }
-			 */
+			// one unit must be added to the final array index value. this
+			// happens because the Label control is also contained in the same
+			// array, creating an offset.
+			Control affectedControl = affectedWidget.getControls().get(
+					enumItem.getEnumIndex().intValue() + 1);
+
+			if (enumItem.isSetEnabled()) {
+				enabled = enumItem.getEnabled();
+				affectedControl.setEnabled(!(enabled ^ state));
+			}
+
+			if (enumItem.isSetVisible()) {
+				visible = enumItem.getVisible();
+				affectedControl.setVisible(!(visible ^ state));
+			}
+
+			if (enumItem.isSetBehavior()) {
+
+				BehaviorT.Enum behaviorT = enumItem.getBehavior();
+
+				if (behaviorT.equals(BehaviorT.DISABLE)) {
+					affectedControl.setEnabled(!(false ^ state));
+				} else if (behaviorT.equals(BehaviorT.ENABLE)) {
+					affectedControl.setEnabled(!(true ^ state));
+				} else if (behaviorT.equals(BehaviorT.HIDE)) {
+					affectedControl.setVisible(!(false ^ state));
+				} else if (behaviorT.equals(BehaviorT.UNHIDE)) {
+					affectedControl.setVisible(!(true ^ state));
+				}
+
+			}
+
 		}
-
 	}
 
 }

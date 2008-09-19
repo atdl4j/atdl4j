@@ -1,7 +1,9 @@
 package br.com.investtools.fix.atdl.ui.swt;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.xmlbeans.XmlException;
@@ -26,6 +28,8 @@ import br.com.investtools.fix.atdl.ui.swt.validation.StateRuleUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.StrategyEditUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.StateGroupUI.EnumItemUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.StateGroupUI.FieldUI;
+import br.com.investtools.fix.atdl.ui.swt.widget.MultiCheckBoxParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.widget.RadioButtonParameterWidget;
 import br.com.investtools.fix.atdl.valid.xmlbeans.EditRefT;
 import br.com.investtools.fix.atdl.valid.xmlbeans.EditDocument.Edit;
 import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
@@ -40,6 +44,10 @@ public class SWTStrategyUI implements StrategyUI {
 			.getLogger(SWTStrategyUI.class);
 
 	private StrategyT strategy;
+
+	public StrategyT getStrategy() {
+		return strategy;
+	}
 
 	private Map<String, ParameterWidget<?>> parameters;
 
@@ -118,7 +126,8 @@ public class SWTStrategyUI implements StrategyUI {
 			}
 		}
 
-		// strategy state rules that have an id (thus are going to be referenced)
+		// strategy state rules that have an id (thus are going to be
+		// referenced)
 		// are included in the rules map
 		for (StateGroup stateGroup : strategy.getStateGroupArray()) {
 			for (Field field : stateGroup.getFieldArray()) {
@@ -143,7 +152,8 @@ public class SWTStrategyUI implements StrategyUI {
 			}
 		}
 
-		// // look for state rules for fields and enumItens under the strategy's state groups
+		// look for fields and enumItens state rules under the strategy's
+		// state groups
 		if (strategy.getStateGroupArray() != null) {
 
 			for (StateGroup stateGroup : strategy.getStateGroupArray()) {
@@ -200,6 +210,14 @@ public class SWTStrategyUI implements StrategyUI {
 										+ edit.getField()
 										+ " does not exist in Strategy: "
 										+ strategy.getName());
+					
+					if (!(affectedWidget instanceof MultiCheckBoxParameterWidget) && !(affectedWidget instanceof RadioButtonParameterWidget) )
+						throw new XmlException(
+								"Error generating a State Group Rule => Parameter: "
+										+ edit.getField()
+										+ " should be either a MultiCheckBoxParameterWidget or a RadioButtonParameterWidget."	);
+
+					
 					ParameterWidget<?> targetParameterWidget = parameters
 							.get(edit.getField());
 					if (targetParameterWidget == null)
@@ -241,14 +259,14 @@ public class SWTStrategyUI implements StrategyUI {
 		}
 
 		// look for state rules under the strategy panel's parameters
-		if (strategy.isSetStrategyLayout())
+		if (strategy.isSetStrategyLayout()) {
 			if (strategy.getStrategyLayout().getStrategyPanelArray() != null) {
 				for (StrategyPanel panel : strategy.getStrategyLayout()
 						.getStrategyPanelArray()) {
 					parameterProcessor(panel);
 				}
 			}
-
+		}
 	}
 
 	private void parameterProcessor(StrategyPanel panel) throws XmlException {
@@ -316,6 +334,38 @@ public class SWTStrategyUI implements StrategyUI {
 			logger.info("No validation rule defined for strategy \"{}\"",
 					strategy.getName());
 		}
+	}
+
+	
+	@Override
+	public String getFIXMessage() {
+		
+		StringBuffer fixMessage = new StringBuffer();
+		
+		for(ParameterWidget<?> widget : parameters.values() ) {
+			
+			char delimiter = '\001';
+			List<String> repeatingGroup = new ArrayList<String>();
+			String fixValue = widget.getFIXValue();
+			
+			if (fixValue.startsWith("958")) {
+				repeatingGroup.add(fixValue);
+			} else {
+				fixMessage.append(fixValue).append(delimiter);
+			}
+			
+			if (repeatingGroup.size() > 0) {
+				
+				fixMessage.append("957=").append(repeatingGroup.size()).append(delimiter);
+				for (String groupElement : repeatingGroup) {
+					fixMessage.append(groupElement).append(delimiter);
+				}
+				
+			}
+			
+		}
+		
+		return fixMessage.toString();
 	}
 
 }
