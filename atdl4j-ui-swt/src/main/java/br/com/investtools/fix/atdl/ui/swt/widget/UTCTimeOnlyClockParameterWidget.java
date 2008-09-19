@@ -91,7 +91,7 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 	public String getFIXValue() {
 
 		Date date = this.getValue();
-		DateFormat fixUTCTimeOnlyFormat = new SimpleDateFormat("hh:mm:ss");
+		DateFormat fixUTCTimeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
 		String value = fixUTCTimeOnlyFormat.format(date);
 
 		if (parameter.getFixTag() != null) {
@@ -110,11 +110,11 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 	@Override
 	public Date convertValue(String value) throws XmlException {
 		// TODO reset timezone here?
-		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		try {
 			return dateFormat.parse(value);
 		} catch (ParseException e) {
-			throw new XmlException( "Unable to parse \"" + value + "\" with format \"hh:mm:ss\"");
+			throw new XmlException( "Unable to parse \"" + value + "\" with format \"HH:mm:ss\"");
 		}
 
 	}

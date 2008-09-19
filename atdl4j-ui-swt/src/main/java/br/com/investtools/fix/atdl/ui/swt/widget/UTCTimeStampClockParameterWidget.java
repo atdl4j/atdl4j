@@ -29,9 +29,9 @@ public class UTCTimeStampClockParameterWidget implements ParameterWidget<Date> {
 	private ParameterT parameter;
 
 	private DateTime dateClock;
-	
+
 	private DateTime timeClock;
-	
+
 	private Label label;
 
 	private String localMktTz;
@@ -39,51 +39,52 @@ public class UTCTimeStampClockParameterWidget implements ParameterWidget<Date> {
 	@Override
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
 		this.parameter = parameter;
-		
+
 		// label
 		Label l = new Label(parent, SWT.NONE);
 		this.label = l;
 		l.setText(WidgetHelper.getLabelText(parameter));
 
 		Composite c = new Composite(parent, SWT.NONE);
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
+		GridLayout gridLayout = new GridLayout(2, true);
 		gridLayout.horizontalSpacing = 2;
 		gridLayout.verticalSpacing = 0;
+		gridLayout.marginLeft = gridLayout.marginRight = 0;
+		gridLayout.marginTop = gridLayout.marginBottom = 0;
+		gridLayout.marginWidth = gridLayout.marginHeight = 0;
 		c.setLayout(gridLayout);
 		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		
+
 		// date clock
 		DateTime dateClock = new DateTime(c, style | SWT.BORDER | SWT.DATE
 				| SWT.MEDIUM);
-		dateClock.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		dateClock
+				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		this.dateClock = dateClock;
 
 		// time clock
 		DateTime timeClock = new DateTime(c, style | SWT.BORDER | SWT.TIME
 				| SWT.MEDIUM);
-		timeClock.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		timeClock
+				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		this.timeClock = timeClock;
-		
+
 		// tooltip
 		String tooltip = parameter.getTooltip();
 		dateClock.setToolTipText(tooltip);
 		timeClock.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
-		
+
 		UTCTimeStampT utcTimeStamp = (UTCTimeStampT) parameter;
 
 		if (utcTimeStamp.isSetLocalMktTz())
 			localMktTz = utcTimeStamp.getLocalMktTz();
-		
+
 		// init value
-		if (utcTimeStamp.isSetInitValue()){ 
+		if (utcTimeStamp.isSetInitValue()) {
 			Calendar initValue = utcTimeStamp.getInitValue();
 			if (localMktTz != null)
 				initValue.setTimeZone(getTimeZone(localMktTz));
-			dateClock.setYear(initValue.get(Calendar.YEAR));
-			dateClock.setMonth(initValue.get(Calendar.MONTH));
-			dateClock.setDay(initValue.get(Calendar.DAY_OF_MONTH));
 			timeClock.setHours(initValue.get(Calendar.HOUR_OF_DAY));
 			timeClock.setMinutes(initValue.get(Calendar.MINUTE));
 			timeClock.setSeconds(initValue.get(Calendar.SECOND));
@@ -115,7 +116,7 @@ public class UTCTimeStampClockParameterWidget implements ParameterWidget<Date> {
 
 		Date date = this.getValue();
 		DateFormat fixUTCTimeStampFormat = new SimpleDateFormat(
-				"yyyyMMdd-hh:mm:ss");
+				"yyyyMMdd-HH:mm:ss");
 		String value = fixUTCTimeStampFormat.format(date);
 
 		if (parameter.getFixTag() != null) {
@@ -134,11 +135,12 @@ public class UTCTimeStampClockParameterWidget implements ParameterWidget<Date> {
 	@Override
 	public Date convertValue(String value) throws XmlException {
 		// TODO reset timezone here?
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
 		try {
 			return dateFormat.parse(value);
 		} catch (ParseException e) {
-			throw new XmlException( "Unable to parse \"" + value + "\" with format \"yyyyMMdd-hh:mm:ss\"");
+			throw new XmlException("Unable to parse \"" + value
+					+ "\" with format \"yyyyMMdd-HH:mm:ss\"");
 		}
 
 	}

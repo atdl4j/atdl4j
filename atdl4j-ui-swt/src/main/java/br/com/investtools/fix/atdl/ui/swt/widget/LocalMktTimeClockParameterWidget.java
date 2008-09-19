@@ -96,7 +96,7 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 	@Override
 	public Date convertValue(String value) {
 		// TODO reset timezone here?
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-hh:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
 		try {
 			return dateFormat.parse(value);
 		} catch (ParseException e) {
