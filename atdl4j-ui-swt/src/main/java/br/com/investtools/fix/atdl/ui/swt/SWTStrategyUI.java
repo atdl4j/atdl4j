@@ -28,8 +28,6 @@ import br.com.investtools.fix.atdl.ui.swt.validation.StateRuleUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.StrategyEditUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.StateGroupUI.EnumItemUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.StateGroupUI.FieldUI;
-import br.com.investtools.fix.atdl.ui.swt.widget.MultiCheckBoxParameterWidget;
-import br.com.investtools.fix.atdl.ui.swt.widget.RadioButtonParameterWidget;
 import br.com.investtools.fix.atdl.valid.xmlbeans.EditRefT;
 import br.com.investtools.fix.atdl.valid.xmlbeans.EditDocument.Edit;
 import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
