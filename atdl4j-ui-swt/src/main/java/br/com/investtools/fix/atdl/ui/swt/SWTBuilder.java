@@ -198,7 +198,7 @@ public class SWTBuilder {
 		}
 	}
 
-	private static void addDebugMouseTrackListener(Control control) {
+	public static void addDebugMouseTrackListener(Control control) {
 		if (!(control.getClass().equals(Composite.class) || control.getClass()
 				.equals(Group.class))) {
 			control.addMouseTrackListener(new DebugMouseTrackListener(control));
