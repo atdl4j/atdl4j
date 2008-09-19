@@ -380,7 +380,8 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 	}
 
 	public BigDecimal getValue() {
-		return new BigDecimal(dualSpinner.getSelection());
+		return new BigDecimal(BigInteger.valueOf(dualSpinner.getSelection()),
+				dualSpinner.getDigits());
 	}
 
 	@Override

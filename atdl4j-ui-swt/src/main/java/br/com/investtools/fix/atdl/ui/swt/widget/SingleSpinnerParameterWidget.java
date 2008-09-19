@@ -341,7 +341,8 @@ public class SingleSpinnerParameterWidget implements
 	}
 
 	public BigDecimal getValue() {
-		return new BigDecimal(spinner.getSelection());
+		return new BigDecimal(BigInteger.valueOf(spinner.getSelection()),
+				spinner.getDigits());
 	}
 
 	@Override
