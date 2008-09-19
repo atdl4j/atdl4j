@@ -68,6 +68,8 @@ public class SWTStrategyUI implements StrategyUI {
 		// initialize rules collection with global rules
 		rules = new HashMap<String, EditUI>(strategiesRules);
 
+		rule = new StrategyEditUI();
+		
 		// use iterator to traverse in correct order
 		Iterator<Object> it = new StrategyIterator(strategy);
 		while (it.hasNext()) {
@@ -76,25 +78,6 @@ public class SWTStrategyUI implements StrategyUI {
 				ParameterT parameter = (ParameterT) obj;
 				parameters.put(parameter.getName(), factory.create(parent,
 						parameter, SWT.NONE));
-				// parameter flow rules that have an id should be included in
-				// the rules map
-				if (parameter.isSetStateRule()) {
-					StateRule stateRule = parameter.getStateRule();
-					Edit edit = stateRule.getEdit();
-					if (edit.isSetId()) {
-						EditUI rule = RuleFactory.createRule(edit, rules);
-						String id = edit.getId();
-						rules.put(id, rule);
-					}
-				}
-
-				if (parameter.isSetUse()) {
-					if (parameter.getUse().equals(UseT.REQUIRED)) {
-						EditUI requiredFieldRule = new ValueOperatorValidationRule(
-								parameter.getName(), OperatorT.EQ, "");
-						rule.addRequiredFieldRule(requiredFieldRule);
-					}
-				}
 
 			} else if (obj instanceof StrategyLayout) {
 				for (StrategyPanel panel : strategy.getStrategyLayout()
@@ -103,6 +86,35 @@ public class SWTStrategyUI implements StrategyUI {
 				}
 			}
 		}
+		
+		for (ParameterWidget<?> parameterWidget : parameters.values() ) {
+			
+			// parameter state rules that have an id should be included in
+			// the rules map
+			ParameterT parameter = parameterWidget.getParameter();
+			
+			if (parameter.isSetStateRule()) {
+				StateRule stateRule = parameter.getStateRule();
+				Edit edit = stateRule.getEdit();
+				if (edit.isSetId()) {
+					EditUI rule = RuleFactory.createRule(edit, rules);
+					String id = edit.getId();
+					rules.put(id, rule);
+				}
+			}
+			
+			// required fields should be validated as well
+			if (parameter.isSetUse()) {
+				if (parameter.getUse().equals(UseT.REQUIRED)) {
+					EditUI requiredFieldRule = new ValueOperatorValidationRule(
+							parameter.getName(), OperatorT.EQ, "");
+					rule.addRequiredFieldRule(requiredFieldRule);
+				}
+			}
+
+			
+		}
+		
 
 		// and add local rules
 		for (Edit edit : strategy.getEditArray()) {
@@ -116,7 +128,6 @@ public class SWTStrategyUI implements StrategyUI {
 		}
 
 		// generate validation rules for StrategyEdit elements
-		rule = new StrategyEditUI();
 		for (StrategyEdit se : strategy.getStrategyEditArray()) {
 			if (se.isSetEdit()) {
 				Edit edit = se.getEdit();
