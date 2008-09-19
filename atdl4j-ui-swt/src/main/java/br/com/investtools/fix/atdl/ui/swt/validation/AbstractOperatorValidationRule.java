@@ -21,11 +21,11 @@ public abstract class AbstractOperatorValidationRule implements EditUI {
 			.getLogger(AbstractOperatorValidationRule.class);
 
 	@SuppressWarnings("unchecked")
-	protected void validateValues(ParameterWidget<?> widget, Object value1, Enum operator,
-			Object value2) {
+	protected void validateValues(ParameterWidget<?> widget, Object value1,
+			Enum operator, Object value2) {
 		switch (operator.intValue()) {
 		case OperatorT.INT_EQ:
-			if (value2.equals(value1)) {
+			if (value1 == value2 || (value2 != null && value2.equals(value1))) {
 				throw new ValidationException(widget);
 			}
 			break;
@@ -40,7 +40,7 @@ public abstract class AbstractOperatorValidationRule implements EditUI {
 			if (value1 instanceof Comparable) {
 				Comparable c = (Comparable) value1;
 				if (c.compareTo(value2) >= 0) {
-					throw new ValidationException(widget	);
+					throw new ValidationException(widget);
 				}
 			} else {
 				throw new ValidationException(widget, "Value is not comparable");

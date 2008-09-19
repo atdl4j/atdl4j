@@ -69,7 +69,7 @@ public class SWTStrategyUI implements StrategyUI {
 		rules = new HashMap<String, EditUI>(strategiesRules);
 
 		rule = new StrategyEditUI();
-		
+
 		// use iterator to traverse in correct order
 		Iterator<Object> it = new StrategyIterator(strategy);
 		while (it.hasNext()) {
@@ -86,13 +86,13 @@ public class SWTStrategyUI implements StrategyUI {
 				}
 			}
 		}
-		
-		for (ParameterWidget<?> parameterWidget : parameters.values() ) {
-			
+
+		for (ParameterWidget<?> parameterWidget : parameters.values()) {
+
 			// parameter state rules that have an id should be included in
 			// the rules map
 			ParameterT parameter = parameterWidget.getParameter();
-			
+
 			if (parameter.isSetStateRule()) {
 				StateRule stateRule = parameter.getStateRule();
 				Edit edit = stateRule.getEdit();
@@ -102,19 +102,16 @@ public class SWTStrategyUI implements StrategyUI {
 					rules.put(id, rule);
 				}
 			}
-			
+
 			// required fields should be validated as well
 			if (parameter.isSetUse()) {
 				if (parameter.getUse().equals(UseT.REQUIRED)) {
 					EditUI requiredFieldRule = new ValueOperatorValidationRule(
-							parameter.getName(), OperatorT.EQ, "");
+							parameter.getName(), OperatorT.NX, null);
 					rule.addRequiredFieldRule(requiredFieldRule);
 				}
 			}
-
-			
 		}
-		
 
 		// and add local rules
 		for (Edit edit : strategy.getEditArray()) {
@@ -297,19 +294,15 @@ public class SWTStrategyUI implements StrategyUI {
 	private void parameterProcessor(StrategyPanel panel) throws XmlException {
 
 		if (panel.getStrategyPanelArray() != null) {
-
 			for (StrategyPanel innerPanel : panel.getStrategyPanelArray()) {
 				parameterProcessor(innerPanel);
 			}
-
 		}
 
 		if (panel.getParameterArray() != null) {
-
 			for (ParameterT parameter : panel.getParameterArray()) {
 				stateRuleGenerator(parameter);
 			}
-
 		}
 	}
 
