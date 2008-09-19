@@ -210,14 +210,18 @@ public class SWTStrategyUI implements StrategyUI {
 										+ edit.getField()
 										+ " does not exist in Strategy: "
 										+ strategy.getName());
-					
-					if (!(affectedWidget instanceof MultiCheckBoxParameterWidget) && !(affectedWidget instanceof RadioButtonParameterWidget) )
-						throw new XmlException(
-								"Error generating a State Group Rule => Parameter: "
-										+ edit.getField()
-										+ " should be either a MultiCheckBoxParameterWidget or a RadioButtonParameterWidget."	);
 
-					
+					/*
+					 * if (!(affectedWidget instanceof
+					 * MultiCheckBoxParameterWidget) && !(affectedWidget
+					 * instanceof RadioButtonParameterWidget) ) throw new
+					 * XmlException(
+					 * "Error generating a State Group Rule => Parameter: " +
+					 * edit.getField() +
+					 * " should be either a MultiCheckBoxParameterWidget or a RadioButtonParameterWidget."
+					 * );
+					 */
+
 					ParameterWidget<?> targetParameterWidget = parameters
 							.get(edit.getField());
 					if (targetParameterWidget == null)
@@ -336,35 +340,35 @@ public class SWTStrategyUI implements StrategyUI {
 		}
 	}
 
-	
 	@Override
 	public String getFIXMessage() {
-		
+
 		StringBuffer fixMessage = new StringBuffer();
-		
-		for(ParameterWidget<?> widget : parameters.values() ) {
-			
+
+		for (ParameterWidget<?> widget : parameters.values()) {
+
 			char delimiter = '\001';
 			List<String> repeatingGroup = new ArrayList<String>();
 			String fixValue = widget.getFIXValue();
-			
+
 			if (fixValue.startsWith("958")) {
 				repeatingGroup.add(fixValue);
 			} else {
 				fixMessage.append(fixValue).append(delimiter);
 			}
-			
+
 			if (repeatingGroup.size() > 0) {
-				
-				fixMessage.append("957=").append(repeatingGroup.size()).append(delimiter);
+
+				fixMessage.append("957=").append(repeatingGroup.size()).append(
+						delimiter);
 				for (String groupElement : repeatingGroup) {
 					fixMessage.append(groupElement).append(delimiter);
 				}
-				
+
 			}
-			
+
 		}
-		
+
 		return fixMessage.toString();
 	}
 
