@@ -66,10 +66,16 @@ public class SliderParameterWidget implements ParameterWidget<BigDecimal> {
 		return parent;
 	}
 
+	@Override
 	public BigDecimal getValue() {
-		return new BigDecimal(this.slider.getSelection());
+		return new BigDecimal(slider.getSelection());
 	}
 
+	@Override
+	public void setValue(BigDecimal value) {
+		slider.setSelection(value.intValue());
+	}
+	
 	@Override
 	public String getFIXValue() {
 		if (parameter.getFixTag() != null) {
@@ -107,5 +113,5 @@ public class SliderParameterWidget implements ParameterWidget<BigDecimal> {
 		widgets.add(slider);
 		return widgets;
 	}
-	
+
 }

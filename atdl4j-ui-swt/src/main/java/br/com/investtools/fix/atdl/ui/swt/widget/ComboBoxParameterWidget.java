@@ -108,6 +108,12 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 	}
 
 	@Override
+	public void setValue(String value) {
+		int index = comboBox.indexOf(value);
+		comboBox.select(index);
+	}
+
+	@Override
 	public String getFIXValue() {
 		if (parameter.getFixTag() != null) {
 			return Integer.toString(parameter.getFixTag().intValue()) + "="

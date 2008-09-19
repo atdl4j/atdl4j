@@ -107,6 +107,18 @@ public class UTCTimeStampClockParameterWidget implements ParameterWidget<Date> {
 		return c.getTime();
 	}
 
+	@Override
+	public void setValue(Date value) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(value);
+		dateClock.setDay(c.get(Calendar.DAY_OF_MONTH));
+		dateClock.setMonth(c.get(Calendar.MONTH));
+		dateClock.setYear(c.get(Calendar.YEAR));
+		timeClock.setHours(c.get(Calendar.HOUR_OF_DAY));
+		timeClock.setMinutes(c.get(Calendar.MINUTE));
+		timeClock.setSeconds(c.get(Calendar.SECOND));
+	}
+
 	private static TimeZone getTimeZone(String localMktTz) {
 		return TimeZone.getTimeZone(localMktTz);
 	}

@@ -65,12 +65,21 @@ public class MonthYearClockParameterWidget implements ParameterWidget<Date> {
 		return parent;
 	}
 
+	@Override
 	public Date getValue() {
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, clock.getYear());
 		c.set(Calendar.MONTH, clock.getMonth());
 		c.clear(Calendar.MILLISECOND);
 		return c.getTime();
+	}
+
+	@Override
+	public void setValue(Date value) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(value);
+		clock.setMonth(c.get(Calendar.MONTH));
+		clock.setYear(c.get(Calendar.YEAR));
 	}
 
 	@Override

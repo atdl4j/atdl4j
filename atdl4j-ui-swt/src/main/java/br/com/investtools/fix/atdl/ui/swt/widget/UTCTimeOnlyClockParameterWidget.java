@@ -72,6 +72,7 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 		return parent;
 	}
 
+	@Override
 	public Date getValue() {
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.HOUR_OF_DAY, clock.getHours());
@@ -83,6 +84,15 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 		return c.getTime();
 	}
 	
+	@Override
+	public void setValue(Date value) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(value);
+		clock.setHours(c.get(Calendar.HOUR_OF_DAY));
+		clock.setMinutes(c.get(Calendar.MINUTE));
+		clock.setSeconds(c.get(Calendar.SECOND));
+	}
+
 	private static TimeZone getTimeZone(String localMktTz) {
 		return TimeZone.getTimeZone(localMktTz);
 	}

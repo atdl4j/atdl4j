@@ -21,7 +21,7 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 	private ParameterT parameter;
 
 	private List<Button> radioButton = new ArrayList<Button>();
-	
+
 	private Label label;
 
 	@Override
@@ -32,7 +32,7 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
 		this.label = l;
-		
+
 		Composite c = new Composite(parent, SWT.NONE);
 		c.setLayout(new FillLayout());
 
@@ -52,6 +52,7 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 		return c;
 	}
 
+	@Override
 	public String getValue() {
 		for (int i = 0; i < this.radioButton.size(); i++) {
 			Button b = radioButton.get(i);
@@ -59,8 +60,18 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 				return parameter.getEnumPairArray(i).getWireValue();
 			}
 		}
-		return " ";
+		return "";
 
+	}
+
+	@Override
+	public void setValue(String value) {
+		for (int i = 0; i < radioButton.size(); i++) {
+			if (value.equals(parameter.getEnumPairArray(i).getWireValue())) {
+				Button b = radioButton.get(i);
+				b.setSelection(true);
+			}
+		}
 	}
 
 	@Override
@@ -93,7 +104,7 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 		for (Button radioElement : radioButton) {
 			radioElement.addListener(SWT.Selection, listener);
 		}
-		
+
 	}
 
 	@Override

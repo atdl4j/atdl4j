@@ -56,11 +56,17 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 		return parent;
 	}
 
+	@Override
 	public Boolean getValue() {
 		if (checkBox.getSelection())
 			return Boolean.TRUE;
 		else
 			return Boolean.FALSE;
+	}
+
+	@Override
+	public void setValue(Boolean value) {
+		checkBox.setSelection(value.booleanValue());
 	}
 
 	@Override

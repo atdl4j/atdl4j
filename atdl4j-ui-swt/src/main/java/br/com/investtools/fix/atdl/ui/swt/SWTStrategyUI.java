@@ -382,4 +382,9 @@ public class SWTStrategyUI implements StrategyUI {
 		return fixMessage.toString();
 	}
 
+	@Override
+	public ParameterWidget<?> getParameterWidget(String name) {
+		return parameters.get(name);
+	}
+
 }

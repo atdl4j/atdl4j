@@ -61,6 +61,11 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 	}
 
 	@Override
+	public void setValue(String value) {
+		textField.setText(value);
+	}
+
+	@Override
 	public String getFIXValue() {
 		if (parameter.getFixTag() != null) {
 			return Integer.toString(parameter.getFixTag().intValue()) + "="

@@ -58,6 +58,9 @@ public class LabelParameterWidget implements ParameterWidget<String> {
 	public List<Control> getControls() {
 		return null;
 	}
-	
+
+	@Override
+	public void setValue(String value) {
+	}
 
 }

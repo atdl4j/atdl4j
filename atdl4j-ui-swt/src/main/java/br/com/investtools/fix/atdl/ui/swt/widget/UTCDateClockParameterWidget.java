@@ -27,7 +27,7 @@ public class UTCDateClockParameterWidget implements ParameterWidget<Date> {
 	private ParameterT parameter;
 
 	private DateTime clock;
-	
+
 	private Label label;
 
 	@Override
@@ -59,10 +59,11 @@ public class UTCDateClockParameterWidget implements ParameterWidget<Date> {
 			clock.setMonth(c.get(Calendar.MONTH));
 			clock.setYear(c.get(Calendar.YEAR));
 		}
-		
+
 		return parent;
 	}
 
+	@Override
 	public Date getValue() {
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, clock.getYear());
@@ -70,6 +71,15 @@ public class UTCDateClockParameterWidget implements ParameterWidget<Date> {
 		c.set(Calendar.DAY_OF_MONTH, clock.getDay());
 		c.clear(Calendar.MILLISECOND);
 		return c.getTime();
+	}
+
+	@Override
+	public void setValue(Date value) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(value);
+		clock.setDay(c.get(Calendar.DAY_OF_MONTH));
+		clock.setMonth(c.get(Calendar.MONTH));
+		clock.setYear(c.get(Calendar.YEAR));
 	}
 
 	@Override
@@ -99,7 +109,8 @@ public class UTCDateClockParameterWidget implements ParameterWidget<Date> {
 		try {
 			return dateFormat.parse(value);
 		} catch (ParseException e) {
-			throw new XmlException( "Unable to parse \"" + value + "\" with format \"yyyyMMdd\"");
+			throw new XmlException("Unable to parse \"" + value
+					+ "\" with format \"yyyyMMdd\"");
 		}
 
 	}
@@ -111,7 +122,7 @@ public class UTCDateClockParameterWidget implements ParameterWidget<Date> {
 
 	@Override
 	public void generateStateRuleListener(Listener listener) {
-		clock.addListener(SWT.Selection, listener);	
+		clock.addListener(SWT.Selection, listener);
 	}
 
 	@Override

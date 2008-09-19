@@ -1,6 +1,7 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -23,7 +24,7 @@ public class MultiCheckBoxParameterWidget implements ParameterWidget<String> {
 	private List<Button> multiCheckBox = new ArrayList<Button>();
 
 	private Label label;
-	
+
 	@Override
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {
 		this.parameter = parameter;
@@ -32,7 +33,7 @@ public class MultiCheckBoxParameterWidget implements ParameterWidget<String> {
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
 		this.label = l;
-		
+
 		Composite c = new Composite(parent, SWT.NONE);
 		c.setLayout(new FillLayout());
 
@@ -53,9 +54,8 @@ public class MultiCheckBoxParameterWidget implements ParameterWidget<String> {
 	}
 
 	public String getValue() {
-
 		String value = "";
-		for (int i = 0; i < this.multiCheckBox.size(); i++) {
+		for (int i = 0; i < multiCheckBox.size(); i++) {
 			Button b = multiCheckBox.get(i);
 			if (b.getSelection()) {
 				if ("".equals(value))
@@ -65,7 +65,16 @@ public class MultiCheckBoxParameterWidget implements ParameterWidget<String> {
 			}
 		}
 		return value;
+	}
 
+	@Override
+	public void setValue(String value) {
+		List<String> values = Arrays.asList(value.split(" "));
+		for (int i = 0; i < multiCheckBox.size(); i++) {
+			String wireValue = parameter.getEnumPairArray(i).getWireValue();
+			Button b = multiCheckBox.get(i);
+			b.setSelection(values.contains(wireValue));
+		}
 	}
 
 	@Override
@@ -98,7 +107,6 @@ public class MultiCheckBoxParameterWidget implements ParameterWidget<String> {
 		for (Button checkBox : multiCheckBox) {
 			checkBox.addListener(SWT.Selection, listener);
 		}
-		
 	}
 
 	@Override
@@ -108,6 +116,5 @@ public class MultiCheckBoxParameterWidget implements ParameterWidget<String> {
 		widgets.addAll(multiCheckBox);
 		return widgets;
 	}
-
 
 }

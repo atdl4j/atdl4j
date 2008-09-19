@@ -22,6 +22,8 @@ public interface ParameterWidget<E extends Comparable<E>> {
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) throws XmlException;
 
 	public E getValue();
+	
+	public void setValue(E value);
 
 	public ParameterT getParameter();
 	

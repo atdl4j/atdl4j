@@ -131,6 +131,11 @@ public class HiddenParameterWidget implements ParameterWidget<String> {
 	}
 
 	@Override
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	@Override
 	public void generateStateRuleListener(Listener listener) {
 	}
 
@@ -138,6 +143,5 @@ public class HiddenParameterWidget implements ParameterWidget<String> {
 	public List<Control> getControls() {
 		return null;
 	}
-
 
 }

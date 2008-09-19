@@ -385,6 +385,11 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 	}
 
 	@Override
+	public void setValue(BigDecimal value) {
+		dualSpinner.setSelection(value.unscaledValue().intValue());
+	}
+
+	@Override
 	public String getFIXValue() {
 		if (parameter.getFixTag() != null) {
 			return Integer.toString(parameter.getFixTag().intValue()) + "="

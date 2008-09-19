@@ -60,6 +60,7 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 		return parent;
 	}
 
+	@Override
 	public Date getValue() {
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, clock.getYear());
@@ -72,6 +73,18 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 		if (localMktTz != null)
 			c.setTimeZone(TimeZone.getTimeZone(localMktTz));
 		return c.getTime();
+	}
+
+	@Override
+	public void setValue(Date value) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(value);
+		clock.setDay(c.get(Calendar.DAY_OF_MONTH));
+		clock.setMonth(c.get(Calendar.MONTH));
+		clock.setYear(c.get(Calendar.YEAR));
+		clock.setHours(c.get(Calendar.HOUR_OF_DAY));
+		clock.setMinutes(c.get(Calendar.MINUTE));
+		clock.setSeconds(c.get(Calendar.SECOND));
 	}
 
 	@Override
