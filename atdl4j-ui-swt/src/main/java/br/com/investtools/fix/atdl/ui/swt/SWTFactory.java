@@ -57,7 +57,7 @@ public class SWTFactory implements WidgetFactory, PanelFactory {
 			c.setLayoutData(createLayoutData(c));
 
 			// XXX tooltip debug
-			c.setToolTipText(panel.toString());
+			// c.setToolTipText(panel.toString());
 
 			Iterator<Object> it = new StrategyPanelIterator(panel);
 			while (it.hasNext()) {
