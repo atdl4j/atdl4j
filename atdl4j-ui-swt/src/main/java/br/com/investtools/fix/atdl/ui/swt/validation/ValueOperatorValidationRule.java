@@ -29,14 +29,14 @@ public class ValueOperatorValidationRule extends AbstractOperatorValidationRule 
 
 	@Override
 	public void validate(Map<String, EditUI> rules,
-			Map<String, ParameterWidget<?>> widgets) throws ValidationException, XmlException {
+			Map<String, ParameterWidget<?>> widgets)
+			throws ValidationException, XmlException {
 
 		// get the widget from context using field name
 		ParameterWidget<?> widget = widgets.get(field);
 		if (widget == null) {
-			throw new ValidationException(null,
-					"No widget defined for field \"" + field
-							+ "\" in this context");
+			throw new XmlException("No widget defined for field \"" + field
+					+ "\" in this context");
 		}
 
 		Object fieldValue = widget.getValue();
