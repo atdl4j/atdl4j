@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.core.xmlbeans.StrategyT;
+import br.com.investtools.fix.atdl.core.xmlbeans.UseT;
 import br.com.investtools.fix.atdl.flow.xmlbeans.StateGroupDocument.StateGroup;
 import br.com.investtools.fix.atdl.flow.xmlbeans.StateGroupDocument.StateGroup.EnumItem;
 import br.com.investtools.fix.atdl.flow.xmlbeans.StateGroupDocument.StateGroup.Field;
@@ -26,9 +27,11 @@ import br.com.investtools.fix.atdl.ui.swt.validation.EditUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.StateGroupUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.StateRuleUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.StrategyEditUI;
+import br.com.investtools.fix.atdl.ui.swt.validation.ValueOperatorValidationRule;
 import br.com.investtools.fix.atdl.ui.swt.validation.StateGroupUI.EnumItemUI;
 import br.com.investtools.fix.atdl.ui.swt.validation.StateGroupUI.FieldUI;
 import br.com.investtools.fix.atdl.valid.xmlbeans.EditRefT;
+import br.com.investtools.fix.atdl.valid.xmlbeans.OperatorT;
 import br.com.investtools.fix.atdl.valid.xmlbeans.EditDocument.Edit;
 import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
 
@@ -43,6 +46,7 @@ public class SWTStrategyUI implements StrategyUI {
 
 	private StrategyT strategy;
 
+	@Override
 	public StrategyT getStrategy() {
 		return strategy;
 	}
@@ -81,6 +85,14 @@ public class SWTStrategyUI implements StrategyUI {
 						EditUI rule = RuleFactory.createRule(edit, rules);
 						String id = edit.getId();
 						rules.put(id, rule);
+					}
+				}
+
+				if (parameter.isSetUse()) {
+					if (parameter.getUse().equals(UseT.REQUIRED)) {
+						EditUI requiredFieldRule = new ValueOperatorValidationRule(
+								parameter.getName(), OperatorT.EQ, "");
+						rule.addRequiredFieldRule(requiredFieldRule);
 					}
 				}
 
