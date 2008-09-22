@@ -28,7 +28,7 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 	private ParameterT parameter;
 
 	private DateTime clock;
-	
+
 	private Label label;
 
 	private String localMktTz;
@@ -47,7 +47,6 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 				| SWT.MEDIUM);
 		this.clock = clock;
 		clock.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		
 
 		// tooltip
 		String tooltip = parameter.getTooltip();
@@ -58,7 +57,7 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 
 		if (utcTimeOnly.isSetLocalMktTz())
 			localMktTz = utcTimeOnly.getLocalMktTz();
-		
+
 		// init value
 		if (utcTimeOnly.isSetInitValue()) {
 			Calendar initValue = utcTimeOnly.getInitValue();
@@ -68,7 +67,7 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 			clock.setMinutes(initValue.get(Calendar.MINUTE));
 			clock.setSeconds(initValue.get(Calendar.SECOND));
 		}
-		
+
 		return parent;
 	}
 
@@ -83,7 +82,7 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 		c.clear(Calendar.MILLISECOND);
 		return c.getTime();
 	}
-	
+
 	@Override
 	public void setValue(Date value) {
 		Calendar c = Calendar.getInstance();
@@ -124,7 +123,8 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 		try {
 			return dateFormat.parse(value);
 		} catch (ParseException e) {
-			throw new XmlException( "Unable to parse \"" + value + "\" with format \"HH:mm:ss\"");
+			throw new XmlException("Unable to parse \"" + value
+					+ "\" with format \"HH:mm:ss\"");
 		}
 
 	}
@@ -137,7 +137,7 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 	@Override
 	public void generateStateRuleListener(Listener listener) {
 		clock.addListener(SWT.Selection, listener);
-		
+
 	}
 
 	@Override
@@ -146,6 +146,17 @@ public class UTCTimeOnlyClockParameterWidget implements ParameterWidget<Date> {
 		widgets.add(label);
 		widgets.add(clock);
 		return widgets;
+	}
+
+	@Override
+	public void addListener(Listener listener) {
+		clock.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+				listener));
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		clock.removeListener(SWT.Selection, listener);
 	}
 
 }

@@ -133,4 +133,15 @@ public class UTCDateClockParameterWidget implements ParameterWidget<Date> {
 		return widgets;
 	}
 
+	@Override
+	public void addListener(Listener listener) {
+		clock.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+				listener));
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		clock.removeListener(SWT.Selection, listener);
+	}
+
 }

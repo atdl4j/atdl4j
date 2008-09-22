@@ -23,7 +23,7 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 	private ParameterT parameter;
 
 	private Combo comboBox;
-	
+
 	private Label label;
 
 	private boolean editable;
@@ -44,7 +44,7 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
 		this.label = l;
-		
+
 		// comboBox
 		style = style | SWT.BORDER;
 		if (!editable) {
@@ -67,8 +67,7 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 
 		// init value
 		String initValue = getInitValue(parameter);
-		
-		
+
 		if (initValue != null) {
 			String[] itens = comboBox.getItems();
 			for (int i = 0; i < itens.length; i++) {
@@ -76,26 +75,26 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 					comboBox.select(i);
 			}
 		}
-		
+
 		return parent;
 	}
 
 	private String getInitValue(ParameterT parameter) {
 		if (parameter instanceof CharT) {
 			CharT charT = (CharT) parameter;
-			if (charT.isSetInitValue()) 
+			if (charT.isSetInitValue())
 				return charT.getInitValue();
-			
+
 		} else if (parameter instanceof StringT) {
 			StringT stringT = (StringT) parameter;
-			if (stringT.isSetInitValue()) 
+			if (stringT.isSetInitValue())
 				return stringT.getInitValue();
-			
+
 		}
-		
+
 		return null;
 	}
-	
+
 	public String getValue() {
 		int selection = comboBox.getSelectionIndex();
 
@@ -103,8 +102,8 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 			EnumPairT e = parameter.getEnumPairArray(selection);
 			return e.getWireValue();
 		} else
-		return " ";
-		
+			return " ";
+
 	}
 
 	@Override
@@ -150,6 +149,17 @@ public class ComboBoxParameterWidget implements ParameterWidget<String> {
 		widgets.add(label);
 		widgets.add(comboBox);
 		return widgets;
+	}
+
+	@Override
+	public void addListener(Listener listener) {
+		comboBox.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+				listener));
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		comboBox.removeListener(SWT.Selection, listener);
 	}
 
 }

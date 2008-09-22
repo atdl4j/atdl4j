@@ -27,7 +27,7 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 	private ParameterT parameter;
 
 	private DateTime clock;
-	
+
 	private Label label;
 
 	private String localMktTz;
@@ -40,7 +40,7 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 		Label l = new Label(parent, SWT.NONE);
 		l.setText(WidgetHelper.getLabelText(parameter));
 		this.label = l;
-		
+
 		// clock
 		DateTime clock = new DateTime(parent, style | SWT.BORDER | SWT.TIME
 				| SWT.MEDIUM);
@@ -135,6 +135,17 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 		widgets.add(label);
 		widgets.add(clock);
 		return widgets;
+	}
+
+	@Override
+	public void addListener(Listener listener) {
+		clock.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+				listener));
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		clock.removeListener(SWT.Selection, listener);
 	}
 
 }

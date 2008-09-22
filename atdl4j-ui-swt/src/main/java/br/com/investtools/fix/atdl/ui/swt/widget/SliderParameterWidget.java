@@ -22,7 +22,7 @@ public class SliderParameterWidget implements ParameterWidget<BigDecimal> {
 	private ParameterT parameter;
 
 	private Scale slider;
-	
+
 	private Label label;
 
 	@Override
@@ -75,7 +75,7 @@ public class SliderParameterWidget implements ParameterWidget<BigDecimal> {
 	public void setValue(BigDecimal value) {
 		slider.setSelection(value.intValue());
 	}
-	
+
 	@Override
 	public String getFIXValue() {
 		if (parameter.getFixTag() != null) {
@@ -112,6 +112,17 @@ public class SliderParameterWidget implements ParameterWidget<BigDecimal> {
 		widgets.add(label);
 		widgets.add(slider);
 		return widgets;
+	}
+
+	@Override
+	public void addListener(Listener listener) {
+		slider.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+				listener));
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		slider.removeListener(SWT.Selection, listener);
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.apache.xmlbeans.XmlException;
 
+import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.StrategyEditDocument.StrategyEdit;
@@ -44,9 +45,10 @@ public class StrategyEditUI {
 			try {
 				requiredFieldRule.validate(rules, widgets);
 			} catch (ValidationException e) {
-				String parameterName = e.getWidget().getParameter().getName();
-				throw new ValidationException(e.getWidget(), "Field " + parameterName
-						+ " is required.");
+				ParameterT parameter = e.getWidget().getParameter();
+				String text = getText(parameter);
+				throw new ValidationException(e.getWidget(), "Field \"" + text
+						+ "\" is required.");
 			}
 
 		}
@@ -62,6 +64,11 @@ public class StrategyEditUI {
 			}
 
 		}
+	}
+
+	private String getText(ParameterT parameter) {
+		return parameter.getUiRep() != null ? parameter.getUiRep() : parameter
+				.getName();
 	}
 
 }

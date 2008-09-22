@@ -177,4 +177,18 @@ public class UTCTimeStampClockParameterWidget implements ParameterWidget<Date> {
 		return widgets;
 	}
 
+	@Override
+	public void addListener(Listener listener) {
+		ParameterListenerWrapper wrapper = new ParameterListenerWrapper(this,
+				listener);
+		dateClock.addListener(SWT.Selection, wrapper);
+		timeClock.addListener(SWT.Selection, wrapper);
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		dateClock.removeListener(SWT.Selection, listener);
+		timeClock.removeListener(SWT.Selection, listener);
+	}
+
 }

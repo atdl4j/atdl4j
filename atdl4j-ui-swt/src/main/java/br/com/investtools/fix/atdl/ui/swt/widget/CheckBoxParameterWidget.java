@@ -24,7 +24,7 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 	private ParameterT parameter;
 
 	private Button checkBox;
-	
+
 	private Label label;
 
 	@Override
@@ -39,20 +39,20 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 		// checkBox
 		Button checkBox = new Button(parent, style | SWT.CHECK);
 		this.checkBox = checkBox;
-		
+
 		// tooltip
 		String tooltip = parameter.getTooltip();
 		checkBox.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
 		// init value
-		
+
 		BooleanT booleanT = (BooleanT) parameter;
-		
+
 		if (booleanT.isSetInitValue()) {
 			checkBox.setEnabled(booleanT.getInitValue());
 		}
-		
+
 		return parent;
 	}
 
@@ -125,6 +125,17 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 		widgets.add(label);
 		widgets.add(checkBox);
 		return widgets;
+	}
+
+	@Override
+	public void addListener(Listener listener) {
+		checkBox.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+				listener));
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		checkBox.removeListener(SWT.Selection, listener);
 	}
 
 }

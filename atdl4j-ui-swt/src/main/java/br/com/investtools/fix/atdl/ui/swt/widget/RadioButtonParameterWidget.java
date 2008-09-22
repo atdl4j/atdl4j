@@ -104,7 +104,6 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 		for (Button radioElement : radioButton) {
 			radioElement.addListener(SWT.Selection, listener);
 		}
-
 	}
 
 	@Override
@@ -113,6 +112,33 @@ public class RadioButtonParameterWidget implements ParameterWidget<String> {
 		widgets.add(label);
 		widgets.addAll(radioButton);
 		return widgets;
+	}
+
+	@Override
+	public void addListener(Listener listener) {
+		// wrap around ParameterListener which raises a ParameterEvent
+		Listener wrapper = new ParameterListenerWrapper(this, listener);
+		for (Button b : radioButton) {
+			b.addListener(SWT.Selection, wrapper);
+		}
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		for (Button b : radioButton) {
+			b.removeListener(SWT.Selection, listener);
+			// Listener[] listeners = radio.getListeners(SWT.Selection);
+			// for (int i = 0; i < listeners.length; i++) {
+			// Listener l = listeners[i];
+			// if (l instanceof ParameterListenerWrapper) {
+			// ParameterListenerWrapper wrapper = (ParameterListenerWrapper) l;
+			// if (wrapper.getDelegate() == listener) {
+			// radio.removeListener(SWT.Selection, l);
+			// return;
+			// }
+			// }
+			// }
+		}
 	}
 
 }

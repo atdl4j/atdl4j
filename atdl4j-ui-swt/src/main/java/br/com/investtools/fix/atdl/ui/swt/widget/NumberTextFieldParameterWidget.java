@@ -141,4 +141,15 @@ public class NumberTextFieldParameterWidget implements
 		return widgets;
 	}
 
+	@Override
+	public void addListener(Listener listener) {
+		textField.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+				listener));
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		textField.removeListener(SWT.Selection, listener);
+	}
+
 }

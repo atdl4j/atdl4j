@@ -9,6 +9,7 @@ import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,6 +31,7 @@ import br.com.investtools.fix.atdl.core.xmlbeans.StrategiesDocument;
 import br.com.investtools.fix.atdl.core.xmlbeans.StrategyT;
 import br.com.investtools.fix.atdl.ui.StrategiesUIFactory;
 import br.com.investtools.fix.atdl.ui.StrategyUI;
+import br.com.investtools.fix.atdl.ui.swt.test.SideListener;
 import br.com.investtools.fix.atdl.ui.swt.widget.DebugMouseTrackListener;
 
 public class SWTBuilder {
@@ -171,6 +173,10 @@ public class SWTBuilder {
 		SWTStrategiesUI strategiesUI = (SWTStrategiesUI) factory
 				.create(strategiesDocument);
 		strategyUI = new HashMap<StrategyT, StrategyUI>();
+		
+		Color green = new Color(null, 0, 255, 0);
+		Color yellow = new Color(null, 0, 255, 255);
+		
 		for (StrategyT strategy : strategiesDocument.getStrategies()
 				.getStrategyArray()) {
 			// create TabItem for strategy
@@ -182,12 +188,21 @@ public class SWTBuilder {
 			item.setControl(parent);
 			parent.setLayout(new FillLayout());
 
-			strategyUI.put(strategy, strategiesUI.createUI(strategy, parent));
+			StrategyUI ui = strategiesUI.createUI(strategy, parent);
+
+			SideListener sideListener = new SideListener(parent, yellow, green);
+			ParameterWidget<?> sideWidget = ui.getParameterWidget("Side");
+			if (sideWidget != null) {
+				sideWidget.addListener(sideListener);
+			}
+
+			parent.setBackground(green);
+			strategyUI.put(strategy, ui);
 		}
 		shell.pack();
 
 		// XXX paint the town red debug
-		addDebugMouseTrackListener(tabFolder);
+		//addDebugMouseTrackListener(tabFolder);
 	}
 
 	private static String getText(StrategyT strategy) {
@@ -210,4 +225,5 @@ public class SWTBuilder {
 			}
 		}
 	}
+
 }

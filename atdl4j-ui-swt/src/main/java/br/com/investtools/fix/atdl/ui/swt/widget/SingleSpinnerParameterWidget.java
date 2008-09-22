@@ -389,4 +389,15 @@ public class SingleSpinnerParameterWidget implements
 		return widgets;
 	}
 
+	@Override
+	public void addListener(Listener listener) {
+		spinner.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+				listener));
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		spinner.removeListener(SWT.Selection, listener);
+	}
+
 }

@@ -21,11 +21,12 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 	private ParameterT parameter;
 
 	private Text textField;
-	
+
 	private Label label;
 
 	@Override
-	public Widget createWidget(Composite parent, ParameterT parameter, int style) throws XmlException {
+	public Widget createWidget(Composite parent, ParameterT parameter, int style)
+			throws XmlException {
 		this.parameter = parameter;
 
 		// label
@@ -37,7 +38,7 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 		Text textField = new Text(parent, style | SWT.BORDER);
 		textField
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		
+
 		this.textField = textField;
 
 		// tooltip
@@ -101,6 +102,17 @@ public class StringTextFieldParameterWidget implements ParameterWidget<String> {
 		widgets.add(label);
 		widgets.add(textField);
 		return widgets;
+	}
+
+	@Override
+	public void addListener(Listener listener) {
+		textField.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+				listener));
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		textField.removeListener(SWT.Selection, listener);
 	}
 
 }

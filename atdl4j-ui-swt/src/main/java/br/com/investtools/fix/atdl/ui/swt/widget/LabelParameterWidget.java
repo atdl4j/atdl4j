@@ -61,6 +61,17 @@ public class LabelParameterWidget implements ParameterWidget<String> {
 
 	@Override
 	public void setValue(String value) {
+		// do nothing
+	}
+
+	@Override
+	public void addListener(Listener listener) {
+		// do nothing
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		// do nothing
 	}
 
 }

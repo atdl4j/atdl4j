@@ -429,4 +429,15 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 		return widgets;
 	}
 
+	@Override
+	public void addListener(Listener listener) {
+		dualSpinner.addListener(SWT.Selection, new ParameterListenerWrapper(
+				this, listener));
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		dualSpinner.removeListener(SWT.Selection, listener);
+	}
+
 }

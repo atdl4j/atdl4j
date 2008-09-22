@@ -117,4 +117,19 @@ public class MultiCheckBoxParameterWidget implements ParameterWidget<String> {
 		return widgets;
 	}
 
+	@Override
+	public void addListener(Listener listener) {
+		Listener wrapper = new ParameterListenerWrapper(this, listener);
+		for (Button b : multiCheckBox) {
+			b.addListener(SWT.Selection, wrapper);
+		}
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		for (Button b : multiCheckBox) {
+			b.removeListener(SWT.Selection, listener);
+		}
+	}
+
 }

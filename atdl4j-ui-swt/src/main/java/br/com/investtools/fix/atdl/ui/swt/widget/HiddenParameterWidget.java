@@ -39,7 +39,7 @@ public class HiddenParameterWidget implements ParameterWidget<String> {
 	}
 
 	private String getConstInitValue() {
-		
+
 		if (parameter instanceof BooleanT) {
 			BooleanT booleanT = (BooleanT) parameter;
 			return String.valueOf(booleanT.getInitValue());
@@ -142,6 +142,16 @@ public class HiddenParameterWidget implements ParameterWidget<String> {
 	@Override
 	public List<Control> getControls() {
 		return null;
+	}
+
+	@Override
+	public void addListener(Listener listener) {
+		// do nothing
+	}
+
+	@Override
+	public void removeListener(Listener listener) {
+		// do nothing
 	}
 
 }

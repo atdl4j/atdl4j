@@ -34,5 +34,9 @@ public interface ParameterWidget<E extends Comparable<E>> {
 	public String getFIXValue();
 	
 	public void generateStateRuleListener(Listener listener);
+
+	public void addListener(Listener listener);
+	
+	public void removeListener(Listener listener);
 	
 }
