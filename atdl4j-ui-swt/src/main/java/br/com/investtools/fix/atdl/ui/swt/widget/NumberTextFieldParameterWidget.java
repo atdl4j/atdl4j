@@ -95,7 +95,11 @@ public class NumberTextFieldParameterWidget implements
 
 	@Override
 	public BigDecimal getValue() {
-		return new BigDecimal(textField.getText());
+		try {
+			return new BigDecimal(textField.getText());
+		} catch (NumberFormatException e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -143,7 +147,7 @@ public class NumberTextFieldParameterWidget implements
 
 	@Override
 	public void addListener(Listener listener) {
-		textField.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+		textField.addListener(SWT.Modify, new ParameterListenerWrapper(this,
 				listener));
 	}
 

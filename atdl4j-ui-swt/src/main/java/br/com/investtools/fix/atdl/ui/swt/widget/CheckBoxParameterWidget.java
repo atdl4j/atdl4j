@@ -50,7 +50,7 @@ public class CheckBoxParameterWidget implements ParameterWidget<Boolean> {
 		BooleanT booleanT = (BooleanT) parameter;
 
 		if (booleanT.isSetInitValue()) {
-			checkBox.setEnabled(booleanT.getInitValue());
+			checkBox.setSelection(booleanT.getInitValue());
 		}
 
 		return parent;

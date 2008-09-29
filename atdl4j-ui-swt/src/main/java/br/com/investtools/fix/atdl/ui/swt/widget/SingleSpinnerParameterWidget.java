@@ -49,7 +49,7 @@ public class SingleSpinnerParameterWidget implements
 		this.label = l;
 
 		// spinner
-		Spinner spinner = new Spinner(parent, style | SWT.BORDER);
+		Spinner spinner = new Spinner(parent, style | SWT.BORDER );
 		this.spinner = spinner;
 		spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
@@ -342,8 +342,12 @@ public class SingleSpinnerParameterWidget implements
 
 	@Override
 	public BigDecimal getValue() {
-		return new BigDecimal(BigInteger.valueOf(spinner.getSelection()),
-				spinner.getDigits());
+		try {
+			return new BigDecimal(BigInteger.valueOf(spinner.getSelection()),
+					spinner.getDigits());
+		} catch (NumberFormatException e) {
+			return null;
+		}
 	}
 
 	@Override

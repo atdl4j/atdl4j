@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.apache.xmlbeans.XmlException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -107,15 +108,15 @@ public class LocalMktTimeClockParameterWidget implements ParameterWidget<Date> {
 	}
 
 	@Override
-	public Date convertValue(String value) {
+	public Date convertValue(String value) throws XmlException {
 		// TODO reset timezone here?
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
 		try {
 			return dateFormat.parse(value);
 		} catch (ParseException e) {
-			// exception
+			throw new XmlException("Unable to parse \"" + value
+					+ "\" with format \"yyyyMMdd-HH:mm:ss\"");
 		}
-		return new Date();
 
 	}
 
