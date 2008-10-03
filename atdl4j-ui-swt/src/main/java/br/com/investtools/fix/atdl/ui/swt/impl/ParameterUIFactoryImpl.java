@@ -1,4 +1,4 @@
-package br.com.investtools.fix.atdl.ui.swt;
+package br.com.investtools.fix.atdl.ui.swt.impl;
 
 import org.apache.xmlbeans.XmlException;
 
@@ -24,6 +24,8 @@ import br.com.investtools.fix.atdl.core.xmlbeans.UTCTimeOnlyT;
 import br.com.investtools.fix.atdl.core.xmlbeans.UTCTimeStampT;
 import br.com.investtools.fix.atdl.layout.xmlbeans.ComponentT;
 import br.com.investtools.fix.atdl.layout.xmlbeans.ComponentT.Enum;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUIFactory;
 import br.com.investtools.fix.atdl.ui.swt.widget.CheckBoxParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.ComboBoxParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.DualSpinnerParameterWidget;
@@ -42,14 +44,14 @@ import br.com.investtools.fix.atdl.ui.swt.widget.UTCTimeOnlyClockParameterWidget
 import br.com.investtools.fix.atdl.ui.swt.widget.UTCTimeStampClockParameterWidget;
 
 /**
- * Factory that creates the appropriate ParameterWidget depending on the
- * parameter control type and value type.
+ * Factory that creates the appropriate ParameterUI depending on the parameter
+ * control type and value type.
  * 
  */
-public class ParameterWidgetFactoryImpl implements ParameterWidgetFactory {
+public class ParameterUIFactoryImpl implements ParameterUIFactory {
 
 	@Override
-	public ParameterWidget<?> create(ParameterT parameter) throws XmlException {
+	public ParameterUI<?> create(ParameterT parameter) throws XmlException {
 		Enum type = parameter.getControlType();
 		if (type != null) {
 			// user defined a specific control type
@@ -64,7 +66,7 @@ public class ParameterWidgetFactoryImpl implements ParameterWidgetFactory {
 			} else if (type == ComponentT.LABEL) {
 				return new LabelParameterWidget();
 			} else if (type == ComponentT.TEXT_FIELD) {
-				
+
 				if (parameter instanceof CharT) {
 					// limited textfield
 					return new StringTextFieldParameterWidget();
@@ -93,13 +95,13 @@ public class ParameterWidgetFactoryImpl implements ParameterWidgetFactory {
 				} else if (parameter instanceof TagNumT) {
 					return new NumberTextFieldParameterWidget();
 				}
-				
+
 			} else if (type == ComponentT.SLIDER) {
 				return new SliderParameterWidget();
 			} else if (type == ComponentT.MULTI_CHECK_BOX) {
 				return new MultiCheckBoxParameterWidget();
 			} else if (type == ComponentT.CLOCK) {
-				
+
 				if (parameter instanceof LocalMktTimeT) {
 					return new LocalMktTimeClockParameterWidget();
 				} else if (parameter instanceof MonthYearT) {
