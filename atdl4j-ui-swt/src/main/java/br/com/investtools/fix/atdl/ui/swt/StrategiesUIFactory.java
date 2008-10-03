@@ -1,4 +1,4 @@
-package br.com.investtools.fix.atdl.ui;
+package br.com.investtools.fix.atdl.ui.swt;
 
 import org.apache.xmlbeans.XmlException;
 

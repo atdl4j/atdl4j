@@ -18,10 +18,12 @@ import org.eclipse.swt.widgets.Widget;
 import br.com.investtools.fix.atdl.core.xmlbeans.FloatT;
 import br.com.investtools.fix.atdl.core.xmlbeans.IntT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.util.NumberFormatVerifyListener;
+import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
+import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
 
-public class NumberTextFieldParameterWidget implements
-		ParameterWidget<BigDecimal> {
+public class NumberTextFieldParameterWidget implements ParameterUI<BigDecimal> {
 
 	private ParameterT parameter;
 

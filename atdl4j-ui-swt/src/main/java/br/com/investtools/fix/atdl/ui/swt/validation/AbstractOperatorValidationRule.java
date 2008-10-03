@@ -3,8 +3,9 @@ package br.com.investtools.fix.atdl.ui.swt.validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
-import br.com.investtools.fix.atdl.ui.swt.ValidationException;
+import br.com.investtools.fix.atdl.ui.swt.EditUI;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.exceptions.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.OperatorT;
 import br.com.investtools.fix.atdl.valid.xmlbeans.OperatorT.Enum;
 
@@ -21,7 +22,7 @@ public abstract class AbstractOperatorValidationRule implements EditUI {
 			.getLogger(AbstractOperatorValidationRule.class);
 
 	@SuppressWarnings("unchecked")
-	protected void validateValues(ParameterWidget<?> widget, Object value1,
+	protected void validateValues(ParameterUI<?> widget, Object value1,
 			Enum operator, Object value2) {
 		switch (operator.intValue()) {
 		case OperatorT.INT_EQ:

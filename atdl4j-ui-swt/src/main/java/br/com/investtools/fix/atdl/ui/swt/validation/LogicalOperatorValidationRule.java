@@ -6,8 +6,9 @@ import java.util.Map;
 
 import org.apache.xmlbeans.XmlException;
 
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
-import br.com.investtools.fix.atdl.ui.swt.ValidationException;
+import br.com.investtools.fix.atdl.ui.swt.EditUI;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.exceptions.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.LogicOperatorT;
 import br.com.investtools.fix.atdl.valid.xmlbeans.LogicOperatorT.Enum;
 
@@ -35,7 +36,8 @@ public class LogicalOperatorValidationRule implements EditUI {
 
 	@Override
 	public void validate(Map<String, EditUI> rules,
-			Map<String, ParameterWidget<?>> widgets) throws ValidationException, XmlException {
+			Map<String, ParameterUI<?>> widgets) throws ValidationException,
+			XmlException {
 
 		ValidationException ex = null;
 
@@ -43,29 +45,24 @@ public class LogicalOperatorValidationRule implements EditUI {
 		case LogicOperatorT.INT_AND:
 
 			// AND com curto circuito
-			
-			  for (EditUI rule : this.rules) { 
-					try {
-						rule.validate(rules, widgets);
-					} catch (ValidationException e) {
-						throw e;
-					}
-			  }
-			 
 
-			// AND sem curto circuito, relancando o ultimo erro
-			/*for (ValidationRule rule : this.rules) {
+			for (EditUI rule : this.rules) {
 				try {
-					rule.validate(strategyEdit, rules, widgets);
+					rule.validate(rules, widgets);
 				} catch (ValidationException e) {
-					ex = e;
+					throw e;
 				}
 			}
-			if (ex != null) {
-				throw ex;
-			}*/
 
-		break;
+			// AND sem curto circuito, relancando o ultimo erro
+			/*
+			 * for (ValidationRule rule : this.rules) { try {
+			 * rule.validate(strategyEdit, rules, widgets); } catch
+			 * (ValidationException e) { ex = e; } } if (ex != null) { throw ex;
+			 * }
+			 */
+
+			break;
 
 		case LogicOperatorT.INT_OR:
 
@@ -73,9 +70,9 @@ public class LogicalOperatorValidationRule implements EditUI {
 
 			// OR sem curto circuito
 			/*
-			 * for (ValidationRule rule : rules) { try { rule.validate(); valid =
-			 * true; } catch (ValidationException e) { ex = e; } } if (!valid) {
-			 * throw ex; }
+			 * for (ValidationRule rule : rules) { try { rule.validate(); valid
+			 * = true; } catch (ValidationException e) { ex = e; } } if (!valid)
+			 * { throw ex; }
 			 */
 
 			// OR com curto circuito
@@ -118,14 +115,14 @@ public class LogicalOperatorValidationRule implements EditUI {
 				}
 
 				if (i == this.rules.size() - 1) {
-					
-					ParameterWidget<?> parameter = null;
+
+					ParameterUI<?> parameter = null;
 					for (int j = 0; j < this.rules.size(); j++) {
 						EditUI rule = this.rules.get(i);
 						if (rule instanceof ParameterValidationRule) {
 							ParameterValidationRule r = (ParameterValidationRule) rule;
 							parameter = r.getParameter();
-						} 
+						}
 					}
 					throw new ValidationException(parameter);
 
@@ -147,13 +144,13 @@ public class LogicalOperatorValidationRule implements EditUI {
 			if (ex == null) {
 
 				EditUI rule = this.rules.get(0);
-				ParameterWidget<?> parameter = null;
+				ParameterUI<?> parameter = null;
 				if (rule instanceof ParameterValidationRule) {
 					ParameterValidationRule r = (ParameterValidationRule) rule;
 					parameter = r.getParameter();
 				}
 				throw new ValidationException(parameter);
-				
+
 			}
 
 			break;

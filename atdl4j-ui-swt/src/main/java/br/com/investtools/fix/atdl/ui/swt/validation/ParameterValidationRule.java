@@ -1,6 +1,7 @@
 package br.com.investtools.fix.atdl.ui.swt.validation;
 
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.EditUI;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 
 /**
  * Validation rule based on a single Parameter.
@@ -10,6 +11,6 @@ import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
  */
 public interface ParameterValidationRule extends EditUI {
 
-	public ParameterWidget<?> getParameter();
+	public ParameterUI<?> getParameter();
 
 }

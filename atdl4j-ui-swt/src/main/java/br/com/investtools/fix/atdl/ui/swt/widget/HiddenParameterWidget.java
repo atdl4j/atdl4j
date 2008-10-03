@@ -25,9 +25,9 @@ import br.com.investtools.fix.atdl.core.xmlbeans.TagNumT;
 import br.com.investtools.fix.atdl.core.xmlbeans.UTCDateT;
 import br.com.investtools.fix.atdl.core.xmlbeans.UTCTimeOnlyT;
 import br.com.investtools.fix.atdl.core.xmlbeans.UTCTimeStampT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 
-public class HiddenParameterWidget implements ParameterWidget<String> {
+public class HiddenParameterWidget implements ParameterUI<String> {
 
 	private ParameterT parameter;
 

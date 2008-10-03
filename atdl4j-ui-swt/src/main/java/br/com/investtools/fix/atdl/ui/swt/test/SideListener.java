@@ -5,8 +5,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import br.com.investtools.fix.atdl.ui.swt.ParameterEvent;
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.impl.ParameterEvent;
 
 public class SideListener implements Listener {
 
@@ -23,14 +23,34 @@ public class SideListener implements Listener {
 	@Override
 	public void handleEvent(Event event) {
 		if (event instanceof ParameterEvent) {
-			ParameterWidget<?> pw = ((ParameterEvent) event).getParameter();
+			ParameterUI<?> pw = ((ParameterEvent) event).getParameter();
 			Object value = pw.getValue();
 			if (value != null) {
 				if (value.toString().equals("0")) {
-					composite.setBackground(buyColor);
+					for (int i = 0; i < composite.getChildren().length; i++) {
+						composite.getChildren()[i].setBackground(buyColor);
+						if (composite.getChildren()[i] instanceof Composite) {
+							Composite innerComposite = (Composite) composite
+									.getChildren()[i];
+							for (int j = 0; j < innerComposite.getChildren().length; j++) {
+								innerComposite.getChildren()[j]
+										.setBackground(buyColor);
+							}
+						}
+					}
 					composite.getParent().setBackground(buyColor);
 				} else if (value.toString().equals("1")) {
-					composite.setBackground(sellColor);
+					for (int i = 0; i < composite.getChildren().length; i++) {
+						composite.getChildren()[i].setBackground(sellColor);
+						if (composite.getChildren()[i] instanceof Composite) {
+							Composite innerComposite = (Composite) composite
+									.getChildren()[i];
+							for (int j = 0; j < innerComposite.getChildren().length; j++) {
+								innerComposite.getChildren()[j]
+										.setBackground(sellColor);
+							}
+						}
+					}
 					composite.getParent().setBackground(sellColor);
 				}
 			}

@@ -14,9 +14,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
 
-public class StringTextFieldParameterWidget implements ParameterWidget<String> {
+public class StringTextFieldParameterWidget implements ParameterUI<String> {
 
 	private ParameterT parameter;
 

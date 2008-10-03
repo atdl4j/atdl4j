@@ -9,7 +9,7 @@ import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyPanelDocument.Strateg
 
 public interface PanelFactory {
 
-	public Map<String, ParameterWidget<?>> create(Composite parent,
+	public Map<String, ParameterUI<?>> create(Composite parent,
 			StrategyPanel panel, int style) throws XmlException;
 
 }

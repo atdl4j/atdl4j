@@ -23,15 +23,16 @@ import br.com.investtools.fix.atdl.core.xmlbeans.PercentageT;
 import br.com.investtools.fix.atdl.core.xmlbeans.PriceOffsetT;
 import br.com.investtools.fix.atdl.core.xmlbeans.PriceT;
 import br.com.investtools.fix.atdl.core.xmlbeans.QtyT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
+import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
 
 /**
  * Widget for a spinner based parameters. The value is always represented by a
  * BigDecimal.
  * 
  */
-public class SingleSpinnerParameterWidget implements
-		ParameterWidget<BigDecimal> {
+public class SingleSpinnerParameterWidget implements ParameterUI<BigDecimal> {
 
 	private ParameterT parameter;
 
@@ -49,7 +50,7 @@ public class SingleSpinnerParameterWidget implements
 		this.label = l;
 
 		// spinner
-		Spinner spinner = new Spinner(parent, style | SWT.BORDER );
+		Spinner spinner = new Spinner(parent, style | SWT.BORDER);
 		this.spinner = spinner;
 		spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -26,9 +28,11 @@ import br.com.investtools.fix.atdl.core.xmlbeans.PercentageT;
 import br.com.investtools.fix.atdl.core.xmlbeans.PriceOffsetT;
 import br.com.investtools.fix.atdl.core.xmlbeans.PriceT;
 import br.com.investtools.fix.atdl.core.xmlbeans.QtyT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
+import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
 
-public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
+public class DualSpinnerParameterWidget implements ParameterUI<BigDecimal> {
 
 	private ParameterT parameter;
 
@@ -39,6 +43,32 @@ public class DualSpinnerParameterWidget implements ParameterWidget<BigDecimal> {
 	private Button buttonUp;
 
 	private Button buttonDown;
+
+	/**
+	 * SelectionListener that implements the dual spinner behaviour.
+	 * 
+	 */
+	public class DualSpinnerSelection implements SelectionListener {
+
+		private Spinner spinner;
+
+		private int increment;
+
+		public DualSpinnerSelection(Spinner spinner, int increment) {
+			this.spinner = spinner;
+			this.increment = increment;
+		}
+
+		@Override
+		public void widgetDefaultSelected(SelectionEvent event) {
+		}
+
+		@Override
+		public void widgetSelected(SelectionEvent event) {
+			spinner.setSelection(spinner.getSelection() + increment);
+		}
+
+	}
 
 	@Override
 	public Widget createWidget(Composite parent, ParameterT parameter, int style) {

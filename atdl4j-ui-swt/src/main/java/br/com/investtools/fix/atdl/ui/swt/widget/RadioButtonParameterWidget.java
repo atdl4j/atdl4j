@@ -14,9 +14,11 @@ import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.EnumPairT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
+import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
 
-public class RadioButtonParameterWidget implements ParameterWidget<String> {
+public class RadioButtonParameterWidget implements ParameterUI<String> {
 
 	private ParameterT parameter;
 

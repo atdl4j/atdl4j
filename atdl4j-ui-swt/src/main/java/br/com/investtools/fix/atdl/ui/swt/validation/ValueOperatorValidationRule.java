@@ -4,8 +4,9 @@ import java.util.Map;
 
 import org.apache.xmlbeans.XmlException;
 
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
-import br.com.investtools.fix.atdl.ui.swt.ValidationException;
+import br.com.investtools.fix.atdl.ui.swt.EditUI;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.exceptions.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.OperatorT.Enum;
 
 /**
@@ -29,11 +30,11 @@ public class ValueOperatorValidationRule extends AbstractOperatorValidationRule 
 
 	@Override
 	public void validate(Map<String, EditUI> rules,
-			Map<String, ParameterWidget<?>> widgets)
-			throws ValidationException, XmlException {
+			Map<String, ParameterUI<?>> widgets) throws ValidationException,
+			XmlException {
 
 		// get the widget from context using field name
-		ParameterWidget<?> widget = widgets.get(field);
+		ParameterUI<?> widget = widgets.get(field);
 		if (widget == null) {
 			throw new XmlException("No widget defined for field \"" + field
 					+ "\" in this context");

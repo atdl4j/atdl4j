@@ -3,18 +3,19 @@ package br.com.investtools.fix.atdl.ui.swt.validation;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
-import br.com.investtools.fix.atdl.ui.swt.ValidationException;
+import br.com.investtools.fix.atdl.ui.swt.EditUI;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.exceptions.ValidationException;
 
 public class CheckBoundsValidationRule implements EditUI {
 
-	private ParameterWidget<BigDecimal> widget;
+	private ParameterUI<BigDecimal> widget;
 
 	private Number min;
 
 	private Number max;
 
-	public CheckBoundsValidationRule(ParameterWidget<BigDecimal> widget,
+	public CheckBoundsValidationRule(ParameterUI<BigDecimal> widget,
 			Number min, Number max) {
 		this.widget = widget;
 		this.min = min;
@@ -23,7 +24,7 @@ public class CheckBoundsValidationRule implements EditUI {
 
 	@Override
 	public void validate(Map<String, EditUI> rules,
-			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
+			Map<String, ParameterUI<?>> widgets) throws ValidationException {
 		BigDecimal n = widget.getValue();
 
 		if (n.doubleValue() < min.doubleValue()) {

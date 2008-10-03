@@ -2,8 +2,9 @@ package br.com.investtools.fix.atdl.ui.swt.validation;
 
 import java.util.Map;
 
-import br.com.investtools.fix.atdl.ui.swt.ParameterWidget;
-import br.com.investtools.fix.atdl.ui.swt.ValidationException;
+import br.com.investtools.fix.atdl.ui.swt.EditUI;
+import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
+import br.com.investtools.fix.atdl.ui.swt.exceptions.ValidationException;
 import br.com.investtools.fix.atdl.valid.xmlbeans.OperatorT.Enum;
 
 /**
@@ -30,10 +31,10 @@ public class Field2OperatorValidationRule extends
 
 	@Override
 	public void validate(Map<String, EditUI> rules,
-			Map<String, ParameterWidget<?>> widgets) throws ValidationException {
+			Map<String, ParameterUI<?>> widgets) throws ValidationException {
 
 		// get the widget from context using field name
-		ParameterWidget<?> widget = widgets.get(field);
+		ParameterUI<?> widget = widgets.get(field);
 		if (widget == null) {
 			throw new ValidationException(null,
 					"No widget defined for field \"" + field
@@ -42,7 +43,7 @@ public class Field2OperatorValidationRule extends
 		Object fieldValue = widget.getValue();
 
 		// get the widget from context using field2 name
-		ParameterWidget<?> widget2 = widgets.get(field2);
+		ParameterUI<?> widget2 = widgets.get(field2);
 		if (widget2 == null) {
 			throw new ValidationException(null,
 					"No widget defined for field2 \"" + field2
