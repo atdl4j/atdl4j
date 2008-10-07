@@ -37,6 +37,28 @@
 					</programs>
 				</configuration>
 			</plugin>
+			<plugin>
+			  <artifactId>maven-assembly-plugin</artifactId>
+			  <configuration>
+			    <descriptorRefs>
+			      <descriptorRef>jar-with-dependencies</descriptorRef>
+			    </descriptorRefs>
+				<archive>
+					<manifest>
+						<mainClass>br.com.investtools.fix.atdl.ui.swt.test.applications.SWTBuilder</mainClass>
+					</manifest>
+				</archive>
+			  </configuration>
+			  <executions>
+			    <execution>
+			      <id>make-assembly</id> 
+			      <phase>package</phase> 
+			      <goals>
+			        <goal>attached</goal> 
+			      </goals>
+			    </execution>
+			  </executions>
+			</plugin>
 		</plugins>
 	</build>
 	<repositories>
