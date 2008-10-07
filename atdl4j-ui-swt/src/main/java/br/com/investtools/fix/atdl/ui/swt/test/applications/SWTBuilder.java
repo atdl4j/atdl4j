@@ -150,7 +150,10 @@ public class SWTBuilder {
 					messageBox.setMessage(ex.getMessage());
 					messageBox.open();
 				} catch (Exception ex) {
-					// TODO on generic exception...
+					MessageBox messageBox = new MessageBox(shell, SWT.OK
+							| SWT.ICON_ERROR);
+					messageBox.setMessage("Generic exception occurred: " + ex.toString());
+					messageBox.open();
 				}
 			}
 		});
