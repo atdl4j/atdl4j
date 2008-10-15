@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<strategies
+	xmlns="http://www.fixprotocol.org/working_groups/algowg/documents/ATDL-core-v2.4.9.xsd"
+	xmlns:val="http://www.fixprotocol.org/working_groups/algowg/documents/ATDL-valid-v2.4.9.xsd"
+	xmlns:lay="http://www.fixprotocol.org/working_groups/algowg/documents/ATDL-layout-v2.4.9.xsd"
+	xmlns:flow="http://www.fixprotocol.org/working_groups/algowg/documents/ATDL-flow-v2.4.9.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.fixprotocol.org/working_groups/algowg/documents/ATDL-core-v2.4.9.xsd ATDL-core-v2.4.9.xsd"
+	strategyIdentifierTag="7620"
+	versionIdentifierTag="7621">
+	
+	<strategy name="Tazer" uiRep="Tazer" wireValue="Tazer" version="1" fixMsgType="D" providerID="ABC" >
+		<lay:strategyLayout>
+			<lay:strategyPanel collapsible="false" orientation="VERTICAL">
+				<lay:strategyPanel title="Time Parameters" collapsible="true" orientation="HORIZONTAL">	
+					<parameter
+						name="StartTime" xsi:type="UTCTimeStamp_t" type="19"
+						uiRep="Start Time" 
+						fixTag="7602"
+						use="required"
+						mutableOnCxlRpl="true"
+						localMktTz="Americas/New_York"
+						lay:controlType="Clock"/>
+					<parameter
+						name="EndTime" xsi:type="UTCTimeStamp_t" type="19"
+						uiRep="End Time"
+						fixTag="7603"
+						use="required"
+						mutableOnCxlRpl="true"
+						initValue="16:00:00"
+						localMktTz="Americas/New_York"
+						lay:controlType="Clock"/>
+					<parameter
+						name="Text" xsi:type="String_t" type="14"
+						uiRep="Text"
+						fixTag="9999"
+						use="required"
+						mutableOnCxlRpl="true"
+						lay:controlType="TextField"/>
+				</lay:strategyPanel>
+				<lay:strategyPanel collapsible="false" orientation="HORIZONTAL">
+					<parameter
+						name="SweepDistribution" xsi:type="Char_t" type="12"
+						uiRep="Sweep Distribution"
+						fixTag="7640"
+						use="required"
+						mutableOnCxlRpl="true"
+						initValue="U"
+						lay:controlType="DropDownList">
+							<enumPair uiRep="Uniform" wireValue="U"/>
+							<enumPair uiRep="Gaussian" wireValue="G"/>
+					</parameter>
+					<parameter
+						name="Variance" xsi:type="Float_t" type="6"
+						uiRep="Varaince"
+						fixTag="7641"
+						use="optional"
+						mutableOnCxlRpl="true"
+						minValue="0.01"
+						maxValue="0.50"
+						lay:controlType="TextField">
+							<flow:stateRule enabled="true">
+								<val:edit field="SweepDistribution" operator="EQ" value="G"/>
+							</flow:stateRule>
+							<flow:stateRule visible="true">
+								<val:edit field="SweepDistribution" operator="EQ" value="U"/>
+							</flow:stateRule>
+						</parameter>
+					<parameter
+						name="Aggression" xsi:type="Char_t" type="12"
+						uiRep="Aggression"
+						fixTag="7643"
+						use="required"
+						mutableOnCxlRpl="true"
+						initValue="M"
+						lay:controlType="DropDownList">
+							<enumPair uiRep="Low" wireValue="L"/>
+							<enumPair uiRep="Medium" wireValue="M"/>
+							<enumPair uiRep="High" wireValue="H"/>
+					</parameter>
+					<parameter
+							name="DecayRate" xsi:type="Float_t" type="6"
+							uiRep="Decay Rate"
+							fixTag="7614"
+							use="required"
+							mutableOnCxlRpl="true"
+							minValue="0.01"
+							maxValue="3.00"
+							initValue="0.05"
+							lay:controlType="SingleSpinner">
+						</parameter>
+				</lay:strategyPanel>
+			</lay:strategyPanel>
+		</lay:strategyLayout>
+		
+		<val:strategyEdit errorMessage="End Time should be later than Start Time">
+			<val:edit field="EndTime" operator="GT" field2="StartTime"/>
+		</val:strategyEdit>
+		
+		<val:strategyEdit errorMessage="Variance is required when Sweep Distribution is Gaussian.">
+			<val:edit logicOperator="OR">
+				<val:edit field="SweepDistribution" operator="NE" value="G"/>
+				<val:edit logicOperator="AND">
+					<val:edit field="SweepDistribution" operator="EQ" value="G"/>
+					<val:edit field="Variance" operator="EX"/>
+				</val:edit>
+			</val:edit>
+		</val:strategyEdit>
+		
+		<val:strategyEdit errorMessage="Variance must be between 0 and 2.0">
+			<val:edit logicOperator="OR">
+				<val:edit field="SweepDistribution" operator="NE" value="G"/>
+				<val:edit logicOperator="AND">
+					<val:edit field="SweepDistribution" operator="EQ" value="G"/>
+					<val:edit field="Variance" operator="EX"/>
+					<val:edit field="Variance" operator="GT" value="0.0"/>
+					<val:edit field="Variance" operator="LT" value="2.0"/>
+				</val:edit>
+			</val:edit>
+		</val:strategyEdit>
+		
+  	</strategy>
+
+	<strategy name="Arrival Price" uiRep="Arrival Price" wireValue="AP" version="1" fixMsgType="D" providerID="ABC" >
+		<lay:strategyLayout>
+			<lay:strategyPanel collapsible="false" orientation="VERTICAL">
+				<lay:strategyPanel title="Time Parameters" collapsible="true" orientation="HORIZONTAL">	
+					<parameter name="StartTime" xsi:type="UTCTimeStamp_t" type="19"
+						uiRep="Start Time" 
+						fixTag="7602"
+						use="required"
+						mutableOnCxlRpl="true"
+						localMktTz="Americas/New_York"
+						lay:controlType="Clock"/>
+					<parameter
+						name="EndTime" xsi:type="UTCTimeStamp_t" type="19"
+						uiRep="End Time"
+						fixTag="7603"
+						use="required"
+						mutableOnCxlRpl="true"
+						initValue="16:00:00"
+						localMktTz="Americas/New_York"
+						lay:controlType="Clock"/>
+					<parameter
+						name="AConstVal" xsi:type="String_t" type="14"
+						fixTag="8603"
+						use="required"
+						const="true"
+						mutableOnCxlRpl="false"
+						initValue="QWERTY"/>
+				</lay:strategyPanel>
+				<lay:strategyPanel collapsible="false" orientation="HORIZONTAL">
+					<lay:strategyPanel title="Advanced" collapsible="true" orientation="VERTICAL">
+						<parameter
+							name="DiscretionAbove" xsi:type="Int_t" type="1"
+							uiRep="Discretion Above"
+							fixTag="7610"
+							use="required"
+							mutableOnCxlRpl="true"
+							minValue="1"
+							maxValue="100"
+							initValue="100"
+							lay:controlType="SingleSpinner"/>
+						<parameter
+							name="DiscretionBelow" xsi:type="Int_t" type="1"
+							uiRep="Discretion Below"
+							fixTag="7609"
+							use="required"
+							mutableOnCxlRpl="true"
+							minValue="1"
+							maxValue="100"
+							initValue="20"
+							lay:controlType="SingleSpinner"/>
+					</lay:strategyPanel>
+					<lay:strategyPanel title="More" collapsible="true" orientation="VERTICAL">
+						<parameter
+							name="AlphaPeriod" xsi:type="Int_t" type="1"
+							uiRep="AlphaPeriod"
+							fixTag="7612"
+							use="required"
+							mutableOnCxlRpl="true"
+							minValue="1"
+							maxValue="300"
+							initValue="90"
+							lay:controlType="SingleSpinner">
+							<flow:stateRule enabled="true">
+								<val:edit field="DiscretionAbove" operator="GT" value="50"/>
+							</flow:stateRule>
+						</parameter>
+						<parameter
+							name="AlphaAnnual" xsi:type="Float_t" type="6"
+							uiRep="AlphaAnnual"
+							fixTag="7614"
+							use="required"
+							mutableOnCxlRpl="true"
+							minValue="-1000"
+							maxValue="1000"
+							initValue="0"
+							lay:controlType="SingleSpinner">
+							<flow:stateRule visible="false">
+								<val:edit field="TimeInForce" operator="EQ" value="Day"/>
+							</flow:stateRule>
+						</parameter>
+					</lay:strategyPanel>
+					<lay:strategyPanel title="More" collapsible="true" orientation="VERTICAL">
+						<parameter
+							name="Lambda" xsi:type="Float_t" type="6"
+							uiRep="Lambda"
+							fixTag="7628"
+							use="required"
+							mutableOnCxlRpl="true"
+							minValue="0"
+							maxValue="6"
+							lay:controlType="SingleSpinner">
+							<flow:stateRule enabled="true">
+								<val:edit field="Price" operator="GT" field2="DiscretionBelow"/>
+							</flow:stateRule>
+						</parameter>
+						<parameter
+								name="Buyback" xsi:type="Boolean_t" type="13"
+								uiRep="Buyback"
+								fixTag="7639"
+								use="required"
+								mutableOnCxlRpl="true"
+								initValue="false"
+								lay:controlType="CheckBox"/>
+					</lay:strategyPanel>
+					<lay:strategyPanel title="More" collapsible="true" orientation="VERTICAL">
+						<parameter
+								name="CrossDiscretion" xsi:type="Int_t" type="1"
+								uiRep="Cross Discretion"
+								fixTag="9999"
+								use="required"
+								mutableOnCxlRpl="true"
+								initValue="100"
+								lay:controlType="SingleSpinner">
+						</parameter>
+						<parameter
+								name="BlockSweeper" xsi:type="Int_t" type="1"
+								uiRep="Block Sweeper"
+								fixTag="7641"
+								use="optional"
+								mutableOnCxlRpl="true"
+								minValue="1"
+								maxValue="10000000"
+								lay:controlType="TextField"/>
+						<!--
+						<parameter
+								name="BlockSweeper2" xsi:type="Int_t" type="1"
+								uiRep="Block Sweeper2"
+								fixTag="7642"
+								use="optional"
+								mutableOnCxlRpl="true"
+								minValue="1"
+								maxValue="10000000"
+								lay:controlType="TextField">
+								<enumPair uiRep="value 1" wireValue="1"/>
+						</parameter>
+						-->
+					</lay:strategyPanel>
+				</lay:strategyPanel>
+			</lay:strategyPanel>
+		</lay:strategyLayout>
+	
+	<!-- <constTag fixTag="7600" wireValue="ALG" overrideUserInput="true" appendUserInput="false"/> -->
+		
+		<val:strategyEdit errorMessage="End Time should be later than Start Time">
+			<val:edit field="EndTime" operator="GT" field2="StartTime"/>
+		</val:strategyEdit>
+		
+		<val:strategyEdit errorMessage="Cross Discretion must be 100 if entered.">
+			<val:edit logicOperator="OR">
+				<val:edit field="CrossDiscretion" operator="NX"/>
+				<val:edit field="CrossDiscretion" operator="EQ" value="100"/>
+			</val:edit>
+		</val:strategyEdit>
+		
+		<val:strategyEdit errorMessage="OrdType must be Market">
+	    	<val:edit field="OrdType" operator="EQ" value="Market"/>
+	    </val:strategyEdit>
+
+  	</strategy>
+	
+	<strategy name="TWAP" uiRep="TWAP" wireValue="TW" version="1" fixMsgType="D" providerID="ABC" >
+		<lay:strategyLayout>
+			<lay:strategyPanel collapsible="false" orientation="VERTICAL">
+				<lay:strategyPanel collapsible="false" orientation="HORIZONTAL">
+					<parameter
+						name="StartTime" xsi:type="UTCTimeStamp_t" type="19"
+						uiRep="Start Time" 
+						fixTag="7602"
+						use="required"
+						mutableOnCxlRpl="true"
+						localMktTz="Americas/New_York"
+						lay:controlType="Clock"/>
+					<parameter
+						name="EndTime" xsi:type="UTCTimeStamp_t" type="19"
+						uiRep="End Time"
+						fixTag="7603"
+						use="required"
+						mutableOnCxlRpl="true"
+						localMktTz="Americas/New_York"
+						lay:controlType="Clock"/>
+				</lay:strategyPanel>
+				<lay:strategyPanel collapsible="false" orientation="HORIZONTAL">
+					<parameter
+						name="DiscretionBelow" xsi:type="Int_t" type="1"
+						uiRep="Discretion Below"
+						fixTag="7609"
+						use="required"
+						mutableOnCxlRpl="true"
+						minValue="1"
+						maxValue="100"
+						initValue="10"
+						lay:controlType="SingleSpinner"/>
+					<parameter
+						name="DiscretionAbove" xsi:type="Int_t" type="1"
+						uiRep="Discretion Above"
+						fixTag="7610"
+						use="required"
+						mutableOnCxlRpl="true"
+						minValue="1"
+						maxValue="100"
+						initValue="10"
+						lay:controlType="SingleSpinner"/>
+					<parameter
+						name="CrossDiscretion" xsi:type="Int_t" type="1"
+						uiRep="Cross Discretion"
+						fixTag="7640"
+						use="required"
+						mutableOnCxlRpl="true"
+						initValue="100"
+						lay:controlType="SingleSpinner"/>
+					<parameter
+						name="BlockSweeper" xsi:type="Int_t" type="1"
+						uiRep="Block Sweeper"
+						fixTag="7641"
+						use="optional"
+						mutableOnCxlRpl="true"
+						minValue="1"
+						maxValue="10000000"
+						lay:controlType="TextField"/>
+					<parameter
+						name="Buyback" xsi:type="Boolean_t" type="13"
+						uiRep="Buyback"
+						fixTag="7639"
+						use="required"
+						mutableOnCxlRpl="true"
+						initValue="false"
+						lay:controlType="CheckBox"/>
+				</lay:strategyPanel>	
+				<lay:strategyPanel orientation="HORIZONTAL">
+					<parameter name="RandomDisplay" type="13" xsi:type="Boolean_t" uiRep="Random Display" use="optional" initValue="false" lay:controlType="CheckBox"/>
+					<parameter name="MinDisplayQty" type="7" xsi:type="Qty_t" uiRep="Min Display Qty" fixTag="8089" use="optional" lay:controlType="TextField">
+						<flow:stateRule enabled="true">
+							<val:edit field="RandomDisplay" operator="EQ" value="Y"/>
+						</flow:stateRule>
+					</parameter>
+					<parameter name="MaxDisplayQty" type="7" xsi:type="Qty_t" uiRep="Max Display Qty" fixTag="8088" use="optional" lay:controlType="TextField">
+						<flow:stateRule enabled="true">
+							<val:edit field="RandomDisplay" operator="EQ" value="Y"/>
+						</flow:stateRule>
+					</parameter>
+				</lay:strategyPanel>
+			</lay:strategyPanel>
+		</lay:strategyLayout>
+			
+		<val:strategyEdit errorMessage="End Time should be later than Start Time">
+			<val:edit field="EndTime" operator="GT" field2="StartTime"/>
+		</val:strategyEdit>
+		
+		<val:strategyEdit errorMessage="Cross Discretion must be 100 if entered.">
+			<val:edit logicOperator="OR">
+            	<val:edit field="CrossDiscretion" operator="NX"/>
+            	<val:edit field="CrossDiscretion" operator="EQ" value="100"/>
+            </val:edit>
+        </val:strategyEdit>
+        
+        <val:strategyEdit errorMessage="Min Display Qty must be less than Max Display Qty">
+			<val:edit logicOperator="OR">
+				<val:edit logicOperator="OR">
+					<val:edit field="MinDisplayQty" operator="NX"/>
+					<val:edit field="MaxDisplayQty" operator="NX"/>
+				</val:edit>
+				<val:edit field="MinDisplayQty" operator="LT" field2="MaxDisplayQty"/>
+			</val:edit>
+		</val:strategyEdit>
+		
+		<val:strategyEdit errorMessage="Min Display Qty cannot be greater than Order Qty">
+			<val:edit logicOperator="OR">
+				<val:edit field="MinDisplayQty" operator="NX"/>
+				<val:edit field="MinDisplayQty" operator="LE" field2="OrderQty"/>
+			</val:edit>
+		</val:strategyEdit>
+		
+		<val:strategyEdit errorMessage="Max Display Qty cannot be greater than Order Qty">
+			<val:edit logicOperator="OR">
+				<val:edit field="MaxDisplayQty" operator="NX"/>
+				<val:edit field="MaxDisplayQty" operator="LE" field2="OrderQty"/>
+			</val:edit>
+		</val:strategyEdit>
+        
+	</strategy>
+
+	<strategy name="Cascade" uiRep="Cascade" wireValue="C" version="1" locations="AMERS" fixMsgType="D" providerID="ABC">
+		<lay:strategyLayout>
+			<lay:strategyPanel orientation="VERTICAL">
+				<lay:strategyPanel orientation="HORIZONTAL">
+					<parameter name="StartTime" uiRep="Start Time" fixTag="168" use="optional" xsi:type="UTCTimeStamp_t" type="19" lay:controlType="Clock"/> 
+					<parameter name="EndTime" uiRep="End Time" fixTag="126" use="optional" xsi:type="UTCTimeStamp_t" type="19" initValue="16:00:00" lay:controlType="Clock"/> 
+					<parameter name="CompleteAll" uiRep="Complete All" fixTag="6000" use="optional" xsi:type="Boolean_t" type="13" trueWireValue="1" falseWireValue="{NULL}" lay:controlType="CheckBox"/>
+				</lay:strategyPanel>
+				<lay:strategyPanel orientation="HORIZONTAL">
+					<parameter name="Aggression" uiRep="Aggression" type="12" fixTag="6001" xsi:type="Char_t" initValue="2" use="optional" lay:controlType="DropDownList">
+						<enumPair uiRep="Low"  wireValue="1"/>
+						<enumPair uiRep="Medium" wireValue="2"/>
+						<enumPair uiRep="High" wireValue="3"/>
+					</parameter>
+					<parameter name="CustomizeRate" uiRep="Custom Volume" use="optional" xsi:type="Boolean_t" type="13" lay:controlType="CheckBox"/>
+					<parameter name="MinRate" type="11" xsi:type="Percentage_t" uiRep="Min %" fixTag="6002" use="optional" lay:controlType="TextField">
+						<flow:stateRule value="0">
+							<val:edit field="Aggression" operator="EQ" value="1"/>
+						</flow:stateRule>
+						<flow:stateRule value="10">
+							<val:edit field="Aggression" operator="EQ" value="2"/>
+						</flow:stateRule>
+						<flow:stateRule value="20">
+							<val:edit field="Aggression" operator="EQ" value="3"/>
+						</flow:stateRule>
+						<flow:stateRule enabled="true">
+							<val:edit field="CustomizeRate" operator="EQ" value="Y"/>
+						</flow:stateRule>
+					</parameter>
+					<parameter name="MaxRate" type="11" xsi:type="Percentage_t" uiRep="Max %" fixTag="8046" use="optional" lay:controlType="TextField">
+						<flow:stateRule value="10">
+							<val:edit field="Aggression" operator="EQ" value="1"/>
+						</flow:stateRule>
+						<flow:stateRule value="20">
+							<val:edit field="Aggression" operator="EQ" value="2"/>
+						</flow:stateRule>
+						<flow:stateRule value="30">
+							<val:edit field="Aggression" operator="EQ" value="3"/>
+						</flow:stateRule>
+						<flow:stateRule enabled="true">
+							<val:edit field="CustomizeRate" operator="EQ" value="Y"/>
+						</flow:stateRule>
+					</parameter>
+				</lay:strategyPanel>
+			</lay:strategyPanel>
+		</lay:strategyLayout>
+  		<val:strategyEdit errorMessage="Start Time must preceed End Time.">
+			<val:edit field="StartTime" operator="LT" field2="EndTime"/>
+		</val:strategyEdit>
+		<val:strategyEdit errorMessage="Min % Vol cannot be greater than Max % Vol">
+			<val:edit field="MinRate" operator="LE" field2="MaxRate"/>
+		</val:strategyEdit>
+	</strategy>
+
+</strategies>
+
