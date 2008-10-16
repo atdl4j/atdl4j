@@ -1,40 +1,41 @@
 package br.com.investtools.fix.atdl.ui.swt.widget;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.CharT;
 import br.com.investtools.fix.atdl.core.xmlbeans.EnumPairT;
+import br.com.investtools.fix.atdl.core.xmlbeans.MultipleCharValueT;
+import br.com.investtools.fix.atdl.core.xmlbeans.MultipleStringValueT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.core.xmlbeans.StringT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
 import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
 
-public class ComboBoxParameterWidget implements ParameterUI<String> {
+public class ListBoxParameterWidget extends AbstractParameterWidget<String> {
 
 	private ParameterT parameter;
 
-	private Combo comboBox;
+	private List listBox;
 
 	private Label label;
 
-	private boolean editable;
+	private boolean multi;
 
-	public ComboBoxParameterWidget(boolean editable) {
-		this.editable = editable;
+	public ListBoxParameterWidget(boolean multi) {
+		this.multi = multi;
 	}
 
-	public ComboBoxParameterWidget() {
+	public ListBoxParameterWidget() {
 		this(false);
 	}
 
@@ -47,34 +48,39 @@ public class ComboBoxParameterWidget implements ParameterUI<String> {
 		l.setText(WidgetHelper.getLabelText(parameter));
 		this.label = l;
 
-		// comboBox
+		// dropDownList
 		style = style | SWT.BORDER;
-		if (!editable) {
-			style |= SWT.READ_ONLY;
+		if (multi) {
+			style |= SWT.MULTI;
+		} else {
+			style |= SWT.SINGLE;
 		}
-		Combo comboBox = new Combo(parent, style);
-		this.comboBox = comboBox;
-		comboBox.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		List listBox = new List(parent, style);
+		this.listBox = listBox;
+		listBox.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-		// comboBox itens
+		// listBox itens
 		EnumPairT[] enumPairArray = parameter.getEnumPairArray();
 		for (EnumPairT enumPair : enumPairArray) {
-			comboBox.add(enumPair.getUiRep());
+			listBox.add(enumPair.getUiRep());
 		}
 
 		// tooltip
 		String tooltip = parameter.getTooltip();
-		comboBox.setToolTipText(tooltip);
+		listBox.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
 		// init value
 		String initValue = getInitValue(parameter);
 
+		java.util.List<String> selectedValues = new ArrayList<String>(Arrays
+				.asList(initValue.split("\\s")));
+
 		if (initValue != null) {
-			String[] itens = comboBox.getItems();
+			String[] itens = listBox.getItems();
 			for (int i = 0; i < itens.length; i++) {
-				if (initValue.equals(itens[i]))
-					comboBox.select(i);
+				if (selectedValues.contains(itens[i]))
+					listBox.select(i);
 			}
 		}
 
@@ -92,41 +98,50 @@ public class ComboBoxParameterWidget implements ParameterUI<String> {
 			if (stringT.isSetInitValue())
 				return stringT.getInitValue();
 
+		} else if (parameter instanceof MultipleCharValueT) {
+			MultipleCharValueT multipleCharValueT = (MultipleCharValueT) parameter;
+			if (multipleCharValueT.isSetInitValue())
+				return multipleCharValueT.getInitValue();
+
+		} else if (parameter instanceof MultipleStringValueT) {
+			MultipleStringValueT multipleStringValueT = (MultipleStringValueT) parameter;
+			if (multipleStringValueT.isSetInitValue())
+				return multipleStringValueT.getInitValue();
+
 		}
 
 		return null;
 	}
 
+	@Override
 	public String getValue() {
-		int selection = comboBox.getSelectionIndex();
+		int[] selection = listBox.getSelectionIndices();
+		String value = "";
 
-		if (selection > 0) {
-			EnumPairT e = parameter.getEnumPairArray(selection);
-			return e.getWireValue();
-		} else
-			return " ";
+		for (int i = 0; i < selection.length; i++) {
+			EnumPairT e = parameter.getEnumPairArray(selection[i]);
+			value += e.getWireValue();
+			if (i + 1 != selection.length)
+				value += " ";
 
+		}
+		if ("".equals(value)) {
+			return null;
+		} else {
+			return value;
+		}
+
+	}
+
+	@Override
+	public String getValueAsString() {
+		return getValue();
 	}
 
 	@Override
 	public void setValue(String value) {
-		int index = comboBox.indexOf(value);
-		comboBox.select(index);
-	}
-
-	@Override
-	public String getFIXValue() {
-		if (parameter.getFixTag() != null) {
-			return Integer.toString(parameter.getFixTag().intValue()) + "="
-					+ getValue();
-		} else {
-			String name = parameter.getName();
-			String type = Integer.toString(parameter.getType());
-			String value = getValue();
-			char delimiter = '\001';
-			return "958=" + name + delimiter + "959=" + type + delimiter
-					+ "960=" + value;
-		}
+		int index = listBox.indexOf(value);
+		listBox.select(index);
 	}
 
 	@Override
@@ -141,27 +156,26 @@ public class ComboBoxParameterWidget implements ParameterUI<String> {
 
 	@Override
 	public void generateStateRuleListener(Listener listener) {
-		comboBox.addListener(SWT.Modify, listener);
-		comboBox.addListener(SWT.Selection, listener);
+		listBox.addListener(SWT.Selection, listener);
 	}
 
 	@Override
-	public List<Control> getControls() {
-		List<Control> widgets = new ArrayList<Control>();
+	public java.util.List<Control> getControls() {
+		java.util.List<Control> widgets = new ArrayList<Control>();
 		widgets.add(label);
-		widgets.add(comboBox);
+		widgets.add(listBox);
 		return widgets;
 	}
 
 	@Override
 	public void addListener(Listener listener) {
-		comboBox.addListener(SWT.Selection, new ParameterListenerWrapper(this,
+		listBox.addListener(SWT.Selection, new ParameterListenerWrapper(this,
 				listener));
 	}
 
 	@Override
 	public void removeListener(Listener listener) {
-		comboBox.removeListener(SWT.Selection, listener);
+		listBox.removeListener(SWT.Selection, listener);
 	}
 
 }

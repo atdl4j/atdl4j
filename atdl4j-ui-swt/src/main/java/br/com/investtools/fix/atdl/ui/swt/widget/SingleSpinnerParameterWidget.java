@@ -23,7 +23,6 @@ import br.com.investtools.fix.atdl.core.xmlbeans.PercentageT;
 import br.com.investtools.fix.atdl.core.xmlbeans.PriceOffsetT;
 import br.com.investtools.fix.atdl.core.xmlbeans.PriceT;
 import br.com.investtools.fix.atdl.core.xmlbeans.QtyT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
 import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
 
@@ -32,7 +31,8 @@ import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
  * BigDecimal.
  * 
  */
-public class SingleSpinnerParameterWidget implements ParameterUI<BigDecimal> {
+public class SingleSpinnerParameterWidget extends
+		AbstractParameterWidget<BigDecimal> {
 
 	private ParameterT parameter;
 
@@ -352,23 +352,16 @@ public class SingleSpinnerParameterWidget implements ParameterUI<BigDecimal> {
 	}
 
 	@Override
-	public void setValue(BigDecimal value) {
-		spinner.setSelection(value.unscaledValue().intValue());
+	public String getValueAsString() {
+		if (getValue() == null)
+			return null;
+		else
+			return getValue().toPlainString();
 	}
 
 	@Override
-	public String getFIXValue() {
-		if (parameter.getFixTag() != null) {
-			return Integer.toString(parameter.getFixTag().intValue()) + "="
-					+ getValue().toString();
-		} else {
-			String name = parameter.getName();
-			String type = Integer.toString(parameter.getType());
-			String value = getValue().toString();
-			char delimiter = '\001';
-			return "958=" + name + delimiter + "959=" + type + delimiter
-					+ "960=" + value;
-		}
+	public void setValue(BigDecimal value) {
+		spinner.setSelection(value.unscaledValue().intValue());
 	}
 
 	@Override

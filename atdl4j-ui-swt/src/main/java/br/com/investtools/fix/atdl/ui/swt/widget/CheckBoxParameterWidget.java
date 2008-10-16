@@ -13,15 +13,14 @@ import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.BooleanT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
 import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
 
-public class CheckBoxParameterWidget implements ParameterUI<Boolean> {
+public class CheckBoxParameterWidget extends AbstractParameterWidget<Boolean> {
 
-	private static final String BOOLEAN_FALSE = "0";
+	private static final String BOOLEAN_FALSE = "N";
 
-	private static final String BOOLEAN_TRUE = "1";
+	private static final String BOOLEAN_TRUE = "Y";
 
 	private ParameterT parameter;
 
@@ -60,6 +59,7 @@ public class CheckBoxParameterWidget implements ParameterUI<Boolean> {
 
 	@Override
 	public Boolean getValue() {
+
 		if (checkBox.getSelection())
 			return Boolean.TRUE;
 		else
@@ -70,28 +70,26 @@ public class CheckBoxParameterWidget implements ParameterUI<Boolean> {
 	public void setValue(Boolean value) {
 		checkBox.setSelection(value.booleanValue());
 	}
-
+	
 	@Override
-	public String getFIXValue() {
-		if (parameter.getFixTag() != null) {
-			return Integer.toString(parameter.getFixTag().intValue()) + "="
-					+ getValue();
-		} else {
-			String name = parameter.getName();
-			String type = Integer.toString(parameter.getType());
-			String value = getBooleanAsString(getValue());
-			char delimiter = '\001';
-			return "958=" + name + delimiter + "959=" + type + delimiter
-					+ "960=" + value;
-		}
+	public String getValueAsString() {
+		return getBooleanAsString(getValue());
 	}
 
 	private String getBooleanAsString(Boolean value) {
+		BooleanT booleanT = (BooleanT) parameter;
+
 		if (value != null) {
 			if (value.booleanValue()) {
-				return BOOLEAN_TRUE;
+				if (booleanT.isSetTrueWireValue())
+					return booleanT.getTrueWireValue();
+				else
+					return BOOLEAN_TRUE;
 			} else {
-				return BOOLEAN_FALSE;
+				if (booleanT.isSetFalseWireValue())
+					return booleanT.getFalseWireValue();
+				else
+					return BOOLEAN_FALSE;
 			}
 		} else {
 			return BOOLEAN_FALSE;

@@ -13,11 +13,14 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
+import br.com.investtools.fix.atdl.core.xmlbeans.MultipleCharValueT;
+import br.com.investtools.fix.atdl.core.xmlbeans.MultipleStringValueT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
+import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
 
-public class StringTextFieldParameterWidget implements ParameterUI<String> {
+public class StringTextFieldParameterWidget extends
+		AbstractParameterWidget<String> {
 
 	private ParameterT parameter;
 
@@ -47,6 +50,16 @@ public class StringTextFieldParameterWidget implements ParameterUI<String> {
 		textField.setToolTipText(tooltip);
 		l.setToolTipText(tooltip);
 
+		if (parameter instanceof MultipleCharValueT) {
+			MultipleCharValueT multipleCharValueT = (MultipleCharValueT) parameter;
+			if (multipleCharValueT.isSetInitValue())
+				textField.setText(multipleCharValueT.getInitValue());
+		} else if (parameter instanceof MultipleStringValueT) {
+			MultipleStringValueT multipleStringValueT = (MultipleStringValueT) parameter;
+			if (multipleStringValueT.isSetInitValue())
+				textField.setText(multipleStringValueT.getInitValue());
+		}
+
 		return parent;
 	}
 
@@ -59,27 +72,32 @@ public class StringTextFieldParameterWidget implements ParameterUI<String> {
 
 	@Override
 	public String getValue() {
-		return textField.getText();
+		String value = textField.getText();
+
+		if ("".equals(value)) {
+			return null;
+		} else {
+			return value;
+		}
+	}
+
+	@Override
+	public String getValueAsString() {
+		if (parameter instanceof MultipleCharValueT) {
+			MultipleCharValueT multipleCharValueT = (MultipleCharValueT) parameter;
+			if (multipleCharValueT.isSetInvertOnWire())
+				return WidgetHelper.invertOnWire(getValue());
+		} else if (parameter instanceof MultipleStringValueT) {
+			MultipleStringValueT multipleStringValueT = (MultipleStringValueT) parameter;
+			if (multipleStringValueT.isSetInvertOnWire())
+				return WidgetHelper.invertOnWire(getValue());
+		}
+		return getValue();
 	}
 
 	@Override
 	public void setValue(String value) {
 		textField.setText(value);
-	}
-
-	@Override
-	public String getFIXValue() {
-		if (parameter.getFixTag() != null) {
-			return Integer.toString(parameter.getFixTag().intValue()) + "="
-					+ getValue();
-		} else {
-			String name = parameter.getName();
-			String type = Integer.toString(parameter.getType());
-			String value = getValue();
-			char delimiter = '\001';
-			return "958=" + name + delimiter + "959=" + type + delimiter
-					+ "960=" + value;
-		}
 	}
 
 	@Override

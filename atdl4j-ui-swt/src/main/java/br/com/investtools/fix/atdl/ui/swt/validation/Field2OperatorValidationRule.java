@@ -2,6 +2,8 @@ package br.com.investtools.fix.atdl.ui.swt.validation;
 
 import java.util.Map;
 
+import org.apache.xmlbeans.XmlException;
+
 import br.com.investtools.fix.atdl.ui.swt.EditUI;
 import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 import br.com.investtools.fix.atdl.ui.swt.exceptions.ValidationException;
@@ -31,23 +33,22 @@ public class Field2OperatorValidationRule extends
 
 	@Override
 	public void validate(Map<String, EditUI> rules,
-			Map<String, ParameterUI<?>> widgets) throws ValidationException {
+			Map<String, ParameterUI<?>> widgets) throws ValidationException,
+			XmlException {
 
 		// get the widget from context using field name
 		ParameterUI<?> widget = widgets.get(field);
 		if (widget == null) {
-			throw new ValidationException(null,
-					"No widget defined for field \"" + field
-							+ "\" in this context");
+			throw new XmlException("No widget defined for field \"" + field
+					+ "\" in this context");
 		}
 		Object fieldValue = widget.getValue();
 
 		// get the widget from context using field2 name
 		ParameterUI<?> widget2 = widgets.get(field2);
 		if (widget2 == null) {
-			throw new ValidationException(null,
-					"No widget defined for field2 \"" + field2
-							+ "\" in this context");
+			throw new XmlException("No widget defined for field2 \"" + field2
+					+ "\" in this context");
 		}
 		Object fieldValue2 = widget2.getValue();
 

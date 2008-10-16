@@ -1,9 +1,7 @@
 package br.com.investtools.fix.atdl.ui.swt.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.xmlbeans.XmlException;
@@ -12,23 +10,28 @@ import org.eclipse.swt.widgets.Composite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.investtools.fix.atdl.core.xmlbeans.MultipleCharValueT;
+import br.com.investtools.fix.atdl.core.xmlbeans.MultipleStringValueT;
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.core.xmlbeans.StrategyT;
 import br.com.investtools.fix.atdl.core.xmlbeans.UseT;
 import br.com.investtools.fix.atdl.flow.xmlbeans.StateGroupDocument.StateGroup;
 import br.com.investtools.fix.atdl.flow.xmlbeans.StateGroupDocument.StateGroup.EnumItem;
-import br.com.investtools.fix.atdl.flow.xmlbeans.StateGroupDocument.StateGroup.Field;
+import br.com.investtools.fix.atdl.flow.xmlbeans.StateGroupDocument.StateGroup.TargetParameter;
 import br.com.investtools.fix.atdl.flow.xmlbeans.StateRuleDocument.StateRule;
 import br.com.investtools.fix.atdl.iterators.StrategyIterator;
 import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyLayoutDocument.StrategyLayout;
 import br.com.investtools.fix.atdl.layout.xmlbeans.StrategyPanelDocument.StrategyPanel;
+import br.com.investtools.fix.atdl.ui.FIXMessageBuilder;
+import br.com.investtools.fix.atdl.ui.impl.PlainFIXMessageBuilder;
 import br.com.investtools.fix.atdl.ui.swt.EditUI;
 import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 import br.com.investtools.fix.atdl.ui.swt.StrategyUI;
 import br.com.investtools.fix.atdl.ui.swt.exceptions.ValidationException;
 import br.com.investtools.fix.atdl.ui.swt.impl.SWTStateGroupUI.EnumItemUI;
-import br.com.investtools.fix.atdl.ui.swt.impl.SWTStateGroupUI.FieldUI;
+import br.com.investtools.fix.atdl.ui.swt.impl.SWTStateGroupUI.TargetParameterUI;
 import br.com.investtools.fix.atdl.ui.swt.util.RuleFactory;
+import br.com.investtools.fix.atdl.ui.swt.validation.PatternValidationRule;
 import br.com.investtools.fix.atdl.ui.swt.validation.ReferencedValidationRule;
 import br.com.investtools.fix.atdl.ui.swt.validation.ValueOperatorValidationRule;
 import br.com.investtools.fix.atdl.valid.xmlbeans.EditRefT;
@@ -94,13 +97,14 @@ public class SWTStrategyUI implements StrategyUI {
 			// the rules map
 			ParameterT parameter = parameterWidget.getParameter();
 
-			if (parameter.isSetStateRule()) {
-				StateRule stateRule = parameter.getStateRule();
-				Edit edit = stateRule.getEdit();
-				if (edit.isSetId()) {
-					EditUI rule = RuleFactory.createRule(edit, rules);
-					String id = edit.getId();
-					rules.put(id, rule);
+			if (parameter.getStateRuleArray() != null) {
+				for (StateRule stateRule : parameter.getStateRuleArray()) {
+					Edit edit = stateRule.getEdit();
+					if (edit.isSetId()) {
+						EditUI rule = RuleFactory.createRule(edit, rules);
+						String id = edit.getId();
+						rules.put(id, rule);
+					}
 				}
 			}
 
@@ -112,6 +116,30 @@ public class SWTStrategyUI implements StrategyUI {
 					rule.addRequiredFieldRule(requiredFieldRule);
 				}
 			}
+
+			// validate types based on patterns
+			if (parameter instanceof MultipleCharValueT) {
+				MultipleCharValueT multipleCharValueT = (MultipleCharValueT) parameter;
+				EditUI patternBasedRule = new PatternValidationRule(
+						multipleCharValueT.getName(), "\\S?(\\s\\S?)*");
+				rule.addPatternRule(patternBasedRule);
+
+			} else if (parameter instanceof MultipleStringValueT) {
+				MultipleStringValueT multipleStringValueT = (MultipleStringValueT) parameter;
+				EditUI patternBasedRule = new PatternValidationRule(
+						multipleStringValueT.getName(), "\\S+(\\s\\S+)*");
+				rule.addPatternRule(patternBasedRule);
+
+			}
+
+			if (parameter.isSetUse()) {
+				if (parameter.getUse().equals(UseT.REQUIRED)) {
+					EditUI requiredFieldRule = new ValueOperatorValidationRule(
+							parameter.getName(), OperatorT.NX, null);
+					rule.addRequiredFieldRule(requiredFieldRule);
+				}
+			}
+
 		}
 
 		// and add local rules
@@ -149,9 +177,10 @@ public class SWTStrategyUI implements StrategyUI {
 		// referenced)
 		// are included in the rules map
 		for (StateGroup stateGroup : strategy.getStateGroupArray()) {
-			for (Field field : stateGroup.getFieldArray()) {
-				if (field.isSetEdit()) {
-					Edit edit = field.getEdit();
+			for (TargetParameter targetParameter : stateGroup
+					.getTargetParameterArray()) {
+				if (targetParameter.isSetEdit()) {
+					Edit edit = targetParameter.getEdit();
 					if (edit.isSetId()) {
 						EditUI rule = RuleFactory.createRule(edit, rules);
 						String id = edit.getId();
@@ -179,10 +208,11 @@ public class SWTStrategyUI implements StrategyUI {
 
 				SWTStateGroupUI stateGroupUI = new SWTStateGroupUI();
 
-				for (Field field : stateGroup.getFieldArray()) {
-					ParameterUI<?> affectedWidget = parameters.get(field
-							.getName());
-					Edit edit = field.getEdit();
+				for (TargetParameter targetParameter : stateGroup
+						.getTargetParameterArray()) {
+					ParameterUI<?> affectedWidget = parameters
+							.get(targetParameter.getName());
+					Edit edit = targetParameter.getEdit();
 					if (affectedWidget == null)
 						throw new XmlException(
 								"Error generating a State Group Rule => Parameter: "
@@ -197,8 +227,8 @@ public class SWTStrategyUI implements StrategyUI {
 										+ edit.getField()
 										+ " does not exist in Strategy: "
 										+ strategy.getName());
-					FieldUI fieldUI = stateGroupUI.new FieldUI(affectedWidget,
-							field, parameters, rules);
+					TargetParameterUI fieldUI = stateGroupUI.new TargetParameterUI(
+							affectedWidget, targetParameter, parameters, rules);
 					targetParameterWidget.generateStateRuleListener(fieldUI);
 					if (edit.isSetField2()) {
 						ParameterUI<?> targetParameterWidget2 = parameters
@@ -308,36 +338,43 @@ public class SWTStrategyUI implements StrategyUI {
 	}
 
 	private void stateRuleGenerator(ParameterT parameter) throws XmlException {
-		if (parameter.isSetStateRule()) {
-			StateRule stateRule = parameter.getStateRule();
-			Edit edit = stateRule.getEdit();
-			ParameterUI<?> affectedWidget = parameters.get(parameter.getName());
-			ParameterUI<?> targetParameterWidget = parameters.get(edit
-					.getField());
-			if (targetParameterWidget == null)
-				throw new XmlException(
-						"Error generating a State Rule => Parameter: "
-								+ edit.getField()
-								+ " does not exist in Strategy: "
-								+ strategy.getName());
-			SWTStateRuleUI stateRuleUI = new SWTStateRuleUI(affectedWidget,
-					stateRule, parameters, rules);
-			targetParameterWidget.generateStateRuleListener(stateRuleUI);
-			if (edit.isSetField2()) {
-				ParameterUI<?> targetParameterWidget2 = parameters.get(edit
-						.getField2());
-				if (targetParameterWidget2 == null)
+
+		if (parameter.getStateRuleArray() != null) {
+
+			for (StateRule stateRule : parameter.getStateRuleArray()) {
+
+				Edit edit = stateRule.getEdit();
+				ParameterUI<?> affectedWidget = parameters.get(parameter
+						.getName());
+				ParameterUI<?> targetParameterWidget = parameters.get(edit
+						.getField());
+				if (targetParameterWidget == null)
 					throw new XmlException(
 							"Error generating a State Rule => Parameter: "
-									+ edit.getField2()
+									+ edit.getField()
 									+ " does not exist in Strategy: "
 									+ strategy.getName());
-				targetParameterWidget2.generateStateRuleListener(stateRuleUI);
-			}
+				SWTStateRuleUI stateRuleUI = new SWTStateRuleUI(affectedWidget,
+						stateRule, parameters, rules);
+				targetParameterWidget.generateStateRuleListener(stateRuleUI);
+				if (edit.isSetField2()) {
+					ParameterUI<?> targetParameterWidget2 = parameters.get(edit
+							.getField2());
+					if (targetParameterWidget2 == null)
+						throw new XmlException(
+								"Error generating a State Rule => Parameter: "
+										+ edit.getField2()
+										+ " does not exist in Strategy: "
+										+ strategy.getName());
+					targetParameterWidget2
+							.generateStateRuleListener(stateRuleUI);
+				}
 
-			// run the state rule to check if any parameter needs to be
-			// enabled/disabled or hidden/unhidden before being rendered
-			stateRuleUI.handleEvent(null);
+				// run the state rule to check if any parameter needs to be
+				// enabled/disabled or hidden/unhidden before being rendered
+				stateRuleUI.handleEvent(null);
+
+			}
 
 		}
 	}
@@ -356,34 +393,18 @@ public class SWTStrategyUI implements StrategyUI {
 
 	@Override
 	public String getFIXMessage() {
+		PlainFIXMessageBuilder builder = new PlainFIXMessageBuilder();
+		getFIXMessage(builder);
+		return builder.getMessage();
+	}
 
-		StringBuffer fixMessage = new StringBuffer();
-
+	@Override
+	public void getFIXMessage(FIXMessageBuilder builder) {
+		builder.onStart();
 		for (ParameterUI<?> widget : parameters.values()) {
-
-			char delimiter = '\001';
-			List<String> repeatingGroup = new ArrayList<String>();
-			String fixValue = widget.getFIXValue();
-
-			if (fixValue.startsWith("958")) {
-				repeatingGroup.add(fixValue);
-			} else {
-				fixMessage.append(fixValue).append(delimiter);
-			}
-
-			if (repeatingGroup.size() > 0) {
-
-				fixMessage.append("957=").append(repeatingGroup.size()).append(
-						delimiter);
-				for (String groupElement : repeatingGroup) {
-					fixMessage.append(groupElement).append(delimiter);
-				}
-
-			}
-
+			widget.getFIXValue(builder);
 		}
-
-		return fixMessage.toString();
+		builder.onEnd();
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package br.com.investtools.fix.atdl.ui.swt.test.applications;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +51,8 @@ public class SWTBuilder {
 	private static StrategiesDocument strategiesDocument;
 	private static Map<StrategyT, StrategyUI> strategyUI;
 	private static StrategyT selectedStrategy;
+
+	private static Text fixMessageText;
 
 	public static void main(String[] args) {
 		Display display = new Display();
@@ -126,8 +130,9 @@ public class SWTBuilder {
 
 		// footer
 		Composite footer = new Composite(shell, SWT.NONE);
-		footer.setLayout(new GridLayout(1, true));
+		footer.setLayout(new GridLayout(2, false));
 		footer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
 		Button submit = new Button(footer, SWT.NONE);
 		submit.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		submit.setText("Validate!");
@@ -139,24 +144,35 @@ public class SWTBuilder {
 				try {
 					StrategyUI ui = strategyUI.get(selectedStrategy);
 					ui.validate();
+					fixMessageText.setText(ui.getFIXMessage());
+					
 				} catch (ValidationException ex) {
+					fixMessageText.setText(ex.getMessage());
 					MessageBox messageBox = new MessageBox(shell, SWT.OK
 							| SWT.ICON_ERROR);
 					messageBox.setMessage(ex.getMessage());
 					messageBox.open();
 				} catch (XmlException ex) {
+					fixMessageText.setText(ex.getMessage());
 					MessageBox messageBox = new MessageBox(shell, SWT.OK
 							| SWT.ICON_ERROR);
 					messageBox.setMessage(ex.getMessage());
 					messageBox.open();
 				} catch (Exception ex) {
+					fixMessageText.setText("");
 					MessageBox messageBox = new MessageBox(shell, SWT.OK
 							| SWT.ICON_ERROR);
-					messageBox.setMessage("Generic exception occurred: " + ex.toString());
+					messageBox.setMessage("Generic exception occurred: "
+							+ ex.toString());
 					messageBox.open();
+					ex.printStackTrace();
 				}
 			}
 		});
+		fixMessageText = new Text(footer, SWT.BORDER);
+		fixMessageText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false));
+		addDebugMouseTrackListener(footer);
 
 		shell.pack();
 		shell.open();
@@ -176,8 +192,14 @@ public class SWTBuilder {
 		}
 
 		// parses the XML document and build an object model
-		File file = new File(filepath);
-		strategiesDocument = StrategiesDocument.Factory.parse(file);
+		try {
+			URL url = new URL(filepath);
+			strategiesDocument = StrategiesDocument.Factory.parse(url);
+		} catch (MalformedURLException e) {
+			// try to parse as file
+			File file = new File(filepath);
+			strategiesDocument = StrategiesDocument.Factory.parse(file);
+		}
 		StrategiesUIFactory factory = new SWTStrategiesUIFactory();
 		SWTStrategiesUI strategiesUI = (SWTStrategiesUI) factory
 				.create(strategiesDocument);

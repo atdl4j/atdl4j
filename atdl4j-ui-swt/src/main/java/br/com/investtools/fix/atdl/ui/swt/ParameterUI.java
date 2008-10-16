@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
+import br.com.investtools.fix.atdl.ui.FIXMessageBuilder;
 
 /**
  * Interface que representa um parametro de um algoritmo FIXatdl com sua
@@ -33,6 +34,10 @@ public interface ParameterUI<E extends Comparable<E>> {
 	public E convertValue(String value) throws XmlException;
 
 	public String getFIXValue();
+	
+	public void getFIXValue(FIXMessageBuilder builder);
+	
+	public String getValueAsString();
 
 	public void generateStateRuleListener(Listener listener);
 

@@ -20,11 +20,10 @@ import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
 import br.com.investtools.fix.atdl.core.xmlbeans.UTCDateT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
 import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
 
-public class UTCDateClockParameterWidget implements ParameterUI<Date> {
+public class UTCDateClockParameterWidget extends AbstractParameterWidget<Date> {
 
 	private ParameterT parameter;
 
@@ -76,32 +75,19 @@ public class UTCDateClockParameterWidget implements ParameterUI<Date> {
 	}
 
 	@Override
+	public String getValueAsString() {
+		Date date = this.getValue();
+		DateFormat fixUTCDateClockFormat = new SimpleDateFormat("yyyyMM");
+		return fixUTCDateClockFormat.format(date);
+	}
+
+	@Override
 	public void setValue(Date value) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(value);
 		clock.setDay(c.get(Calendar.DAY_OF_MONTH));
 		clock.setMonth(c.get(Calendar.MONTH));
 		clock.setYear(c.get(Calendar.YEAR));
-	}
-
-	@Override
-	public String getFIXValue() {
-
-		Date date = this.getValue();
-		DateFormat fixUTCDateClockFormat = new SimpleDateFormat("yyyyMM");
-		String value = fixUTCDateClockFormat.format(date);
-
-		if (parameter.getFixTag() != null) {
-			return Integer.toString(parameter.getFixTag().intValue()) + "="
-					+ value;
-		} else {
-
-			String name = parameter.getName();
-			String type = Integer.toString(parameter.getType());
-			char delimiter = '\001';
-			return "958=" + name + delimiter + "959=" + type + delimiter
-					+ "960=" + value;
-		}
 	}
 
 	@Override

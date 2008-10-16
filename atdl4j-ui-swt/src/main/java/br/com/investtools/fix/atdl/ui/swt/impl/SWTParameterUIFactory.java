@@ -27,15 +27,15 @@ import br.com.investtools.fix.atdl.layout.xmlbeans.ComponentT.Enum;
 import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 import br.com.investtools.fix.atdl.ui.swt.ParameterUIFactory;
 import br.com.investtools.fix.atdl.ui.swt.widget.CheckBoxParameterWidget;
-import br.com.investtools.fix.atdl.ui.swt.widget.ComboBoxParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.widget.DropDownListParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.DualSpinnerParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.HiddenParameterWidget;
-import br.com.investtools.fix.atdl.ui.swt.widget.LabelParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.widget.ListBoxParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.LocalMktTimeClockParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.MonthYearClockParameterWidget;
-import br.com.investtools.fix.atdl.ui.swt.widget.MultiCheckBoxParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.widget.CheckBoxListParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.NumberTextFieldParameterWidget;
-import br.com.investtools.fix.atdl.ui.swt.widget.RadioButtonParameterWidget;
+import br.com.investtools.fix.atdl.ui.swt.widget.RadioButtonListParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.SingleSpinnerParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.SliderParameterWidget;
 import br.com.investtools.fix.atdl.ui.swt.widget.StringTextFieldParameterWidget;
@@ -44,7 +44,7 @@ import br.com.investtools.fix.atdl.ui.swt.widget.UTCTimeOnlyClockParameterWidget
 import br.com.investtools.fix.atdl.ui.swt.widget.UTCTimeStampClockParameterWidget;
 
 /**
- * Factory that creates the appropriate ParameterWidget depending on the
+ * Factory that creates the appropriate ParameterUI depending on the
  * parameter control type and value type.
  * 
  */
@@ -57,14 +57,12 @@ public class SWTParameterUIFactory implements ParameterUIFactory {
 			// user defined a specific control type
 			if (type == ComponentT.CHECK_BOX) {
 				return new CheckBoxParameterWidget();
-			} else if (type == ComponentT.COMBO_BOX) {
-				return new ComboBoxParameterWidget();
-			} else if (type == ComponentT.EDITABLE_COMBO_BOX) {
-				return new ComboBoxParameterWidget(true);
-			} else if (type == ComponentT.RADIO_BUTTON) {
-				return new RadioButtonParameterWidget();
-			} else if (type == ComponentT.LABEL) {
-				return new LabelParameterWidget();
+			} else if (type == ComponentT.DROP_DOWN_LIST ) {
+				return new DropDownListParameterWidget();
+			} else if (type == ComponentT.EDITABLE_DROP_DOWN_LIST) {
+				return new DropDownListParameterWidget(true);
+			} else if (type == ComponentT.RADIO_BUTTON_LIST) {
+				return new RadioButtonListParameterWidget();
 			} else if (type == ComponentT.TEXT_FIELD) {
 
 				if (parameter instanceof CharT) {
@@ -98,8 +96,8 @@ public class SWTParameterUIFactory implements ParameterUIFactory {
 
 			} else if (type == ComponentT.SLIDER) {
 				return new SliderParameterWidget();
-			} else if (type == ComponentT.MULTI_CHECK_BOX) {
-				return new MultiCheckBoxParameterWidget();
+			} else if (type == ComponentT.CHECK_BOX_LIST) {
+				return new CheckBoxListParameterWidget();
 			} else if (type == ComponentT.CLOCK) {
 
 				if (parameter instanceof LocalMktTimeT) {
@@ -118,7 +116,15 @@ public class SWTParameterUIFactory implements ParameterUIFactory {
 				return new SingleSpinnerParameterWidget();
 			} else if (type == ComponentT.DUAL_SPINNER) {
 				return new DualSpinnerParameterWidget();
-			}
+			} else if (type == ComponentT.LIST_BOX) {
+				return new ListBoxParameterWidget();
+			} else if (type == ComponentT.MULTI_SELECT_LIST_BOX) {
+				return new ListBoxParameterWidget(true);
+			} else if (type == ComponentT.SINGLE_SELECT_LIST) {
+				return new ListBoxParameterWidget();
+			} else if (type == ComponentT.MULTI_SELECT_LIST) {
+				return new ListBoxParameterWidget(true);
+			} 
 		} else {
 			// infer widget type from parameter type
 
@@ -130,7 +136,7 @@ public class SWTParameterUIFactory implements ParameterUIFactory {
 				// limited textfield
 				return new StringTextFieldParameterWidget();
 			} else if (parameter instanceof CurrencyT) {
-				return new SingleSpinnerParameterWidget();
+				return new StringTextFieldParameterWidget();
 			} else if (parameter instanceof DataT) {
 				return new StringTextFieldParameterWidget();
 			} else if (parameter instanceof ExchangeT) {

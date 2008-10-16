@@ -15,11 +15,10 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Widget;
 
 import br.com.investtools.fix.atdl.core.xmlbeans.ParameterT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 import br.com.investtools.fix.atdl.ui.swt.util.ParameterListenerWrapper;
 import br.com.investtools.fix.atdl.ui.swt.util.WidgetHelper;
 
-public class SliderParameterWidget implements ParameterUI<BigDecimal> {
+public class SliderParameterWidget extends AbstractParameterWidget<BigDecimal> {
 
 	private ParameterT parameter;
 
@@ -70,27 +69,24 @@ public class SliderParameterWidget implements ParameterUI<BigDecimal> {
 
 	@Override
 	public BigDecimal getValue() {
-		return new BigDecimal(slider.getSelection());
+		try {
+			return new BigDecimal(slider.getSelection());
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public String getValueAsString() {
+		if (getValue() == null)
+			return null;
+		else
+			return getValue().toPlainString();
 	}
 
 	@Override
 	public void setValue(BigDecimal value) {
 		slider.setSelection(value.intValue());
-	}
-
-	@Override
-	public String getFIXValue() {
-		if (parameter.getFixTag() != null) {
-			return Integer.toString(parameter.getFixTag().intValue()) + "="
-					+ getValue().toString();
-		} else {
-			String name = parameter.getName();
-			String type = Integer.toString(parameter.getType());
-			String value = getValue().toString();
-			char delimiter = '\001';
-			return "958=" + name + delimiter + "959=" + type + delimiter
-					+ "960=" + value;
-		}
 	}
 
 	@Override

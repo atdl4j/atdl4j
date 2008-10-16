@@ -25,9 +25,8 @@ import br.com.investtools.fix.atdl.core.xmlbeans.TagNumT;
 import br.com.investtools.fix.atdl.core.xmlbeans.UTCDateT;
 import br.com.investtools.fix.atdl.core.xmlbeans.UTCTimeOnlyT;
 import br.com.investtools.fix.atdl.core.xmlbeans.UTCTimeStampT;
-import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 
-public class HiddenParameterWidget implements ParameterUI<String> {
+public class HiddenParameterWidget extends AbstractParameterWidget<String> {
 
 	private ParameterT parameter;
 
@@ -106,21 +105,6 @@ public class HiddenParameterWidget implements ParameterUI<String> {
 	}
 
 	@Override
-	public String getFIXValue() {
-		if (parameter.getFixTag() != null) {
-			return Integer.toString(parameter.getFixTag().intValue()) + "="
-					+ getValue();
-		} else {
-			String name = parameter.getName();
-			String type = Integer.toString(parameter.getType());
-			String value = getValue();
-			char delimiter = '\001';
-			return "958=" + name + delimiter + "959=" + type + delimiter
-					+ "960=" + value;
-		}
-	}
-
-	@Override
 	public ParameterT getParameter() {
 		return parameter;
 	}
@@ -128,6 +112,11 @@ public class HiddenParameterWidget implements ParameterUI<String> {
 	@Override
 	public String getValue() {
 		return value;
+	}
+
+	@Override
+	public String getValueAsString() {
+		return getValue();
 	}
 
 	@Override
