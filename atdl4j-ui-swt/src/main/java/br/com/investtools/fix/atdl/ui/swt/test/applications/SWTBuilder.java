@@ -172,7 +172,6 @@ public class SWTBuilder {
 		fixMessageText = new Text(footer, SWT.BORDER);
 		fixMessageText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false));
-		addDebugMouseTrackListener(footer);
 
 		shell.pack();
 		shell.open();
