@@ -145,7 +145,7 @@ public class SWTBuilder {
 					StrategyUI ui = strategyUI.get(selectedStrategy);
 					ui.validate();
 					fixMessageText.setText(ui.getFIXMessage());
-					
+
 				} catch (ValidationException ex) {
 					fixMessageText.setText(ex.getMessage());
 					MessageBox messageBox = new MessageBox(shell, SWT.OK

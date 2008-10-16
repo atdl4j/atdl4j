@@ -34,9 +34,9 @@ public interface ParameterUI<E extends Comparable<E>> {
 	public E convertValue(String value) throws XmlException;
 
 	public String getFIXValue();
-	
+
 	public void getFIXValue(FIXMessageBuilder builder);
-	
+
 	public String getValueAsString();
 
 	public void generateStateRuleListener(Listener listener);

@@ -44,8 +44,8 @@ import br.com.investtools.fix.atdl.ui.swt.widget.UTCTimeOnlyClockParameterWidget
 import br.com.investtools.fix.atdl.ui.swt.widget.UTCTimeStampClockParameterWidget;
 
 /**
- * Factory that creates the appropriate ParameterUI depending on the
- * parameter control type and value type.
+ * Factory that creates the appropriate ParameterUI depending on the parameter
+ * control type and value type.
  * 
  */
 public class SWTParameterUIFactory implements ParameterUIFactory {
@@ -57,7 +57,7 @@ public class SWTParameterUIFactory implements ParameterUIFactory {
 			// user defined a specific control type
 			if (type == ComponentT.CHECK_BOX) {
 				return new CheckBoxParameterWidget();
-			} else if (type == ComponentT.DROP_DOWN_LIST ) {
+			} else if (type == ComponentT.DROP_DOWN_LIST) {
 				return new DropDownListParameterWidget();
 			} else if (type == ComponentT.EDITABLE_DROP_DOWN_LIST) {
 				return new DropDownListParameterWidget(true);
@@ -124,7 +124,7 @@ public class SWTParameterUIFactory implements ParameterUIFactory {
 				return new ListBoxParameterWidget();
 			} else if (type == ComponentT.MULTI_SELECT_LIST) {
 				return new ListBoxParameterWidget(true);
-			} 
+			}
 		} else {
 			// infer widget type from parameter type
 

@@ -56,8 +56,8 @@ public class SWTStateRuleUI implements Listener {
 			return;
 		} catch (XmlException e) {
 			throw new RuntimeException(e);
-		} 
-		
+		}
+
 		setBehaviorAsStateRule(false);
 
 	}
@@ -77,63 +77,80 @@ public class SWTStateRuleUI implements Listener {
 				control.setVisible(!(visible ^ state));
 			}
 		}
-		
+
 		if (stateRule.isSetValue() && state) {
 			String value = stateRule.getValue();
-			
+
 			try {
-				
+
 				if (affectedWidget instanceof CheckBoxListParameterWidget) {
 					CheckBoxListParameterWidget checkBoxListParameterWidget = (CheckBoxListParameterWidget) affectedWidget;
 					checkBoxListParameterWidget.setValue(value);
 				} else if (affectedWidget instanceof CheckBoxParameterWidget) {
 					CheckBoxParameterWidget checkBoxParameterWidget = (CheckBoxParameterWidget) affectedWidget;
-					checkBoxParameterWidget.setValue(checkBoxParameterWidget.convertValue(value));
+					checkBoxParameterWidget.setValue(checkBoxParameterWidget
+							.convertValue(value));
 				} else if (affectedWidget instanceof DropDownListParameterWidget) {
 					DropDownListParameterWidget dropDownListParameterWidget = (DropDownListParameterWidget) affectedWidget;
 					dropDownListParameterWidget.setValue(value);
 				} else if (affectedWidget instanceof DualSpinnerParameterWidget) {
 					DualSpinnerParameterWidget dualSpinnerParameterWidget = (DualSpinnerParameterWidget) affectedWidget;
-					dualSpinnerParameterWidget.setValue(dualSpinnerParameterWidget.convertValue(value));
+					dualSpinnerParameterWidget
+							.setValue(dualSpinnerParameterWidget
+									.convertValue(value));
 				} else if (affectedWidget instanceof HiddenParameterWidget) {
 					HiddenParameterWidget hiddenParameterWidget = (HiddenParameterWidget) affectedWidget;
 					hiddenParameterWidget.setValue(value);
 				} else if (affectedWidget instanceof LocalMktTimeClockParameterWidget) {
 					LocalMktTimeClockParameterWidget localMktTimeClockParameterWidget = (LocalMktTimeClockParameterWidget) affectedWidget;
-					localMktTimeClockParameterWidget.setValue(localMktTimeClockParameterWidget.convertValue(value));
+					localMktTimeClockParameterWidget
+							.setValue(localMktTimeClockParameterWidget
+									.convertValue(value));
 				} else if (affectedWidget instanceof MonthYearClockParameterWidget) {
 					MonthYearClockParameterWidget monthYearClockParameterWidget = (MonthYearClockParameterWidget) affectedWidget;
-					monthYearClockParameterWidget.setValue(monthYearClockParameterWidget.convertValue(value));
+					monthYearClockParameterWidget
+							.setValue(monthYearClockParameterWidget
+									.convertValue(value));
 				} else if (affectedWidget instanceof NumberTextFieldParameterWidget) {
 					NumberTextFieldParameterWidget numberTextFieldParameterWidget = (NumberTextFieldParameterWidget) affectedWidget;
-					numberTextFieldParameterWidget.setValue(numberTextFieldParameterWidget.convertValue(value));
+					numberTextFieldParameterWidget
+							.setValue(numberTextFieldParameterWidget
+									.convertValue(value));
 				} else if (affectedWidget instanceof RadioButtonListParameterWidget) {
 					RadioButtonListParameterWidget radioButtonListParameterWidget = (RadioButtonListParameterWidget) affectedWidget;
 					radioButtonListParameterWidget.setValue(value);
 				} else if (affectedWidget instanceof SingleSpinnerParameterWidget) {
 					SingleSpinnerParameterWidget singleSpinnerParameterWidget = (SingleSpinnerParameterWidget) affectedWidget;
-					singleSpinnerParameterWidget.setValue(singleSpinnerParameterWidget.convertValue(value));
+					singleSpinnerParameterWidget
+							.setValue(singleSpinnerParameterWidget
+									.convertValue(value));
 				} else if (affectedWidget instanceof SliderParameterWidget) {
 					SliderParameterWidget sliderParameterWidget = (SliderParameterWidget) affectedWidget;
-					sliderParameterWidget.setValue(sliderParameterWidget.convertValue(value));
+					sliderParameterWidget.setValue(sliderParameterWidget
+							.convertValue(value));
 				} else if (affectedWidget instanceof StringTextFieldParameterWidget) {
 					StringTextFieldParameterWidget stringTextFieldParameterWidget = (StringTextFieldParameterWidget) affectedWidget;
 					stringTextFieldParameterWidget.setValue(value);
 				} else if (affectedWidget instanceof UTCDateClockParameterWidget) {
 					UTCDateClockParameterWidget utcDateClockParameterWidget = (UTCDateClockParameterWidget) affectedWidget;
-					utcDateClockParameterWidget.setValue(utcDateClockParameterWidget.convertValue(value)) ;
-				} else if (affectedWidget instanceof UTCTimeOnlyClockParameterWidget) { 
+					utcDateClockParameterWidget
+							.setValue(utcDateClockParameterWidget
+									.convertValue(value));
+				} else if (affectedWidget instanceof UTCTimeOnlyClockParameterWidget) {
 					UTCTimeOnlyClockParameterWidget utcTimeOnlyClockParameterWidget = (UTCTimeOnlyClockParameterWidget) affectedWidget;
-					utcTimeOnlyClockParameterWidget.setValue(utcTimeOnlyClockParameterWidget.convertValue(value));
+					utcTimeOnlyClockParameterWidget
+							.setValue(utcTimeOnlyClockParameterWidget
+									.convertValue(value));
 				} else if (affectedWidget instanceof UTCTimeStampClockParameterWidget) {
 					UTCTimeStampClockParameterWidget utcTimeStampClockParameterWidget = (UTCTimeStampClockParameterWidget) affectedWidget;
-					utcTimeStampClockParameterWidget.setValue(utcTimeStampClockParameterWidget.convertValue(value));
+					utcTimeStampClockParameterWidget
+							.setValue(utcTimeStampClockParameterWidget
+									.convertValue(value));
 				}
 			} catch (XmlException e) {
 				throw new RuntimeException(e);
 			}
 		}
-		
 
 	}
 

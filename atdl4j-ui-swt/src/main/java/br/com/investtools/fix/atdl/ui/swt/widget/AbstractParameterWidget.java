@@ -5,8 +5,8 @@ import br.com.investtools.fix.atdl.ui.impl.PlainFIXMessageBuilder;
 import br.com.investtools.fix.atdl.ui.swt.ParameterUI;
 
 /**
- * Abstract class that represents a Parameter SWT Widget.
- * Implements the FIX value getters's methods.  
+ * Abstract class that represents a Parameter SWT Widget. Implements the FIX
+ * value getters's methods.
  * 
  * @author renato.gallart
  * 

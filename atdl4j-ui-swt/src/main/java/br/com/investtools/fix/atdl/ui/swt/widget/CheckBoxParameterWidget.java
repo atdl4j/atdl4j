@@ -70,7 +70,7 @@ public class CheckBoxParameterWidget extends AbstractParameterWidget<Boolean> {
 	public void setValue(Boolean value) {
 		checkBox.setSelection(value.booleanValue());
 	}
-	
+
 	@Override
 	public String getValueAsString() {
 		return getBooleanAsString(getValue());

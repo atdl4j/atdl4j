@@ -14,15 +14,15 @@ public abstract class WidgetHelper {
 		}
 		return parameter.getName();
 	}
-	
+
 	public static String invertOnWire(String text) {
 		StringBuffer invertedString = new StringBuffer();
-		
+
 		int startIndex = text.lastIndexOf(" ");
 		int endIndex = text.length();
 
 		do {
-			invertedString.append(text.substring(startIndex+1, endIndex));
+			invertedString.append(text.substring(startIndex + 1, endIndex));
 			if (startIndex == -1) {
 				return invertedString.toString();
 			} else {
@@ -31,7 +31,7 @@ public abstract class WidgetHelper {
 			endIndex = startIndex;
 			startIndex = (text.substring(0, endIndex)).lastIndexOf(" ");
 		} while (endIndex != -1);
-		
+
 		return invertedString.toString();
 	}
 
