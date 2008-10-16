@@ -30,7 +30,7 @@
 					<programs>
 						<program>
 							<mainClass>
-								br.com.investtools.fix.atdl.ui.swt.SWTBuilder
+								br.com.investtools.fix.atdl.ui.swt.test.applications.SWTBuilder
 							</mainClass>
 							<name>atdl4j-ui-swt</name>
 						</program>
