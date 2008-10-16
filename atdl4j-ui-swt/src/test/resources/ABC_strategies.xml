@@ -198,9 +198,9 @@
 							maxValue="1000"
 							initValue="0"
 							lay:controlType="SingleSpinner">
-							<flow:stateRule visible="false">
+							<!--flow:stateRule visible="false">
 								<val:edit field="TimeInForce" operator="EQ" value="Day"/>
-							</flow:stateRule>
+							</flow:stateRule-->
 						</parameter>
 					</lay:strategyPanel>
 					<lay:strategyPanel title="More" collapsible="true" orientation="VERTICAL">
@@ -213,9 +213,9 @@
 							minValue="0"
 							maxValue="6"
 							lay:controlType="SingleSpinner">
-							<flow:stateRule enabled="true">
+							<!--flow:stateRule enabled="true">
 								<val:edit field="Price" operator="GT" field2="DiscretionBelow"/>
-							</flow:stateRule>
+							</flow:stateRule-->
 						</parameter>
 						<parameter
 								name="Buyback" xsi:type="Boolean_t" type="13"
@@ -276,9 +276,9 @@
 			</val:edit>
 		</val:strategyEdit>
 		
-		<val:strategyEdit errorMessage="OrdType must be Market">
+		<!--val:strategyEdit errorMessage="OrdType must be Market">
 	    	<val:edit field="OrdType" operator="EQ" value="Market"/>
-	    </val:strategyEdit>
+	    </val:strategyEdit-->
 
   	</strategy>
 	
@@ -387,7 +387,7 @@
 			</val:edit>
 		</val:strategyEdit>
 		
-		<val:strategyEdit errorMessage="Min Display Qty cannot be greater than Order Qty">
+		<!--val:strategyEdit errorMessage="Min Display Qty cannot be greater than Order Qty">
 			<val:edit logicOperator="OR">
 				<val:edit field="MinDisplayQty" operator="NX"/>
 				<val:edit field="MinDisplayQty" operator="LE" field2="OrderQty"/>
@@ -399,7 +399,7 @@
 				<val:edit field="MaxDisplayQty" operator="NX"/>
 				<val:edit field="MaxDisplayQty" operator="LE" field2="OrderQty"/>
 			</val:edit>
-		</val:strategyEdit>
+		</val:strategyEdit-->
         
 	</strategy>
 
