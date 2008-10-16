@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>br.com.investtools.fix.atdl</groupId>
 		<artifactId>atdl4j-ui</artifactId>
-		<version>1.0-BETA-1-SNAPSHOT</version>
+		<version>1.0-beta-1-SNAPSHOT</version>
 	</parent>
 	<groupId>br.com.investtools.fix.atdl</groupId>
 	<artifactId>atdl4j-ui-swt</artifactId>
