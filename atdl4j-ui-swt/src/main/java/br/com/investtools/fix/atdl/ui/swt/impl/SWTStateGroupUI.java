@@ -90,68 +90,99 @@ public class SWTStateGroupUI {
 				String value = targetParameter.getValue();
 
 				try {
-
-					if (affectedWidget instanceof CheckBoxListParameterWidget) {
-						CheckBoxListParameterWidget checkBoxListParameterWidget = (CheckBoxListParameterWidget) affectedWidget;
+					// XXX: working around compiler bug described at
+					// http://bugs.sun.com/view_bug.do?bug_id=6548436
+					if (CheckBoxListParameterWidget.class
+							.isInstance(affectedWidget)) {
+						CheckBoxListParameterWidget checkBoxListParameterWidget = CheckBoxListParameterWidget.class
+								.cast(affectedWidget);
 						checkBoxListParameterWidget.setValue(value);
-					} else if (affectedWidget instanceof CheckBoxParameterWidget) {
-						CheckBoxParameterWidget checkBoxParameterWidget = (CheckBoxParameterWidget) affectedWidget;
+					} else if (CheckBoxParameterWidget.class
+							.isInstance(affectedWidget)) {
+						CheckBoxParameterWidget checkBoxParameterWidget = CheckBoxParameterWidget.class
+								.cast(affectedWidget);
 						checkBoxParameterWidget
 								.setValue(checkBoxParameterWidget
 										.convertValue(value));
-					} else if (affectedWidget instanceof DropDownListParameterWidget) {
-						DropDownListParameterWidget dropDownListParameterWidget = (DropDownListParameterWidget) affectedWidget;
+					} else if (DropDownListParameterWidget.class
+							.isInstance(affectedWidget)) {
+						DropDownListParameterWidget dropDownListParameterWidget = DropDownListParameterWidget.class
+								.cast(affectedWidget);
 						dropDownListParameterWidget.setValue(value);
-					} else if (affectedWidget instanceof DualSpinnerParameterWidget) {
-						DualSpinnerParameterWidget dualSpinnerParameterWidget = (DualSpinnerParameterWidget) affectedWidget;
+					} else if (DualSpinnerParameterWidget.class
+							.isInstance(affectedWidget)) {
+						DualSpinnerParameterWidget dualSpinnerParameterWidget = DualSpinnerParameterWidget.class
+								.cast(affectedWidget);
 						dualSpinnerParameterWidget
 								.setValue(dualSpinnerParameterWidget
 										.convertValue(value));
-					} else if (affectedWidget instanceof HiddenParameterWidget) {
-						HiddenParameterWidget hiddenParameterWidget = (HiddenParameterWidget) affectedWidget;
+					} else if (HiddenParameterWidget.class
+							.isInstance(affectedWidget)) {
+						HiddenParameterWidget hiddenParameterWidget = HiddenParameterWidget.class
+								.cast(affectedWidget);
 						hiddenParameterWidget.setValue(value);
-					} else if (affectedWidget instanceof LocalMktTimeClockParameterWidget) {
-						LocalMktTimeClockParameterWidget localMktTimeClockParameterWidget = (LocalMktTimeClockParameterWidget) affectedWidget;
+					} else if (LocalMktTimeClockParameterWidget.class
+							.isInstance(affectedWidget)) {
+						LocalMktTimeClockParameterWidget localMktTimeClockParameterWidget = LocalMktTimeClockParameterWidget.class
+								.cast(affectedWidget);
 						localMktTimeClockParameterWidget
 								.setValue(localMktTimeClockParameterWidget
 										.convertValue(value));
-					} else if (affectedWidget instanceof MonthYearClockParameterWidget) {
-						MonthYearClockParameterWidget monthYearClockParameterWidget = (MonthYearClockParameterWidget) affectedWidget;
+					} else if (MonthYearClockParameterWidget.class
+							.isInstance(affectedWidget)) {
+						MonthYearClockParameterWidget monthYearClockParameterWidget = MonthYearClockParameterWidget.class
+								.cast(affectedWidget);
 						monthYearClockParameterWidget
 								.setValue(monthYearClockParameterWidget
 										.convertValue(value));
-					} else if (affectedWidget instanceof NumberTextFieldParameterWidget) {
-						NumberTextFieldParameterWidget numberTextFieldParameterWidget = (NumberTextFieldParameterWidget) affectedWidget;
+					} else if (NumberTextFieldParameterWidget.class
+							.isInstance(affectedWidget)) {
+						NumberTextFieldParameterWidget numberTextFieldParameterWidget = NumberTextFieldParameterWidget.class
+								.cast(affectedWidget);
 						numberTextFieldParameterWidget
 								.setValue(numberTextFieldParameterWidget
 										.convertValue(value));
-					} else if (affectedWidget instanceof RadioButtonListParameterWidget) {
-						RadioButtonListParameterWidget radioButtonListParameterWidget = (RadioButtonListParameterWidget) affectedWidget;
+					} else if (RadioButtonListParameterWidget.class
+							.isInstance(affectedWidget)) {
+						RadioButtonListParameterWidget radioButtonListParameterWidget = RadioButtonListParameterWidget.class
+								.cast(affectedWidget);
 						radioButtonListParameterWidget.setValue(value);
-					} else if (affectedWidget instanceof SingleSpinnerParameterWidget) {
-						SingleSpinnerParameterWidget singleSpinnerParameterWidget = (SingleSpinnerParameterWidget) affectedWidget;
+					} else if (SingleSpinnerParameterWidget.class
+							.isInstance(affectedWidget)) {
+						SingleSpinnerParameterWidget singleSpinnerParameterWidget = SingleSpinnerParameterWidget.class
+								.cast(affectedWidget);
 						singleSpinnerParameterWidget
 								.setValue(singleSpinnerParameterWidget
 										.convertValue(value));
-					} else if (affectedWidget instanceof SliderParameterWidget) {
-						SliderParameterWidget sliderParameterWidget = (SliderParameterWidget) affectedWidget;
+					} else if (SliderParameterWidget.class
+							.isInstance(affectedWidget)) {
+						SliderParameterWidget sliderParameterWidget = SliderParameterWidget.class
+								.cast(affectedWidget);
 						sliderParameterWidget.setValue(sliderParameterWidget
 								.convertValue(value));
-					} else if (affectedWidget instanceof StringTextFieldParameterWidget) {
-						StringTextFieldParameterWidget stringTextFieldParameterWidget = (StringTextFieldParameterWidget) affectedWidget;
+					} else if (StringTextFieldParameterWidget.class
+							.isInstance(affectedWidget)) {
+						StringTextFieldParameterWidget stringTextFieldParameterWidget = StringTextFieldParameterWidget.class
+								.cast(affectedWidget);
 						stringTextFieldParameterWidget.setValue(value);
-					} else if (affectedWidget instanceof UTCDateClockParameterWidget) {
-						UTCDateClockParameterWidget utcDateClockParameterWidget = (UTCDateClockParameterWidget) affectedWidget;
+					} else if (UTCDateClockParameterWidget.class
+							.isInstance(affectedWidget)) {
+						UTCDateClockParameterWidget utcDateClockParameterWidget = UTCDateClockParameterWidget.class
+								.cast(affectedWidget);
 						utcDateClockParameterWidget
 								.setValue(utcDateClockParameterWidget
 										.convertValue(value));
-					} else if (affectedWidget instanceof UTCTimeOnlyClockParameterWidget) {
-						UTCTimeOnlyClockParameterWidget utcTimeOnlyClockParameterWidget = (UTCTimeOnlyClockParameterWidget) affectedWidget;
+					} else if (UTCTimeOnlyClockParameterWidget.class
+							.isInstance(affectedWidget)) {
+						UTCTimeOnlyClockParameterWidget utcTimeOnlyClockParameterWidget = UTCTimeOnlyClockParameterWidget.class
+								.cast(affectedWidget);
 						utcTimeOnlyClockParameterWidget
 								.setValue(utcTimeOnlyClockParameterWidget
 										.convertValue(value));
-					} else if (affectedWidget instanceof UTCTimeStampClockParameterWidget) {
-						UTCTimeStampClockParameterWidget utcTimeStampClockParameterWidget = (UTCTimeStampClockParameterWidget) affectedWidget;
+					} else if (UTCTimeStampClockParameterWidget.class
+							.isInstance(affectedWidget)) {
+						UTCTimeStampClockParameterWidget utcTimeStampClockParameterWidget = UTCTimeStampClockParameterWidget.class
+								.cast(affectedWidget);
 						utcTimeStampClockParameterWidget
 								.setValue(utcTimeStampClockParameterWidget
 										.convertValue(value));
