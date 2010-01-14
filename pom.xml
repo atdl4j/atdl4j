@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>br.com.investtools.fix.atdl</groupId>
+	<groupId>org.atdl4j</groupId>
 	<version>1.0-beta-2-SNAPSHOT</version>
 	<artifactId>atdl4j-ui</artifactId>
 	<packaging>pom</packaging>
@@ -45,8 +45,9 @@
 		<module>atdl4j-ui-swt</module>
 	</modules>
 	<scm>
-		<connection>scm:svn:http://atdl4j.googlecode.com/svn/atdl4j-ui/trunk</connection>
-		<developerConnection>scm:svn:https://atdl4j.googlecode.com/svn/atdl4j-ui/trunk</developerConnection>
+		<connection>scm:git:git://github.com/tuler/atdl4j-ui.git</connection>
+		<developerConnection>scm:git:git@github.com:tuler/atdl4j-ui.git</developerConnection>
+		<url>http://github.com/tuler/atdl4j-ui</url>
 	</scm>
 	<distributionManagement>
 		<repository>
