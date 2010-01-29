@@ -40,17 +40,16 @@ public class RadioButtonManager {
 		radioButtons.add(button);
 		button.addListener(SWT.Selection, radioGroupListener);
 	}
-
+	
 	public void addButton(ButtonWidget buttonWidget) {
-		// Button button = buttonWidget.getButton();
-		// radioButtons.add(button);
-		// button.addListener(SWT.Selection, radioGroupListener);
+//		Button button = buttonWidget.getButton();
+//		radioButtons.add(button);
+//		button.addListener(SWT.Selection, radioGroupListener);
 	}
-
+	
 	public Object getControlValue() {
 		for (Button button : radioButtons) {
-			if (button.getSelection())
-				return new Object(); // need a way to get value!!!!!!!
+			if (button.getSelection()) return new Object(); // need a way to get value!!!!!!!
 			break;
 		}
 		return null;

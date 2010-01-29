@@ -8,14 +8,14 @@ import java.util.Map.Entry;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.validation.StrategyEditT;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.ControlUI;
+import org.fixprotocol.atdl_1_1.validation.StrategyEditT;
 
 public class StrategyRuleset {
 
 	private Map<StrategyEditT, ValidationRule> refRules;
-
+	
 	private List<ValidationRule> requiredFieldRules;
 
 	private List<ValidationRule> patternRules;
@@ -37,10 +37,10 @@ public class StrategyRuleset {
 	public void putRefRule(StrategyEditT strategyEdit, ValidationRule rule) {
 		this.refRules.put(strategyEdit, rule);
 	}
-
-	public void validate(Map<String, ValidationRule> refRules,
-			Map<String, ControlUI<?>> parameters) throws ValidationException,
-			JAXBException {
+	
+	public void validate(Map<String, ValidationRule> refRules, 
+			Map<String, ControlUI<?>> parameters)
+			throws ValidationException, JAXBException {
 
 		for (ValidationRule requiredFieldRule : requiredFieldRules) {
 			try {
@@ -60,21 +60,18 @@ public class StrategyRuleset {
 				ControlUI<?> target = e.getTarget();
 				String name = target.getParameter().getName();
 				String type = target.getClass().toString();
-				throw new ValidationException(target, "Field \"" + name
-						+ "\" of type " + type
+				throw new ValidationException(target, "Field \"" + name + "\" of type " + type
 						+ " does not follow the required pattern.");
 			}
 		}
 
-		for (Entry<StrategyEditT, ValidationRule> entry : this.refRules
-				.entrySet()) {
+		for (Entry<StrategyEditT, ValidationRule> entry : this.refRules.entrySet()) {
 			StrategyEditT strategyEdit = entry.getKey();
 			ValidationRule rule = entry.getValue();
 			try {
 				rule.validate(refRules, parameters);
 			} catch (ValidationException e) {
-				throw new ValidationException(e.getTarget(), strategyEdit
-						.getErrorMessage());
+				throw new ValidationException(e.getTarget(), strategyEdit.getErrorMessage());
 			}
 		}
 	}

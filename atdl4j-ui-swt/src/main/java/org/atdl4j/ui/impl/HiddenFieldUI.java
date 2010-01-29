@@ -2,25 +2,24 @@ package org.atdl4j.ui.impl;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.core.ParameterT;
-import org.atdl4j.atdl.layout.HiddenFieldT;
+import org.fixprotocol.atdl_1_1.core.ParameterT;
+import org.fixprotocol.atdl_1_1.layout.HiddenFieldT;
 
 public abstract class HiddenFieldUI extends AbstractControlUI<String> {
 
 	protected String value;
 
-	public HiddenFieldUI(HiddenFieldT control, ParameterT parameter)
-			throws JAXBException {
+	public HiddenFieldUI(HiddenFieldT control, ParameterT parameter) throws JAXBException {
 		this.control = control;
 		this.parameter = parameter;
 		this.setValue(getConstInitValue());
 		init();
 	}
-
+	
 	private String getConstInitValue() {
-		return ((HiddenFieldT) control).getInitValue();
+		return ((HiddenFieldT)control).getInitValue();
 	}
-
+	
 	public String getControlValue() {
 		return value;
 	}
@@ -36,7 +35,7 @@ public abstract class HiddenFieldUI extends AbstractControlUI<String> {
 	public void setEnabled(boolean enabled) {
 		// Do nothing
 	}
-
+	
 	public void setVisible(boolean visible) {
 		// Do nothing
 	}

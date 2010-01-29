@@ -3,61 +3,66 @@ package org.atdl4j.data.converter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.atdl4j.atdl.core.AmtT;
-import org.atdl4j.atdl.core.FloatT;
-import org.atdl4j.atdl.core.IntT;
-import org.atdl4j.atdl.core.NumericT;
-import org.atdl4j.atdl.core.ParameterT;
-import org.atdl4j.atdl.core.PercentageT;
-import org.atdl4j.atdl.core.PriceOffsetT;
-import org.atdl4j.atdl.core.PriceT;
-import org.atdl4j.atdl.core.QtyT;
+import org.fixprotocol.atdl_1_1.core.AmtT;
+import org.fixprotocol.atdl_1_1.core.FloatT;
+import org.fixprotocol.atdl_1_1.core.IntT;
+// import org.fixprotocol.atdl_1_1.core.LengthT; doesn't have min/max value?
+import org.fixprotocol.atdl_1_1.core.NumericT;
+import org.fixprotocol.atdl_1_1.core.ParameterT;
+import org.fixprotocol.atdl_1_1.core.PercentageT;
+import org.fixprotocol.atdl_1_1.core.PriceOffsetT;
+import org.fixprotocol.atdl_1_1.core.PriceT;
+import org.fixprotocol.atdl_1_1.core.QtyT;
 
 public class NumberConverter extends AbstractTypeConverter<BigDecimal> {
 
 	public NumberConverter() {
 	}
-
+	
 	public NumberConverter(ParameterT parameter) {
 		this.parameter = parameter;
 	}
 
 	// TODO: this doesn't currently return null
-	public BigDecimal convertValueToComparable(Object value) {
+	public BigDecimal convertValueToComparable(Object value)
+	{
 		// TODO: need to handle precision, integers, etc
-		if (value instanceof BigDecimal) {
+		if (value instanceof BigDecimal)
+		{
 			return (BigDecimal) value;
-		} else if (value instanceof String) {
+		}
+		else if (value instanceof String)
+		{
 			String str = (String) value;
 			try {
 				return new BigDecimal(str);
 			} catch (NumberFormatException e) {
 				return null;
 			}
-		} else if (value instanceof Boolean) {
+		}
+		else if (value instanceof Boolean)
+		{
 			Boolean bool = (Boolean) value;
-			if (bool != null) {
-				if (bool)
-					return new BigDecimal(1);
-				else
-					return new BigDecimal(0);
-			} else
-				return null;
+			if (bool != null)
+			{
+				if (bool) return new BigDecimal(1);
+				else return new BigDecimal(0);
+			}
+			else return null;
 		}
 		return null;
 	}
-
-	public String convertValueToString(Object value) {
+	
+	public String convertValueToString(Object value)
+	{
 		// TODO: need to handle precision, integers, etc
-		BigDecimal num = convertValueToComparable(value); // TODO: this doesn't
-															// currently return
-															// null
+		BigDecimal num = convertValueToComparable(value); // TODO: this doesn't currently return null
 		if (num == null)
 			return null;
 		else
 			return num.toPlainString();
 	}
-
+		
 	public Integer getPrecision() {
 
 		BigInteger precision;
@@ -78,9 +83,9 @@ public class NumberConverter extends AbstractTypeConverter<BigDecimal> {
 		return precision.intValue();
 
 	}
-
+	
 	public Integer getMinimum() {
-
+		
 		if (parameter instanceof FloatT) {
 			// get value defined by user
 			FloatT floatT = (FloatT) parameter;
@@ -89,8 +94,7 @@ public class NumberConverter extends AbstractTypeConverter<BigDecimal> {
 				float minValue = floatT.getMinValue();
 
 				// adjust according to precision
-				int minValueAdjusted = (int) (minValue * Math.pow(10,
-						getPrecision()));
+				int minValueAdjusted = (int) (minValue * Math.pow(10, getPrecision()));
 				return minValueAdjusted;
 			}
 		} else if (parameter instanceof AmtT) {
@@ -150,7 +154,7 @@ public class NumberConverter extends AbstractTypeConverter<BigDecimal> {
 		} else if (parameter instanceof IntT) {
 			IntT intT = (IntT) parameter;
 
-			if (intT.getMinValue() != null) {
+			if (intT.getMinValue()!= null) {
 				return intT.getMinValue();
 			}
 
@@ -158,7 +162,7 @@ public class NumberConverter extends AbstractTypeConverter<BigDecimal> {
 
 		return null;
 	}
-
+	
 	public Integer getMaximum() {
 
 		if (parameter instanceof FloatT) {
@@ -169,8 +173,7 @@ public class NumberConverter extends AbstractTypeConverter<BigDecimal> {
 				float maxValue = floatT.getMaxValue();
 
 				// adjust according to precision
-				int maxValueAdjusted = (int) (maxValue * Math.pow(10,
-						getPrecision()));
+				int maxValueAdjusted = (int) (maxValue * Math.pow(10, getPrecision()));
 				return maxValueAdjusted;
 			}
 		} else if (parameter instanceof AmtT) {

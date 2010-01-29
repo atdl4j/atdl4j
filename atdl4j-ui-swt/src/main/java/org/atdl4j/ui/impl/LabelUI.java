@@ -1,6 +1,6 @@
 package org.atdl4j.ui.impl;
 
-import org.atdl4j.atdl.layout.LabelT;
+import org.fixprotocol.atdl_1_1.layout.LabelT;
 
 /* 
  * This class intentionally does not support parameterRef or initValue
@@ -15,11 +15,11 @@ public abstract class LabelUI extends AbstractControlUI<String> {
 		this.control = control;
 		this.parameter = null;
 	}
-
+	
 	public void setValue(String value) {
 		// do nothing
 	}
-
+	
 	public String getControlValue() {
 		return null; // Labels cannot store values
 	}

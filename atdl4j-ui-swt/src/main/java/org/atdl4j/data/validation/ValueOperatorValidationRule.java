@@ -4,11 +4,12 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.flow.StateRuleT;
-import org.atdl4j.atdl.validation.OperatorT;
+
 import org.atdl4j.data.ValidationRule;
-import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.ControlUI;
+import org.atdl4j.data.exception.ValidationException;
+import org.fixprotocol.atdl_1_1.flow.StateRuleT;
+import org.fixprotocol.atdl_1_1.validation.OperatorT;
 
 /**
  * Validator that validates input against a constant value.
@@ -25,8 +26,7 @@ public class ValueOperatorValidationRule extends AbstractOperatorValidationRule 
 
 	private Object parent; // Can be either StrategyEdit or StateRule
 
-	public ValueOperatorValidationRule(String field, OperatorT operator,
-			String value, Object parent) {
+	public ValueOperatorValidationRule(String field, OperatorT operator, String value, Object parent) {
 		this.field = field;
 		this.operator = operator;
 		this.value = value;
@@ -44,11 +44,8 @@ public class ValueOperatorValidationRule extends AbstractOperatorValidationRule 
 					+ "\" in this context");
 		}
 
-		Object fieldValue = parent instanceof StateRuleT ? target
-				.getControlValueAsComparable() : target
-				.getParameterValueAsComparable();
-		Object v = value != null ? target.convertStringToComparable(value)
-				: null;
+		Object fieldValue = parent instanceof StateRuleT ? target.getControlValueAsComparable() : target.getParameterValueAsComparable();
+		Object v = value != null ? target.convertStringToComparable(value) : null;
 		validateValues(target, fieldValue, operator, v);
 	}
 

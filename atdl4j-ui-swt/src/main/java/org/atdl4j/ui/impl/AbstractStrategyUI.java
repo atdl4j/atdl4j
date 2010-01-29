@@ -9,4 +9,5 @@ import org.atdl4j.ui.StrategyUI;
  */
 public abstract class AbstractStrategyUI implements StrategyUI {
 
+
 }

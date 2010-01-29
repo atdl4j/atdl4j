@@ -6,10 +6,11 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.validation.LogicOperatorT;
+
+import org.atdl4j.ui.ControlUI;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
-import org.atdl4j.ui.ControlUI;
+import org.fixprotocol.atdl_1_1.validation.LogicOperatorT;
 
 /**
  * ValidationRule that behaves as a composite, using on of the following
@@ -23,19 +24,20 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 	private LogicOperatorT operator;
 
 	private List<ValidationRule> rules;
-
-	// private Object parent; // Can be either StrategyEdit or StateRule
+	
+	//private Object parent; // Can be either StrategyEdit or StateRule
 
 	public LogicalOperatorValidationRule(LogicOperatorT operator, Object parent) {
 		this.operator = operator;
 		this.rules = new ArrayList<ValidationRule>();
-		// this.parent = parent;
+		//this.parent = parent;
 	}
 
-	public List<ValidationRule> getRules() {
+	public List<ValidationRule> getRules()
+	{
 		return rules;
 	}
-
+	
 	public void addRule(ValidationRule rule) {
 		this.rules.add(rule);
 	}
@@ -46,7 +48,7 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 
 		ValidationException ex = null;
 		boolean valid = false;
-
+		
 		switch (operator) {
 		case OR:
 
@@ -91,25 +93,23 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 						valid = false;
 						ControlUI<?> parameter = getParameterFromRule(rule);
 						throw new ValidationException(parameter);
-					}
+					}					
 					state = true;
 					valid = true;
 				} catch (ValidationException e) {
 					ex = e;
-					if (state)
-						break;
+					if (state) break;
 				}
 			}
 			if (!valid) {
 				throw ex;
-			}
-
+			}			
+			
 			break;
 
 		case NOT:
 
-			// NOT - interpreted as 'NOR'; will throw exception if any of the
-			// rules validate as true
+			// NOT - interpreted as 'NOR'; will throw exception if any of the rules validate as true
 			for (ValidationRule rule : this.rules) {
 				try {
 					rule.validate(rules, targets);
@@ -121,7 +121,7 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 					ex = e;
 				}
 			}
-
+			
 			break;
 
 		}
@@ -131,7 +131,7 @@ public class LogicalOperatorValidationRule implements ValidationRule {
 	private ControlUI<?> getParameterFromRule(ValidationRule rule) {
 		ControlUI<?> parameter = null;
 		if (rule instanceof ParameterValidationRule) {
-			parameter = ((ParameterValidationRule) rule).getParameter();
+			parameter = ((ParameterValidationRule)rule).getParameter();
 		}
 		return parameter;
 	}

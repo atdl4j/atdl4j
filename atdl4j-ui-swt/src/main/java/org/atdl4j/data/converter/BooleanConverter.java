@@ -3,7 +3,7 @@ package org.atdl4j.data.converter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.atdl4j.atdl.core.BooleanT;
+import org.fixprotocol.atdl_1_1.core.BooleanT;
 
 public class BooleanConverter extends AbstractTypeConverter<Boolean> {
 
@@ -12,34 +12,35 @@ public class BooleanConverter extends AbstractTypeConverter<Boolean> {
 
 	public BooleanConverter() {
 	}
-
+	
 	public BooleanConverter(BooleanT parameter) {
 		this.parameter = parameter;
 	}
 
 	// TODO: improve handling of null values (null is a valid output)
-	public Boolean convertValueToComparable(Object value) {
-		if (value == null)
-			return null;
-
-		if (value instanceof Boolean) {
+	public Boolean convertValueToComparable(Object value)
+	{
+		if (value == null) return null;
+		
+		if (value instanceof Boolean)
+		{
 			return (Boolean) value;
-		}
-		if (value instanceof String) {
+		}		
+		if (value instanceof String)
+		{
 			String str = (String) value;
-			if (str.equalsIgnoreCase("true") || str.equals("1")
-					|| str.equals(BooleanConverter.BOOLEAN_TRUE)) {
+			if (str.equalsIgnoreCase("true") || str.equals("1") || str.equals(BooleanConverter.BOOLEAN_TRUE)) {
 				return new Boolean(true);
-			} else if (str.equalsIgnoreCase("false") || str.equals("0")
-					|| str.equals(BooleanConverter.BOOLEAN_FALSE)) {
+			} else if (str.equalsIgnoreCase("false") || str.equals("0") || str.equals(BooleanConverter.BOOLEAN_FALSE)) {
 				return new Boolean(false);
-			} else if (str.equals("")) {
+			} else if (str.equals("")) {	
 				return null;
 			} else {
 				return new Boolean(false);
 			}
 		}
-		if (value instanceof BigDecimal || value instanceof BigInteger) {
+		if (value instanceof BigDecimal || value instanceof BigInteger)
+		{
 			BigDecimal num = (BigDecimal) value;
 			if (num.intValue() == 1) {
 				return new Boolean(true);
@@ -48,22 +49,23 @@ public class BooleanConverter extends AbstractTypeConverter<Boolean> {
 			} else {
 				return new Boolean(false);
 			}
-		} else
-			return new Boolean(false);
-		// TODO: is this an error??--I think it should be.
+		}
+		else return new Boolean(false);
+		//TODO: is this an error??--I think it should be.
 		// Dates are always false
 	}
-
-	public String convertValueToString(Object value) {
+	
+	public String convertValueToString(Object value)
+	{
 		// TODO: cleanup
 		BooleanT booleanT = null;
-		if (parameter != null && parameter instanceof BooleanT) {
+		if (parameter != null && parameter instanceof BooleanT)
+		{
 			booleanT = (BooleanT) parameter;
 		}
-
-		Boolean bool = convertValueToComparable(value); // TODO: this doesn't
-														// currently return null
-
+		
+		Boolean bool = convertValueToComparable(value); // TODO: this doesn't currently return null
+		
 		if (bool != null) {
 			if (bool.booleanValue()) {
 				if (booleanT != null && booleanT.getTrueWireValue() != null)

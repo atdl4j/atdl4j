@@ -4,8 +4,10 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.ControlUI;
+
 
 /**
  * Models a edit rule or a StrategyEdit rule.

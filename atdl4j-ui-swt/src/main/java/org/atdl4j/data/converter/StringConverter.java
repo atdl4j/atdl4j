@@ -1,38 +1,41 @@
 package org.atdl4j.data.converter;
 
-import org.atdl4j.atdl.core.MultipleCharValueT;
-import org.atdl4j.atdl.core.MultipleStringValueT;
-import org.atdl4j.atdl.core.ParameterT;
+import org.fixprotocol.atdl_1_1.core.MultipleCharValueT;
+import org.fixprotocol.atdl_1_1.core.MultipleStringValueT;
+import org.fixprotocol.atdl_1_1.core.ParameterT;
 
 public class StringConverter extends AbstractTypeConverter<String> {
-
+	
 	public StringConverter(ParameterT parameter) {
 		this.parameter = parameter;
 	}
-
+	
 	public StringConverter() {
 	}
 
-	public String convertValueToComparable(Object value) {
+	public String convertValueToComparable(Object value)
+	{
 		return (value == null || "".equals(value)) ? null : value.toString();
 	}
-
-	public String convertValueToString(Object value) {
-		String str = convertValueToComparable(value);
-		if (str != null) {
-			if (parameter instanceof MultipleCharValueT
-					&& ((MultipleCharValueT) parameter).isInvertOnWire())
+	
+	public String convertValueToString(Object value)
+	{
+		String str = convertValueToComparable(value);		
+		if (str != null)
+		{
+			if (parameter instanceof MultipleCharValueT && 
+					((MultipleCharValueT)parameter).isInvertOnWire())
 				return invertOnWire(str);
-
-			else if (parameter instanceof MultipleStringValueT
-					&& ((MultipleStringValueT) parameter).isInvertOnWire())
+			
+			else if (parameter instanceof MultipleStringValueT && 
+					((MultipleStringValueT)parameter).isInvertOnWire())
 				return invertOnWire(str);
-
+			
 			return str;
 		}
 		return null;
 	}
-
+	
 	private static String invertOnWire(String text) {
 		StringBuffer invertedString = new StringBuffer();
 

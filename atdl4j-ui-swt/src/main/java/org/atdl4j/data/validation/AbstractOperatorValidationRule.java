@@ -1,10 +1,11 @@
 package org.atdl4j.data.validation;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.atdl.validation.OperatorT;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.ControlUI;
+
+import org.fixprotocol.atdl_1_1.validation.OperatorT;
 
 /**
  * Base class for ValidationRule.
@@ -15,8 +16,7 @@ import org.atdl4j.ui.ControlUI;
  */
 public abstract class AbstractOperatorValidationRule implements ValidationRule {
 
-	private static final Logger logger = Logger
-			.getLogger(AbstractOperatorValidationRule.class);
+	private static final Logger logger = Logger.getLogger(AbstractOperatorValidationRule.class);
 
 	@SuppressWarnings("unchecked")
 	protected void validateValues(ControlUI<?> target, Object value1,

@@ -1,5 +1,5 @@
 /*
- * $Id: NumberFormatVerifyListener.java 2749 2006-12-05 14:02:38Z IDEAIS\tuler $
+ * $Id: NumberFormatVerifyListener.java,v 1.1 2010/01/14 21:26:41 swl Exp $
  *
  * Copyright 2006 Investtools Tecnologia em Informatica LTDA.
  * Todos os direitos reservados.
@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Listener class which validates a text field entry based on a Number format.
- * If the entered text is valid, the VerifyEvent is allowed to proceed,
- * otherwise the VerifyEvent is interrupted.
+ * If the entered text is valid, the VerifyEvent is allowed to proceed, otherwise
+ * the VerifyEvent is interrupted.
  * 
  * @author tuler
  * 
@@ -53,10 +53,8 @@ public class NumberFormatVerifyListener implements VerifyListener {
 				ParsePosition parsePosition = new ParsePosition(0);
 				format.parse(value, parsePosition);
 				if (parsePosition.getIndex() < value.length()) {
-					// Throw an exception which indicates the text position
-					// where the parse failed
-					throw new ParseException("Invalid value", parsePosition
-							.getIndex());
+					// Throw an exception which indicates the text position where the parse failed
+					throw new ParseException("Invalid value", parsePosition.getIndex());
 				}
 			} catch (ParseException e1) {
 				e.doit = false;
