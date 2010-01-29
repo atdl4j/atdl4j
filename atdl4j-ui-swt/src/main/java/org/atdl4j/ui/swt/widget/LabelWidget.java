@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.layout.LabelT;
 import org.atdl4j.ui.impl.LabelUI;
 import org.atdl4j.ui.swt.SWTWidget;
 import org.eclipse.swt.SWT;
@@ -15,6 +14,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
+
+import org.fixprotocol.atdl_1_1.layout.LabelT;
 
 public class LabelWidget extends LabelUI implements SWTWidget<String> {
 
@@ -26,19 +27,36 @@ public class LabelWidget extends LabelUI implements SWTWidget<String> {
 
 	public Widget createWidget(Composite parent, int style)
 			throws JAXBException {
-
+				
 		// label
 		label = new Label(parent, SWT.NONE);
-		label.setText(control.getLabel());
+		
+//TODO 1/19/2010 Scott Atwell (some brokers provide initValue only, fails if null)		label.setText(control.getLabel());
+//TODO 1/19/2010 Scott Atwell changes BELOW
+		if ( control.getLabel() != null )
+		{
+			label.setText(control.getLabel());
+		}
+		else if ( ( control instanceof LabelT ) &&
+				    ( ((LabelT) control).getInitValue() != null ) )
+		{
+			label.setText( ((LabelT) control).getInitValue() );
+		}
+		else
+		{
+			label.setText( "" );
+		}
+//TODO 1/19/2010 Scott Atwell changes ABOVE		
+		
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
-
+		
 		// tooltip
 		String tooltip = control.getTooltip();
 		label.setToolTipText(tooltip);
 
 		return parent;
 	}
-
+	
 	public void generateStateRuleListener(Listener listener) {
 		// do nothing
 	}
@@ -57,13 +75,15 @@ public class LabelWidget extends LabelUI implements SWTWidget<String> {
 		// do nothing
 	}
 
-	public void setVisible(boolean visible) {
+	public void setVisible(boolean visible)
+	{
 		for (Control control : getControls()) {
 			control.setVisible(visible);
 		}
 	}
-
-	public void setEnabled(boolean enabled) {
+	
+	public void setEnabled(boolean enabled)
+	{
 		for (Control control : getControls()) {
 			control.setEnabled(enabled);
 		}
