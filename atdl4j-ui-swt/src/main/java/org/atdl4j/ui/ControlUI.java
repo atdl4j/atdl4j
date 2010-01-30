@@ -3,9 +3,9 @@ package org.atdl4j.ui;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.ControlT;
 import org.atdl4j.data.FIXMessageBuilder;
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.layout.ControlT;
 
 /**
  * An interface for an UI widget which will be 

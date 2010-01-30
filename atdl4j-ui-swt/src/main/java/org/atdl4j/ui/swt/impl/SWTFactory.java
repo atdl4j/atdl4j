@@ -6,6 +6,10 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.ControlT;
+import org.atdl4j.atdl.layout.PanelOrientationT;
+import org.atdl4j.atdl.layout.StrategyPanelT;
 import org.atdl4j.data.InputAndFilterData;
 import org.atdl4j.ui.swt.SWTWidget;
 import org.atdl4j.ui.swt.SWTPanelFactory;
@@ -17,10 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Layout;
 
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.layout.ControlT;
-import org.fixprotocol.atdl_1_1.layout.PanelOrientationT;
-import org.fixprotocol.atdl_1_1.layout.StrategyPanelT;
 
 public class SWTFactory implements SWTWidgetFactory, SWTPanelFactory {
 	private static final Logger logger = Logger.getLogger(SWTFactory.class);

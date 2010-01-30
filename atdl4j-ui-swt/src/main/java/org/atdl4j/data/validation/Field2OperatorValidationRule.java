@@ -8,11 +8,11 @@ import javax.xml.bind.JAXBException;
 
 
 import org.atdl4j.ui.ControlUI;
+import org.atdl4j.atdl.flow.StateRuleT;
+import org.atdl4j.atdl.validation.OperatorT;
 import org.atdl4j.data.InputAndFilterData;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
-import org.fixprotocol.atdl_1_1.flow.StateRuleT;
-import org.fixprotocol.atdl_1_1.validation.OperatorT;
 
 /**
  * Validator that validates input against another existing field.

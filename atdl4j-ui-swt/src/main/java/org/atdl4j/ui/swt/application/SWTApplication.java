@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.apache.log4j.Logger;
+import org.atdl4j.atdl.core.StrategiesT;
+import org.atdl4j.atdl.core.StrategyT;
 import org.atdl4j.data.FIXMessageParser;
 import org.atdl4j.data.InputAndFilterData;
 import org.atdl4j.data.exception.ValidationException;
@@ -43,8 +45,6 @@ import org.atdl4j.ui.swt.impl.SWTStrategiesUIFactory;
 import org.atdl4j.ui.swt.impl.SWTStrategyUI;
 import org.atdl4j.ui.swt.test.DebugMouseTrackListener;
 import org.atdl4j.ui.swt.widget.RadioButtonGroupWidget;
-import org.fixprotocol.atdl_1_1.core.StrategiesT;
-import org.fixprotocol.atdl_1_1.core.StrategyT;
 
 public class SWTApplication {
 

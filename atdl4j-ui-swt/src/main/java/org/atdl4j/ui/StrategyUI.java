@@ -4,9 +4,9 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.core.StrategyT;
 import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.exception.ValidationException;
-import org.fixprotocol.atdl_1_1.core.StrategyT;
 
 public interface StrategyUI {
 

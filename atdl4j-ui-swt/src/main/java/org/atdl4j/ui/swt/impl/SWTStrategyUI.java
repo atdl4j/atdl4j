@@ -15,6 +15,21 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.ui.ControlUI;
+import org.atdl4j.atdl.core.MultipleCharValueT;
+import org.atdl4j.atdl.core.MultipleStringValueT;
+import org.atdl4j.atdl.core.ObjectFactory;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.core.StrategiesT;
+import org.atdl4j.atdl.core.StrategyT;
+import org.atdl4j.atdl.core.UseT;
+import org.atdl4j.atdl.flow.StateRuleT;
+import org.atdl4j.atdl.layout.ControlT;
+import org.atdl4j.atdl.layout.HiddenFieldT;
+import org.atdl4j.atdl.layout.StrategyPanelT;
+import org.atdl4j.atdl.validation.EditRefT;
+import org.atdl4j.atdl.validation.EditT;
+import org.atdl4j.atdl.validation.OperatorT;
+import org.atdl4j.atdl.validation.StrategyEditT;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.StrategyRuleset;
@@ -30,22 +45,7 @@ import org.atdl4j.ui.swt.SWTWidget;
 import org.atdl4j.ui.swt.util.RuleFactory;
 import org.atdl4j.ui.swt.widget.HiddenFieldWidget;
 
-import org.fixprotocol.atdl_1_1.core.MultipleCharValueT;
-import org.fixprotocol.atdl_1_1.core.MultipleStringValueT;
-import org.fixprotocol.atdl_1_1.core.ObjectFactory;
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.core.StrategiesT;
-import org.fixprotocol.atdl_1_1.core.StrategyT;
-import org.fixprotocol.atdl_1_1.core.UseT;
-import org.fixprotocol.atdl_1_1.flow.StateRuleT;
 
-import org.fixprotocol.atdl_1_1.layout.ControlT;
-import org.fixprotocol.atdl_1_1.layout.HiddenFieldT;
-import org.fixprotocol.atdl_1_1.layout.StrategyPanelT;
-import org.fixprotocol.atdl_1_1.validation.EditRefT;
-import org.fixprotocol.atdl_1_1.validation.OperatorT;
-import org.fixprotocol.atdl_1_1.validation.EditT;
-import org.fixprotocol.atdl_1_1.validation.StrategyEditT;
 
 /**
  * UI representation for a Strategy object.

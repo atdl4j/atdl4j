@@ -6,6 +6,14 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.core.IntT;
+import org.atdl4j.atdl.core.LengthT;
+import org.atdl4j.atdl.core.NumInGroupT;
+import org.atdl4j.atdl.core.NumericT;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.core.SeqNumT;
+import org.atdl4j.atdl.core.TagNumT;
+import org.atdl4j.atdl.layout.TextFieldT;
 import org.atdl4j.ui.swt.util.NumberFormatVerifyListener;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 
@@ -18,14 +26,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
-import org.fixprotocol.atdl_1_1.core.IntT;
-import org.fixprotocol.atdl_1_1.core.LengthT;
-import org.fixprotocol.atdl_1_1.core.SeqNumT;
-import org.fixprotocol.atdl_1_1.core.NumInGroupT;
-import org.fixprotocol.atdl_1_1.core.TagNumT;
-import org.fixprotocol.atdl_1_1.core.NumericT;
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.layout.TextFieldT;
 
 public class TextFieldWidget extends AbstractSWTWidget<String> {
 

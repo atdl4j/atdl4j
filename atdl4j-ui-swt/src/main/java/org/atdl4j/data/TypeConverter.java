@@ -2,7 +2,8 @@
 package org.atdl4j.data;
 
 import javax.xml.bind.JAXBException;
-import org.fixprotocol.atdl_1_1.core.ParameterT;
+
+import org.atdl4j.atdl.core.ParameterT;
 
 /**
  * An interface for an algorithmic parameter container class. Classes which implement

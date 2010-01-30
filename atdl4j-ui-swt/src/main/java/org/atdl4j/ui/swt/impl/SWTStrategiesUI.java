@@ -5,13 +5,13 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.core.StrategiesT;
+import org.atdl4j.atdl.core.StrategyT;
+import org.atdl4j.atdl.validation.EditT;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.swt.util.RuleFactory;
 import org.eclipse.swt.widgets.Composite;
-import org.fixprotocol.atdl_1_1.core.StrategyT;
-import org.fixprotocol.atdl_1_1.core.StrategiesT;
-import org.fixprotocol.atdl_1_1.validation.EditT;
 
 public class SWTStrategiesUI implements StrategiesUI<Composite> {
 

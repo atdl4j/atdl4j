@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.CheckBoxT;
+import org.atdl4j.atdl.layout.RadioButtonT;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -14,9 +17,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.layout.CheckBoxT;
-import org.fixprotocol.atdl_1_1.layout.RadioButtonT;
 
 /*
  * Implements either a CheckBox or a RadioButton

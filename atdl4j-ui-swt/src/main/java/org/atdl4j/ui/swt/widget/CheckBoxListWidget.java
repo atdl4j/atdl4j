@@ -6,6 +6,10 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.core.EnumPairT;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.CheckBoxListT;
+import org.atdl4j.atdl.layout.ListItemT;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -16,10 +20,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-import org.fixprotocol.atdl_1_1.core.EnumPairT;
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.layout.CheckBoxListT;
-import org.fixprotocol.atdl_1_1.layout.ListItemT;
 
 public class CheckBoxListWidget extends AbstractSWTWidget<String> {
 

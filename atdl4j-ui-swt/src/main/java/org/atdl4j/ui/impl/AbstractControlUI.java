@@ -5,6 +5,17 @@ import java.util.Vector;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.core.EnumPairT;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.CheckBoxListT;
+import org.atdl4j.atdl.layout.ControlT;
+import org.atdl4j.atdl.layout.DropDownListT;
+import org.atdl4j.atdl.layout.EditableDropDownListT;
+import org.atdl4j.atdl.layout.HiddenFieldT;
+import org.atdl4j.atdl.layout.ListItemT;
+import org.atdl4j.atdl.layout.MultiSelectListT;
+import org.atdl4j.atdl.layout.RadioButtonGroupT;
+import org.atdl4j.atdl.layout.SingleSelectListT;
 import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.InputAndFilterData;
 import org.atdl4j.data.TypeConverterFactory;
@@ -12,17 +23,6 @@ import org.atdl4j.data.converter.AbstractTypeConverter;
 import org.atdl4j.data.impl.PlainFIXMessageBuilder;
 import org.atdl4j.ui.ControlUI;
 import org.atdl4j.ui.swt.util.Tag959Helper;
-import org.fixprotocol.atdl_1_1.core.EnumPairT;
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.layout.CheckBoxListT;
-import org.fixprotocol.atdl_1_1.layout.ControlT;
-import org.fixprotocol.atdl_1_1.layout.DropDownListT;
-import org.fixprotocol.atdl_1_1.layout.EditableDropDownListT;
-import org.fixprotocol.atdl_1_1.layout.HiddenFieldT;
-import org.fixprotocol.atdl_1_1.layout.ListItemT;
-import org.fixprotocol.atdl_1_1.layout.MultiSelectListT;
-import org.fixprotocol.atdl_1_1.layout.RadioButtonGroupT;
-import org.fixprotocol.atdl_1_1.layout.SingleSelectListT;
 
 /**
  * Abstract class that represents a Parameter SWT Widget. Implements the FIX

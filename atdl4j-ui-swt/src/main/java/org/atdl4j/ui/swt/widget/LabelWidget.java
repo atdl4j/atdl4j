@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.layout.LabelT;
 import org.atdl4j.ui.impl.LabelUI;
 import org.atdl4j.ui.swt.SWTWidget;
 import org.eclipse.swt.SWT;
@@ -15,7 +16,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-import org.fixprotocol.atdl_1_1.layout.LabelT;
 
 public class LabelWidget extends LabelUI implements SWTWidget<String> {
 

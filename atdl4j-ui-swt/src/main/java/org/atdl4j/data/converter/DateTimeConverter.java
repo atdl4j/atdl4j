@@ -7,12 +7,12 @@ import org.joda.time.format.DateTimeFormatter;
 
 import javax.xml.bind.JAXBException;
 
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.core.LocalMktTimeT;
-import org.fixprotocol.atdl_1_1.core.MonthYearT;
-import org.fixprotocol.atdl_1_1.core.UTCDateT;
-import org.fixprotocol.atdl_1_1.core.UTCTimeOnlyT;
-import org.fixprotocol.atdl_1_1.core.UTCTimeStampT;
+import org.atdl4j.atdl.core.LocalMktTimeT;
+import org.atdl4j.atdl.core.MonthYearT;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.core.UTCDateT;
+import org.atdl4j.atdl.core.UTCTimeOnlyT;
+import org.atdl4j.atdl.core.UTCTimeStampT;
 
 public class DateTimeConverter extends AbstractTypeConverter<DateTime> {
 

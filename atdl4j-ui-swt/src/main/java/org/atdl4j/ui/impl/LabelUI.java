@@ -1,6 +1,6 @@
 package org.atdl4j.ui.impl;
 
-import org.fixprotocol.atdl_1_1.layout.LabelT;
+import org.atdl4j.atdl.layout.LabelT;
 
 /* 
  * This class intentionally does not support parameterRef or initValue

@@ -8,9 +8,9 @@ import java.util.Map.Entry;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.validation.StrategyEditT;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.ControlUI;
-import org.fixprotocol.atdl_1_1.validation.StrategyEditT;
 
 public class StrategyRuleset {
 

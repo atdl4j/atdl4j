@@ -10,6 +10,14 @@ import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.atdl4j.atdl.core.LocalMktTimeT;
+import org.atdl4j.atdl.core.MonthYearT;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.core.UTCDateT;
+import org.atdl4j.atdl.core.UTCTimeOnlyT;
+import org.atdl4j.atdl.core.UTCTimeStampT;
+import org.atdl4j.atdl.core.UseT;
+import org.atdl4j.atdl.layout.ClockT;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.swt.impl.SWTStrategyUI;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
@@ -25,14 +33,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-import org.fixprotocol.atdl_1_1.core.LocalMktTimeT;
-import org.fixprotocol.atdl_1_1.core.MonthYearT;
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.core.UTCDateT;
-import org.fixprotocol.atdl_1_1.core.UTCTimeOnlyT;
-import org.fixprotocol.atdl_1_1.core.UTCTimeStampT;
-import org.fixprotocol.atdl_1_1.core.UseT;
-import org.fixprotocol.atdl_1_1.layout.ClockT;
 
 /**
  * Clock widget which will display differently depending on the parameter type used.

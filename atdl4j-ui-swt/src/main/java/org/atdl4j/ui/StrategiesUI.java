@@ -4,7 +4,7 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
-import org.fixprotocol.atdl_1_1.core.StrategyT;
+import org.atdl4j.atdl.core.StrategyT;
 
 public interface StrategiesUI<T> {
 

@@ -4,15 +4,15 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.validation.EditRefT;
+import org.atdl4j.atdl.validation.EditT;
+import org.atdl4j.atdl.validation.LogicOperatorT;
+import org.atdl4j.atdl.validation.OperatorT;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.validation.Field2OperatorValidationRule;
 import org.atdl4j.data.validation.LogicalOperatorValidationRule;
 import org.atdl4j.data.validation.ReferencedValidationRule;
 import org.atdl4j.data.validation.ValueOperatorValidationRule;
-import org.fixprotocol.atdl_1_1.validation.EditRefT;
-import org.fixprotocol.atdl_1_1.validation.LogicOperatorT;
-import org.fixprotocol.atdl_1_1.validation.OperatorT;
-import org.fixprotocol.atdl_1_1.validation.EditT;
 
 public abstract class RuleFactory {
 

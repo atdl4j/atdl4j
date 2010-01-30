@@ -6,6 +6,12 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
+import org.atdl4j.atdl.core.EnumPairT;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.ListItemT;
+import org.atdl4j.atdl.layout.PanelOrientationT;
+import org.atdl4j.atdl.layout.RadioButtonGroupT;
+import org.atdl4j.atdl.layout.StrategyPanelT;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -16,12 +22,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
-import org.fixprotocol.atdl_1_1.core.EnumPairT;
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.layout.ListItemT;
-import org.fixprotocol.atdl_1_1.layout.PanelOrientationT;
-import org.fixprotocol.atdl_1_1.layout.RadioButtonGroupT;
-import org.fixprotocol.atdl_1_1.layout.StrategyPanelT;
 
 public class RadioButtonGroupWidget extends AbstractSWTWidget<String> {
 	private static final Logger logger = Logger.getLogger(RadioButtonGroupWidget.class);

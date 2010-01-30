@@ -6,6 +6,10 @@ import java.util.Arrays;
 import javax.xml.bind.JAXBException;
 
 
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.ListItemT;
+import org.atdl4j.atdl.layout.MultiSelectListT;
+import org.atdl4j.atdl.layout.SingleSelectListT;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -16,10 +20,6 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.layout.ListItemT;
-import org.fixprotocol.atdl_1_1.layout.MultiSelectListT;
-import org.fixprotocol.atdl_1_1.layout.SingleSelectListT;
 
 public class ListBoxWidget extends AbstractSWTWidget<String> {
 	

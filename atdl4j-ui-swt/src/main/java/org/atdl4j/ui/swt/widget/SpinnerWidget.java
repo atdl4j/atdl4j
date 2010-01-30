@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.DoubleSpinnerT;
+import org.atdl4j.atdl.layout.SingleSpinnerT;
 import org.atdl4j.data.converter.NumberConverter;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 
@@ -22,9 +25,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Widget;
 
-import org.fixprotocol.atdl_1_1.core.ParameterT;
-import org.fixprotocol.atdl_1_1.layout.DoubleSpinnerT;
-import org.fixprotocol.atdl_1_1.layout.SingleSpinnerT;
 
 public class SpinnerWidget extends AbstractSWTWidget<BigDecimal> {
 	

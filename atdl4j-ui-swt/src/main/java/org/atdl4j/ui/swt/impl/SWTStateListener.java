@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.atdl.flow.StateRuleT;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.ControlUI;
@@ -13,7 +14,6 @@ import org.atdl4j.ui.swt.util.RuleFactory;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import org.fixprotocol.atdl_1_1.flow.StateRuleT;
 
 public class SWTStateListener implements Listener {
 
