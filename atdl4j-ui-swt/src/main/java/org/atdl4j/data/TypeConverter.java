@@ -2,7 +2,6 @@
 package org.atdl4j.data;
 
 import javax.xml.bind.JAXBException;
-
 import org.atdl4j.atdl.core.ParameterT;
 
 /**

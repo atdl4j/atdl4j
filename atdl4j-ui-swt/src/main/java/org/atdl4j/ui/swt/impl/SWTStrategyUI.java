@@ -15,6 +15,21 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.ui.ControlUI;
+import org.atdl4j.data.ValidationRule;
+import org.atdl4j.data.FIXMessageBuilder;
+import org.atdl4j.data.StrategyRuleset;
+import org.atdl4j.data.exception.ValidationException;
+import org.atdl4j.data.fix.PlainFIXMessageBuilder;
+import org.atdl4j.data.validation.Field2OperatorValidationRule;
+import org.atdl4j.data.validation.LogicalOperatorValidationRule;
+import org.atdl4j.data.validation.PatternValidationRule;
+import org.atdl4j.data.validation.ReferencedValidationRule;
+import org.atdl4j.data.validation.ValidationRuleFactory;
+import org.atdl4j.data.validation.ValueOperatorValidationRule;
+import org.atdl4j.ui.impl.AbstractStrategyUI;
+import org.atdl4j.ui.swt.SWTWidget;
+import org.atdl4j.ui.swt.widget.HiddenFieldWidget;
+
 import org.atdl4j.atdl.core.MultipleCharValueT;
 import org.atdl4j.atdl.core.MultipleStringValueT;
 import org.atdl4j.atdl.core.ObjectFactory;
@@ -23,29 +38,14 @@ import org.atdl4j.atdl.core.StrategiesT;
 import org.atdl4j.atdl.core.StrategyT;
 import org.atdl4j.atdl.core.UseT;
 import org.atdl4j.atdl.flow.StateRuleT;
+
 import org.atdl4j.atdl.layout.ControlT;
 import org.atdl4j.atdl.layout.HiddenFieldT;
 import org.atdl4j.atdl.layout.StrategyPanelT;
 import org.atdl4j.atdl.validation.EditRefT;
-import org.atdl4j.atdl.validation.EditT;
 import org.atdl4j.atdl.validation.OperatorT;
+import org.atdl4j.atdl.validation.EditT;
 import org.atdl4j.atdl.validation.StrategyEditT;
-import org.atdl4j.data.ValidationRule;
-import org.atdl4j.data.FIXMessageBuilder;
-import org.atdl4j.data.StrategyRuleset;
-import org.atdl4j.data.exception.ValidationException;
-import org.atdl4j.data.impl.PlainFIXMessageBuilder;
-import org.atdl4j.data.validation.Field2OperatorValidationRule;
-import org.atdl4j.data.validation.LogicalOperatorValidationRule;
-import org.atdl4j.data.validation.PatternValidationRule;
-import org.atdl4j.data.validation.ReferencedValidationRule;
-import org.atdl4j.data.validation.ValueOperatorValidationRule;
-import org.atdl4j.ui.impl.AbstractStrategyUI;
-import org.atdl4j.ui.swt.SWTWidget;
-import org.atdl4j.ui.swt.util.RuleFactory;
-import org.atdl4j.ui.swt.widget.HiddenFieldWidget;
-
-
 
 /**
  * UI representation for a Strategy object.
@@ -122,7 +122,8 @@ public class SWTStrategyUI extends AbstractStrategyUI {
 		for (EditT edit : strategy.getEdit()) {
 			String id = edit.getId();
 			if (id != null) {
-				ValidationRule rule = RuleFactory.createRule(edit, refRules, strategy);
+				ValidationRule rule = ValidationRuleFactory.createRule(edit, refRules,
+						strategy);
 				refRules.put(id, rule);
 			} else {
 				throw new JAXBException("Strategy-scoped edit without id");
@@ -133,7 +134,8 @@ public class SWTStrategyUI extends AbstractStrategyUI {
 		for (StrategyEditT se : strategy.getStrategyEdit()) {
 			if (se.getEdit() != null) {
 				EditT edit = se.getEdit();
-				ValidationRule rule = RuleFactory.createRule(edit, refRules, se);
+				ValidationRule rule = ValidationRuleFactory
+						.createRule(edit, refRules, se);
 				String id = edit.getId();
 				if (id != null)
 					refRules.put(id, rule); // TODO: this line should be moved to RuleFactory?

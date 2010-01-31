@@ -9,9 +9,7 @@ import org.apache.log4j.Logger;
 import org.atdl4j.atdl.core.EnumPairT;
 import org.atdl4j.atdl.core.ParameterT;
 import org.atdl4j.atdl.layout.ListItemT;
-import org.atdl4j.atdl.layout.PanelOrientationT;
-import org.atdl4j.atdl.layout.RadioButtonGroupT;
-import org.atdl4j.atdl.layout.StrategyPanelT;
+import org.atdl4j.atdl.layout.RadioButtonListT;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -22,9 +20,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
+import org.atdl4j.atdl.core.EnumPairT;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.ListItemT;
+import org.atdl4j.atdl.layout.PanelOrientationT;
+import org.atdl4j.atdl.layout.RadioButtonListT;
+import org.atdl4j.atdl.layout.StrategyPanelT;
 
-public class RadioButtonGroupWidget extends AbstractSWTWidget<String> {
-	private static final Logger logger = Logger.getLogger(RadioButtonGroupWidget.class);
+public class RadioButtonListWidget extends AbstractSWTWidget<String> {
+	private static final Logger logger = Logger.getLogger(RadioButtonListWidget.class);
 
 	private List<Button> radioButton = new ArrayList<Button>();
 	private Label label;
@@ -32,7 +36,7 @@ public class RadioButtonGroupWidget extends AbstractSWTWidget<String> {
 // 1/20/2010 Scott Atwell added
 	public static boolean disableVerticalLayoutHandling = false;
 	
-	public RadioButtonGroupWidget(RadioButtonGroupT control, ParameterT parameter) throws JAXBException {
+	public RadioButtonListWidget(RadioButtonListT control, ParameterT parameter) throws JAXBException {
 		this.control = control;
 		this.parameter = parameter;
 		init();
@@ -41,13 +45,8 @@ public class RadioButtonGroupWidget extends AbstractSWTWidget<String> {
 	public Widget createWidget(Composite parent, int style) {
 
 		// label
-		Label l = new Label(parent, SWT.NONE);
-// 1/20/2010 Scott Atwell avoid NPE as label is not required on Control		l.setText(control.getLabel());
-		if ( control.getLabel() != null )
-		{
-			l.setText(control.getLabel());
-		}
-		this.label = l;
+		label = new Label(parent, SWT.NONE);
+		if (control.getLabel() != null) label.setText(control.getLabel());
 
 		Composite c = new Composite(parent, SWT.NONE);
 		
@@ -76,11 +75,11 @@ logger.info("LOG RadioButtonGroupWidget: " + control.getID() + " Considering par
 
 		// tooltip
 		String tooltip = control.getTooltip();
-		l.setToolTipText(tooltip);
+		if (tooltip != null) label.setToolTipText(tooltip);
 
-		// radioButton		
-		for (ListItemT listItem : ((RadioButtonGroupT)control).getListItem()) {
-			
+		// radioButton
+		for (ListItemT listItem : ((RadioButtonListT) control).getListItem()) {
+
 			Button radioElement = new Button(c, style | SWT.RADIO);
 			radioElement.setText(listItem.getUiRep());
 			if (parameter != null) {
@@ -93,11 +92,12 @@ logger.info("LOG RadioButtonGroupWidget: " + control.getID() + " Considering par
 			} else radioElement.setToolTipText(tooltip);
 			radioButton.add(radioElement);
 		}
-		
+
 		// set initValue  (Note that this has to be the enumID, not the wireValue)
-		if  (((RadioButtonGroupT)control).getInitValue() != null)
-			setValue(((RadioButtonGroupT)control).getInitValue(), true);
-		
+		// set initValue
+		if (((RadioButtonListT) control).getInitValue() != null)
+			setValue(((RadioButtonListT) control).getInitValue(), true);
+
 		return c;
 	}
 
@@ -106,7 +106,7 @@ logger.info("LOG RadioButtonGroupWidget: " + control.getID() + " Considering par
 			Button b = radioButton.get(i);
 //TODO 1/24/2010 Scott Atwell			if (b.getSelection()) {
 			if ( (b.getSelection()) && (b.isVisible()) && (b.isEnabled()) )  {
-				return ((RadioButtonGroupT)control).getListItem().get(i).getEnumID();
+				return ((RadioButtonListT)control).getListItem().get(i).getEnumID();
 			}
 		}
 		return null;

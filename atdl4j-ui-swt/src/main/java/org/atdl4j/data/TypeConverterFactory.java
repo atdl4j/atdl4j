@@ -9,7 +9,7 @@ import org.atdl4j.atdl.core.DataT;
 import org.atdl4j.atdl.core.ExchangeT;
 import org.atdl4j.atdl.core.IntT;
 import org.atdl4j.atdl.core.LengthT;
-import org.atdl4j.atdl.core.LocalMktTimeT;
+import org.atdl4j.atdl.core.LocalMktDateT;
 import org.atdl4j.atdl.core.MonthYearT;
 import org.atdl4j.atdl.core.MultipleCharValueT;
 import org.atdl4j.atdl.core.MultipleStringValueT;
@@ -19,9 +19,9 @@ import org.atdl4j.atdl.core.ParameterT;
 import org.atdl4j.atdl.core.SeqNumT;
 import org.atdl4j.atdl.core.StringT;
 import org.atdl4j.atdl.core.TagNumT;
-import org.atdl4j.atdl.core.UTCDateT;
+import org.atdl4j.atdl.core.UTCDateOnlyT;
 import org.atdl4j.atdl.core.UTCTimeOnlyT;
-import org.atdl4j.atdl.core.UTCTimeStampT;
+import org.atdl4j.atdl.core.UTCTimestampT;
 import org.atdl4j.atdl.layout.CheckBoxListT;
 import org.atdl4j.atdl.layout.CheckBoxT;
 import org.atdl4j.atdl.layout.ClockT;
@@ -32,13 +32,12 @@ import org.atdl4j.atdl.layout.EditableDropDownListT;
 import org.atdl4j.atdl.layout.HiddenFieldT;
 import org.atdl4j.atdl.layout.LabelT;
 import org.atdl4j.atdl.layout.MultiSelectListT;
-import org.atdl4j.atdl.layout.RadioButtonGroupT;
+import org.atdl4j.atdl.layout.RadioButtonListT;
 import org.atdl4j.atdl.layout.RadioButtonT;
 import org.atdl4j.atdl.layout.SingleSelectListT;
 import org.atdl4j.atdl.layout.SingleSpinnerT;
 import org.atdl4j.atdl.layout.SliderT;
 import org.atdl4j.atdl.layout.TextFieldT;
-import org.atdl4j.data.TypeConverter;
 import org.atdl4j.data.converter.BooleanConverter;
 import org.atdl4j.data.converter.DateTimeConverter;
 import org.atdl4j.data.converter.NumberConverter;
@@ -76,29 +75,20 @@ public abstract class TypeConverterFactory {
 				parameter instanceof DataT)
 		{
 			return new StringConverter(parameter);
-		}
-		else if (parameter instanceof NumericT)
-		{
-			return new NumberConverter(parameter);	// Float field		
-		}
-		else if (parameter instanceof IntT ||
-				   parameter instanceof NumInGroupT ||
-				   parameter instanceof SeqNumT ||
-				   parameter instanceof TagNumT ||
-				   parameter instanceof LengthT)
-		{
-			return new NumberConverter(parameter);  // Integer field
-		}
-		else if (parameter instanceof BooleanT)
-		{
-			return new BooleanConverter((BooleanT)parameter);
-		}
-		else if (parameter instanceof MonthYearT ||
-				   parameter instanceof UTCTimeStampT ||
-				   parameter instanceof UTCTimeOnlyT ||
-				   parameter instanceof LocalMktTimeT ||
-				   parameter instanceof UTCDateT)
-		{
+		} else if (parameter instanceof NumericT) {
+			return new NumberConverter(parameter); // Float field
+		} else if (parameter instanceof IntT
+				|| parameter instanceof NumInGroupT
+				|| parameter instanceof SeqNumT || parameter instanceof TagNumT
+				|| parameter instanceof LengthT) {
+			return new NumberConverter(parameter); // Integer field
+		} else if (parameter instanceof BooleanT) {
+			return new BooleanConverter((BooleanT) parameter);
+		} else if (parameter instanceof MonthYearT
+				|| parameter instanceof UTCTimestampT
+				|| parameter instanceof UTCTimeOnlyT
+				|| parameter instanceof LocalMktDateT
+				|| parameter instanceof UTCDateOnlyT) {
 			return new DateTimeConverter(parameter);
 		}
 		else throw new JAXBException("Unsupported ParameterT type: " + parameter.getClass().getName());
@@ -107,17 +97,16 @@ public abstract class TypeConverterFactory {
 	/*
 	 *  Create adapter based on ControlT (native type for each control)
 	 */
-	public static TypeConverter<?> create(ControlT control, ParameterT parameter) throws JAXBException {
-		if (control instanceof TextFieldT ||
-				control instanceof SingleSelectListT ||
-				control instanceof MultiSelectListT ||
-				control instanceof CheckBoxListT ||
-				control instanceof DropDownListT ||
-				control instanceof EditableDropDownListT ||
-				control instanceof RadioButtonGroupT ||
-				control instanceof HiddenFieldT ||
-				control instanceof LabelT)
-		{
+	public static TypeConverter<?> create(ControlT control, ParameterT parameter)
+			throws JAXBException {
+		if (control instanceof TextFieldT
+				|| control instanceof SingleSelectListT
+				|| control instanceof MultiSelectListT
+				|| control instanceof CheckBoxListT
+				|| control instanceof DropDownListT
+				|| control instanceof EditableDropDownListT
+				|| control instanceof RadioButtonListT
+				|| control instanceof HiddenFieldT || control instanceof LabelT) {
 			return new StringConverter();
 		}
 		else if (control instanceof SliderT ||

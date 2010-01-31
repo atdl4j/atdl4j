@@ -6,9 +6,6 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.core.ParameterT;
-import org.atdl4j.atdl.layout.DoubleSpinnerT;
-import org.atdl4j.atdl.layout.SingleSpinnerT;
 import org.atdl4j.data.converter.NumberConverter;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 
@@ -25,6 +22,9 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Widget;
 
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.DoubleSpinnerT;
+import org.atdl4j.atdl.layout.SingleSpinnerT;
 
 public class SpinnerWidget extends AbstractSWTWidget<BigDecimal> {
 	
@@ -71,14 +71,8 @@ public class SpinnerWidget extends AbstractSWTWidget<BigDecimal> {
 	public Widget createWidget(Composite parent, int style) {
 		
 		// label
-		Label l = new Label(parent, SWT.NONE);
-// 1/20/2010 Scott Atwell avoid NPE as label is not required on Control		l.setText(control.getLabel());
-		if ( control.getLabel() != null )
-		{
-			l.setText(control.getLabel());
-		}
-
-		this.label = l;
+		label = new Label(parent, SWT.NONE);
+		if (control.getLabel() != null) label.setText(control.getLabel());
 
 		if (control instanceof SingleSpinnerT)
 		{
@@ -109,9 +103,12 @@ public class SpinnerWidget extends AbstractSWTWidget<BigDecimal> {
 
 		// tooltip
 		String tooltip = control.getTooltip();
-		spinner.setToolTipText(tooltip);
-		l.setToolTipText(tooltip);
-
+		if (tooltip != null)
+		{
+			spinner.setToolTipText(tooltip);
+			label.setToolTipText(tooltip);
+		}
+		
 		// Set min/max/precision if a parameter is attached
 		// TODO this is a bit messy... should probably be done separately of NumberConverter
 		if (parameterConverter != null && parameterConverter instanceof NumberConverter)

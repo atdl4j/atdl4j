@@ -1,7 +1,7 @@
 package org.atdl4j.data.converter;
 
-import org.atdl4j.atdl.core.ParameterT;
 import org.atdl4j.data.TypeConverter;
+import org.atdl4j.atdl.core.ParameterT;
 
 /**
  * This class is a container class for ParameterT

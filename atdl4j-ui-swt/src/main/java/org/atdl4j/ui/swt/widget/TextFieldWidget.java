@@ -6,14 +6,6 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.core.IntT;
-import org.atdl4j.atdl.core.LengthT;
-import org.atdl4j.atdl.core.NumInGroupT;
-import org.atdl4j.atdl.core.NumericT;
-import org.atdl4j.atdl.core.ParameterT;
-import org.atdl4j.atdl.core.SeqNumT;
-import org.atdl4j.atdl.core.TagNumT;
-import org.atdl4j.atdl.layout.TextFieldT;
 import org.atdl4j.ui.swt.util.NumberFormatVerifyListener;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 
@@ -26,6 +18,14 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
+import org.atdl4j.atdl.core.IntT;
+import org.atdl4j.atdl.core.LengthT;
+import org.atdl4j.atdl.core.SeqNumT;
+import org.atdl4j.atdl.core.NumInGroupT;
+import org.atdl4j.atdl.core.TagNumT;
+import org.atdl4j.atdl.core.NumericT;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.TextFieldT;
 
 public class TextFieldWidget extends AbstractSWTWidget<String> {
 
@@ -42,13 +42,8 @@ public class TextFieldWidget extends AbstractSWTWidget<String> {
 			throws JAXBException {
 				
 		// label
-		Label l = new Label(parent, SWT.NONE);
-		this.label = l;
-// 1/20/2010 Scott Atwell avoid NPE as label is not required on Control		l.setText(control.getLabel());
-		if ( control.getLabel() != null )
-		{
-			l.setText(control.getLabel());
-		}
+		label = new Label(parent, SWT.NONE);
+		if (control.getLabel() != null) label.setText(control.getLabel());
 
 
 		// textField
@@ -79,7 +74,7 @@ public class TextFieldWidget extends AbstractSWTWidget<String> {
 		// tooltip
 		String tooltip = control.getTooltip();
 		textField.setToolTipText(tooltip);
-		l.setToolTipText(tooltip);
+		if (tooltip != null) label.setToolTipText(tooltip);
 
 		return parent;
 	}

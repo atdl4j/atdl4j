@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.layout.LabelT;
 import org.atdl4j.ui.impl.LabelUI;
 import org.atdl4j.ui.swt.SWTWidget;
 import org.eclipse.swt.SWT;
@@ -16,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
+import org.atdl4j.atdl.layout.LabelT;
 
 public class LabelWidget extends LabelUI implements SWTWidget<String> {
 
@@ -46,13 +46,13 @@ public class LabelWidget extends LabelUI implements SWTWidget<String> {
 		{
 			label.setText( "" );
 		}
-//TODO 1/19/2010 Scott Atwell changes ABOVE		
-		
-		label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
-		
+		GridData gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
+		gd.horizontalSpan = 2;
+		label.setLayoutData(gd);
+				
 		// tooltip
 		String tooltip = control.getTooltip();
-		label.setToolTipText(tooltip);
+		if (tooltip != null) label.setToolTipText(tooltip);
 
 		return parent;
 	}

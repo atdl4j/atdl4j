@@ -5,10 +5,6 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.core.ParameterT;
-import org.atdl4j.atdl.layout.DropDownListT;
-import org.atdl4j.atdl.layout.EditableDropDownListT;
-import org.atdl4j.atdl.layout.ListItemT;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -19,6 +15,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.DropDownListT;
+import org.atdl4j.atdl.layout.EditableDropDownListT;
+import org.atdl4j.atdl.layout.ListItemT;
 
 public class DropDownListWidget extends AbstractSWTWidget<String> {
 
@@ -40,14 +40,8 @@ public class DropDownListWidget extends AbstractSWTWidget<String> {
 	public Widget createWidget(Composite parent, int style) {
 		
 		// label
-		Label l = new Label(parent, SWT.NONE);
-// 1/20/2010 Scott Atwell avoid NPE as label is not required on Control		l.setText(control.getLabel());
-		if ( control.getLabel() != null )
-		{
-			l.setText(control.getLabel());
-		}
-
-		this.label = l;
+		label = new Label(parent, SWT.NONE);
+		if (control.getLabel() != null) label.setText(control.getLabel());
 
 		// dropDownList
 		style = style | SWT.BORDER;
@@ -58,7 +52,7 @@ public class DropDownListWidget extends AbstractSWTWidget<String> {
 		this.dropDownList = dropDownList;	
 		dropDownList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 
-		// dropDownList itens
+		// dropDownList items
 		java.util.List<ListItemT> listItems = 
 					(control instanceof EditableDropDownListT) ? 
 					((EditableDropDownListT)control).getListItem() : ((DropDownListT)control).getListItem();
@@ -68,8 +62,10 @@ public class DropDownListWidget extends AbstractSWTWidget<String> {
 
 		// tooltip
 		String tooltip = control.getTooltip();
-		dropDownList.setToolTipText(tooltip);
-		l.setToolTipText(tooltip);
+		if (tooltip != null) {
+			dropDownList.setToolTipText(tooltip);
+			label.setToolTipText(tooltip);
+		}
 
 		// init value
 		String initValue = 

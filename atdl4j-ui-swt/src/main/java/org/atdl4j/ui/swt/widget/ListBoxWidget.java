@@ -6,10 +6,6 @@ import java.util.Arrays;
 import javax.xml.bind.JAXBException;
 
 
-import org.atdl4j.atdl.core.ParameterT;
-import org.atdl4j.atdl.layout.ListItemT;
-import org.atdl4j.atdl.layout.MultiSelectListT;
-import org.atdl4j.atdl.layout.SingleSelectListT;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -20,6 +16,10 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.ListItemT;
+import org.atdl4j.atdl.layout.MultiSelectListT;
+import org.atdl4j.atdl.layout.SingleSelectListT;
 
 public class ListBoxWidget extends AbstractSWTWidget<String> {
 	
@@ -42,11 +42,7 @@ public class ListBoxWidget extends AbstractSWTWidget<String> {
 		
 		// label
 		label = new Label(parent, SWT.NONE);
-// 1/20/2010 Scott Atwell avoid NPE as label is not required on Control		label.setText(control.getLabel());
-		if ( control.getLabel() != null )
-		{
-			label.setText(control.getLabel());
-		}
+		if (control.getLabel() != null) label.setText(control.getLabel());
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
 
 		// dropDownList
@@ -69,8 +65,10 @@ public class ListBoxWidget extends AbstractSWTWidget<String> {
 		
 		// tooltip
 		String tooltip = control.getTooltip();
-		listBox.setToolTipText(tooltip);
-		label.setToolTipText(tooltip);
+		if (tooltip != null) {
+			listBox.setToolTipText(tooltip);
+			label.setToolTipText(tooltip);
+		}		
 
 		// init value
 		String initValue = 

@@ -30,8 +30,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.apache.log4j.Logger;
-import org.atdl4j.atdl.core.StrategiesT;
-import org.atdl4j.atdl.core.StrategyT;
 import org.atdl4j.data.FIXMessageParser;
 import org.atdl4j.data.InputAndFilterData;
 import org.atdl4j.data.exception.ValidationException;
@@ -44,7 +42,9 @@ import org.atdl4j.ui.swt.impl.SWTStrategiesUI;
 import org.atdl4j.ui.swt.impl.SWTStrategiesUIFactory;
 import org.atdl4j.ui.swt.impl.SWTStrategyUI;
 import org.atdl4j.ui.swt.test.DebugMouseTrackListener;
-import org.atdl4j.ui.swt.widget.RadioButtonGroupWidget;
+import org.atdl4j.ui.swt.widget.RadioButtonListWidget;
+import org.atdl4j.atdl.core.StrategiesT;
+import org.atdl4j.atdl.core.StrategyT;
 
 public class SWTApplication {
 
@@ -608,7 +608,7 @@ public class SWTApplication {
 		org.apache.log4j.Logger.getLogger( InputAndFilterData.class ).setLevel( tempLevel );
 		org.apache.log4j.Logger.getLogger( SWTFactory.class ).setLevel( tempLevel );
 		org.apache.log4j.Logger.getLogger( AbstractStrategyUI.class ).setLevel( tempLevel );
-		org.apache.log4j.Logger.getLogger( RadioButtonGroupWidget.class ).setLevel( tempLevel );
+		org.apache.log4j.Logger.getLogger( RadioButtonListWidget.class ).setLevel( tempLevel );
 
 	}
 

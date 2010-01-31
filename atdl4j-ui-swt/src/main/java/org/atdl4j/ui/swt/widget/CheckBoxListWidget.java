@@ -6,10 +6,6 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.core.EnumPairT;
-import org.atdl4j.atdl.core.ParameterT;
-import org.atdl4j.atdl.layout.CheckBoxListT;
-import org.atdl4j.atdl.layout.ListItemT;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -20,6 +16,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
+import org.atdl4j.atdl.core.EnumPairT;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.CheckBoxListT;
+import org.atdl4j.atdl.layout.ListItemT;
 
 public class CheckBoxListWidget extends AbstractSWTWidget<String> {
 
@@ -41,35 +41,39 @@ public class CheckBoxListWidget extends AbstractSWTWidget<String> {
 
 	public Widget createWidget(Composite parent, int style) {
 		// label
-		Label l = new Label(parent, SWT.NONE);
-// 1/20/2010 Scott Atwell avoid NPE as label is not required on Control		l.setText(control.getLabel());
-		if ( control.getLabel() != null )
-		{
-			l.setText(control.getLabel());
-		}
-
-		this.label = l;
+		label = new Label(parent, SWT.NONE);
+		control.getLabel();
+		if (control.getLabel() != null) label.setText(control.getLabel());
 
 		Composite c = new Composite(parent, SWT.NONE);
 		c.setLayout(new FillLayout());
 
-		// tooltip
+		// label tooltip
 		String tooltip = control.getTooltip();
-		l.setToolTipText(tooltip);
+		if (tooltip != null) label.setToolTipText(tooltip);
 		
 		// checkBoxes
 		List<ListItemT> listItems = ((CheckBoxListT)control).getListItem();
 		for (ListItemT listItem : listItems) {
 			Button checkBox = new Button(c, style | SWT.CHECK);
 			checkBox.setText(listItem.getUiRep());
+			
 			if (parameter != null) {
 				for (EnumPairT enumPair :  parameter.getEnumPair()) {
 					if (enumPair.getEnumID() == listItem.getEnumID()) {
-						checkBox.setToolTipText(enumPair.getDescription());
+						
+						// set tooltip
+						if (enumPair.getDescription() != null)
+							checkBox.setToolTipText(enumPair.getDescription());
+						else if (tooltip != null)
+							checkBox.setToolTipText(tooltip);
+						
 						break;
 					}
 				}
-			} else checkBox.setToolTipText(control.getTooltip());
+			} else {
+				if (tooltip != null) checkBox.setToolTipText(tooltip);
+			}
 			multiCheckBox.add(checkBox);
 		}
 		

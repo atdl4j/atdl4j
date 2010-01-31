@@ -5,11 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.atdl.core.ParameterT;
-import org.atdl4j.atdl.layout.CheckBoxT;
-import org.atdl4j.atdl.layout.RadioButtonT;
 import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -17,6 +15,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.CheckBoxT;
+import org.atdl4j.atdl.layout.RadioButtonT;
 
 /*
  * Implements either a CheckBox or a RadioButton
@@ -41,13 +42,14 @@ public class ButtonWidget extends AbstractSWTWidget<Boolean> {
 	public Widget createWidget(Composite parent, int style) {
 
 		// button
-		this.button = new Button(parent, style | (control instanceof RadioButtonT ? SWT.RADIO : SWT.CHECK));
-// 1/20/2010 Scott Atwell avoid NPE as label is not required on Control		button.setText(control.getLabel());
-		if ( control.getLabel() != null )
-		{
-			button.setText(control.getLabel());
-		}
-		button.setToolTipText(control.getTooltip());
+		button = new Button(parent, style
+				| (control instanceof RadioButtonT ? SWT.RADIO : SWT.CHECK));
+		GridData gd = new GridData(GridData.GRAB_HORIZONTAL);
+		gd.horizontalSpan = 2;
+		button.setLayoutData(gd);
+				
+		if (control.getLabel() != null) button.setText(control.getLabel());
+		if (control.getTooltip() != null) button.setToolTipText(control.getTooltip());
 
 		// init value
 		if (control instanceof RadioButtonT) {

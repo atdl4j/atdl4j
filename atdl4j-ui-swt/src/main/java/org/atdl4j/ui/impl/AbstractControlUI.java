@@ -11,18 +11,24 @@ import org.atdl4j.atdl.layout.CheckBoxListT;
 import org.atdl4j.atdl.layout.ControlT;
 import org.atdl4j.atdl.layout.DropDownListT;
 import org.atdl4j.atdl.layout.EditableDropDownListT;
-import org.atdl4j.atdl.layout.HiddenFieldT;
 import org.atdl4j.atdl.layout.ListItemT;
 import org.atdl4j.atdl.layout.MultiSelectListT;
-import org.atdl4j.atdl.layout.RadioButtonGroupT;
+import org.atdl4j.atdl.layout.RadioButtonListT;
 import org.atdl4j.atdl.layout.SingleSelectListT;
 import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.InputAndFilterData;
 import org.atdl4j.data.TypeConverterFactory;
 import org.atdl4j.data.converter.AbstractTypeConverter;
-import org.atdl4j.data.impl.PlainFIXMessageBuilder;
+import org.atdl4j.data.fix.PlainFIXMessageBuilder;
+import org.atdl4j.data.fix.Tag959Helper;
 import org.atdl4j.ui.ControlUI;
-import org.atdl4j.ui.swt.util.Tag959Helper;
+import org.atdl4j.atdl.core.EnumPairT;
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.CheckBoxListT;
+import org.atdl4j.atdl.layout.ControlT;
+import org.atdl4j.atdl.layout.DropDownListT;
+import org.atdl4j.atdl.layout.EditableDropDownListT;
+import org.atdl4j.atdl.layout.HiddenFieldT;
 
 /**
  * Abstract class that represents a Parameter SWT Widget. Implements the FIX
@@ -175,8 +181,8 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 			return ((DropDownListT)control).getListItem();
 		} else if (control instanceof EditableDropDownListT) {
 			return ((EditableDropDownListT)control).getListItem();
-		} else if (control instanceof RadioButtonGroupT) {
-			return ((RadioButtonGroupT)control).getListItem();
+		} else if (control instanceof RadioButtonListT) {
+			return ((RadioButtonListT) control).getListItem();
 		} else if (control instanceof CheckBoxListT) {
 			return ((CheckBoxListT)control).getListItem();
 		} else if (control instanceof SingleSelectListT) {

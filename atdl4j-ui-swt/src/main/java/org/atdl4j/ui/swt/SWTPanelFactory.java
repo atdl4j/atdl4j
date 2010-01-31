@@ -4,9 +4,9 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.eclipse.swt.widgets.Composite;
 import org.atdl4j.atdl.core.ParameterT;
 import org.atdl4j.atdl.layout.StrategyPanelT;
-import org.eclipse.swt.widgets.Composite;
 
 public interface SWTPanelFactory {
 

@@ -8,9 +8,9 @@ import javax.xml.bind.JAXBException;
 
 
 import org.atdl4j.ui.ControlUI;
-import org.atdl4j.atdl.validation.LogicOperatorT;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
+import org.atdl4j.atdl.validation.LogicOperatorT;
 
 /**
  * ValidationRule that behaves as a composite, using on of the following

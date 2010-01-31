@@ -1,6 +1,5 @@
 package org.atdl4j.ui.swt.widget;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +19,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Widget;
 
-
-public class SliderWidget extends AbstractSWTWidget<BigDecimal> {
+public class SliderWidget extends AbstractSWTWidget<String> {
 	
 	private Scale slider;
 	private Label label;
@@ -35,13 +33,8 @@ public class SliderWidget extends AbstractSWTWidget<BigDecimal> {
 	public Widget createWidget(Composite parent, int style) {
 
 		// label
-		Label l = new Label(parent, SWT.NONE);
-// 1/20/2010 Scott Atwell avoid NPE as label is not required on Control		l.setText(control.getLabel());
-		if ( control.getLabel() != null )
-		{
-			l.setText(control.getLabel());
-		}
-		this.label = l;
+		label = new Label(parent, SWT.NONE);
+		if ( control.getLabel() != null ) label.setText(control.getLabel());
 
 		Composite c = new Composite(parent, SWT.NONE);
 		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -77,32 +70,47 @@ public class SliderWidget extends AbstractSWTWidget<BigDecimal> {
 		
 		// tooltip
 		String tooltip = control.getTooltip();
-		slider.setToolTipText(tooltip);
-		l.setToolTipText(tooltip);
-
+		if (tooltip != null)
+		{
+			slider.setToolTipText(tooltip);
+			label.setToolTipText(tooltip);
+		}
 		return parent;
 	}
-
-	public BigDecimal getControlValue() {
-//TODO 1/24/2010 Scott Atwell added
-		if ( ( slider.isVisible() == false ) || ( slider.isEnabled() == false ) )
+	
+	public String getControlValue() {
+		if ((slider.isVisible() == false ) || ( slider.isEnabled() == false ))
 		{
-			return null;
+			return ((SliderT) control).getListItem().get(slider.getSelection()).getEnumID();
 		}
-		
-		try {
-			return new BigDecimal(slider.getSelection());
-		} catch (NumberFormatException e) {
-			return null;
-		}
+		return null;		
 	}
 	
-	public BigDecimal getParameterValue() {
-		return getControlValue();
+	public String getParameterValue() {
+		return getParameterValueAsEnumWireValue();
 	}
 
-	public void setValue(BigDecimal value) {
-		slider.setSelection(value.intValue());
+	
+	public void setValue(String value)
+	{
+		this.setValue(value, false);
+	}
+	
+	public void setValue(String value, boolean setValueAsControl) {
+		for (int i = 0; i < getListItems().size(); i++) {
+			if (setValueAsControl || parameter == null) {
+				if (getListItems().get(i).getEnumID().equals(value)) {
+					slider.setSelection(i);
+					break;
+				}
+			} else {
+				if (parameter.getEnumPair().get(i).getWireValue().equals(value)) {
+					slider.setSelection(i);
+					break;
+				}
+			}
+		}
+		// TODO: needs to handle case of editable dropdown list;
 	}
 
 	public void generateStateRuleListener(Listener listener) {

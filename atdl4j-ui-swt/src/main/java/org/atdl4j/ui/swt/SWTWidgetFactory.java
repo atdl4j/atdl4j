@@ -2,9 +2,9 @@ package org.atdl4j.ui.swt;
 
 import javax.xml.bind.JAXBException;
 
+import org.eclipse.swt.widgets.Composite;
 import org.atdl4j.atdl.core.ParameterT;
 import org.atdl4j.atdl.layout.ControlT;
-import org.eclipse.swt.widgets.Composite;
 
 public interface SWTWidgetFactory {
 

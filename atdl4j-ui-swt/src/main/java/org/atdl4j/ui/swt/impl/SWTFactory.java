@@ -6,10 +6,6 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.atdl.core.ParameterT;
-import org.atdl4j.atdl.layout.ControlT;
-import org.atdl4j.atdl.layout.PanelOrientationT;
-import org.atdl4j.atdl.layout.StrategyPanelT;
 import org.atdl4j.data.InputAndFilterData;
 import org.atdl4j.ui.swt.SWTWidget;
 import org.atdl4j.ui.swt.SWTPanelFactory;
@@ -21,6 +17,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Layout;
 
+import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.ControlT;
+import org.atdl4j.atdl.layout.PanelOrientationT;
+import org.atdl4j.atdl.layout.StrategyPanelT;
 
 public class SWTFactory implements SWTWidgetFactory, SWTPanelFactory {
 	private static final Logger logger = Logger.getLogger(SWTFactory.class);
@@ -144,12 +144,18 @@ public class SWTFactory implements SWTWidgetFactory, SWTPanelFactory {
 			SWTWidget<?> widget = create(c, control, parameter, style);
 			
 			// check for duplicate Control IDs
-			for (SWTWidget<?> w : controlWidgets.values())
-			{
-				if (w.getControl().getID().equals(control.getID()))
-				   throw new JAXBException("Duplicate Control ID: \"" + control.getID() + "\"");
+			if (control.getID() != null) {
+				// check for duplicate Control IDs
+				for (SWTWidget<?> w : controlWidgets.values()) {
+					if (w.getControl().getID().equals(control.getID()))
+						throw new JAXBException("Duplicate Control ID: \""
+								+ control.getID() + "\"");
+				}
+				controlWidgets.put(control.getID(), widget);
+			} else {
+				throw new JAXBException("Control Type: \"" + 
+						control.getClass().getSimpleName() + "\" is missing ID");
 			}
-			controlWidgets.put(control.getID(), widget);
 		}
 		
 		return controlWidgets;

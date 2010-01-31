@@ -1,20 +1,16 @@
-package org.atdl4j.ui.swt.util;
+package org.atdl4j.data.validation;
 
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import org.atdl4j.data.ValidationRule;
 import org.atdl4j.atdl.validation.EditRefT;
-import org.atdl4j.atdl.validation.EditT;
 import org.atdl4j.atdl.validation.LogicOperatorT;
 import org.atdl4j.atdl.validation.OperatorT;
-import org.atdl4j.data.ValidationRule;
-import org.atdl4j.data.validation.Field2OperatorValidationRule;
-import org.atdl4j.data.validation.LogicalOperatorValidationRule;
-import org.atdl4j.data.validation.ReferencedValidationRule;
-import org.atdl4j.data.validation.ValueOperatorValidationRule;
+import org.atdl4j.atdl.validation.EditT;
 
-public abstract class RuleFactory {
+public abstract class ValidationRuleFactory {
 
 	// TODO: refactor so outer method adds to refRules, not inner
 	public static ValidationRule createRule(EditT edit, Map<String, ValidationRule> refRules, Object parent) throws JAXBException {
