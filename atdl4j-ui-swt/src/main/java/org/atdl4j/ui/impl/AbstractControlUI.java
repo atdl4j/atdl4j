@@ -22,13 +22,6 @@ import org.atdl4j.data.converter.AbstractTypeConverter;
 import org.atdl4j.data.fix.PlainFIXMessageBuilder;
 import org.atdl4j.data.fix.Tag959Helper;
 import org.atdl4j.ui.ControlUI;
-import org.atdl4j.atdl.core.EnumPairT;
-import org.atdl4j.atdl.core.ParameterT;
-import org.atdl4j.atdl.layout.CheckBoxListT;
-import org.atdl4j.atdl.layout.ControlT;
-import org.atdl4j.atdl.layout.DropDownListT;
-import org.atdl4j.atdl.layout.EditableDropDownListT;
-import org.atdl4j.atdl.layout.HiddenFieldT;
 
 /**
  * Abstract class that represents a Parameter SWT Widget. Implements the FIX
@@ -99,40 +92,43 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		return builder.getMessage();
 	}
 	
-//TODO Scott Atwell 1/14/2010 made public	private int getFIXType() throws JAXBException {
+	// 2/1/2010 John Shields added
+	public String getTooltip() {
+	    if (control.getTooltip() != null) return control.getTooltip();
+	    else if (parameter != null && parameter.getDescription() != null) return parameter.getDescription();
+	    return null;
+	}
+	
+	// Scott Atwell 1/14/2010 made public
 	public int getFIXType() throws JAXBException {
 		return Tag959Helper.toInteger(getParameter());
 	}
 
-	public void getFIXValue(FIXMessageBuilder builder) throws JAXBException {
-		String value = getParameterValueAsString();
-		if (value != null) {
-			if (getParameter().getFixTag() != null) {
-				builder.onField(getParameter().getFixTag().intValue(), value.toString());
-			} else {
-/***
-//TODO Scott Atwell 1/18/2010 BEFORE				
-				String name = getParameter().getName();
-				String type = Integer.toString(getFIXType());
-				builder.onField(958, name);
-				builder.onField(959, type);
-				builder.onField(960, value.toString());
-***/				
-				if ( getParameter().getName().startsWith( InputAndFilterData.FIX_STANDARD_FIELD_INPUT_FIELD_NAME_PREFIX ) )
-				{
-					// bypass Hidden "standard fields" (eg "FIX_OrderQty")
-				}
-				else
-				{
-					String name = getParameter().getName();
-					String type = Integer.toString(getFIXType());
-					builder.onField(958, name);
-					builder.onField(959, type);
-					builder.onField(960, value.toString());
-				}
-			}
-		}
+    public void getFIXValue(FIXMessageBuilder builder) throws JAXBException
+    {
+	String value = getParameterValueAsString();
+	if (value != null)
+	{
+	    if (getParameter().getFixTag() != null)
+	    {
+		builder.onField(getParameter().getFixTag().intValue(),
+			value.toString());
+	    }
+	    // Scott Atwell 1/14/2010
+	    else if (getParameter().getName().startsWith(
+		    InputAndFilterData.FIX_DEFINED_FIELD_PREFIX))
+	    {
+		// bypass Hidden "standard fields" (eg "FIX_OrderQty")
+	    } else
+	    {
+		String name = getParameter().getName();
+		String type = Integer.toString(getFIXType());
+		builder.onField(958, name);
+		builder.onField(959, type);
+		builder.onField(960, value.toString());
+	    }
 	}
+    }
 	
 	// Helper method to lookup a parameter string where the EnumID is matched
 	// across the ListItemTs and EnumPairTs

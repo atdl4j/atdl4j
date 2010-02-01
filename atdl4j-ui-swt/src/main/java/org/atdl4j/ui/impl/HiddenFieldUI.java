@@ -4,6 +4,7 @@ import javax.xml.bind.JAXBException;
 
 import org.atdl4j.atdl.core.ParameterT;
 import org.atdl4j.atdl.layout.HiddenFieldT;
+import org.atdl4j.data.ParameterHelper;
 
 public abstract class HiddenFieldUI extends AbstractControlUI<String> {
 
@@ -25,7 +26,10 @@ public abstract class HiddenFieldUI extends AbstractControlUI<String> {
 	}
 
 	public Object getParameterValue() {
-		return value;
+	    // TODO add this for all controls
+	    if (ParameterHelper.getConstValue(parameter) != null)
+		return ParameterHelper.getConstValue(parameter);
+	    return value;
 	}
 
 	public void setValue(String value) {

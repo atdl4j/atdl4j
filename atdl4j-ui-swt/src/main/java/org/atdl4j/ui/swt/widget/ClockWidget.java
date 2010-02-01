@@ -17,7 +17,6 @@ import org.atdl4j.atdl.core.UTCDateOnlyT;
 import org.atdl4j.atdl.core.UTCTimeOnlyT;
 import org.atdl4j.atdl.core.UTCTimestampT;
 import org.atdl4j.atdl.layout.ClockT;
-import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -149,7 +148,7 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		}
 
 		// tooltip
-		String tooltip = control.getTooltip();
+		String tooltip = getTooltip();
 		if (tooltip != null) {
 			if (showMonthYear) dateClock.setToolTipText(tooltip);
 			if (showTime) timeClock.setToolTipText(tooltip);
@@ -274,14 +273,7 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		}
 	}
 
-	public void generateStateRuleListener(Listener listener) {
-		if (showMonthYear) {
-			dateClock.addListener(SWT.Selection, listener);
-		}
-		if (showTime) {
-			timeClock.addListener(SWT.Selection, listener);
-		}
-	}
+
 
 	public List<Control> getControls() {
 		List<Control> widgets = new ArrayList<Control>();
@@ -304,27 +296,7 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		return widgets;
 	}
 
-	public void addListener(Listener listener) {
-		ParameterListenerWrapper wrapper = new ParameterListenerWrapper(this,
-				listener);
-		if (showMonthYear) {
-			dateClock.addListener(SWT.Selection, wrapper);
-		}
-		if (showTime) {
-			timeClock.addListener(SWT.Selection, wrapper);
-		}
-	}
-
-	public void removeListener(Listener listener) {
-		if (showMonthYear) {
-			dateClock.removeListener(SWT.Selection, listener);
-		}
-		if (showTime) {
-			timeClock.removeListener(SWT.Selection, listener);
-		}
-	}
-
-	// TODO 1/20/2010 Scott Atwell added
+	// 1/20/2010 Scott Atwell added
 	private void applyEnabledSetting() {
 		if (enabledButton != null) {
 			if ((dateClock != null) && (dateClock.isVisible())) {
@@ -336,4 +308,28 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 			}
 		}
 	}
+	
+    public void addListener(Listener listener)
+    {
+	if (showMonthYear)
+	{
+	    dateClock.addListener(SWT.Selection, listener);
+	}
+	if (showTime)
+	{
+	    timeClock.addListener(SWT.Selection, listener);
+	}
+    }
+
+    public void removeListener(Listener listener)
+    {
+	if (showMonthYear)
+	{
+	    dateClock.removeListener(SWT.Selection, listener);
+	}
+	if (showTime)
+	{
+	    timeClock.removeListener(SWT.Selection, listener);
+	}
+    }
 }

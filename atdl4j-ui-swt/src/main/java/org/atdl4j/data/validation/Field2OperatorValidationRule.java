@@ -64,11 +64,11 @@ if ( ( fieldValue != null ) &&
 	  ( fieldValue2 != null ) && 
 	  ( fieldValue.getClass() != fieldValue2.getClass() ) )
 {
-	if ( field.startsWith( InputAndFilterData.FIX_STANDARD_FIELD_INPUT_FIELD_NAME_PREFIX ) )
+	if ( field.startsWith( InputAndFilterData.FIX_DEFINED_FIELD_PREFIX ) )
 	{
 		fieldValue = convertFieldValueToDesiredType( fieldValue2, fieldValue );
 	}
-	else if ( field2.startsWith( InputAndFilterData.FIX_STANDARD_FIELD_INPUT_FIELD_NAME_PREFIX ) )
+	else if ( field2.startsWith( InputAndFilterData.FIX_DEFINED_FIELD_PREFIX ) )
 	{
 		fieldValue2 = convertFieldValueToDesiredType( fieldValue, fieldValue2 );
 	}

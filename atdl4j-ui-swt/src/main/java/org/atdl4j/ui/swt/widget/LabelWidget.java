@@ -51,7 +51,7 @@ public class LabelWidget extends LabelUI implements SWTWidget<String> {
 		label.setLayoutData(gd);
 				
 		// tooltip
-		String tooltip = control.getTooltip();
+		String tooltip = getTooltip();
 		if (tooltip != null) label.setToolTipText(tooltip);
 
 		return parent;

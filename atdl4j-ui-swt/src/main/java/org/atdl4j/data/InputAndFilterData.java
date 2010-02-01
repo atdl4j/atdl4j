@@ -33,7 +33,7 @@ public class InputAndFilterData
 {
 	private static final Logger logger = Logger.getLogger(InputAndFilterData.class);
 
-	public static String FIX_STANDARD_FIELD_INPUT_FIELD_NAME_PREFIX = "FIX_";
+	public static String FIX_DEFINED_FIELD_PREFIX = "FIX_";
 	
 	// -- Constants for "Hidden" parameters passed to app used to control eligibility of each Strategy -- 
 	// -- ("FIX_" + "FIXatdl_" + XmlElement + "_" + XmlAttribute) --
@@ -434,7 +434,7 @@ public class InputAndFilterData
 			setInputHiddenFieldNameValueMap( new HashMap<String, String>() );
 		}
 		
-		getInputHiddenFieldNameValueMap().put( (FIX_STANDARD_FIELD_INPUT_FIELD_NAME_PREFIX + aFieldName), aFieldValue );
+		getInputHiddenFieldNameValueMap().put( (FIX_DEFINED_FIELD_PREFIX + aFieldName), aFieldValue );
 	}
 	
 	/**

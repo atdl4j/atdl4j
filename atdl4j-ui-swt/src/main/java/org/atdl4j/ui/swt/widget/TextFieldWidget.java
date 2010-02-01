@@ -7,8 +7,6 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import org.atdl4j.ui.swt.util.NumberFormatVerifyListener;
-import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -72,7 +70,7 @@ public class TextFieldWidget extends AbstractSWTWidget<String> {
 			textField.setText(((TextFieldT)control).getInitValue());
 
 		// tooltip
-		String tooltip = control.getTooltip();
+		String tooltip = getTooltip();
 		textField.setToolTipText(tooltip);
 		if (tooltip != null) label.setToolTipText(tooltip);
 
@@ -80,11 +78,8 @@ public class TextFieldWidget extends AbstractSWTWidget<String> {
 	}
 
 	public String getControlValue() {
-//TODO 1/24/2010 Scott Atwell added
-		if ( ( textField.isVisible() == false ) || ( textField.isEnabled() == false ) )
-		{
-			return null;
-		}
+	    	// 1/24/2010 Scott Atwell added
+		if (!textField.isVisible() || !textField.isEnabled()) return null;
 		
 		String value = textField.getText();
 
@@ -102,10 +97,6 @@ public class TextFieldWidget extends AbstractSWTWidget<String> {
 	public void setValue(String value) {
 		textField.setText((value == null) ? "" : value.toString());
 	}
-	
-	public void generateStateRuleListener(Listener listener) {
-		textField.addListener(SWT.Modify, listener);
-	}
 
 	public List<Control> getControls() {
 		List<Control> widgets = new ArrayList<Control>();
@@ -115,11 +106,10 @@ public class TextFieldWidget extends AbstractSWTWidget<String> {
 	}
 
 	public void addListener(Listener listener) {
-		textField.addListener(SWT.Modify, new ParameterListenerWrapper(this,
-				listener)); // TODO: SWT.Selection??
+	    textField.addListener(SWT.Modify, listener);
 	}
 
 	public void removeListener(Listener listener) {
-		textField.removeListener(SWT.Selection, listener); // TODO: SWT.Modify??
+	    textField.removeListener(SWT.Modify, listener);
 	}
 }
