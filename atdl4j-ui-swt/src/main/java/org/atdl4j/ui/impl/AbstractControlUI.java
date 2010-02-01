@@ -108,7 +108,15 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		String value = getParameterValueAsString();
 		if (value != null) {
 			if (getParameter().getFixTag() != null) {
-				builder.onField(getParameter().getFixTag().intValue(), value.toString());
+//TODO 				builder.onField(getParameter().getFixTag().intValue(), value.toString());
+//TODO Scott Atwell 1/31/2010 added (FixTag=0 to indicate valid parameter but DO NOT INCLUDE in FIX Message)
+				if ( getParameter().getFixTag().intValue() == 0 )	{
+					// ignore
+				}
+				else {
+					builder.onField(getParameter().getFixTag().intValue(), value.toString());
+				}
+							
 			} else {
 /***
 //TODO Scott Atwell 1/18/2010 BEFORE				
