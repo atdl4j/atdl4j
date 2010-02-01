@@ -38,10 +38,14 @@ public class PlainFIXMessageBuilder implements FIXMessageBuilder {
 	}
 
 	public void onEnd() {
-		// append repeating group count
-		sb.append(957).append('=').append(repeatingCount).append(delimiter);
-		// append repeating group content
-		sb.append(repeating);
+		// -- Avoid 957=0 --
+		if ( repeatingCount > 0 )
+		{
+			// append repeating group count
+			sb.append(957).append('=').append(repeatingCount).append(delimiter);
+			// append repeating group content
+			sb.append(repeating);
+		}
 	}
 
 	public String getMessage() {
