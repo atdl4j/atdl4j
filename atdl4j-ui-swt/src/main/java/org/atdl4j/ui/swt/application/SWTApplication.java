@@ -276,7 +276,10 @@ public class SWTApplication {
 		cxlReplaceModeButton.setText("Cxl Replace Mode");
 		
 //TODO 1/18/2010 Scott Atwell added
-		cxlReplaceModeButton.setSelection( getInputAndFilterData().getInputCxlReplaceMode() );
+		if ( getInputAndFilterData() != null )
+		{
+			cxlReplaceModeButton.setSelection( getInputAndFilterData().getInputCxlReplaceMode() );
+		}
 		
 		cxlReplaceModeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
