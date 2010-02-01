@@ -126,7 +126,7 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 				builder.onField(959, type);
 				builder.onField(960, value.toString());
 ***/				
-				if ( getParameter().getName().startsWith( InputAndFilterData.FIX_STANDARD_FIELD_INPUT_FIELD_NAME_PREFIX ) )
+				if ( getParameter().getName().startsWith( InputAndFilterData.FIX_DEFINED_FIELD_PREFIX ) )
 				{
 					// bypass Hidden "standard fields" (eg "FIX_OrderQty")
 				}
@@ -141,7 +141,6 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 			}
 		}
 	}
-    }
 	
 	// Helper method to lookup a parameter string where the EnumID is matched
 	// across the ListItemTs and EnumPairTs
