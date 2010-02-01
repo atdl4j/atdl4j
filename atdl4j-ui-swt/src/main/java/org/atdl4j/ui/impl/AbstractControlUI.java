@@ -104,29 +104,42 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		return Tag959Helper.toInteger(getParameter());
 	}
 
-    public void getFIXValue(FIXMessageBuilder builder) throws JAXBException
-    {
-	String value = getParameterValueAsString();
-	if (value != null)
-	{
-	    if (getParameter().getFixTag() != null)
-	    {
-		builder.onField(getParameter().getFixTag().intValue(),
-			value.toString());
-	    }
-	    // Scott Atwell 1/14/2010
-	    else if (getParameter().getName().startsWith(
-		    InputAndFilterData.FIX_DEFINED_FIELD_PREFIX))
-	    {
-		// bypass Hidden "standard fields" (eg "FIX_OrderQty")
-	    } else
-	    {
-		String name = getParameter().getName();
-		String type = Integer.toString(getFIXType());
-		builder.onField(958, name);
-		builder.onField(959, type);
-		builder.onField(960, value.toString());
-	    }
+	public void getFIXValue(FIXMessageBuilder builder) throws JAXBException {
+		String value = getParameterValueAsString();
+		if (value != null) {
+			if (getParameter().getFixTag() != null) {
+//TODO 				builder.onField(getParameter().getFixTag().intValue(), value.toString());
+//TODO Scott Atwell 1/31/2010 added (FixTag=0 to indicate valid parameter but DO NOT INCLUDE in FIX Message)
+				if ( getParameter().getFixTag().intValue() == 0 )	{
+					// ignore
+				}
+				else {
+					builder.onField(getParameter().getFixTag().intValue(), value.toString());
+				}
+							
+			} else {
+/***
+//TODO Scott Atwell 1/18/2010 BEFORE				
+				String name = getParameter().getName();
+				String type = Integer.toString(getFIXType());
+				builder.onField(958, name);
+				builder.onField(959, type);
+				builder.onField(960, value.toString());
+***/				
+				if ( getParameter().getName().startsWith( InputAndFilterData.FIX_STANDARD_FIELD_INPUT_FIELD_NAME_PREFIX ) )
+				{
+					// bypass Hidden "standard fields" (eg "FIX_OrderQty")
+				}
+				else
+				{
+					String name = getParameter().getName();
+					String type = Integer.toString(getFIXType());
+					builder.onField(958, name);
+					builder.onField(959, type);
+					builder.onField(960, value.toString());
+				}
+			}
+		}
 	}
     }
 	
