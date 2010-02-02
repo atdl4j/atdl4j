@@ -13,18 +13,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.log4j.Logger;
-import org.atdl4j.atdl.core.StrategiesT;
-import org.atdl4j.atdl.core.StrategyT;
-import org.atdl4j.data.FIXMessageParser;
-import org.atdl4j.data.InputAndFilterData;
-import org.atdl4j.data.exception.ValidationException;
-import org.atdl4j.ui.StrategiesUIFactory;
-import org.atdl4j.ui.StrategyUI;
-import org.atdl4j.ui.swt.impl.SWTStrategiesUI;
-import org.atdl4j.ui.swt.impl.SWTStrategiesUIFactory;
-import org.atdl4j.ui.swt.impl.SWTStrategyUI;
-import org.atdl4j.ui.swt.test.DebugMouseTrackListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -42,6 +30,22 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.apache.log4j.Logger;
+import org.atdl4j.data.FIXMessageParser;
+import org.atdl4j.data.InputAndFilterData;
+import org.atdl4j.data.exception.ValidationException;
+import org.atdl4j.data.validation.AbstractOperatorValidationRule;
+import org.atdl4j.ui.StrategiesUIFactory;
+import org.atdl4j.ui.StrategyUI;
+import org.atdl4j.ui.impl.AbstractStrategyUI;
+import org.atdl4j.ui.swt.impl.SWTFactory;
+import org.atdl4j.ui.swt.impl.SWTStrategiesUI;
+import org.atdl4j.ui.swt.impl.SWTStrategiesUIFactory;
+import org.atdl4j.ui.swt.impl.SWTStrategyUI;
+import org.atdl4j.ui.swt.test.DebugMouseTrackListener;
+import org.atdl4j.ui.swt.widget.RadioButtonListWidget;
+import org.atdl4j.atdl.core.StrategiesT;
+import org.atdl4j.atdl.core.StrategyT;
 
 public class SWTApplication {
 

@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.data.InputAndFilterData;
 import org.atdl4j.ui.swt.SWTWidget;
 import org.atdl4j.ui.swt.SWTPanelFactory;
 import org.atdl4j.ui.swt.SWTWidgetFactory;

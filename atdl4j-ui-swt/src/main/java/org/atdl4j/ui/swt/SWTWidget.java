@@ -22,8 +22,6 @@ public interface SWTWidget<E extends Comparable<?>> extends ControlUI<E> {
 	// This gets all child SWT UI controls, do not confuse with ControlT
 	public List<Control> getControls();
 		
-	public void generateStateRuleListener(Listener listener);
-
 	public void addListener(Listener listener);
 
 	public void removeListener(Listener listener);

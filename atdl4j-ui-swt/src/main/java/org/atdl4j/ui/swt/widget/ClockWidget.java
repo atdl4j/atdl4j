@@ -3,20 +3,20 @@ package org.atdl4j.ui.swt.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.atdl.core.LocalMktDateT;
 import org.atdl4j.atdl.core.MonthYearT;
 import org.atdl4j.atdl.core.ParameterT;
 import org.atdl4j.atdl.core.UTCDateOnlyT;
 import org.atdl4j.atdl.core.UTCTimeOnlyT;
 import org.atdl4j.atdl.core.UTCTimestampT;
-import org.atdl4j.atdl.core.UseT;
 import org.atdl4j.atdl.layout.ClockT;
-import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -28,8 +28,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import org.atdl4j.atdl.core.UseT;
 
 /**
  * Clock widget which will display differently depending on the parameter type
@@ -50,8 +49,6 @@ import org.joda.time.DateTimeZone;
  * @author john.shields
  */
 public class ClockWidget extends AbstractSWTWidget<DateTime> {
-	
-	private static final Logger logger = Logger.getLogger(ClockWidget.class);
 
 	private org.eclipse.swt.widgets.DateTime dateClock;
 	private org.eclipse.swt.widgets.DateTime timeClock;
@@ -78,6 +75,7 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 	}
 
 	public Widget createWidget(Composite parent, int style) {
+
 		if (parameter instanceof UTCTimestampT) {
 			showMonthYear = true;
 			showDay = true;
@@ -150,7 +148,7 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		}
 
 		// tooltip
-		String tooltip = control.getTooltip();
+		String tooltip = getTooltip();
 		if (tooltip != null) {
 			if (showMonthYear) dateClock.setToolTipText(tooltip);
 			if (showTime) timeClock.setToolTipText(tooltip);
@@ -160,8 +158,7 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 
 		// init value
 		if (((ClockT) control).getInitValue() != null) {
-// 2/1/2010 Scott Atwell			DateTime now = new DateTime(DateTimeZone.UTC);
-			DateTime now = new DateTime( getTimeZone() );
+			DateTime now = new DateTime(DateTimeZone.UTC);
 
 			XMLGregorianCalendar initValue = ((ClockT) control).getInitValue();
 			DateTime init = new DateTime(
@@ -182,14 +179,8 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 							: 0,
 					(showMonthYear && initValue.getSecond() != DatatypeConstants.FIELD_UNDEFINED) ? initValue
 							.getSecond()
-// 2/1/2010 Scott Atwell							: 0, 0, DateTimeZone.UTC);
-							: 0, 0, getTimeZone() );
+							: 0, 0, DateTimeZone.UTC);
 			setValue(init);
-		}
-// 2/1/2010 Scott Atwell Added the else clause: if no initValue, then set to current time in accordance with timezone
-		else
-		{
-			setValue( new DateTime( getTimeZone() ) );
 		}
 
 		// TODO 1/20/2010 Scott Atwell
@@ -249,7 +240,6 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		// TZTimeOnlyT.
 		if (parameter == null || parameter instanceof UTCTimestampT
 				|| parameter instanceof UTCTimeOnlyT) {
-			logger.debug( "getControlValue() parameter: " + parameter + " result: " + result + " getTimeZone(): " + getTimeZone() + " result.toDateTime(DateTimeZone.UTC): " + result.toDateTime(DateTimeZone.UTC) );
 			result = result.toDateTime(DateTimeZone.UTC);
 		}
 		return result;
@@ -267,7 +257,6 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		// TZTimeOnlyT.
 		if (parameter == null || parameter instanceof UTCTimestampT
 				|| parameter instanceof UTCTimeOnlyT) {
-			logger.debug( "setValue() parameter: " + parameter + " value: " + value + " getTimeZone(): " + getTimeZone() + " value.toDateTime(getTimeZone()): " + value.toDateTime(getTimeZone()) );
 			value = value.toDateTime(getTimeZone());
 		}
 		if (showMonthYear) {
@@ -284,14 +273,7 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		}
 	}
 
-	public void generateStateRuleListener(Listener listener) {
-		if (showMonthYear) {
-			dateClock.addListener(SWT.Selection, listener);
-		}
-		if (showTime) {
-			timeClock.addListener(SWT.Selection, listener);
-		}
-	}
+
 
 	public List<Control> getControls() {
 		List<Control> widgets = new ArrayList<Control>();
@@ -314,27 +296,7 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		return widgets;
 	}
 
-	public void addListener(Listener listener) {
-		ParameterListenerWrapper wrapper = new ParameterListenerWrapper(this,
-				listener);
-		if (showMonthYear) {
-			dateClock.addListener(SWT.Selection, wrapper);
-		}
-		if (showTime) {
-			timeClock.addListener(SWT.Selection, wrapper);
-		}
-	}
-
-	public void removeListener(Listener listener) {
-		if (showMonthYear) {
-			dateClock.removeListener(SWT.Selection, listener);
-		}
-		if (showTime) {
-			timeClock.removeListener(SWT.Selection, listener);
-		}
-	}
-
-	// TODO 1/20/2010 Scott Atwell added
+	// 1/20/2010 Scott Atwell added
 	private void applyEnabledSetting() {
 		if (enabledButton != null) {
 			if ((dateClock != null) && (dateClock.isVisible())) {
@@ -346,4 +308,28 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 			}
 		}
 	}
+	
+    public void addListener(Listener listener)
+    {
+	if (showMonthYear)
+	{
+	    dateClock.addListener(SWT.Selection, listener);
+	}
+	if (showTime)
+	{
+	    timeClock.addListener(SWT.Selection, listener);
+	}
+    }
+
+    public void removeListener(Listener listener)
+    {
+	if (showMonthYear)
+	{
+	    dateClock.removeListener(SWT.Selection, listener);
+	}
+	if (showTime)
+	{
+	    timeClock.removeListener(SWT.Selection, listener);
+	}
+    }
 }

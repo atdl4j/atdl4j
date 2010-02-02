@@ -66,6 +66,14 @@ public class BooleanConverter extends AbstractTypeConverter<Boolean> {
 		
 		Boolean bool = convertValueToComparable(value); // TODO: this doesn't currently return null
 		
+		// 2/1/2010 John Shields added
+		if (bool != null) {
+		    return bool.booleanValue() ? BOOLEAN_TRUE : BOOLEAN_FALSE;
+		} else return null;
+
+		// 2/1/2010 John Shields deleted 
+		// trueWireValue and falseWireValue are deprecated
+		/*
 		if (bool != null) {
 			if (bool.booleanValue()) {
 				if (booleanT != null && booleanT.getTrueWireValue() != null)
@@ -80,6 +88,6 @@ public class BooleanConverter extends AbstractTypeConverter<Boolean> {
 			}
 		} else {
 			return null;
-		}
+		}*/
 	}
 }

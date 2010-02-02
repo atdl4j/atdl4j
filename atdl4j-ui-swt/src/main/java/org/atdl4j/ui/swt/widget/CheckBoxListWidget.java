@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
@@ -49,7 +48,7 @@ public class CheckBoxListWidget extends AbstractSWTWidget<String> {
 		c.setLayout(new FillLayout());
 
 		// label tooltip
-		String tooltip = control.getTooltip();
+		String tooltip = getTooltip();
 		if (tooltip != null) label.setToolTipText(tooltip);
 		
 		// checkBoxes
@@ -60,14 +59,13 @@ public class CheckBoxListWidget extends AbstractSWTWidget<String> {
 			
 			if (parameter != null) {
 				for (EnumPairT enumPair :  parameter.getEnumPair()) {
-					if (enumPair.getEnumID() == listItem.getEnumID()) {
+					if (enumPair.getEnumID().equals(listItem.getEnumID())) {
 						
 						// set tooltip
 						if (enumPair.getDescription() != null)
 							checkBox.setToolTipText(enumPair.getDescription());
 						else if (tooltip != null)
 							checkBox.setToolTipText(tooltip);
-						
 						break;
 					}
 				}
@@ -127,29 +125,27 @@ public class CheckBoxListWidget extends AbstractSWTWidget<String> {
 		}
 	}
 	
-	public void generateStateRuleListener(Listener listener) {
-		for (Button checkBox : multiCheckBox) {
-			checkBox.addListener(SWT.Selection, listener);
-		}
-	}
+    public List<Control> getControls()
+    {
+	List<Control> widgets = new ArrayList<Control>();
+	widgets.add(label);
+	widgets.addAll(multiCheckBox);
+	return widgets;
+    }
 
-	public List<Control> getControls() {
-		List<Control> widgets = new ArrayList<Control>();
-		widgets.add(label);
-		widgets.addAll(multiCheckBox);
-		return widgets;
+    public void addListener(Listener listener)
+    {
+	for (Button checkBox : multiCheckBox)
+	{
+	    checkBox.addListener(SWT.Selection, listener);
 	}
+    }
 
-	public void addListener(Listener listener) {
-		Listener wrapper = new ParameterListenerWrapper(this, listener);
-		for (Button b : multiCheckBox) {
-			b.addListener(SWT.Selection, wrapper);
-		}
+    public void removeListener(Listener listener)
+    {
+	for (Button b : multiCheckBox)
+	{
+	    b.removeListener(SWT.Selection, listener);
 	}
-
-	public void removeListener(Listener listener) {
-		for (Button b : multiCheckBox) {
-			b.removeListener(SWT.Selection, listener);
-		}
-	}
+    }
 }

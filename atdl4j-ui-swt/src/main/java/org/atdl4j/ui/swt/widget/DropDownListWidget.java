@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -61,7 +60,7 @@ public class DropDownListWidget extends AbstractSWTWidget<String> {
 			dropDownList.add(listItem.getUiRep());
 
 		// tooltip
-		String tooltip = control.getTooltip();
+		String tooltip = getTooltip();
 		if (tooltip != null) {
 			dropDownList.setToolTipText(tooltip);
 			label.setToolTipText(tooltip);
@@ -176,12 +175,7 @@ public class DropDownListWidget extends AbstractSWTWidget<String> {
 			}
 		// TODO: needs to handle case of editable dropdown list;
 	}
-
-	public void generateStateRuleListener(Listener listener) {
-		dropDownList.addListener(SWT.Modify, listener);
-		dropDownList.addListener(SWT.Selection, listener);
-	}
-
+	
 	public List<Control> getControls() {
 		List<Control> widgets = new ArrayList<Control>();
 		widgets.add(label);
@@ -190,11 +184,12 @@ public class DropDownListWidget extends AbstractSWTWidget<String> {
 	}
 
 	public void addListener(Listener listener) {
-		dropDownList.addListener(SWT.Selection, new ParameterListenerWrapper(
-				this, listener));
+		dropDownList.addListener(SWT.Modify, listener);
+		dropDownList.addListener(SWT.Selection, listener);
 	}
 
 	public void removeListener(Listener listener) {
+		dropDownList.removeListener(SWT.Modify, listener);
 		dropDownList.removeListener(SWT.Selection, listener);
 	}
 }

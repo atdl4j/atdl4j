@@ -6,7 +6,6 @@ import java.util.Arrays;
 import javax.xml.bind.JAXBException;
 
 
-import org.atdl4j.ui.swt.util.ParameterListenerWrapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -64,7 +63,7 @@ public class ListBoxWidget extends AbstractSWTWidget<String> {
 		}
 		
 		// tooltip
-		String tooltip = control.getTooltip();
+		String tooltip = getTooltip();
 		if (tooltip != null) {
 			listBox.setToolTipText(tooltip);
 			label.setToolTipText(tooltip);
@@ -134,12 +133,8 @@ public class ListBoxWidget extends AbstractSWTWidget<String> {
 				}
 			}
 		}
-	}	
-	
-	public void generateStateRuleListener(Listener listener) {
-		listBox.addListener(SWT.Selection, listener);
 	}
-
+	
 	public java.util.List<Control> getControls() {
 		java.util.List<Control> widgets = new ArrayList<Control>();
 		widgets.add(label);
@@ -148,11 +143,10 @@ public class ListBoxWidget extends AbstractSWTWidget<String> {
 	}
 
 	public void addListener(Listener listener) {
-		listBox.addListener(SWT.Selection, new ParameterListenerWrapper(this,
-				listener));
+	    listBox.addListener(SWT.Selection, listener);
 	}
 
 	public void removeListener(Listener listener) {
-		listBox.removeListener(SWT.Selection, listener);
+	    listBox.removeListener(SWT.Selection, listener);
 	}
 }

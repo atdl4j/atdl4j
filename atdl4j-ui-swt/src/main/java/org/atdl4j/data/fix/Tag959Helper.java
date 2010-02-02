@@ -5,7 +5,6 @@ import javax.xml.bind.JAXBException;
 import org.atdl4j.atdl.core.AmtT;
 import org.atdl4j.atdl.core.BooleanT;
 import org.atdl4j.atdl.core.CharT;
-import org.atdl4j.atdl.core.CountryT;
 import org.atdl4j.atdl.core.CurrencyT;
 import org.atdl4j.atdl.core.DataT;
 import org.atdl4j.atdl.core.ExchangeT;
