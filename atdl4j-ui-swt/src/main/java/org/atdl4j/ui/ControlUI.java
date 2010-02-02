@@ -41,7 +41,9 @@ public interface ControlUI<E extends Comparable<?>> {
 
 	// Helper methods
 	
-	public Comparable<?> convertStringToComparable(String string) throws JAXBException;
+	public Comparable<?> convertStringToControlComparable(String string) throws JAXBException;
+	
+	public Comparable<?> convertStringToParameterComparable(String string) throws JAXBException;
 	
 	// FIX methods
 	
