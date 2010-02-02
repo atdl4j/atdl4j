@@ -72,13 +72,26 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		setValue(controlConverter.convertValueToComparable(string));
 	}
 	
-	public Comparable<?> convertStringToComparable(String string) throws JAXBException
+// 2/1/2010 Scott Atwell differentiate between ControlComparable and ParameterComparable	
+//	public Comparable<?> convertStringToComparable(String string) throws JAXBException
+//	{
+//		if (parameterConverter != null) return parameterConverter.convertValueToComparable(string);
+//		else return controlConverter.convertValueToComparable(string);
+//	}
+	
+	public Comparable<?> convertStringToControlComparable(String string) throws JAXBException
 	{
-		if (parameterConverter != null) return parameterConverter.convertValueToComparable(string);
-		else return controlConverter.convertValueToComparable(string);
+		return controlConverter.convertValueToComparable(string);
 	}
-	
-	
+
+	public Comparable<?> convertStringToParameterComparable(String string) throws JAXBException
+	{
+		if (parameterConverter != null) 
+			return parameterConverter.convertValueToComparable(string);
+		else 
+			return null;
+	}
+
 	public ParameterT getParameter() {
 		return parameter;
 	}
@@ -158,7 +171,14 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	// Helper method to lookup a parameter string where the EnumID is matched
 	// across the ListItemTs and EnumPairTs
 	protected String getParameterValueAsEnumWireValue(){
-		return getEnumWireValue(getControlValue().toString());
+		if ( getControlValue() != null )
+		{
+			return getEnumWireValue(getControlValue().toString());
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	// Helper method to convert MultipleValueChar / MultipleValueString Control values
