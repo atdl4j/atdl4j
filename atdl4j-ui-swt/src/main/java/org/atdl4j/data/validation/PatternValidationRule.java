@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import javax.xml.bind.JAXBException;
 
 
+import org.apache.log4j.Logger;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.ui.ControlUI;
 import org.atdl4j.data.exception.ValidationException;
@@ -17,6 +18,8 @@ import org.atdl4j.data.exception.ValidationException;
  */
 public class PatternValidationRule implements ValidationRule {
 
+	private static final Logger logger = Logger.getLogger(PatternValidationRule.class);
+	
 	private String field;
 
 	private String pattern;
@@ -24,6 +27,10 @@ public class PatternValidationRule implements ValidationRule {
 	public PatternValidationRule(String field, String pattern) {
 		this.field = field;
 		this.pattern = pattern;
+		
+		String tempMsg = "PatternValidationRule constructor: field: " + field + " pattern: " + pattern;
+		logger.debug( tempMsg );
+		logger.trace( tempMsg, new Exception("Stack trace") ); 
 	}
 
 	public void validate(Map<String, ValidationRule> refRules,
@@ -33,8 +40,11 @@ public class PatternValidationRule implements ValidationRule {
 		// get the widget from context using field name
 		ControlUI<?> target = targets.get(field);
 		if (target == null) {
-			throw new JAXBException("No parameter defined for field \"" + field
-					+ "\" in this context");
+			String tempMsg = "No parameter defined for field \"" + field + "\" in this context (PatternValidationRule) field: " + field + " pattern: " + pattern;
+			logger.debug( tempMsg );
+			logger.trace( tempMsg, new Exception("Stack trace") ); 
+			
+			throw new JAXBException( tempMsg );
 		}
 			
 		// PatternRules always validate against a parameter,

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 
 
+import org.apache.log4j.Logger;
 import org.atdl4j.ui.ControlUI;
 import org.atdl4j.data.InputAndFilterData;
 import org.atdl4j.data.ValidationRule;
@@ -23,6 +24,8 @@ import org.atdl4j.atdl.validation.OperatorT;
 public class Field2OperatorValidationRule extends
 		AbstractOperatorValidationRule {
 
+	private static final Logger logger = Logger.getLogger(Field2OperatorValidationRule.class);
+	
 	private String field;
 
 	private OperatorT operator;
@@ -37,6 +40,10 @@ public class Field2OperatorValidationRule extends
 		this.operator = operator;
 		this.field2 = field2;
 		this.parent = parent;
+		
+		String tempMsg = "Field2OperatorValidationRule constructor: field: " + field + " operator: " + operator + " field2: " + field2 + " parent: " + parent;
+		logger.debug( tempMsg );
+		logger.trace( tempMsg, new Exception("Stack trace") ); 
 	}
 
 	public void validate(Map<String, ValidationRule> rules,
@@ -46,16 +53,24 @@ public class Field2OperatorValidationRule extends
 		// get the widget from context using field name
 		ControlUI<?> target = targets.get(field);
 		if (target == null) {
-			throw new JAXBException("No parameter defined for field \"" + field
-					+ "\" in this context");
+			String tempMsg = "No parameter defined for field \"" + field + "\" in this context (Field2OperatorValidationRule) field: " + field + " operator: " + operator + " field2: " + field2 + " parent: " + parent;
+			String tempMsg2 = tempMsg + " targets: " + targets;
+			logger.debug( tempMsg2 );
+			logger.trace( tempMsg2, new Exception("Stack trace") ); 
+			
+			throw new JAXBException( tempMsg );
 		}
 		Object fieldValue = parent instanceof StateRuleT ? target.getControlValue() : target.getParameterValue();
 
 		// get the widget from context using field2 name
 		ControlUI<?> target2 = targets.get(field2);
 		if (target2 == null) {
-			throw new JAXBException("No parameter defined for field2 \"" + field2
-					+ "\" in this context");
+			String tempMsg = "No parameter defined for field \"" + field2 + "\" in this context (Field2OperatorValidationRule) field: " + field + " operator: " + operator + " field2: " + field2 + " parent: " + parent;
+			String tempMsg2 = tempMsg + " targets: " + targets;
+			logger.debug( tempMsg2 );
+			logger.trace( tempMsg2, new Exception("Stack trace") ); 
+			
+			throw new JAXBException( tempMsg );
 		}
 		Object fieldValue2 = parent instanceof StateRuleT ? target2.getControlValue() : target2.getParameterValue();
 		
@@ -113,7 +128,7 @@ if ( ( fieldValue != null ) &&
 		}
 		else
 		{
-System.out.println("convertFieldValueToDesiredType() unhandled Class type: " + aFieldWithDesiredType.getClass().getName() );			
+			logger.warn( "convertFieldValueToDesiredType() unhandled Class type: " + aFieldWithDesiredType.getClass().getName() );			
 			return aFieldValue;
 		}
 	}
