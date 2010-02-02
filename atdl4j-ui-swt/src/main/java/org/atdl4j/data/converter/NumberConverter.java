@@ -30,7 +30,13 @@ public class NumberConverter extends AbstractTypeConverter<BigDecimal> {
 		} else if (value instanceof String) {
 			String str = (String) value;
 			try {
-				return new BigDecimal(str);
+// 2/1/2010 Scott Atwell				return new BigDecimal(str);
+				BigDecimal tempBigDecimal = new BigDecimal(str);
+				if ( getPrecision() != null )
+				{
+					tempBigDecimal = new BigDecimal( tempBigDecimal.unscaledValue(), getPrecision().intValue() );
+				}
+				return tempBigDecimal;
 			} catch (NumberFormatException e) {
 				return null;
 			}
