@@ -339,10 +339,37 @@ public class SWTApplication {
 		shell.pack();
 		shell.open();
 
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
+//		while (!shell.isDisposed()) {
+//			if (!display.readAndDispatch())
+//				display.sleep();
+//		}
+//		display.dispose();
+// 2/3/2010 Scott Atwell added pop-up to display the Exception before the app crashes		
+		while (!shell.isDisposed()) 
+		{
+			try
+			{
+				if (!display.readAndDispatch())
+				{
+					display.sleep();
+				}	
+			}
+			catch (Exception e)
+			{
+				logger.warn( "Fatal Exception encountered", e );
+				MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.ICON_ERROR);
+				if ( e.getMessage() != null )
+				{
+					messageBox.setMessage(e.getMessage());
+				}
+				else
+				{
+					messageBox.setMessage( e.toString() );
+				}
+				messageBox.open();
+			}
 		}
+		
 		display.dispose();
 	}
 
