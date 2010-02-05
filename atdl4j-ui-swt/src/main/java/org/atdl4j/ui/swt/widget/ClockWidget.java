@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.apache.log4j.Logger;
 import org.atdl4j.atdl.core.LocalMktDateT;
 import org.atdl4j.atdl.core.MonthYearT;
 import org.atdl4j.atdl.core.ParameterT;
@@ -49,6 +50,8 @@ import org.atdl4j.atdl.core.UseT;
  * @author john.shields
  */
 public class ClockWidget extends AbstractSWTWidget<DateTime> {
+
+	private static final Logger logger = Logger.getLogger(ClockWidget.class);
 
 	private org.eclipse.swt.widgets.DateTime dateClock;
 	private org.eclipse.swt.widgets.DateTime timeClock;
@@ -157,10 +160,21 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		}
 
 		// init value
-		if (((ClockT) control).getInitValue() != null) {
-			DateTime now = new DateTime(DateTimeZone.UTC);
+		XMLGregorianCalendar initValue = ((ClockT) control).getInitValue();
+		if (initValue != null) {
+// 2/1/2010 Scott Atwell			DateTime now = new DateTime(DateTimeZone.UTC);
+			// -- Note that this will throw IllegalArgumentException if timezone ID specified cannot be resolved --
+			DateTimeZone tempLocalMktTz = getLocalMktTz();
+			logger.debug( "control.getID(): " + control.getID() + " initValue: " + initValue + " getLocalMktTz(): " + tempLocalMktTz );
+			
+			// -- localMktTz is required when using/interpreting initValue --
+			if ( tempLocalMktTz == null )
+			{
+				throw new IllegalArgumentException( "localMktTz is required when initValue (" + initValue + ") is specified. (Control.ID: " + control.getID() + ")"); 
+			}
+			
+			DateTime now = new DateTime( tempLocalMktTz );
 
-			XMLGregorianCalendar initValue = ((ClockT) control).getInitValue();
 			DateTime init = new DateTime(
 					(showMonthYear && initValue.getYear() != DatatypeConstants.FIELD_UNDEFINED) ? initValue
 							.getYear()
@@ -179,8 +193,10 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 							: 0,
 					(showMonthYear && initValue.getSecond() != DatatypeConstants.FIELD_UNDEFINED) ? initValue
 							.getSecond()
-							: 0, 0, DateTimeZone.UTC);
-			setValue(init);
+// 2/1/2010 Scott Atwell							: 0, 0, DateTimeZone.UTC);
+							: 0, 0, tempLocalMktTz );
+// 2/3/2010 Scott Atwell -- we need to make sure that the value is rendered on the display in local timezone  			setValue(init);
+			setValue(init.withZone( DateTimeZone.getDefault() ));
 		}
 
 		// TODO 1/20/2010 Scott Atwell
@@ -191,6 +207,7 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		return parent;
 	}
 
+/*** 2/3/2010 Scott Atwell replaced getTimeZone() with getLocalMktTz()	
 	// TODO: Move timezone attribute to Control and modify this method
 	public org.joda.time.DateTimeZone getTimeZone() {
 		if (parameter != null) {
@@ -213,7 +230,35 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		}
 		return DateTimeZone.getDefault();
 	}
-
+***/
+	// TODO: Move timezone attribute to Control and modify this method
+	public org.joda.time.DateTimeZone getLocalMktTz()
+		throws IllegalArgumentException
+	{
+		if (parameter != null) 
+		{
+			// List<String> timezones =
+			// Arrays.asList(TimeZone.getAvailableIDs());
+			if (parameter instanceof UTCTimestampT
+// 2/3/2010 the Control has its own localMktTz for initValue					&& ((UTCTimestampT) parameter).getLocalMktTz() != null) 
+					&& control != null && control instanceof ClockT
+					&& ((ClockT) control).getLocalMktTz() != null) 
+			{
+//				try {
+				// This will throw IllegalArgumentException if ID cannot be resolved
+				return org.joda.time.DateTimeZone
+// 2/3/2010 use Control's own localMktTz						.forID(((UTCTimestampT) parameter).getLocalMktTz()
+						.forID(((ClockT) control).getLocalMktTz()
+								.value());
+//				} catch (IllegalArgumentException e) {
+//				}
+			}
+		}
+		
+		return null;
+	}
+	
+	
 	public DateTime getControlValue() {
 		// TODO 1/20/2010 Scott Atwell added BELOW
 		// -- Return null if control is either not visible or disabled --
@@ -232,7 +277,8 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 				: 1970, showMonthYear ? dateClock.getMonth() + 1 : 1,
 				showDay ? dateClock.getDay() : 1, showTime ? timeClock
 						.getHours() : 0, showTime ? timeClock.getMinutes() : 0,
-				showTime ? timeClock.getSeconds() : 0, 0, getTimeZone());
+// 2/2/2010				showTime ? timeClock.getSeconds() : 0, 0, getTimeZone());
+						showTime ? timeClock.getSeconds() : 0, 0, DateTimeZone.getDefault() );
 		// Convert to UTC time for UTCTimestampT and UTCTimeOnlyT.
 		// Performing UTCDateT and MonthYearT coversion could produce and
 		// unexpected result.
@@ -241,6 +287,7 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		if (parameter == null || parameter instanceof UTCTimestampT
 				|| parameter instanceof UTCTimeOnlyT) {
 			result = result.toDateTime(DateTimeZone.UTC);
+			logger.debug( "getControlValue() parameter: " + parameter + " result: " + result );
 		}
 		return result;
 	}
@@ -257,7 +304,10 @@ public class ClockWidget extends AbstractSWTWidget<DateTime> {
 		// TZTimeOnlyT.
 		if (parameter == null || parameter instanceof UTCTimestampT
 				|| parameter instanceof UTCTimeOnlyT) {
-			value = value.toDateTime(getTimeZone());
+// 2/2/2010			logger.debug( "setValue() parameter: " + parameter + " value: " + value + " getTimeZone(): " + getTimeZone() + " value.toDateTime(getTimeZone()): " + value.toDateTime(getTimeZone()) );
+// 2/2/2010			value = value.toDateTime(getTimeZone());
+			logger.debug( "setValue() parameter: " + parameter + " value: " + value );
+			// -- no need to adjust DateTime --
 		}
 		if (showMonthYear) {
 			dateClock.setMonth(value.getMonthOfYear() - 1);
