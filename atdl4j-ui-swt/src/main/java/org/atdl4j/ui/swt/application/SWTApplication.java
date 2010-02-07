@@ -70,11 +70,10 @@ public class SWTApplication {
 	private static Text outputFixMessageText;
 	private static Text inputFixMessageText;
 	private static Button cxlReplaceModeButton;
-	
-	// 1/20/2010 Scott Atwell	
+// 1/20/2010 Scott Atwell	
 	private static Button debugModeButton;
 
-	// 1/17/2010 Scott Atwell Added 
+// 1/17/2010 Scott Atwell Added 
 	private static InputAndFilterData inputAndFilterData = new InputAndFilterData();	
 	
 	public static void main(String[] args) {
@@ -325,9 +324,6 @@ public class SWTApplication {
 		debugModeButton = new Button(footer, SWT.CHECK);		
 		debugModeButton.setText("Debug Mode");
 
-		//debugModeButton.setSelection( getInputAndFilterData().getInputDebugMode() );
-		applyLoggingLevel();
-
 		debugModeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -335,7 +331,8 @@ public class SWTApplication {
 			}
 		});
 //TODO 1/20/2010 Scott Atwell ABOVE
-		
+
+
 		shell.pack();
 		shell.open();
 
@@ -629,7 +626,19 @@ public class SWTApplication {
 			((GridData)strategiesPanel.getChildren()[i].getLayoutData()).widthHint = (i != index) ? 0 : -1;
 		}
 		if (strategies != null) {
-			selectedStrategy = strategies.getStrategy().get(index);
+// 2/1/2010 Scott Atwell - CANNOT DO THIS as startegies.getStrategy() List contains ALL defined strategies (UNFILTERED) and thus NOT 1-for-1
+//			selectedStrategy = strategies.getStrategy().get(index);
+			String tempSelectedDropDownName = strategiesDropDown.getItem( index );
+			selectedStrategy = null; 
+			for ( StrategyT tempStrategy : strategies.getStrategy() )
+			{
+				if ( ( ( tempStrategy.getUiRep() != null ) && ( tempStrategy.getUiRep().equals( tempSelectedDropDownName ) ) ) ||
+					  ( ( tempStrategy.getUiRep() == null ) && ( tempStrategy.getName().equals( tempSelectedDropDownName ) ) ) )
+				{
+					selectedStrategy = tempStrategy;
+					break;
+				}
+			}
 			if (showStrategyDescription) strategyDescription.setText("");
 		}
 		strategiesPanel.layout();
@@ -657,8 +666,10 @@ public class SWTApplication {
 		if ( debugModeButton.getSelection() )
 		{
 			tempLevel = org.apache.log4j.Level.DEBUG;
+//			tempLevel = org.apache.log4j.Level.TRACE;
 		}
 		
+/***		
 		org.apache.log4j.Logger.getLogger( SWTApplication.class ).setLevel( tempLevel );
 		
 		org.apache.log4j.Logger.getLogger( AbstractOperatorValidationRule.class ).setLevel( tempLevel );
@@ -666,6 +677,8 @@ public class SWTApplication {
 		org.apache.log4j.Logger.getLogger( SWTFactory.class ).setLevel( tempLevel );
 		org.apache.log4j.Logger.getLogger( AbstractStrategyUI.class ).setLevel( tempLevel );
 		org.apache.log4j.Logger.getLogger( RadioButtonListWidget.class ).setLevel( tempLevel );
+***/
+		org.apache.log4j.Logger.getLogger( "org.atdl4j" ).setLevel( tempLevel );
 
 	}
 

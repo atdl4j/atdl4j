@@ -29,7 +29,7 @@ public abstract class HiddenFieldUI extends AbstractControlUI<String> {
 	    // TODO add this for all controls
 	    if (ParameterHelper.getConstValue(parameter) != null)
 		return ParameterHelper.getConstValue(parameter);
-	    return value;
+		return value;
 	}
 
 	public void setValue(String value) {
