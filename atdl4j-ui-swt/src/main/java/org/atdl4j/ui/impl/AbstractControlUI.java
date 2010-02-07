@@ -8,13 +8,16 @@ import javax.xml.bind.JAXBException;
 import org.atdl4j.atdl.core.EnumPairT;
 import org.atdl4j.atdl.core.ParameterT;
 import org.atdl4j.atdl.layout.CheckBoxListT;
+import org.atdl4j.atdl.layout.CheckBoxT;
 import org.atdl4j.atdl.layout.ControlT;
 import org.atdl4j.atdl.layout.DropDownListT;
 import org.atdl4j.atdl.layout.EditableDropDownListT;
 import org.atdl4j.atdl.layout.ListItemT;
 import org.atdl4j.atdl.layout.MultiSelectListT;
 import org.atdl4j.atdl.layout.RadioButtonListT;
+import org.atdl4j.atdl.layout.RadioButtonT;
 import org.atdl4j.atdl.layout.SingleSelectListT;
+import org.atdl4j.atdl.layout.SliderT;
 import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.InputAndFilterData;
 import org.atdl4j.data.TypeConverterFactory;
@@ -40,6 +43,7 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		//TODO: do a safe cast AbstractAdapter<?> adapter = (AbstractAdapter<E>) TypeAdapterFactory.create(control);
 		controlConverter = (AbstractTypeConverter<E>) TypeConverterFactory.create(control, parameter);
 		if (parameter != null) parameterConverter = (AbstractTypeConverter<?>) TypeConverterFactory.create(parameter);
+		validateEnumPairs();
 	}
 
 	public String getControlValueAsString() throws JAXBException {
@@ -142,6 +146,61 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		}
 	}
 	
+    // Helper method to validate that EnumPairs and ListItems match for
+    // the given Parameter and Control pair.
+    protected void validateEnumPairs() throws JAXBException
+    {
+	if (parameter != null)
+	{
+	    List<EnumPairT> enumPairs = parameter.getEnumPair();
+	    List<ListItemT> listItems = getListItems();
+
+	    if (control instanceof RadioButtonT || control instanceof CheckBoxT)
+	    {
+		// validate checkedEnumRef and uncheckedEnumRef
+	    }
+	    else if (listItems == null || listItems.size() == 0)
+	    {
+		if (enumPairs != null && enumPairs.size() > 0)
+		{
+		    throw new JAXBException("Parameter \""
+			    + parameter.getName()
+			    + "\" has EnumPairs but Control \""
+			    + control.getID() + "\" does not have ListItems.");
+		}
+	    }
+	    else if (parameter.getEnumPair() != null)
+	    {
+		if (listItems.size() != enumPairs.size())
+		    throw new JAXBException("Parameter \""
+			    + parameter.getName() + "\" has "
+			    + enumPairs.size() + " EnumPairs but Control \""
+			    + control.getID() + "\" has " + listItems.size()
+			    + " ListItems.");
+
+		for (ListItemT listItem : listItems)
+		{
+		    boolean match = false;
+		    for (EnumPairT enumPair : enumPairs)
+		    {
+			if (listItem.getEnumID().equals(enumPair.getEnumID()))
+			{
+			    match = true;
+			    break;
+			}
+		    }
+		    if (!match) 
+			throw new JAXBException("ListItem \""
+				    + listItem.getEnumID()
+				    + "\" on Control \""
+				    + control.getID() + 
+				    "\" does not have a matching EnumPair on Parameter \""
+				    + parameter.getName() + "\".");
+		}
+	    }
+	}
+    }
+	
 	// Helper method to lookup a parameter string where the EnumID is matched
 	// across the ListItemTs and EnumPairTs
 	protected String getEnumWireValue(String enumID){
@@ -184,7 +243,7 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	
 	// Helper method to get control ListItems
 	protected List<ListItemT> getListItems()
-	{		
+	{
 		if (control instanceof DropDownListT) {
 			return ((DropDownListT)control).getListItem();
 		} else if (control instanceof EditableDropDownListT) {
@@ -197,13 +256,13 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 			return ((SingleSelectListT)control).getListItem();
 		} else if (control instanceof MultiSelectListT) {
 			return ((MultiSelectListT)control).getListItem();
-		// TODO: I think Slider should have list items
-		// } else if (control instanceof SliderT) {
-		//	return new SliderWidget((SliderT)control).getListItem();
+		} else if (control instanceof SliderT) {
+			return ((SliderT)control).getListItem();
 		} else {
 			// TODO: this should maybe throw a runtime error???
 			// return an empty list
-			return new Vector<ListItemT>();
+			//return new Vector<ListItemT>();
+		    return null;
 		}
 	}
 }

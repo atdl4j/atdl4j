@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import org.atdl4j.atdl.core.ParameterT;
+import org.atdl4j.atdl.layout.CheckBoxListT;
 import org.atdl4j.atdl.layout.ListItemT;
 import org.atdl4j.atdl.layout.SliderT;
 import org.eclipse.swt.SWT;
@@ -20,7 +21,6 @@ import org.eclipse.swt.widgets.Widget;
 
 public class SliderWidget extends AbstractSWTWidget<String>
 {
-
     private Scale slider;
     private Label label;
 
@@ -33,8 +33,7 @@ public class SliderWidget extends AbstractSWTWidget<String>
     }
 
     public Widget createWidget(Composite parent, int style)
-    {
-
+    {	
 	// label
 	label = new Label(parent, SWT.NONE);
 	if (control.getLabel() != null)
@@ -49,8 +48,7 @@ public class SliderWidget extends AbstractSWTWidget<String>
 	c.setLayout(new GridLayout(numColumns, true));
 
 	// slider
-	Scale slider = new Scale(c, style | SWT.HORIZONTAL);
-	this.slider = slider;
+	slider = new Scale(c, style | SWT.HORIZONTAL);
 	slider.setIncrement(1);
 	slider.setPageIncrement(1);
 	GridData sliderData = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -64,7 +62,7 @@ public class SliderWidget extends AbstractSWTWidget<String>
 	    for (ListItemT li : ((SliderT) control).getListItem())
 	    {
 		Label label = new Label(c, SWT.NONE);
-		label.setText(li.getEnumID());
+		label.setText(li.getUiRep());
 		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false,
 			false));
 	    }
@@ -77,16 +75,17 @@ public class SliderWidget extends AbstractSWTWidget<String>
 	    slider.setToolTipText(tooltip);
 	    label.setToolTipText(tooltip);
 	}
+	
+	if  (((SliderT)control).getInitValue() != null)
+		setValue(((SliderT)control).getInitValue(), true);
+	
 	return parent;
     }
 
     public String getControlValue()
     {
-	if (!slider.isVisible() || !slider.isEnabled())
-	{
-	    return ((SliderT) control).getListItem().get(slider.getSelection()).getEnumID();
-	}
-	return null;
+	if (!slider.isVisible() || !slider.isEnabled()) return null;
+	return ((SliderT)control).getListItem().get(slider.getSelection()).getEnumID();
     }
 
     public String getParameterValue()

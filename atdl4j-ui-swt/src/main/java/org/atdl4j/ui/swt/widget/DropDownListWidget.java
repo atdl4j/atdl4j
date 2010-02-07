@@ -18,6 +18,9 @@ import org.atdl4j.atdl.core.ParameterT;
 import org.atdl4j.atdl.layout.DropDownListT;
 import org.atdl4j.atdl.layout.EditableDropDownListT;
 import org.atdl4j.atdl.layout.ListItemT;
+import org.atdl4j.atdl.layout.MultiSelectListT;
+import org.atdl4j.atdl.layout.SingleSelectListT;
+import org.atdl4j.atdl.layout.SliderT;
 
 public class DropDownListWidget extends AbstractSWTWidget<String> {
 
@@ -66,30 +69,14 @@ public class DropDownListWidget extends AbstractSWTWidget<String> {
 			label.setToolTipText(tooltip);
 		}
 
-		// init value
-		String initValue = 
-			(control instanceof EditableDropDownListT) ? 
-					((EditableDropDownListT)control).getInitValue() : ((DropDownListT)control).getInitValue();
-
 		// default initializer
 		dropDownList.select(0);
-		// look for init value
-		if (initValue != null) {
-			String[] items = dropDownList.getItems();
-			for (int i = 0; i < items.length; i++) {
-				if (parameter != null)
-				{
-					// match based on WireValue
-					//getEnumWireValue(enumID);
-				}
-				else
-				{
-					// match based on UiRep -- TODO: should this match on EnumID?
-					if (initValue.equals(items[i])) dropDownList.select(i);
-				}
-			}
-		} 
-
+		
+		// select initValue if available
+		String initValue = (control instanceof EditableDropDownListT) ? 
+			((EditableDropDownListT)control).getInitValue() : ((DropDownListT)control).getInitValue();
+		if (initValue != null) setValue(initValue, true);
+		
 		return parent;
 	}
 	

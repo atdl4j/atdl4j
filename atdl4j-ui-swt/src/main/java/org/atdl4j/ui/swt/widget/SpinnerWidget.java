@@ -171,9 +171,9 @@ public class SpinnerWidget extends AbstractSWTWidget<BigDecimal>
 		    -1 * outerStepSize));
 	}
 
-	Double initValue = control instanceof SingleSpinnerT ? ((SingleSpinnerT) control)
-		.getInitValue()
-		: ((DoubleSpinnerT) control).getInitValue();
+	Double initValue = control instanceof SingleSpinnerT ? 
+		((SingleSpinnerT) control).getInitValue() :
+		((DoubleSpinnerT) control).getInitValue();
 	if (initValue != null)
 	    spinner.setSelection(initValue.intValue()
 		    * (int) Math.pow(10, spinner.getDigits()));
