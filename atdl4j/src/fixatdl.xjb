@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+           jaxb:extensionBindingPrefixes="xjc"
+           jaxb:version="2.1">
+	<jaxb:bindings schemaLocation="fixatdl-core-1-1.xsd"
+		node="/xs:schema">
+		<jaxb:schemaBindings>
+			<jaxb:package name="org.atdl4j.fixatdl.core" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+	<jaxb:bindings schemaLocation="fixatdl-flow-1-1.xsd"
+		node="/xs:schema">
+		<jaxb:schemaBindings>
+			<jaxb:package name="org.atdl4j.fixatdl.flow" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+	<jaxb:bindings schemaLocation="fixatdl-layout-1-1.xsd"
+		node="/xs:schema">
+		<jaxb:schemaBindings>
+			<jaxb:package name="org.atdl4j.fixatdl.layout" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+	<jaxb:bindings schemaLocation="fixatdl-validation-1-1.xsd"
+		node="/xs:schema">
+		<jaxb:schemaBindings>
+			<jaxb:package name="org.atdl4j.fixatdl.validation" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+	<jaxb:bindings schemaLocation="fixatdl-regions-1-1.xsd"
+		node="/xs:schema">
+		<jaxb:schemaBindings>
+			<jaxb:package name="org.atdl4j.fixatdl.regions" />
+		</jaxb:schemaBindings>
+		<jaxb:bindings node="./xs:element[@name='TheAmericas']/xs:simpleType">
+			<jaxb:typesafeEnumClass name="TheAmericas" />
+		</jaxb:bindings>
+		<jaxb:bindings node="./xs:element[@name='EuropeMiddleEastAfrica']/xs:simpleType">
+			<jaxb:typesafeEnumClass name="EuropeMiddleEastAfrica" />
+		</jaxb:bindings>
+		<jaxb:bindings node="./xs:element[@name='AsiaPacificJapan']/xs:simpleType">
+			<jaxb:typesafeEnumClass name="AsiaPacificJapan" />
+		</jaxb:bindings>
+	</jaxb:bindings>
+	<jaxb:bindings schemaLocation="fixatdl-timezones-1-1.xsd"
+		node="/xs:schema">
+		<jaxb:schemaBindings>
+			<jaxb:package name="org.atdl4j.fixatdl.timezones" />
+		</jaxb:schemaBindings>
+		<jaxb:bindings node="./xs:simpleType[@name='LocalMktTz_t']">
+			<jaxb:typesafeEnumClass name="Timezone" />
+		</jaxb:bindings>
+	</jaxb:bindings>
+</jaxb:bindings>
