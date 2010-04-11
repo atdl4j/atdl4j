@@ -78,17 +78,6 @@ public class SWTStrategySelectionPanel
 		// remove all dropdown items
 		strategiesDropDown.removeAll();
 
-// 2/26/2010 Scott Atwell replaced with getStrategyNameList()		
-//		if ( aStrategyList == null )
-//		{
-//			return;
-//		}
-//
-//		for (StrategyT strategy : aStrategyList) 
-//		{
-//			// create dropdown item for strategy
-//			strategiesDropDown.add(getStrategyUiRepOrName(strategy));
-//		}
 		List<String> tempStrategyUiRepOrNameList = getStrategyUiRepOrNameList( aStrategyList );
 		
 		if ( tempStrategyUiRepOrNameList == null )
@@ -101,8 +90,6 @@ public class SWTStrategySelectionPanel
 			// create dropdown item for strategy
 			strategiesDropDown.add( tempStrategy );
 		}
-		
-		
 
 		if (strategiesDropDown.getItemCount() > 0)
 		{

@@ -61,10 +61,8 @@ public abstract class AbstractStrategyUI
 	private Map<String, ValidationRule> completeValidationRuleMap;
 
 	protected StrategyT strategy;
-// 2/9/2010 Atdl4jConfig has the getStrategies()	protected StrategiesT strategies;
 	
-	abstract	protected void buildControlMap( List<StrategyPanelT> aStrategyPanelList )
-	;
+	abstract	protected void buildControlMap( List<StrategyPanelT> aStrategyPanelList );
 	
 	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of ControlUI<?> --
 	abstract public Map<String, ControlUI<?>> getControlUIMap();
@@ -74,7 +72,6 @@ public abstract class AbstractStrategyUI
 
 	// -- Used by init() --
 	abstract protected void initBegin(Object parentContainer);
-//	abstract protected Map<String, ValidationRule> buildGlobalAndLocalRuleMap(StrategyT strategy, Map<String, ValidationRule> strategiesRules);
 	abstract protected void buildControlMap();
 	abstract protected void createRadioGroups();
 	abstract protected void buildControlWithParameterMap();
@@ -106,12 +103,7 @@ public abstract class AbstractStrategyUI
 		setAtdl4jConfig( aAtdl4jConfig );
 
 		initBegin( parentContainer );
-/** initBegin(Object parentContainer)		
-		setParent( (Composite) parentContainer );
-		setControlWithParameterMap( new HashMap<String, SWTWidget<?>>() );
-//TODO !!! verify, as it does not appear that getWidgetStateListenerMap() is ever being populated (though, is being initialized)		
-		setWidgetStateListenerMap( new HashMap<SWTWidget<?>, Set<SWTStateListener>>() );
-**/
+
 		// initialize rules collection with global rules
 		setStrategyRuleset( new StrategyRuleset() );
 
@@ -120,22 +112,15 @@ public abstract class AbstractStrategyUI
 		setCompleteValidationRuleMap( buildGlobalAndLocalRuleMap( getStrategy(), strategiesRules ) );
 		
 		buildControlMap();
-/** buildControlMap()		
-		buildControlMap( getStrategy().getStrategyLayout().getStrategyPanel() );
-**/		
 		
 		checkForDuplicateControlIDs();
 		createRadioGroups();
 
 		addHiddenFieldsForInputAndFilterData( getAtdl4jConfig().getInputAndFilterData() );
-// 3/9/2010 Scott Atwell moved after buildControlWithParameterMap		addHiddenFieldsForConstParameterWithoutControl( getParameterMap() );
-// 3/15/2010 John Shields undid Scott's change above and moved it before, as validation rules were failing
-// 3/14/2010 Scott Atwell restored location (note earlier version was missing addToControlWithParameterMap()) 		addHiddenFieldsForParameterWithoutControl( getParameterMap() );
 		
 		buildControlWithParameterMap();
 		attachGlobalStateRulesToControls();
 		
-// 3/14/2010 Scott Atwell method rename		addHiddenFieldsForConstParameterWithoutControl( getParameterMap() );
 		addHiddenFieldsForParameterWithoutControl( getParameterMap() );
 
 		attachStateListenersToAllControls();
@@ -225,7 +210,6 @@ public abstract class AbstractStrategyUI
 		this.strategy = aStrategy;
 	}
 	
-	// 2/9/2010 Scott Atwell - subdivided constructor/init() into discrete methods
 	/**
 	 * @param strategy
 	 * @return
@@ -240,7 +224,6 @@ public abstract class AbstractStrategyUI
 			// compile list of parameters (TODO: is this needed?)
 			tempParameters.put( parameter.getName(), parameter );
 
-// 2/12/2010 Scott Atwell
 			boolean tempIsRequired = false;
 			
 			// required fields should be validated as well
@@ -254,16 +237,10 @@ public abstract class AbstractStrategyUI
 				}
 			}
 			
-// 2/12/2010 Scott Atwell added
-// 3/10/2010 Scott Atwell			TypeConverter tempTypeConverter = getAtdl4jConfig().getTypeConverterFactory().create( parameter );
 			ParameterTypeConverter tempTypeConverter = getAtdl4jConfig().getTypeConverterFactory().createParameterTypeConverter( parameter );
 			
-// Parameter/@const has been removed 			if ( ( parameter.isConst() ) && ( ParameterHelper.getConstValue( parameter ) != null ) )
 			if ( ParameterHelper.getConstValue( parameter ) != null )
 			{
-// 2/12/2010 only difference is Parameter one adjusts for multiplyBy100 (use "ToControl" to avoid doing this twice)				String tempStringValue = tempTypeConverter.convertValueToParameterString( ParameterHelper.getConstValue( parameter ) ); 
-// 3/9/2010 Scott Atwell renamed/changed x100 behavior				String tempStringValue = tempTypeConverter.convertValueToControlString( ParameterHelper.getConstValue( parameter ) ); 
-// 3/10/2010 Scott Atwell				String tempStringValue = tempTypeConverter.convertValueToParameterString( ParameterHelper.getConstValue( parameter ) ); 
 				String tempStringValue = tempTypeConverter.convertParameterValueToComparisonString( ParameterHelper.getConstValue( parameter ) ); 
 				ValidationRule tempFieldRule = new ValueOperatorValidationRule( parameter.getName(), OperatorT.EQ, tempStringValue, strategy );
 				
@@ -280,12 +257,8 @@ public abstract class AbstractStrategyUI
 				}
 			}
 			
-// 2/12/2010 Scott Atwell added
 			if ( ParameterHelper.getMinValue( parameter ) != null )
 			{
-// 2/12/2010 only difference is Parameter one adjusts for multiplyBy100 (use "ToControl" to avoid doing this twice)				String tempStringValue = tempTypeConverter.convertValueToParameterString( ParameterHelper.getConstValue( parameter ) ); 
-// 3/9/2010 Scott Atwell renamed/changed x100 behavior				String tempStringValue = tempTypeConverter.convertValueToControlString( ParameterHelper.getMinValue( parameter ) ); 
-// 3/10/2010 Scott Atwell				String tempStringValue = tempTypeConverter.convertValueToParameterString( ParameterHelper.getMinValue( parameter ) ); 
 				String tempStringValue = tempTypeConverter.convertParameterValueToComparisonString( ParameterHelper.getMinValue( parameter ) ); 
 				ValidationRule tempFieldRule = new ValueOperatorValidationRule( parameter.getName(), OperatorT.GE, tempStringValue, strategy );
 				
@@ -302,12 +275,8 @@ public abstract class AbstractStrategyUI
 				}
 			}
 			
-// 2/12/2010 Scott Atwell added
 			if ( ParameterHelper.getMaxValue( parameter ) != null )
 			{
-// 2/12/2010 only difference is Parameter one adjusts for multiplyBy100 (use "ToControl" to avoid doing this twice)				String tempStringValue = tempTypeConverter.convertValueToParameterString( ParameterHelper.getMaxValue( parameter ) ); 
-// 3/9/2010 Scott Atwell renamed/changed x100 behavior				String tempStringValue = tempTypeConverter.convertValueToControlString( ParameterHelper.getMaxValue( parameter ) ); 
-// 3/10/2010 Scott Atwell				String tempStringValue = tempTypeConverter.convertValueToParameterString( ParameterHelper.getMaxValue( parameter ) ); 
 				String tempStringValue = tempTypeConverter.convertParameterValueToComparisonString( ParameterHelper.getMaxValue( parameter ) ); 
 				ValidationRule tempFieldRule = new ValueOperatorValidationRule( parameter.getName(), OperatorT.LE, tempStringValue, strategy );
 				
@@ -324,7 +293,6 @@ public abstract class AbstractStrategyUI
 				}
 			}
 			
-// 2/21/2010 Scott Atwell added
 			if ( ParameterHelper.getMinLength( parameter ) != null )
 			{
 				ValidationRule tempFieldRule = new LengthValidationRule( parameter.getName(), OperatorT.GE, ParameterHelper.getMinLength( parameter ), strategy );
@@ -342,7 +310,6 @@ public abstract class AbstractStrategyUI
 				}
 			}
 			
-// 2/21/2010 Scott Atwell added
 			if ( ParameterHelper.getMaxLength( parameter ) != null )
 			{
 				ValidationRule tempFieldRule = new LengthValidationRule( parameter.getName(), OperatorT.LE, ParameterHelper.getMaxLength( parameter ), strategy );
@@ -377,7 +344,7 @@ public abstract class AbstractStrategyUI
 			}
 
 			// 2/1/2010 John Shields added
-			// Deprecate trueWireValue and falseWireValue attribute;
+			// TODO Deprecate trueWireValue and falseWireValue attribute;
 			if ( parameter instanceof BooleanT )
 			{
 				if ( ( (BooleanT) parameter ).getTrueWireValue() != null )
@@ -406,18 +373,12 @@ public abstract class AbstractStrategyUI
 		// and add local rules
 		for ( EditT edit : strategy.getEdit() )
 		{
-			// 3/13/2010 - John Shields modified so strategy-scoped rules can be created even if they don't have an ID
 			ValidationRule rule = ValidationRuleFactory.createRule( edit, tempRuleMap, strategy );
 			String id = edit.getId();
-			if ( id != null ) tempRuleMap.put( id, rule );
-
-			// 3/13/2010 - John Shields commented out below
-			/*
-			else
+			if ( id != null )
 			{
-				throw new JAXBException( "Strategy-scoped edit without id" );
+				tempRuleMap.put( id, rule );
 			}
-			*/
 		}
 
 		// generate validation rules for StrategyEdit elements
@@ -458,14 +419,11 @@ public abstract class AbstractStrategyUI
 	
 	protected void checkForDuplicateControlIDs()
 	{
-// 2/10/2010 Scott Atwell added/amended
 		// -- Note getControlUIMap() constructs a new Map --
 		Collection<ControlUI<?>> tempControlMapValues = (Collection<ControlUI<?>>) getControlUIMap().values();
 		
-// 2/10/2010 Scott Atwell		for ( SWTWidget<?> widget : getControlMap().values() )
 		for ( ControlUI<?> widget : tempControlMapValues )
 		{
-// 2/10/2010 Scott Atwell			for ( SWTWidget<?> widget2 : getControlMap().values() )
 			for ( ControlUI<?> widget2 : tempControlMapValues )
 			{
 				if ( widget != widget2 && widget.getControl().getID().equals( widget2.getControl().getID() ) )
@@ -518,7 +476,6 @@ public abstract class AbstractStrategyUI
 				ControlUI hiddenFieldWidget = getAtdl4jConfig().getControlUIForHiddenFieldT( hiddenField, parameter );
 				hiddenFieldWidget.setHiddenFieldForInputAndFilterData( true );
 				
-//			getControlMap().put( tempName, (SWTWidget<?>) hiddenFieldWidget );
 				addToControlMap( tempName, hiddenFieldWidget );
 				addToControlWithParameterMap( tempName, hiddenFieldWidget );
 			}
@@ -545,7 +502,6 @@ public abstract class AbstractStrategyUI
 	}
 	
 	
-// 3/14/2010 Scott Atwell Johnny's rename and not const-specific	protected void addHiddenFieldsForConstParameterWithoutControl( Map<String, ParameterT> aParameterMap )
 	protected void addHiddenFieldsForParameterWithoutControl( Map<String, ParameterT> aParameterMap )
 	{
 		if ( aParameterMap != null )
@@ -554,25 +510,9 @@ public abstract class AbstractStrategyUI
 	
 			for ( Map.Entry<String, ParameterT> tempMapEntry : aParameterMap.entrySet() )
 			{
-// 3/14/2010 Scott Atwell - removed Johnny's addition (recently added call to addToControlWithParameterMap() should handle the if-exists-check				boolean matchFound = false;
 				String tempName = tempMapEntry.getKey();
 				ParameterT tempParameter = tempMapEntry.getValue();
 
-/*** 3/14/2010 Scott Atwell - removed Johnny's addition (recently added call to addToControlWithParameterMap() should handle the if-exists-check
-				for(ControlUI<?> control : getControlUIMap().values())
-				{
-					if (tempParameter.equals(control.getParameter()))
-					{
-						matchFound = true;
-						break;
-					}
-				}
-				if (!matchFound )
-				{
-***/				
-				// -- If Parameter has const value and does not have a Control --
-// 3/14/2010 Scott Atwell/John Shields remove const value-specific logic				if ( ( ParameterHelper.getConstValue( tempParameter ) != null ) &&
-//					  ( getControlForParameter( tempParameter ) == null ) )
 				// -- If Parameter does not have a Control --
 				if ( getControlForParameter( tempParameter ) == null )
 				{
@@ -585,7 +525,6 @@ public abstract class AbstractStrategyUI
 					addToControlWithParameterMap( tempName, hiddenFieldWidget );
 				}
 			}
-			// 3/14/2010 Scott Atwell - removed Johnny's addition (recently added call to addToControlWithParameterMap() should handle the if-exists-check			}
 		}
 	}
 
@@ -597,7 +536,6 @@ public abstract class AbstractStrategyUI
 		{
 			// delegate validation, passing all global and local rules as
 			// context information, and all my parameters
-// 2/10/2010			getStrategyRuleset().validate( getCompleteValidationRuleMap(), new HashMap<String, ControlUI<?>>( getControlWithParameterMap() ) );
 			// -- Note that getControlUIWithParameterMap() constructs a new Map --
 			getStrategyRuleset().validate( getCompleteValidationRuleMap(), getControlUIWithParameterMap() );
 		}
@@ -662,7 +600,7 @@ public abstract class AbstractStrategyUI
 		}
 
 		/*
-		 * 2/1/2010 John Shields added Beginning of Repeating Group
+		 * TODO 2/1/2010 John Shields added Beginning of Repeating Group
 		 * implementation. Currently there is an error in ATDL I believe where
 		 * StrategyT can only have one RepeatingGroupT HashMap<String,
 		 * RepeatingGroupT> rgroups = new HashMap<String, RepeatingGroupT>(); for
@@ -672,7 +610,6 @@ public abstract class AbstractStrategyUI
 		 * } }
 		 */
 
-// 2/10/2010 Scott Atwell		for ( ControlUI<?> control : getControlMap().values() )
 		// -- Note that getControlUIMap() constructs a new Map --
 		for ( ControlUI<?> control : getControlUIMap().values() )
 		{
@@ -688,7 +625,6 @@ public abstract class AbstractStrategyUI
 	// TODO: would like to integrate with QuickFIX engine
 	public void setFIXMessage(String fixMessage)
 	{
-
 		// TODO: need to reverse engineer state groups
 
 		String[] fixParams = fixMessage.split( "\\001" );
@@ -702,18 +638,16 @@ public abstract class AbstractStrategyUI
 			// not repeating group
 			if ( tag < Atdl4jConstants.TAG_NO_STRATEGY_PARAMETERS || tag > Atdl4jConstants.TAG_STRATEGY_PARAMETER_VALUE )
 			{
-// 2/10/2010 Scott Atwell				for ( SWTWidget<?> widget : getControlWithParameterMap().values() )
 				// -- Note that getControlUIWithParameterMap() constructs a new Map --
 				for ( ControlUI<?> widget : getControlUIWithParameterMap().values() )
 				{
 					if ( widget.getParameter().getFixTag() != null && widget.getParameter().getFixTag().equals( BigInteger.valueOf( tag ) ) )
 					{
-// 2/14/2010 Scott Atwell						widget.setValueAsString( value );
 						widget.setFIXValue( value );
-// 3/24/2010 Scott Atwell added
+						
 						// -- Handles toggling associated controls (eg checkbox or radio button) when control is set to a non Atdl4jConstants.VALUE_NULL_INDICATOR value --
 						fireLoadFixMessageStateListenersForControl( widget );
-// 3/10/2010 Scott Atwell
+
 						fireStateListenersForControl( widget );
 					}
 				}
@@ -727,18 +661,16 @@ public abstract class AbstractStrategyUI
 					String name = fixParams[ i ].split( "=" )[ 1 ];
 					String value2 = fixParams[ i + 2 ].split( "=" )[ 1 ];
 
-// 2/10/2010 Scott Atwell					for ( SWTWidget<?> widget : getControlWithParameterMap().values() )
 					// -- Note that getControlUIWithParameterMap() constructs a new Map --
 					for ( ControlUI<?> widget : getControlUIWithParameterMap().values() )
 					{
 						if ( widget.getParameter().getName() != null && widget.getParameter().getName().equals( name ) )
 						{
-// 2/14/2010 Scott Atwell							widget.setValueAsString( value2 );
 							widget.setFIXValue( value2 );
-// 3/24/2010 Scott Atwell added
+							
 							// -- Handles toggling associated controls (eg checkbox or radio button) when control is set to a non Atdl4jConstants.VALUE_NULL_INDICATOR value --
 							fireLoadFixMessageStateListenersForControl( widget );
-// 3/10/2010 Scott Atwell
+
 							fireStateListenersForControl( widget );
 						}
 					}
@@ -748,11 +680,6 @@ public abstract class AbstractStrategyUI
 		}
 
 		fireStateListeners();
-/** fireStateListeners()		
-		// fire state listeners once for good measure
-		for ( SWTStateListener stateListener : getStateListenerList() )
-			stateListener.handleEvent( null );
-**/			
 	}
 
 	/* (non-Javadoc)
@@ -761,7 +688,6 @@ public abstract class AbstractStrategyUI
 	@Override
 	public void reinitStrategyPanel()
 	{
-// 3/13/2010 Scott Atwell added to accept/incorporate changes specified via "OK" button on InputAndFilterDataPanel
 		reloadHiddenFieldsForInputAndFilterData( getAtdl4jConfig().getInputAndFilterData() );
 		
 		for ( ControlUI tempControlUI : getControlUIMap().values() )

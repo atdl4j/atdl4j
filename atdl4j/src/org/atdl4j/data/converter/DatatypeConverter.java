@@ -38,12 +38,6 @@ public class DatatypeConverter
 	 */
 	public static Object convertValueToDatatype( Object aValue, Object aToDatatypeObject )
 	{
-// 3/20/2010 Scott Atwell
-//		if ( aValue == null )
-//		{
-//			return aValue;
-//		}
-		
 		if ( aToDatatypeObject == null )
 		{
 			throw new IllegalArgumentException( "aToDatatypeObject provided was null" );

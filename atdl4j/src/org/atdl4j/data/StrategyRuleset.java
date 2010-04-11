@@ -75,9 +75,6 @@ public class StrategyRuleset
 			}
 			catch (ValidationException e)
 			{
-// 3/10/2010 Scott Atwell				ControlUI<?> target = e.getTarget();
-// 3/10/2010 Scott Atwell				String name = target.getParameter().getName();
-// 3/10/2010 Scott Atwell				throw new ValidationException( target, "Parameter \"" + name + "\" is required." );
 				throw buildValidationException( e, " is required." );
 			}
 		}
@@ -90,9 +87,6 @@ public class StrategyRuleset
 			}
 			catch (ValidationException e)
 			{
-// 3/10/2010 Scott Atwell				ControlUI<?> target = e.getTarget();
-// 3/10/2010 Scott Atwell				String name = target.getParameter().getName();
-// 3/10/2010 Scott Atwell			throw new ValidationException( target, "Parameter \"" + name + "\" must remain a constant value." );
 				throw buildValidationException( e, " must remain a constant value." );
 			}
 		}
@@ -105,9 +99,6 @@ public class StrategyRuleset
 			}
 			catch (ValidationException e)
 			{
-// 3/10/2010 Scott Atwell				ControlUI<?> target = e.getTarget();
-// 3/10/2010 Scott Atwell				String name = target.getParameter().getName();
-// 3/10/2010 Scott Atwell				throw new ValidationException( target, "Parameter \"" + name + "\" is out of range (min/max bounds)." );
 				throw buildValidationException( e, " is out of range (min/max bounds)." );
 			}
 		}
@@ -120,9 +111,6 @@ public class StrategyRuleset
 			}
 			catch (ValidationException e)
 			{
-// 3/10/2010 Scott Atwell				ControlUI<?> target = e.getTarget();
-// 3/10/2010 Scott Atwell				String name = target.getParameter().getName();
-// 3/10/2010 Scott Atwell				throw new ValidationException( target, "Parameter \"" + name + "\" length is out of range (min/max bounds)." );
 				throw buildValidationException( e, " length is out of range (min/max bounds)." );
 			}
 		}
@@ -136,9 +124,7 @@ public class StrategyRuleset
 			catch (ValidationException e)
 			{
 				ControlUI<?> target = e.getTarget();
-// 3/10/2010 Scott Atwell				String name = target.getParameter().getName();
 				String type = target.getClass().toString();
-// 3/10/2010 Scott Atwell				throw new ValidationException( target, "Field \"" + name + "\" of type " + type + " does not follow the required pattern." );
 				throw buildValidationException( e, " of type " + type + " does not follow the required pattern." );
 			}
 		}
@@ -153,7 +139,6 @@ public class StrategyRuleset
 			}
 			catch (ValidationException e)
 			{
-//				throw new ValidationException( e.getTarget(), strategyEdit.getErrorMessage() );
 				String tempValuesChecked = "";
 				if ( e.getMessage() != null )
 				{

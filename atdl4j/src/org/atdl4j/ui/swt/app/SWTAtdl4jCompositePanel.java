@@ -69,13 +69,11 @@ public class SWTAtdl4jCompositePanel
 		// -- Build the SWT.Composite containing "OK" and "Cancel" buttons --
 		createOkCancelButtonSection();
 		
-//		return tempComposite;
 		return aParentComposite;
 	}
 
 	protected Composite createValidateOutputSection()
 	{
-// 3/8/2010	Scott Atwell 	validateOutputSection = new Group(getShell(), SWT.NONE);
 		// -- SWTVisibleGroup avoids consuming vertical space when hidden via setVisible(false) --
 		validateOutputSection = new SWTVisibleGroup(getShell(), SWT.NONE);
 		((Group) validateOutputSection).setText("Validation");
@@ -117,7 +115,6 @@ public class SWTAtdl4jCompositePanel
 		{
 			if ( aText != null )
 			{
-// 3/14/2010 Scott Atwell				outputFixMessageText.setText( aText );
 				outputFixMessageText.setText( aText.replace( '\n', ' ' ) );
 				setVisibleValidateOutputSection( true );
 			}
@@ -129,7 +126,6 @@ public class SWTAtdl4jCompositePanel
 		}
 		else
 		{
-// 3/14/2010 Scott Atwell			outputFixMessageText.setText( aText );
 			outputFixMessageText.setText( aText.replace( '\n', ' ' ) );
 			setVisibleValidateOutputSection( false );
 		}	
@@ -218,6 +214,4 @@ public class SWTAtdl4jCompositePanel
 	{
 		this.parentComposite = aParentComposite;
 	}
-
-
 }

@@ -55,7 +55,6 @@ public class ValueOperatorValidationRule
 			logger.debug( tempMsg2 );
 			logger.trace( tempMsg2, new Exception( "Stack trace" ) );
 
-//			throw new JAXBException( tempMsg );
 			throw new ValidationException( null, tempMsg );
 		}
 

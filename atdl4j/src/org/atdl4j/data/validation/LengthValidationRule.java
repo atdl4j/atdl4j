@@ -17,7 +17,6 @@ import org.atdl4j.ui.ControlUI;
 public class LengthValidationRule
 	implements ValidationRule
 {
-
 	private static final Logger logger = Logger.getLogger( LengthValidationRule.class );
 
 	private String field;
@@ -44,7 +43,6 @@ public class LengthValidationRule
 	public void validate(Map<String, ValidationRule> refRules, Map<String, ControlUI<?>> targets) 
 		throws ValidationException
 	{
-
 		// get the widget from context using field name
 		ControlUI<?> target = targets.get( field );
 		if ( target == null )
@@ -55,11 +53,9 @@ public class LengthValidationRule
 			logger.debug( tempMsg2 );
 			logger.trace( tempMsg2, new Exception( "Stack trace" ) );
 
-//			throw new JAXBException( tempMsg );
 			throw new ValidationException( null, tempMsg );
 		}
 
-// 3/10/2010 Scott Atwell		String fieldValue = target.getParameterValueAsString();
 		String fieldValue = target.getParameterFixWireValue();
 		if ( fieldValue != null )
 		{

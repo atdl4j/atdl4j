@@ -43,7 +43,6 @@ public class IntegerConverter
 	{
 		if ( getParameter() instanceof IntT )
 		{
-//			return ( (IntT) getParameter() ).getMinValue();
 			// -- upcast IntT from Integer to BigInteger --
 			if ( ( (IntT) getParameter() ).getMinValue() != null )
 			{
@@ -71,7 +70,6 @@ public class IntegerConverter
 	{
 		if ( getParameter() instanceof IntT )
 		{
-//			return ( (IntT) getParameter() ).getMaxValue();
 			// -- upcast IntT from Integer to BigInteger --
 			if ( ( (IntT) getParameter() ).getMaxValue() != null )
 			{
@@ -170,7 +168,6 @@ public class IntegerConverter
 				}
 				catch (NumberFormatException e)
 				{
-// 3/8/2010 Scott Atwell					throw new NumberFormatException( "Invalid Integer Number Format: [" + str + "] for Parameter: " + getParameter().getName() );
 					throw new NumberFormatException( "Invalid Integer Number Format: [" + str + "] for Parameter: " + getParameterName() );
 				}
 			}
@@ -232,20 +229,6 @@ public class IntegerConverter
 			}
 
 		}
-//		else if ( aParameterValue instanceof Boolean )
-//		{
-//			Boolean bool = (Boolean) aParameterValue;
-//			if ( bool != null )
-//			{
-//				if ( bool )
-//					return new BigInteger( "1" );
-//				else
-//					return new BigInteger( "0" );
-//			}
-//			else
-//				return null;
-//		}
-//		return null;
 		else
 		{
 			return null;
@@ -311,7 +294,6 @@ public class IntegerConverter
 	@Override
 	public Object convertControlValueToParameterValue(Object aValue)
 	{
-// 3/12/2010 Scott Atwell return (BigInteger) aValue;
 		// -- aDatatypeIfNull=DATATYPE_BIG_INTEGER --
 		return DatatypeConverter.convertValueToDatatype( aValue, getParameterDatatype( DatatypeConverter.DATATYPE_BIG_INTEGER ) );
 	}
@@ -322,7 +304,6 @@ public class IntegerConverter
 	@Override
 	public BigInteger convertParameterValueToControlValue(Object aValue)
 	{
-//		3/12/2010 Scott Atwell	return (BigInteger) BigInteger;
 		return DatatypeConverter.convertValueToBigIntegerDatatype( aValue );
 	}
 

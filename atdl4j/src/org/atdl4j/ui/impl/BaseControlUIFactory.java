@@ -67,32 +67,26 @@ public class BaseControlUIFactory
 	{
 		if ( control instanceof CheckBoxT )
 		{
-//			return new ButtonWidget( (CheckBoxT) control, parameter );
 			return getAtdl4jConfig().getControlUIForCheckBoxT( (CheckBoxT) control, parameter );
 		}
 		else if ( control instanceof DropDownListT )
 		{
-//			return new DropDownListWidget( (DropDownListT) control, parameter );
 			return getAtdl4jConfig().getControlUIForDropDownListT( (DropDownListT) control, parameter );
 		}
 		else if ( control instanceof EditableDropDownListT )
 		{
-//			return new DropDownListWidget( (EditableDropDownListT) control, parameter );
 			return getAtdl4jConfig().getControlUIForEditableDropDownListT( (EditableDropDownListT) control, parameter );
 		}
 		else if ( control instanceof RadioButtonListT )
 		{
-//			return new RadioButtonListWidget( (RadioButtonListT) control, parameter );
 			return getAtdl4jConfig().getControlUIForRadioButtonListT( (RadioButtonListT) control, parameter );
 		}
 		else if ( control instanceof TextFieldT )
 		{
-//			return new TextFieldWidget( (TextFieldT) control, parameter );
 			return getAtdl4jConfig().getControlUIForTextFieldT( (TextFieldT) control, parameter );
 		}
 		else if ( control instanceof SliderT )
 		{
-//			return new SliderWidget( (SliderT) control, parameter );
 			return getAtdl4jConfig().getControlUIForSliderT( (SliderT) control, parameter );
 		}
 		else if ( control instanceof CheckBoxListT )
@@ -100,7 +94,6 @@ public class BaseControlUIFactory
 			// CheckBoxList must use a multiple value parameter
 			if ( parameter == null || parameter instanceof MultipleStringValueT || parameter instanceof MultipleCharValueT )
 			{
-//				return new CheckBoxListWidget( (CheckBoxListT) control, parameter );
 				return getAtdl4jConfig().getControlUIForCheckBoxListT( (CheckBoxListT) control, parameter );
 			}
 		}
@@ -108,26 +101,9 @@ public class BaseControlUIFactory
 		{
 			if ( parameter == null || parameter instanceof LocalMktDateT || parameter instanceof MonthYearT || parameter instanceof UTCDateOnlyT
 					|| parameter instanceof UTCTimeOnlyT || parameter instanceof UTCTimestampT )
-			{ // support StringT
-				// as well...
-//				return new ClockWidget( (ClockT) control, parameter );
+			{ 
 				return getAtdl4jConfig().getControlUIForClockT( (ClockT) control, parameter );
 			}
-			/*
-			 * if (parameter == null) { return new
-			 * UTCTimeStampClockWidget((ClockT)control, parameter); } else if
-			 * (parameter instanceof LocalMktTimeT) { return new
-			 * LocalMktTimeClockWidget((ClockT)control, (LocalMktTimeT)parameter);
-			 * } else if (parameter instanceof MonthYearT) { return new
-			 * MonthYearClockWidget((ClockT)control, (MonthYearT)parameter); } else
-			 * if (parameter instanceof UTCDateT) { return new
-			 * UTCDateClockWidget((ClockT)control, (UTCDateT)parameter); } else if
-			 * (parameter instanceof UTCTimeOnlyT) { return new
-			 * UTCTimeOnlyClockWidget((ClockT)control, (UTCTimeOnlyT)parameter); }
-			 * else if (parameter instanceof UTCTimeStampT) { return new
-			 * UTCTimeStampClockWidget((ClockT)control, (UTCTimeStampT)parameter);
-			 * }
-			 */
 		}
 		else if ( control instanceof SingleSpinnerT )
 		{
@@ -135,7 +111,6 @@ public class BaseControlUIFactory
 			if ( parameter == null || parameter instanceof IntT || parameter instanceof TagNumT || parameter instanceof LengthT
 					|| parameter instanceof SeqNumT || parameter instanceof NumInGroupT || parameter instanceof NumericT )
 			{
-//				return new SpinnerWidget( (SingleSpinnerT) control, parameter );
 				return getAtdl4jConfig().getControlUIForSingleSpinnerT( (SingleSpinnerT) control, parameter );
 			}
 		}
@@ -145,13 +120,11 @@ public class BaseControlUIFactory
 			if ( parameter == null || parameter instanceof IntT || parameter instanceof TagNumT || parameter instanceof LengthT
 					|| parameter instanceof SeqNumT || parameter instanceof NumInGroupT || parameter instanceof NumericT )
 			{
-//				return new SpinnerWidget( (DoubleSpinnerT) control, parameter );
 				return getAtdl4jConfig().getControlUIForDoubleSpinnerT( (DoubleSpinnerT) control, parameter );
 			}
 		}
 		else if ( control instanceof SingleSelectListT )
 		{
-//			return new ListBoxWidget( (SingleSelectListT) control, parameter );
 			return getAtdl4jConfig().getControlUIForSingleSelectListT( (SingleSelectListT) control, parameter );
 		}
 		else if ( control instanceof MultiSelectListT )
@@ -159,23 +132,19 @@ public class BaseControlUIFactory
 			// MultiSelectList must use a multiple value parameter
 			if ( parameter == null || parameter instanceof MultipleStringValueT || parameter instanceof MultipleCharValueT )
 			{
-//				return new ListBoxWidget( (MultiSelectListT) control, parameter );
 				return getAtdl4jConfig().getControlUIForMultiSelectListT( (MultiSelectListT) control, parameter );
 			}
 		}
 		else if ( control instanceof HiddenFieldT )
 		{
-//			return new HiddenFieldWidget( (HiddenFieldT) control, parameter );
 			return getAtdl4jConfig().getControlUIForHiddenFieldT( (HiddenFieldT) control, parameter );
 		}
 		else if ( control instanceof LabelT )
 		{
-//			return new LabelWidget( (LabelT) control );
 			return getAtdl4jConfig().getControlUIForLabelT( (LabelT) control, parameter );
 		}
 		else if ( control instanceof RadioButtonT )
 		{
-//			return new ButtonWidget( (RadioButtonT) control, parameter );
 			return getAtdl4jConfig().getControlUIForRadioButtonT( (RadioButtonT) control, parameter );
 		}
 

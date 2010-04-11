@@ -28,16 +28,6 @@ public class RadioButtonListWidget
 	private List<Button> buttons = new ArrayList<Button>();
 	private Label label;
 
-	// 1/20/2010 Scott Atwell added
-// 2/23/2010 support newly added RadioButtonList/@orientation="VERTICAL"	public static boolean disableVerticalLayoutHandling = false;
-
-	/**
-	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
-	 * ParameterT aParameter, Atdl4jConfig aAtdl4jConfig) throws JAXBException
-	 * public RadioButtonListWidget(RadioButtonListT control, ParameterT
-	 * parameter) throws JAXBException { this.control = control; this.parameter =
-	 * parameter; init(); }
-	 **/
 
 	public Widget createWidget(Composite parent, int style)
 	{
@@ -57,8 +47,6 @@ public class RadioButtonListWidget
 		Composite c = new Composite( parent, SWT.NONE );
 		c.setLayoutData(controlGD);
 
-		// 2/23/2010 Scott Atwell RadioButtonList/@orientation has been added
-		// 3/14/2010 John Shields implemented RowLayout for horizontal orientation
 		if ( ((RadioButtonListT) control).getOrientation() != null &&
 			 PanelOrientationT.VERTICAL.equals( ((RadioButtonListT) control).getOrientation() ) )
 		{
@@ -94,29 +82,12 @@ public class RadioButtonListWidget
 		// set initValue (Note that this has to be the enumID, not the
 		// wireValue)
 		// set initValue
-//		if ( ( (RadioButtonListT) control ).getInitValue() != null )
-//			setValue( ( (RadioButtonListT) control ).getInitValue(), true );
 		if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
 			setValue( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ), true );
 
 		return c;
 	}
 
-/** 2/10/2010 Scott Atwell	
-	public String getControlValue()
-	{
-		for ( int i = 0; i < this.buttons.size(); i++ )
-		{
-			Button b = buttons.get( i );
-			// TODO 1/24/2010 Scott Atwell if (b.getSelection()) {
-			if ( ( b.getSelection() ) && ( b.isVisible() ) && ( b.isEnabled() ) )
-			{
-				return ( (RadioButtonListT) control ).getListItem().get( i ).getEnumID();
-			}
-		}
-		return null;
-	}
-**/
 	public String getControlValueRaw()
 	{
 		for ( int i = 0; i < this.buttons.size(); i++ )

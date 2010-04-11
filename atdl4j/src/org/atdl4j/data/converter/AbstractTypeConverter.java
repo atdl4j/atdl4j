@@ -11,11 +11,9 @@ import org.atdl4j.fixatdl.core.PercentageT;
  * 
  * @author john.shields
  */
-// 3/10/2010 Scott Atwell public abstract class AbstractTypeConverter<E extends Comparable<?>> implements TypeConverter<E> 
 public abstract class AbstractTypeConverter<E extends Comparable<?>> 
 	implements ParameterTypeConverter<E>, ControlTypeConverter<E>
 {
-// 3/10/2010 Scott Atwell	protected ParameterT parameter;
 	private ParameterT parameter;  // used by ParameterTypeConverter
 	private ParameterTypeConverter<?> parameterTypeConverter;  // used by ControlTypeConverter
 	
@@ -33,7 +31,6 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 	 * Used to construct instances of ControlTypeConverter.
 	 * @param aParameterTypeConverter
 	 */
-// 3/12/2010 Scott Atwell	public AbstractTypeConverter(ParameterTypeConverter<?> aParameterTypeConverter)
 	public AbstractTypeConverter(ParameterTypeConverter<?> aParameterTypeConverter)
 	{
 		setParameterTypeConverter( aParameterTypeConverter );

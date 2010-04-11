@@ -10,8 +10,8 @@ import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.core.StrategyT;
 
-public interface StrategyUI {
-
+public interface StrategyUI 
+{
 	/**
 	 * @param strategy
 	 * @param aAtdl4jConfig (contains getStrategies())
@@ -39,7 +39,6 @@ public interface StrategyUI {
    public void setCxlReplaceMode(boolean cxlReplaceMode);
 
    
-// 2/10/2010 Scott Atwell exposed these (public within AbstractStrategyUI) -- may not be required/used   
    public Atdl4jConfig getAtdl4jConfig();
 	public Map<String, ParameterT> getParameterMap();
 	public StrategyRuleset getStrategyRuleset();

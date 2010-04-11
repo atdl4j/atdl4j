@@ -46,13 +46,11 @@ public class PatternValidationRule
 			logger.debug( tempMsg );
 			logger.trace( tempMsg, new Exception( "Stack trace" ) );
 
-//			throw new JAXBException( tempMsg );
 			throw new ValidationException( null, tempMsg );
 		}
 
 		// PatternRules always validate against a parameter,
 		// so no need to fetch control value
-// 3/10/2010 Scott Atwell		String value = target.getParameterValueAsString();
 		String value = target.getParameterFixWireValue();
 		if ( value != null && !Pattern.matches( this.pattern, value ) )
 		{

@@ -23,18 +23,6 @@ public class ListBoxWidget
 	private List listBox;
 	private Label label;
 
-	/**
-	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
-	 * ParameterT aParameter, Atdl4jConfig aAtdl4jConfig) throws JAXBException
-	 * public ListBoxWidget(SingleSelectListT control, ParameterT parameter)
-	 * throws JAXBException { this.control = control; this.parameter = parameter;
-	 * init(); }
-	 * 
-	 * public ListBoxWidget(MultiSelectListT control, ParameterT parameter)
-	 * throws JAXBException { this.control = control; this.parameter = parameter;
-	 * init(); }
-	 **/
-
 	public Widget createWidget(Composite parent, int style)
 	{
 		String tooltip = getTooltip();
@@ -76,8 +64,6 @@ public class ListBoxWidget
 		if ( tooltip != null ) listBox.setToolTipText( tooltip );
 
 		// init value
-//		String initValue = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getInitValue() : ( (SingleSelectListT) control )
-//				.getInitValue();
 		String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jConfig() );
 		if ( initValue != null )
 			setValue( initValue, true );
@@ -85,29 +71,7 @@ public class ListBoxWidget
 		return parent;
 	}
 
-/** 2/10/2010 Scott Atwell	
-	public String getControlValue()
-	{
-		// TODO 1/24/2010 Scott Atwell added
-		if ( ( listBox.isVisible() == false ) || ( listBox.isEnabled() == false ) )
-		{
-			return null;
-		}
 
-		String value = "";
-		java.util.List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem()
-				: ( (SingleSelectListT) control ).getListItem();
-		int[] selection = listBox.getSelectionIndices();
-
-		for ( int i = 0; i < selection.length; i++ )
-		{
-			value += listItems.get( selection[ i ] ).getEnumID();
-			if ( i + 1 != selection.length )
-				value += " ";
-		}
-		return "".equals( value ) ? null : value;
-	}
-**/	
 	public String getControlValueRaw()
 	{
 		String value = "";

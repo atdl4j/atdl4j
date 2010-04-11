@@ -12,16 +12,12 @@ import org.atdl4j.fixatdl.layout.ControlT;
  */
 public interface ControlUI<E extends Comparable<?>> 
 {
-// 2/9/2010 Scott Atwell added
 	public void init(ControlT control, ParameterT parameter, Atdl4jConfig aAtdl4jConfig);
 
-// 3/8/2010 Scott Atwell added
 	public void reinit();
 
-// 2/10/2010 Scott Atwell added	
 	public boolean isNullValue();
 	public void setNullValue(Boolean aNullValue);
-// 2/11/2010 Scott Atwell added	
 	public Boolean getNullValue();
 
 	public ParameterT getParameter();
@@ -81,7 +77,6 @@ public interface ControlUI<E extends Comparable<?>>
 	public void setEnabled(boolean enabled);	
 	public boolean isEnabled();
 	
-//TODO Scott Atwell 1/14/2010 Added
 	public int getFIXType();
 	
 	public E getLastNonNullStateControlValueRaw();

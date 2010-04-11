@@ -160,16 +160,13 @@ public abstract class AbstractAtdl4jConfig
 	private boolean catchAllRuntimeExceptions  = false;
 	private boolean catchAllMainlineExceptions  = false;
 
-// 2/9/2010 Scott Atwell StrategiesUIFactory no longer needs to be GUI library-centric  	abstract protected String getDefaultClassNameStrategiesUIFactory();
 	protected String getDefaultClassNameStrategiesUIFactory()
 	{
 		return DEFAULT_CLASS_NAME_STRATEGIES_UI_FACTORY;
 	}
 	
-// 2/9/2010 Scott Atwell StrategiesUIFactory no longer needs to be GUI library-centric  	abstract protected String getDefaultClassNameStrategiesUIFactory();
 	protected String getDefaultClassNameControlUIFactory()
 	{ 
-// 2/9/2010 Scott Atwell		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "impl.SWTControlUIFactory";
 		return DEFAULT_CLASS_NAME_CONTROL_UI_FACTORY;
 	}
 	
@@ -325,30 +322,26 @@ public abstract class AbstractAtdl4jConfig
 	 * @param strategies
 	 * @return
 	 */
-//	public StrategiesUI getStrategiesUI() 
 	public StrategiesUI getStrategiesUI(StrategiesT strategies)
 	{
-// Constructs a new instance every call.
-//		if ( ( strategiesUI == null ) && ( getClassNameStrategiesUI() != null ) )
-//		{
-			String tempClassName = getClassNameStrategiesUI();
-			logger.debug( "getStrategiesUI() loading class named: " + tempClassName );
-			StrategiesUI strategiesUI;
-			try
-			{
-				strategiesUI = ((Class<StrategiesUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( strategiesUI != null )
-			{
-				strategiesUI.init( strategies, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameStrategiesUI();
+		logger.debug( "getStrategiesUI() loading class named: " + tempClassName );
+		StrategiesUI strategiesUI;
+		try
+		{
+			strategiesUI = ((Class<StrategiesUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( strategiesUI != null )
+		{
+			strategiesUI.init( strategies, this );
+		}
 		
 		return strategiesUI;
 	}
@@ -377,30 +370,26 @@ public abstract class AbstractAtdl4jConfig
 	 * @param parentContainer (for SWT: should be swt.Composite)
 	 * @return
 	 */
-//	public StrategyUI getStrategyUI() 
 	public StrategyUI getStrategyUI(StrategyT strategy, Map<String, ValidationRule> strategiesRules, Object parentContainer)
 	{
-// Constructs a new instance every call.
-//		if ( ( strategyUI == null ) && ( getClassNameStrategyUI() != null ) )
-//		{
-			String tempClassName = getClassNameStrategyUI();
-			logger.debug( "getStrategyUI() loading class named: " + tempClassName );
-			StrategyUI strategyUI;
-			try
-			{
-				strategyUI = ((Class<StrategyUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( strategyUI != null )
-			{
-				strategyUI.init( strategy, this, strategiesRules, parentContainer );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameStrategyUI();
+		logger.debug( "getStrategyUI() loading class named: " + tempClassName );
+		StrategyUI strategyUI;
+		try
+		{
+			strategyUI = ((Class<StrategyUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( strategyUI != null )
+		{
+			strategyUI.init( strategy, this, strategiesRules, parentContainer );
+		}
 		
 		return strategyUI;
 	}
@@ -422,30 +411,30 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @return
 	 */
 	public ControlUIFactory getControlUIFactory() 
 	{
-// construct new each time		if ( ( controlUIFactory == null ) && ( getClassNameControlUIFactory() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIFactory();
-			logger.debug( "getControlUIFactory() loading class named: " + tempClassName );
-			ControlUIFactory controlUIFactory;
-			try
-			{
-				controlUIFactory = ((Class<ControlUIFactory>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIFactory != null )
-			{
-				controlUIFactory.init( this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIFactory();
+		logger.debug( "getControlUIFactory() loading class named: " + tempClassName );
+		ControlUIFactory controlUIFactory;
+		try
+		{
+			controlUIFactory = ((Class<ControlUIFactory>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIFactory != null )
+		{
+			controlUIFactory.init( this );
+		}
 		
 		return controlUIFactory;
 	}
@@ -486,12 +475,6 @@ public abstract class AbstractAtdl4jConfig
 				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
 				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
 			}
-			
-//			if ( typeConverterFactory != null )
-//			{
-//				typeConverterFactory.init( this );
-//			}
-
 		}
 		
 		return typeConverterFactory;
@@ -514,32 +497,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForCheckBoxT(CheckBoxT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForCheckBoxT == null ) && ( getClassNameControlUIForCheckBoxT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForCheckBoxT();
-			logger.debug( "getControlUIForCheckBoxT() loading class named: " + tempClassName );
-			ControlUI controlUIForCheckBoxT;
-			try
-			{
-				controlUIForCheckBoxT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForCheckBoxT != null )
-			{
-				controlUIForCheckBoxT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForCheckBoxT();
+		logger.debug( "getControlUIForCheckBoxT() loading class named: " + tempClassName );
+		ControlUI controlUIForCheckBoxT;
+		try
+		{
+			controlUIForCheckBoxT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForCheckBoxT != null )
+		{
+			controlUIForCheckBoxT.init( control, parameter, this );
+		}
 		
 		return controlUIForCheckBoxT;
 	}
@@ -563,32 +546,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForDropDownListT(DropDownListT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForDropDownListT == null ) && ( getClassNameControlUIForDropDownListT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForDropDownListT();
-			logger.debug( "getControlUIForDropDownListT() loading class named: " + tempClassName );
-			ControlUI controlUIForDropDownListT;
-			try
-			{
-				controlUIForDropDownListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForDropDownListT != null )
-			{
-				controlUIForDropDownListT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForDropDownListT();
+		logger.debug( "getControlUIForDropDownListT() loading class named: " + tempClassName );
+		ControlUI controlUIForDropDownListT;
+		try
+		{
+			controlUIForDropDownListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForDropDownListT != null )
+		{
+			controlUIForDropDownListT.init( control, parameter, this );
+		}
 		
 		return controlUIForDropDownListT;
 	}
@@ -612,32 +595,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForEditableDropDownListT(EditableDropDownListT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForEditableDropDownListT == null ) && ( getClassNameControlUIForEditableDropDownListT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForEditableDropDownListT();
-			logger.debug( "getControlUIForEditableDropDownListT() loading class named: " + tempClassName );
-			ControlUI controlUIForEditableDropDownListT;
-			try
-			{
-				controlUIForEditableDropDownListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForEditableDropDownListT != null )
-			{
-				controlUIForEditableDropDownListT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForEditableDropDownListT();
+		logger.debug( "getControlUIForEditableDropDownListT() loading class named: " + tempClassName );
+		ControlUI controlUIForEditableDropDownListT;
+		try
+		{
+			controlUIForEditableDropDownListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForEditableDropDownListT != null )
+		{
+			controlUIForEditableDropDownListT.init( control, parameter, this );
+		}
 		
 		return controlUIForEditableDropDownListT;
 	}
@@ -661,32 +644,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForRadioButtonListT(RadioButtonListT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForRadioButtonListT == null ) && ( getClassNameControlUIForRadioButtonListT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForRadioButtonListT();
-			logger.debug( "getControlUIForRadioButtonListT() loading class named: " + tempClassName );
-			ControlUI controlUIForRadioButtonListT;
-			try
-			{
-				controlUIForRadioButtonListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForRadioButtonListT != null )
-			{
-				controlUIForRadioButtonListT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForRadioButtonListT();
+		logger.debug( "getControlUIForRadioButtonListT() loading class named: " + tempClassName );
+		ControlUI controlUIForRadioButtonListT;
+		try
+		{
+			controlUIForRadioButtonListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForRadioButtonListT != null )
+		{
+			controlUIForRadioButtonListT.init( control, parameter, this );
+		}
 		
 		return controlUIForRadioButtonListT;
 	}
@@ -710,32 +693,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForTextFieldT(TextFieldT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForTextFieldT == null ) && ( getClassNameControlUIForTextFieldT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForTextFieldT();
-			logger.debug( "getControlUIForTextFieldT() loading class named: " + tempClassName );
-			ControlUI controlUIForTextFieldT;
-			try
-			{
-				controlUIForTextFieldT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForTextFieldT != null )
-			{
-				controlUIForTextFieldT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForTextFieldT();
+		logger.debug( "getControlUIForTextFieldT() loading class named: " + tempClassName );
+		ControlUI controlUIForTextFieldT;
+		try
+		{
+			controlUIForTextFieldT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForTextFieldT != null )
+		{
+			controlUIForTextFieldT.init( control, parameter, this );
+		}
 		
 		return controlUIForTextFieldT;
 	}
@@ -759,32 +742,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForSliderT(SliderT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForSliderT == null ) && ( getClassNameControlUIForSliderT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForSliderT();
-			logger.debug( "getControlUIForSliderT() loading class named: " + tempClassName );
-			ControlUI controlUIForSliderT;
-			try
-			{
-				controlUIForSliderT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForSliderT != null )
-			{
-				controlUIForSliderT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForSliderT();
+		logger.debug( "getControlUIForSliderT() loading class named: " + tempClassName );
+		ControlUI controlUIForSliderT;
+		try
+		{
+			controlUIForSliderT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForSliderT != null )
+		{
+			controlUIForSliderT.init( control, parameter, this );
+		}
 		
 		return controlUIForSliderT;
 	}
@@ -808,32 +791,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForCheckBoxListT(CheckBoxListT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForCheckBoxListT == null ) && ( getClassNameControlUIForCheckBoxListT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForCheckBoxListT();
-			logger.debug( "getControlUIForCheckBoxListT() loading class named: " + tempClassName );
-			ControlUI controlUIForCheckBoxListT;
-			try
-			{
-				controlUIForCheckBoxListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForCheckBoxListT != null )
-			{
-				controlUIForCheckBoxListT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForCheckBoxListT();
+		logger.debug( "getControlUIForCheckBoxListT() loading class named: " + tempClassName );
+		ControlUI controlUIForCheckBoxListT;
+		try
+		{
+			controlUIForCheckBoxListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForCheckBoxListT != null )
+		{
+			controlUIForCheckBoxListT.init( control, parameter, this );
+		}
 		
 		return controlUIForCheckBoxListT;
 	}
@@ -857,32 +840,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForClockT(ClockT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForClockT == null ) && ( getClassNameControlUIForClockT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForClockT();
-			logger.debug( "getControlUIForClockT() loading class named: " + tempClassName );
-			ControlUI controlUIForClockT;
-			try
-			{
-				controlUIForClockT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForClockT != null )
-			{
-				controlUIForClockT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForClockT();
+		logger.debug( "getControlUIForClockT() loading class named: " + tempClassName );
+		ControlUI controlUIForClockT;
+		try
+		{
+			controlUIForClockT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForClockT != null )
+		{
+			controlUIForClockT.init( control, parameter, this );
+		}
 		
 		return controlUIForClockT;
 	}
@@ -906,32 +889,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForSingleSpinnerT(SingleSpinnerT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForSingleSpinnerT == null ) && ( getClassNameControlUIForSingleSpinnerT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForSingleSpinnerT();
-			logger.debug( "getControlUIForSingleSpinnerT() loading class named: " + tempClassName );
-			ControlUI controlUIForSingleSpinnerT;
-			try
-			{
-				controlUIForSingleSpinnerT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForSingleSpinnerT != null )
-			{
-				controlUIForSingleSpinnerT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForSingleSpinnerT();
+		logger.debug( "getControlUIForSingleSpinnerT() loading class named: " + tempClassName );
+		ControlUI controlUIForSingleSpinnerT;
+		try
+		{
+			controlUIForSingleSpinnerT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForSingleSpinnerT != null )
+		{
+			controlUIForSingleSpinnerT.init( control, parameter, this );
+		}
 		
 		return controlUIForSingleSpinnerT;
 	}
@@ -955,32 +938,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForDoubleSpinnerT(DoubleSpinnerT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForDoubleSpinnerT == null ) && ( getClassNameControlUIForDoubleSpinnerT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForDoubleSpinnerT();
-			logger.debug( "getControlUIForDoubleSpinnerT() loading class named: " + tempClassName );
-			ControlUI controlUIForDoubleSpinnerT;
-			try
-			{
-				controlUIForDoubleSpinnerT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForDoubleSpinnerT != null )
-			{
-				controlUIForDoubleSpinnerT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForDoubleSpinnerT();
+		logger.debug( "getControlUIForDoubleSpinnerT() loading class named: " + tempClassName );
+		ControlUI controlUIForDoubleSpinnerT;
+		try
+		{
+			controlUIForDoubleSpinnerT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForDoubleSpinnerT != null )
+		{
+			controlUIForDoubleSpinnerT.init( control, parameter, this );
+		}
 		
 		return controlUIForDoubleSpinnerT;
 	}
@@ -1004,32 +987,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForSingleSelectListT(SingleSelectListT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForSingleSelectListT == null ) && ( getClassNameControlUIForSingleSelectListT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForSingleSelectListT();
-			logger.debug( "getControlUIForSingleSelectListT() loading class named: " + tempClassName );
-			ControlUI controlUIForSingleSelectListT;
-			try
-			{
-				controlUIForSingleSelectListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForSingleSelectListT != null )
-			{
-				controlUIForSingleSelectListT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForSingleSelectListT();
+		logger.debug( "getControlUIForSingleSelectListT() loading class named: " + tempClassName );
+		ControlUI controlUIForSingleSelectListT;
+		try
+		{
+			controlUIForSingleSelectListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForSingleSelectListT != null )
+		{
+			controlUIForSingleSelectListT.init( control, parameter, this );
+		}
 		
 		return controlUIForSingleSelectListT;
 	}
@@ -1053,32 +1036,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForMultiSelectListT(MultiSelectListT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForMultiSelectListT == null ) && ( getClassNameControlUIForMultiSelectListT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForMultiSelectListT();
-			logger.debug( "getControlUIForMultiSelectListT() loading class named: " + tempClassName );
-			ControlUI controlUIForMultiSelectListT;
-			try
-			{
-				controlUIForMultiSelectListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForMultiSelectListT != null )
-			{
-				controlUIForMultiSelectListT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForMultiSelectListT();
+		logger.debug( "getControlUIForMultiSelectListT() loading class named: " + tempClassName );
+		ControlUI controlUIForMultiSelectListT;
+		try
+		{
+			controlUIForMultiSelectListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForMultiSelectListT != null )
+		{
+			controlUIForMultiSelectListT.init( control, parameter, this );
+		}
 		
 		return controlUIForMultiSelectListT;
 	}
@@ -1102,32 +1085,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForHiddenFieldT(HiddenFieldT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForHiddenFieldT == null ) && ( getClassNameControlUIForHiddenFieldT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForHiddenFieldT();
-			logger.debug( "getControlUIForHiddenFieldT() loading class named: " + tempClassName );
-			ControlUI controlUIForHiddenFieldT;
-			try
-			{
-				controlUIForHiddenFieldT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForHiddenFieldT != null )
-			{
-				controlUIForHiddenFieldT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForHiddenFieldT();
+		logger.debug( "getControlUIForHiddenFieldT() loading class named: " + tempClassName );
+		ControlUI controlUIForHiddenFieldT;
+		try
+		{
+			controlUIForHiddenFieldT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForHiddenFieldT != null )
+		{
+			controlUIForHiddenFieldT.init( control, parameter, this );
+		}
 		
 		return controlUIForHiddenFieldT;
 	}
@@ -1151,32 +1134,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForLabelT(LabelT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForLabelT == null ) && ( getClassNameControlUIForLabelT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForLabelT();
-			logger.debug( "getControlUIForLabelT() loading class named: " + tempClassName );
-			ControlUI controlUIForLabelT;
-			try
-			{
-				controlUIForLabelT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForLabelT != null )
-			{
-				controlUIForLabelT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForLabelT();
+		logger.debug( "getControlUIForLabelT() loading class named: " + tempClassName );
+		ControlUI controlUIForLabelT;
+		try
+		{
+			controlUIForLabelT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForLabelT != null )
+		{
+			controlUIForLabelT.init( control, parameter, this );
+		}
 		
 		return controlUIForLabelT;
 	}
@@ -1200,32 +1183,32 @@ public abstract class AbstractAtdl4jConfig
 	}
 	
 	/**
+	 * Constructs a new instance every call.
+	 * 
 	 * @param control
 	 * @param parameter
 	 * @return
 	 */
 	public ControlUI getControlUIForRadioButtonT(RadioButtonT control, ParameterT parameter)
 	{
-// create new each time		if ( ( controlUIForRadioButtonT == null ) && ( getClassNameControlUIForRadioButtonT() != null ) )
-//		{
-			String tempClassName = getClassNameControlUIForRadioButtonT();
-			logger.debug( "getControlUIForRadioButtonT() loading class named: " + tempClassName );
-			ControlUI controlUIForRadioButtonT;
-			try
-			{
-				controlUIForRadioButtonT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-			
-			if ( controlUIForRadioButtonT != null )
-			{
-				controlUIForRadioButtonT.init( control, parameter, this );
-			}
-//		}
+		// -- Constructs a new instance every call --
+		String tempClassName = getClassNameControlUIForRadioButtonT();
+		logger.debug( "getControlUIForRadioButtonT() loading class named: " + tempClassName );
+		ControlUI controlUIForRadioButtonT;
+		try
+		{
+			controlUIForRadioButtonT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForRadioButtonT != null )
+		{
+			controlUIForRadioButtonT.init( control, parameter, this );
+		}
 		
 		return controlUIForRadioButtonT;
 	}

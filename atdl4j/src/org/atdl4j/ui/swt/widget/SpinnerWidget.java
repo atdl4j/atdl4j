@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Widget;
 
 public class SpinnerWidget
@@ -118,13 +117,6 @@ public class SpinnerWidget
 			}
 			else
 			{
-/*** 3/17/2010 Scott Atwell	
-				// -- not specified in FIXatdl file, use default if we have one within Atdl4jConfig --
-				if ( ( getAtdl4jConfig() != null ) && ( getAtdl4jConfig().getDefaultDigitsForSpinnerControl() != null ) )
-				{
-					spinner.setDigits( getAtdl4jConfig().getDefaultDigitsForSpinnerControl().intValue() );
-				}
-***/
 				spinner.setDigits( ControlHelper.getDefaultDigitsForSpinnerControl( parameterConverter.getParameter(), getAtdl4jConfig() ) );
 			}
 
@@ -137,33 +129,21 @@ public class SpinnerWidget
 			
 			if ( tempDecimalConverter.getMinValue() != null )
 			{
-// 3/17/2010 Scott Atwell				spinner.setMinimum( tempDecimalConverter.getMinValue().intValue() );
-// 3/17/2010 Scott Atwell (if value is 2.5 unscaled causes max to be 25 for FloatT)				int tempMin = tempDecimalConverter.getMinValue().unscaledValue().intValue() * (int) Math.pow( 10, spinner.getDigits() );
-// 3/17/2010 Scott Atwell need to handle Percentage ("control value" representation)				int tempMin = new Double( tempDecimalConverter.getMinValue().doubleValue() *  Math.pow( 10, spinner.getDigits() ) ).intValue();
+				// -- need to handle Percentage ("control value" representation) --
 				BigDecimal tempParameterMin = tempDecimalConverter.getMinValue();
 				BigDecimal tempControlMin = tempDecimalConverter.convertParameterValueToControlValue( tempParameterMin );
 				int tempMin = new Double( tempControlMin.doubleValue() *  Math.pow( 10, spinner.getDigits() ) ).intValue();
 				spinner.setMinimum( tempMin );
 			}
-// 3/17/2010 Scott Atwell (moved above)			else
-// 3/17/2010 Scott Atwell (moved above)			{
-// 3/17/2010 Scott Atwell (moved above)				spinner.setMinimum( -Integer.MAX_VALUE );
-// 3/17/2010 Scott Atwell (moved above)			}
 			
 			if ( tempDecimalConverter.getMaxValue() != null )
 			{
-// 3/17/2010 Scott Atwell				spinner.setMaximum( tempDecimalConverter.getMaxValue().intValue() );
-// 3/17/2010 Scott Atwell (if value is 2.5 unscaled causes max to be 25 for FloatT)				int tempMax = tempDecimalConverter.getMaxValue().unscaledValue().intValue() * (int) Math.pow( 10, spinner.getDigits() );
-// 3/17/2010 Scott Atwell need to handle Percentage ("control value" representation)				int tempMax = new Double( tempDecimalConverter.getMaxValue().doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue();
+				// -- need to handle Percentage ("control value" representation) --
 				BigDecimal tempParameterMax = tempDecimalConverter.getMaxValue();
 				BigDecimal tempControlMax = tempDecimalConverter.convertParameterValueToControlValue( tempParameterMax );
 				int tempMax = new Double( tempControlMax.doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue();
 				spinner.setMaximum( tempMax );
 			}
-//3/17/2010 Scott Atwell (moved above)			else
-//3/17/2010 Scott Atwell (moved above)			{
-//3/17/2010 Scott Atwell (moved above)				spinner.setMaximum( Integer.MAX_VALUE );
-//3/17/2010 Scott Atwell (moved above)			}
 		}
 		else if ( parameterConverter != null && parameterConverter instanceof IntegerConverter )
 		{
@@ -201,39 +181,23 @@ public class SpinnerWidget
 
 		if ( control instanceof DoubleSpinnerT )
 		{
-//			if ( ( (DoubleSpinnerT) control ).getInnerIncrement() != null )
-//				spinner.setIncrement( ( (DoubleSpinnerT) control ).getInnerIncrement().intValue() );
-// 2/21/2010 Scott Atwell -- this method supports innerIncrementPolicy (Static, LotSize, Tick) --			
 			if ( ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() ) != null )
 				spinner.setIncrement( ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() ).intValue() );
 
 			int outerStepSize = 1 * (int) Math.pow( 10, spinner.getDigits() );
-//			if ( ( (DoubleSpinnerT) control ).getOuterIncrement() != null )
-//				outerStepSize = ( ( (DoubleSpinnerT) control ).getOuterIncrement().intValue() );
-// 2/21/2010 Scott Atwell -- this method supports outerIncrementPolicy (Static, LotSize, Tick) --			
+			
 			if ( ControlHelper.getOuterIncrementValue( control, getAtdl4jConfig() ) != null )
 				outerStepSize = ControlHelper.getOuterIncrementValue( control, getAtdl4jConfig() ).intValue();
 
 			buttonUp.addSelectionListener( new DoubleSpinnerSelection( spinner, outerStepSize ) );
 			buttonDown.addSelectionListener( new DoubleSpinnerSelection( spinner, -1 * outerStepSize ) );
 		}
-// 2/21/2010 Scott Atwell Added
 		else if ( control instanceof SingleSpinnerT )
 		{
-//			if ( ( (SingleSpinnerT) control ).getIncrement() != null )
-//				spinner.setIncrement( ( (SingleSpinnerT) control ).getIncrement().intValue() );
-// 2/21/2010 Scott Atwell -- this method supports incrementPolicy (Static, LotSize, Tick) --			
 			if ( ControlHelper.getIncrementValue( control, getAtdl4jConfig() ) != null )
 				spinner.setIncrement( ControlHelper.getIncrementValue( control, getAtdl4jConfig() ).intValue() );
 		}
 
-/*** 3/17/2010 Scott Atwell		
-//		Double initValue = control instanceof SingleSpinnerT ? ( (SingleSpinnerT) control ).getInitValue() : ( (DoubleSpinnerT) control )
-//				.getInitValue();
-		Double initValue = (Double) ControlHelper.getInitValue( control, getAtdl4jConfig() );
-		if ( initValue != null )
-			spinner.setSelection( initValue.intValue() * (int) Math.pow( 10, spinner.getDigits() ) );
-***/
 		applyInitialValue();
 		
 		return parent;
@@ -310,20 +274,6 @@ public class SpinnerWidget
 	{
 		if ( ( spinner != null ) && ( ! spinner.isDisposed() ) )
 		{
-/*** 3/17/2010 Scott Atwell			
-			if ( aControlInitValue != null )
-			{
-				// -- apply initValue if one has been specified --
-				Double initValue = (Double) aControlInitValue;
-				if ( initValue != null )
-					spinner.setSelection( initValue.intValue() * (int) Math.pow( 10, spinner.getDigits() ) );
-			}
-			else
-			{
-				// -- set to minimum when no initValue exists --
-				spinner.setSelection( spinner.getMinimum() );
-			}
-***/
 			applyInitialValue();
 		}
 	}
@@ -340,34 +290,9 @@ public class SpinnerWidget
 		
 		if ( initValue != null )
 		{
-// 3/17/2010 Scott Atwell			spinner.setSelection( initValue.intValue() * (int) Math.pow( 10, spinner.getDigits() ) );
 			// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
 			spinner.setSelection( new Double( initValue.doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue() );
 		}
-// 3/21/2010 John Shields -- Don't need the below if we are using NullableSpinner
-/*		else
-		{
-			if ( ( parameterConverter != null ) && 
-				  ( parameterConverter instanceof DecimalConverter ) &&
-				  ( ((DecimalConverter) parameterConverter).getMinValue() != null ) )
-			{
-				// -- set to minimum when no initValue exists --
-				spinner.setSelection( spinner.getMinimum() );
-			}
-			else if ( ( parameterConverter != null ) && 
-						 ( parameterConverter instanceof IntegerConverter ) &&
-					    ( ((IntegerConverter) parameterConverter).getMinValue() != null ) )
-			{
-				// -- set to minimum when no initValue exists --
-				spinner.setSelection( spinner.getMinimum() );
-			}
-			else
-			{
-				// -- set to 0 (avoid negative Integer.MAX_VALUE) --
-				spinner.setSelection( 0 );
-			}
-		}
-		*/
 	}
 
 	/* 

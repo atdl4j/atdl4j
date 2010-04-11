@@ -58,59 +58,6 @@ public class SWTStrategyUI
 	{
 	}
 
-/** not really necessary (we use default constructor followed by call to init()	
-	public SWTStrategyUI(StrategyT strategy, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Composite parent) 
-	 	throws JAXBException	
-	{
-		init( strategy, aAtdl4jConfig, strategiesRules, parent );
-	}
-**/
-	
-/****	
-	/**
-	 * @param strategy
-	 * @param aAtdl4jConfig (contains getStrategies())
-	 * @param strategiesRules
-	 * @param parentContainer (should be swt.Composite)
-	 * @throws JAXBException
-	 * /
-	public void init(StrategyT strategy, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer)
-			 throws JAXBException
-	{
-		setStrategy( strategy );
-		setAtdl4jConfig( aAtdl4jConfig );
-
-// --> initBegin(Object parentContainer)		
-		setParent( (Composite) parentContainer );
-
-// --> initBegin(Object parentContainer)		
-		setControlWithParameterMap( new HashMap<String, SWTWidget<?>>() );
-		
-// --> initBegin(Object parentContainer)		
-//TODO !!! verify, as it does not appear that getWidgetStateListenerMap() is ever being populated (though, is being initialized)		
-		setWidgetStateListenerMap( new HashMap<SWTWidget<?>, Set<SWTStateListener>>() );
-
-		// initialize rules collection with global rules
-		setStrategyRuleset( new StrategyRuleset() );
-
-		setParameterMap( buildParameters( getStrategy() ) );
-		
-		setCompleteValidationRuleMap( buildGlobalAndLocalRuleMap( getStrategy(), strategiesRules ) );
-		
-// --> buildControlMap()		
-		buildControlMap( getStrategy().getStrategyLayout().getStrategyPanel() );
-		
-		checkForDuplicateControlIDs();
-		createRadioGroups();
-
-		addHiddenFieldsForInputAndFilterData( getAtdl4jConfig().getInputAndFilterData() );
-		
-		buildControlWithParameterMap();
-		attachGlobalStateRulesToControls();
-		
-		attachStateListenersToAllControls();
-	}
-*****/
 
 	/**
 	 * @param parentContainer (should be swt.Composite)
@@ -299,7 +246,6 @@ public class SWTStrategyUI
 		// build panels and widgets recursively
 		for ( StrategyPanelT panel : aStrategyPanelList )
 		{
-// 3/5/2010 Scott Atwell renamed			tempControlMap.putAll( getControlFactory().create( getParent(), panel, getParameterMap(), SWT.NONE ) );
 			tempControlMap.putAll( getControlFactory().createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE ) );
 		}
 	
@@ -324,8 +270,6 @@ public class SWTStrategyUI
 		
 		for ( SWTWidget<?> widget : getControlMap().values() )
 		{
-			// 2/1/2010 John Shields added
-			// create radioGroups
 			if ( widget.getControl() instanceof RadioButtonT && ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
 					&& ( (RadioButtonT) widget.getControl() ).getRadioGroup() != "" )
 			{
@@ -336,7 +280,6 @@ public class SWTStrategyUI
 				if ( widget instanceof ButtonWidget )
 				{
 					tempRadioGroupMap.get( rg ).addButton( (ButtonWidget) widget );
-//	3/24/2010 Scott Atwell added to set RadioButtonListener within ButtonWidget for setValue() via loadFixMessage()
 					((ButtonWidget) widget).setRadioButtonListener( tempRadioGroupMap.get( rg ) );
 				}
 
@@ -532,7 +475,6 @@ public class SWTStrategyUI
 	{
 		if ( this.controlFactory == null )
 		{
-// 2/9/2010 Scott Atwell			this.controlFactory = new SWTFactory();
 			this.controlFactory = new SWTFactory( getAtdl4jConfig() );
 		}
 		return this.controlFactory;
@@ -548,7 +490,6 @@ public class SWTStrategyUI
 	
 	protected void fireStateListeners()
 	{
-// 2/10/2010 Scott Atwell - extracted from refactoring of setFIXMessage(String fixMessage)		
 		// fire state listeners once for good measure
 		for ( SWTStateListener stateListener : getStateListenerList() )
 			stateListener.handleEvent( null );
@@ -577,7 +518,6 @@ public class SWTStrategyUI
 		}
 	}
 
-// 3/8/2010 Scott Atwell added	
 	/* If no RadioButtons within a radioGroup are selected, then first one in list will be selected
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#applyRadioGroupRules()
 	 */

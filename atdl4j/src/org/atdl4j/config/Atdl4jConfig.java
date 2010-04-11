@@ -148,7 +148,6 @@ public interface Atdl4jConfig
 	
 	public boolean isShowEnabledCheckboxOnOptionalClockControl();
 
-// 3/20/2010 Scott Atwell	public Integer getDefaultDigitsForSpinnerControl();
 	public int getDefaultDigitsForSpinnerControl( ParameterT aParameter );
 	
 	public Integer getStrategyDropDownItemDepth();

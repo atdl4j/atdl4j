@@ -45,7 +45,6 @@ public class SWTFixatdlFileSelectionPanel
 		setAtdl4jConfig( atdl4jConfig );
 		setParentComposite( aParentComposite );
 		
-// 3/8/2010 Scott Atwell		composite = new Group(aParentComposite, SWT.NONE);
 		// -- SWTVisibleGroup avoids consuming vertical space when hidden via setVisible(false) --
 		composite = new SWTVisibleGroup(aParentComposite, SWT.NONE);
 		((Group) composite).setText("Load FIXatdl XML File");

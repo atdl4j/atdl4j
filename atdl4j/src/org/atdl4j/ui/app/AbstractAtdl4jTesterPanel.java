@@ -25,7 +25,6 @@ public abstract class AbstractAtdl4jTesterPanel
 	
 	private Atdl4jInputAndFilterDataSelectionPanel atdl4jInputAndFilterDataSelectionPanel;
 	
-// 3/14/2010 Scott Atwell moved FixMsgLoadPanel from Atdl4jInputAndFilterDataSelectionPanel to here
 	private FixMsgLoadPanel fixMsgLoadPanel;
 	
 	private Atdl4jCompositePanel atdl4jCompositePanel;
@@ -43,12 +42,6 @@ public abstract class AbstractAtdl4jTesterPanel
 			getAtdl4jConfig().initAtdl4jUserMessageHandler( aParentOrShell );
 		}
 
-/*** 3/14/2010 Scott Atwell		
-		// -- FixMsgLoadPanel (Load Message button/text field) - build() method called via concrete class --
-		setAtdl4jInputAndFilterDataSelectionPanel( getAtdl4jConfig().getAtdl4jInputAndFilterDataSelectionPanel() );
-		getAtdl4jInputAndFilterDataSelectionPanel().addListener( this );
-		getAtdl4jInputAndFilterDataSelectionPanel().addFixMsgLoadPanelListener( this );
-***/
 		// -- Atdl4jInputAndFilterDataSelectionPanel (Input And Filter Data button/text field) - build() method called via concrete class --
 		setAtdl4jInputAndFilterDataSelectionPanel( getAtdl4jConfig().getAtdl4jInputAndFilterDataSelectionPanel() );
 		getAtdl4jInputAndFilterDataSelectionPanel().addListener( this );
@@ -150,9 +143,6 @@ public abstract class AbstractAtdl4jTesterPanel
 	@Override
 	public void inputAndFilterDataSpecified(InputAndFilterData aInputAndFilterData)
 	{
-//TODO ?? need better way to refresh a pre-loaded/cached FIXatdl file
-//		getAtdl4jCompositePanel().reloadFixatdlFile();
-// 3/8/2010 Scott Atwell added		
 		try
 		{
 			// -- Reloads the screen for the pre-loaded/cached FIXatdl file (if specified and cached) --
@@ -171,7 +161,6 @@ public abstract class AbstractAtdl4jTesterPanel
 	@Override
 	public void cancelButtonSelected()
 	{
-//		getAtdl4jCompositePanel().setVisible(  false );
 		closePanel();
 	}
 

@@ -40,20 +40,15 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 
 	protected ParameterT parameter;
 	protected ControlT control;
-// 3/10/2010 Scott Atwell	protected AbstractTypeConverter<E> controlConverter;
-// 3/10/2010 Scott Atwell	protected AbstractTypeConverter<?> parameterConverter;
 	protected ControlTypeConverter<E> controlConverter;
 	protected ParameterTypeConverter<?> parameterConverter;
 
 	private Atdl4jConfig atdl4jConfig;
 
-	// 2/10/2010 Scott Atwell added
 	Boolean nullValue = null; // undefined state
 
-	// 2/11/2010 Scott Atwell
 	E lastNonNullStateControlValueRaw;
 
-	// 3/13/2010 Scott Atwell
 	private boolean hiddenFieldForInputAndFilterData = false;
 
 
@@ -66,17 +61,12 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		// -- This method can be overridden/implemented --
 		initPreCheck();
 
-// 3/10/2010 Scott Atwell		controlConverter = (AbstractTypeConverter<E>) getAtdl4jConfig().getTypeConverterFactory().create( control, parameter );
-// 3/11/2010 Scott Atwell moved after parameterConverter		controlConverter = (ControlTypeConverter<E>) getAtdl4jConfig().getTypeConverterFactory().createControlTypeConverter( control, parameter );
-
 		if ( parameter != null )
 		{
-// 3/10/2010 Scott Atwell			parameterConverter = (AbstractTypeConverter<?>) getAtdl4jConfig().getTypeConverterFactory().create( parameter );
 			parameterConverter = (ParameterTypeConverter<?>) getAtdl4jConfig().getTypeConverterFactory().createParameterTypeConverter( parameter );
 		}
 
 		// -- Pass parameterConverter (which may be null if parameter is null) --
-// 3/11/2010 Scott Atwell changed to pass parameterConverter vs. parameter as arg		
 		controlConverter = (ControlTypeConverter<E>) getAtdl4jConfig().getTypeConverterFactory().createControlTypeConverter( control, parameterConverter );
 
 		validateEnumPairs();
@@ -109,7 +99,6 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		}
 		
 		// -- reset what is displayed to the user --
-// 3/14/2010 Scott Atwell		processReinit( ControlHelper.getInitValue( getControl(), getAtdl4jConfig() ) );
 		processReinit( ControlHelper.getReinitValue( getControl(), getAtdl4jConfig() ) );
 	}
 	
@@ -121,19 +110,12 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	 */
 	private boolean applyConstValue()
 	{
-// Parameter/@const has been removed		
-//		if ( ( getParameter() != null ) && ( getParameter().isConst() ) )
 		if ( getParameter() != null ) 
 		{
 			Object tempConstValue = ParameterHelper.getConstValue( getParameter() );
 			
 			if ( tempConstValue != null )
 			{
-// 3/9/2010 Scott Atwell				E tempComparable = controlConverter.convertValueToControlComparable( tempConstValue );
-// 3/10/2010 Scott Atwell				E tempComparable = controlConverter.convertParameterValueToControlComparable( tempConstValue );
-//	3/10/2010 Scott Atwell			if ( tempComparable != null )
-//	3/10/2010 Scott Atwell			{
-//	3/10/2010 Scott Atwell				setValue( tempComparable );
 				E tempControlValue = controlConverter.convertParameterValueToControlValue( tempConstValue );
 				if ( tempControlValue != null )
 				{
@@ -143,14 +125,9 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 				}
 				else
 				{
-//					throw new IllegalArgumentException( "Unable to convert constValue or dailyConstValue [" + tempConstValue + "] -- required when Parameter@const=true [Parameter: " + parameter.getName() + "]");
 					throw new IllegalArgumentException( "Unable to convert constValue [" + tempConstValue + "] -- required when Parameter@constValue is non-null [Parameter: " + parameter.getName() + "]");
 				}
 			}
-//			else
-//			{
-//				throw new IllegalArgumentException( "constValue or dailyConstValue is required when Parameter@const=true [Parameter: " + parameter.getName() + "]");
-//			}
 		}
 	
 		return false;
@@ -195,20 +172,16 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 
 	public Comparable<?> getControlValueAsComparable()
 	{
-// 3/10/2010 Scott Atwell		return controlConverter.convertValueToControlComparable( getControlValue() );
 		return controlConverter.convertControlValueToControlComparable( getControlValue() );
 	}
 
-// 3/10/2010 Scott Atwell	public String getParameterValueAsString() throws JAXBException
 	public String getParameterFixWireValue()
 	{
-// 3/10/2010 Scott Atwell		return parameter == null ? null : parameterConverter.convertValueToParameterString( getParameterValue() );
 		return parameter == null ? null : parameterConverter.convertParameterValueToFixWireValue( getParameterValue() );
 	}
 
 	public Comparable<?> getParameterValueAsComparable()
 	{
-// 3/10/2010 Scott Atwell		return parameter == null ? null : parameterConverter.convertValueToParameterComparable( getParameterValue() );
 		return parameter == null ? null : parameterConverter.convertParameterValueToParameterComparable( getParameterValue() );
 	}
 
@@ -226,7 +199,6 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		else
 		// -- not null --
 		{
-// 3/10/2010 Scott Atwell			E tempValue = controlConverter.convertValueToControlComparable( string );
 			E tempValue = controlConverter.convertStringToControlValue( aString );
 			setValue( tempValue );
 			
@@ -243,18 +215,15 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 
 	public Comparable<?> convertStringToControlComparable(String aString)
 	{
-// 3/10/2010 Scott Atwell		return controlConverter.convertValueToControlComparable( string );
 		E tempControlValue = controlConverter.convertStringToControlValue( aString );
 		return controlConverter.convertControlValueToControlComparable( tempControlValue );
 	}
 
 	
-// 3/10/2010 Scott Atwell	public Comparable<?> convertStringToParameterComparable(String string)
 	public Comparable<?> convertParameterStringToParameterComparable(String aParameterString)
 	{
 		if ( parameterConverter != null )
 		{
-// 3/10/2010 Scott Atwell			return parameterConverter.convertValueToParameterComparable( string );
 			Object tempParameterValue = parameterConverter.convertParameterStringToParameterValue( aParameterString );
 			return parameterConverter.convertParameterValueToParameterComparable( tempParameterValue );
 		}
@@ -286,7 +255,6 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		return builder.getMessage();
 	}
 
-	// 2/1/2010 John Shields added
 	public String getTooltip()
 	{
 		if ( control.getTooltip() != null )
@@ -303,23 +271,12 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 
 	public void getFIXValue(FIXMessageBuilder builder)
 	{
-// 3/10/2010 Scott Atwell		String value = getParameterValueAsString();
 		String value = getParameterFixWireValue();
 		if ( value != null )
 		{
 			if ( getParameter().getFixTag() != null )
 			{
-// Scott Atwell 1/31/2010 added (FixTag=0 to indicate valid parameter but DO NOT INCLUDE in FIX Message)
-// 2/15/2010 Scott Atwell -- ???? remove the FixTag=0 part				
-//				if ( getParameter().getFixTag().intValue() == 0 )
-//				{
-//					// ignore
-//				}
-//				else
-//				{
 					builder.onField( getParameter().getFixTag().intValue(), value.toString() );
-//				}
-
 			}
 			else
 			{
@@ -360,7 +317,6 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 			{
 				if ( enumPairs != null && enumPairs.size() > 0 )
 				{
-// 3/10/2010 Scott Atwell					throw new JAXBException( "Parameter \"" + parameter.getName() + "\" has EnumPairs but Control \"" + control.getID()
 					throw new IllegalArgumentException( "Parameter \"" + parameter.getName() + "\" has EnumPairs but Control \"" + control.getID()
 							+ "\" does not have ListItems." );
 				}
@@ -368,7 +324,6 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 			else if ( parameter.getEnumPair() != null )
 			{
 				if ( listItems.size() != enumPairs.size() )
-// 3/10/2010 Scott Atwell					throw new JAXBException( "Parameter \"" + parameter.getName() + "\" has " + enumPairs.size() + " EnumPairs but Control \""
 					throw new IllegalArgumentException( "Parameter \"" + parameter.getName() + "\" has " + enumPairs.size() + " EnumPairs but Control \""
 							+ control.getID() + "\" has " + listItems.size() + " ListItems." );
 
@@ -384,7 +339,6 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 						}
 					}
 					if ( !match )
-// 3/10/2010 Scott Atwell						throw new JAXBException( "ListItem \"" + listItem.getEnumID() + "\" on Control \"" + control.getID()
 						throw new IllegalArgumentException( "ListItem \"" + listItem.getEnumID() + "\" on Control \"" + control.getID()
 								+ "\" does not have a matching EnumPair on Parameter \"" + parameter.getName() + "\"." );
 				}
@@ -401,8 +355,6 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 			java.util.List<EnumPairT> enumPairs = parameter.getEnumPair();
 			for ( EnumPairT enumPair : enumPairs )
 			{
-//				if ( enumPair.getEnumID().equals( enumID ) )
-// 3/19/2010 Scott Atwell handle VALUE_NULL_INDICATOR					return enumPair.getWireValue();
 				if ( enumPair.getEnumID().equals( enumID ) )
 				{
 					if ( Atdl4jConstants.VALUE_NULL_INDICATOR.equals( enumPair.getWireValue() ) )
@@ -540,13 +492,11 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 			if ( getAtdl4jConfig() != null )
 			{
 				if ( ( ( getAtdl4jConfig().isTreatControlVisibleFalseAsNull() ) && ( !isVisible() ) )
-// 2/15/2010 Scott Atwell						|| ( ( getAtdl4jConfig().isTreatControlEnabledFalseAsNull() ) && ( !isEnabled() ) ) )
 						|| ( ( getAtdl4jConfig().isTreatControlEnabledFalseAsNull() ) && ( !isControlExcludingLabelEnabled() ) ) )
 				{
 					return false;
 				}
 				else if ( ( ( getAtdl4jConfig().isTreatControlVisibleFalseAsNull() ) && ( isVisible() ) )
-// 2/15/2010 Scott Atwell						|| ( ( getAtdl4jConfig().isTreatControlEnabledFalseAsNull() ) && ( isEnabled() ) ) )
 						|| ( ( getAtdl4jConfig().isTreatControlEnabledFalseAsNull() ) && ( isControlExcludingLabelEnabled() ) ) )
 				{
 					return true;
@@ -576,10 +526,8 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	 * @param aNullValue
 	 *           the nullValue to set
 	 */
-	// 2/11/2010 Scott Atwell public void setNullValue(boolean aNullValue)
 	public void setNullValue(Boolean aNullValue)
 	{
-		// 2/11/2010 Scott Atwell this.nullValue = aNullValue;
 		Boolean tempPreExistingNullValue = this.nullValue;
 
 		// -- Assign the value --
@@ -657,13 +605,8 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	public void setFIXValue( String aFIXValue )
 	{
 		// -- Must use parameterConverter's convertToControlString (eg TextField's controlConverter is a StringConverter, not a DecimalConverter like the Parameter's would be) --
-//	3/9/2010 Scott Atwell	setValueAsString( parameterConverter.convertValueToControlString( aFIXValue ) );
-// 3/10/2010 Scott Atwell		Object tempParameterValue = parameterConverter.convertValueToParameterComparable( aFIXValue ); 
 		Object tempParameterValue = parameterConverter.convertFixWireValueToParameterValue( aFIXValue ); 
-//		setValueAsString( controlConverter.convertParameterValueToControlString( tempParameterValue ) );
-// 3/10/2010 Scott Atwell		E tempValue = controlConverter.convertParameterValueToControlComparable( tempParameterValue );
 		E tempValue = controlConverter.convertParameterValueToControlValue( tempParameterValue );
-// 3/13/2010 Scott Atwell moved after setNullValue()		setValue( tempValue );
 		
 		if ( ( tempValue == null ) && ( getNullValue() != null ) )
 		{
@@ -684,7 +627,6 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	 */
 	public void processConstValueHasBeenSet()
 	{
-//		setEnabled( false );
 		setControlExcludingLabelEnabled( false );
 	}
 	

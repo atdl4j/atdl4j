@@ -56,7 +56,6 @@ public class Field2OperatorValidationRule extends
 			logger.debug( tempMsg2 );
 			logger.trace( tempMsg2, new Exception("Stack trace") ); 
 			
-//			throw new JAXBException( tempMsg );
 			throw new ValidationException( null, tempMsg );
 		}
 		Object fieldValue = parent instanceof StateRuleT ? target.getControlValue() : target.getParameterValue();
@@ -69,38 +68,32 @@ public class Field2OperatorValidationRule extends
 			logger.debug( tempMsg2 );
 			logger.trace( tempMsg2, new Exception("Stack trace") ); 
 			
-//			throw new JAXBException( tempMsg );
 			throw new ValidationException( null, tempMsg );
 		}
 		Object fieldValue2 = parent instanceof StateRuleT ? target2.getControlValue() : target2.getParameterValue();
 		
-//TODO 1/17/2010 Scott Atwell need to handle converting data type to "expected" for FIX_ "standard" input values
-if ( ( fieldValue != null ) && 
-	  ( fieldValue2 != null ) && 
-	  ( fieldValue.getClass() != fieldValue2.getClass() ) )
-{
-	if ( field.startsWith( InputAndFilterData.FIX_DEFINED_FIELD_PREFIX ) )
-	{
-		fieldValue = convertFieldValueToDesiredType( fieldValue2, fieldValue );
-	}
-	else if ( field2.startsWith( InputAndFilterData.FIX_DEFINED_FIELD_PREFIX ) )
-	{
-		fieldValue2 = convertFieldValueToDesiredType( fieldValue, fieldValue2 );
-	}
-//TODO 3/6/2010 Scott Atwell
-	else if ( ( target != null ) && ( target instanceof HiddenFieldUI ) )
-	{
-		fieldValue = convertFieldValueToDesiredType( fieldValue2, fieldValue );
-	}
-	else if ( ( target2 != null ) && ( target2 instanceof HiddenFieldUI ) )
-	{
-		fieldValue2 = convertFieldValueToDesiredType( fieldValue, fieldValue2 );
-	}
-}
-		
-{
-	
-}
+		// -- handles converting data type to "expected" for FIX_ "standard" input values --
+		if ( ( fieldValue != null ) && 
+			  ( fieldValue2 != null ) && 
+			  ( fieldValue.getClass() != fieldValue2.getClass() ) )
+		{
+			if ( field.startsWith( InputAndFilterData.FIX_DEFINED_FIELD_PREFIX ) )
+			{
+				fieldValue = convertFieldValueToDesiredType( fieldValue2, fieldValue );
+			}
+			else if ( field2.startsWith( InputAndFilterData.FIX_DEFINED_FIELD_PREFIX ) )
+			{
+				fieldValue2 = convertFieldValueToDesiredType( fieldValue, fieldValue2 );
+			}
+			else if ( ( target != null ) && ( target instanceof HiddenFieldUI ) )
+			{
+				fieldValue = convertFieldValueToDesiredType( fieldValue2, fieldValue );
+			}
+			else if ( ( target2 != null ) && ( target2 instanceof HiddenFieldUI ) )
+			{
+				fieldValue2 = convertFieldValueToDesiredType( fieldValue, fieldValue2 );
+			}
+		}
 		
 		// compare both values
 		validateValues(target, fieldValue, operator, fieldValue2);
@@ -114,8 +107,6 @@ if ( ( fieldValue != null ) &&
 	}
 	
 	
-	
-//TODO 1/17/2010 Scott Atwell added
 	public static Object convertFieldValueToDesiredType( Object aFieldWithDesiredType, Object aFieldValue )
 	{
 		if ( aFieldWithDesiredType instanceof String )

@@ -20,7 +20,6 @@ import org.atdl4j.fixatdl.layout.ControlT;
  */
 public interface ControlUIFactory
 {
-// 2/9/2010 Scott Atwell added	
 	// -- Call this after constructor --
 	public void init(Atdl4jConfig aAtdl4jConfig);
 

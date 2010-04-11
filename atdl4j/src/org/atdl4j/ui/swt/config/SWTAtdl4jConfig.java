@@ -24,12 +24,6 @@ public class SWTAtdl4jConfig
 		super();
 	}
 	
-// @see org.atdl4j.ui.impl.BaseStrategiesUIFactory	
-//	protected String getDefaultClassNameStrategiesUIFactory()
-//	{ 
-//		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "impl.SWTStrategiesUIFactory";
-//	}
-	
 	protected String getDefaultClassNameStrategiesUI()
 	{ 
 		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "impl.SWTStrategiesUI";

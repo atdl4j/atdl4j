@@ -44,11 +44,9 @@ public class SWTFixMsgLoadPanel
 		setAtdl4jConfig( atdl4jConfig );
 		setParentComposite( aParentComposite );
 		
-// 3/2/2010 Scott Atwell		Composite tempComposite = new Composite(aParentComposite, SWT.NONE);
 		composite = new Group(aParentComposite, SWT.NONE);
 		((Group) composite).setText("Pre-populate with FIX Message Fragment (tag=value syntax)");
 		
-// 2/28/2010 Scott Atwell		Button loadFixMsgButton = new Button(composite, SWT.NONE);
 		loadFixMsgButton = new Button(composite, SWT.NONE);
 		loadFixMsgButton.setText("Load Message");
 		loadFixMsgButton.addSelectionListener(new SelectionAdapter() 
@@ -63,14 +61,12 @@ public class SWTFixMsgLoadPanel
 		GridLayout tempLayout = new GridLayout(3, false);
 		composite.setLayout(tempLayout);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-// 2/28/2010 Scott Atwell		final Text fixMsgText = new Text(composite, SWT.BORDER);
 		fixMsgText = new Text(composite, SWT.BORDER);
 		GridData fixMsgTextData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		fixMsgTextData.horizontalSpan = 2;
 		fixMsgText.setLayoutData(fixMsgTextData);
 		
 
-// 2/25/2010 Scott Atwell added
 		// -- Handle Enter key within Text field --
 		fixMsgText.addListener( SWT.DefaultSelection, new Listener()
 		{

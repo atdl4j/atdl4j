@@ -2,8 +2,7 @@ package org.atdl4j.data;
 
 import java.math.BigInteger;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
+import org.atdl4j.data.converter.DateTimeConverter;
 import org.atdl4j.fixatdl.core.AmtT;
 import org.atdl4j.fixatdl.core.BooleanT;
 import org.atdl4j.fixatdl.core.CharT;
@@ -35,7 +34,6 @@ import org.atdl4j.fixatdl.core.UTCDateOnlyT;
 import org.atdl4j.fixatdl.core.UTCTimeOnlyT;
 import org.atdl4j.fixatdl.core.UTCTimestampT;
 import org.atdl4j.fixatdl.timezones.Timezone;
-import org.atdl4j.data.converter.DateTimeConverter;
 
 public class ParameterHelper
 {
@@ -115,8 +113,6 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof UTCTimestampT )
 		{
-//			// -- Supports dailyConstValue --
-//			return getDailyValueAsValue( ( (UTCTimestampT) parameter ).getConstValue(), ( (UTCTimestampT) parameter ).getDailyConstValue(), ((UTCTimestampT) parameter).getLocalMktTz() );
 			if ( parameter != null )
 			{
 				return DateTimeConverter.convertDailyValueToValue( ( (UTCTimestampT) parameter ).getConstValue(), getLocalMktTz( parameter) );
@@ -156,8 +152,6 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof TZTimestampT )
 		{
-//			// -- Supports dailyConstValue --
-//			return getDailyValueAsValue( ( (TZTimestampT) parameter ).getConstValue(), ( (TZTimestampT) parameter ).getDailyConstValue(), null );
 			if ( parameter != null )
 			{
 				return DateTimeConverter.convertDailyValueToValue( ( (TZTimestampT) parameter ).getConstValue(), null );
@@ -170,23 +164,6 @@ public class ParameterHelper
 		return null;
 	}
 	
-//	private static XMLGregorianCalendar getDailyValueAsValue( XMLGregorianCalendar aValueIfSpecified, XMLGregorianCalendar aDailyValue, Timezone aTimezone )
-//	{
-//		if ( aValueIfSpecified != null )
-//		{
-//			return aValueIfSpecified;
-//		}
-//		else if ( aDailyValue != null )
-//		{
-//			return DateTimeConverter.convertDailyValueToValue( aDailyValue, aTimezone );
-//		}
-//		else
-//		{
-//			return null;
-//		}
-//	}
-
-
 	
 	public static Object getMaxValue(ParameterT parameter)
 	{
@@ -264,8 +241,6 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof UTCTimestampT )
 		{
-//			// -- Supports dailyMaxValue --
-//			return getDailyValueAsValue( ( (UTCTimestampT) parameter ).getMaxValue(), ( (UTCTimestampT) parameter ).getDailyMaxValue(), ( (UTCTimestampT) parameter ).getLocalMktTz() );
 			if ( parameter != null )
 			{
 				return DateTimeConverter.convertDailyValueToValue( ( (UTCTimestampT) parameter ).getMaxValue(), getLocalMktTz( parameter) );
@@ -305,8 +280,6 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof TZTimestampT )
 		{
-//			// -- Supports dailyMaxValue --
-//			return getDailyValueAsValue( ( (TZTimestampT) parameter ).getMaxValue(), ( (TZTimestampT) parameter ).getDailyMaxValue(), null );
 			if ( parameter != null )
 			{
 				return DateTimeConverter.convertDailyValueToValue( ( (TZTimestampT) parameter ).getMaxValue(), null );
@@ -397,8 +370,6 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof UTCTimestampT )
 		{
-//			// -- Supports dailyMinValue --
-//			return getDailyValueAsValue( ( (UTCTimestampT) parameter ).getMinValue(), ( (UTCTimestampT) parameter ).getDailyMinValue(), ( (UTCTimestampT) parameter ).getLocalMktTz() );
 			if ( parameter != null )
 			{
 				return DateTimeConverter.convertDailyValueToValue( ( (UTCTimestampT) parameter ).getMinValue(), getLocalMktTz( parameter) );
@@ -438,8 +409,6 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof TZTimestampT )
 		{
-//			// -- Supports dailyMinValue --
-//			return getDailyValueAsValue( ( (TZTimestampT) parameter ).getMinValue(), ( (TZTimestampT) parameter ).getDailyMinValue(), null );
 			if ( parameter != null )
 			{
 				return DateTimeConverter.convertDailyValueToValue( ( (TZTimestampT) parameter ).getMinValue(), null );

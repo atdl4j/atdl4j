@@ -27,20 +27,6 @@ public class CheckBoxListWidget
 	private List<Button> multiCheckBox = new ArrayList<Button>();
 	private Label label;
 
-	/**
-	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
-	 * ParameterT aParameter, Atdl4jConfig aAtdl4jConfig) throws JAXBException
-	 * public CheckBoxListWidget(CheckBoxListT control, ParameterT parameter)
-	 * throws JAXBException {
-	 * 
-	 * // validate ListItems and EnumPairs if (parameter != null &&
-	 * control.getListItem().size() != parameter.getEnumPair().size()) throw new
-	 * JAXBException("ListItems for Control \"" + control.getID() +
-	 * "\" and EnumPairs for Parameter \"" + parameter.getName() +
-	 * "\" are not equal in number.");
-	 * 
-	 * this.control = control; this.parameter = parameter; init(); }
-	 **/
 	// -- Overriden --
 	protected void initPreCheck()
 	{
@@ -68,13 +54,13 @@ public class CheckBoxListWidget
 		Composite c = new Composite( parent, SWT.NONE );
 		c.setLayoutData(controlGD);
 		
-		// 2/23/2010 Scott Atwell added
-		// 3/14/2010 John Shields implemented RowLayout for horizontal orientation
 		if ( ((CheckBoxListT) control).getOrientation() != null &&
 			 PanelOrientationT.VERTICAL.equals( ((CheckBoxListT) control).getOrientation() ) )
 		{
 			c.setLayout( new GridLayout( 1, false ) );
-		} else {
+		} 
+		else 
+		{
 			RowLayout rl = new RowLayout();
 			rl.wrap = false;
 			c.setLayout( rl );
@@ -112,24 +98,12 @@ public class CheckBoxListWidget
 		}
 
 		// set initValue
-//		if ( ( (CheckBoxListT) control ).getInitValue() != null )
-//			setValue( ( (CheckBoxListT) control ).getInitValue(), true );
 		if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
 			setValue( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ), true );
 
 		return parent;
 	}
 
-	/**
-	 * 2/10/2010 Scott Atwell public String getControlValue() { String value =
-	 * ""; for (int i = 0; i < multiCheckBox.size(); i++) { Button b =
-	 * multiCheckBox.get(i); //TODO 1/24/2010 Scott Atwell if (b.getSelection())
-	 * { if ( (b.getSelection()) && (b.isVisible()) && (b.isEnabled()) ) { if
-	 * ("".equals(value)) { value +=
-	 * ((CheckBoxListT)control).getListItem().get(i).getEnumID(); } else { value
-	 * += " " + ((CheckBoxListT)control).getListItem().get(i).getEnumID(); } } }
-	 * return "".equals(value) ? null : value; }
-	 **/
 	public String getControlValueRaw()
 	{
 		String value = "";

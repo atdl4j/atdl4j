@@ -18,9 +18,6 @@ public abstract class AbstractFixatdlFileSelectionPanel
 	
 	private List<FixatdlFileSelectionPanelListener> listenerList = new Vector<FixatdlFileSelectionPanelListener>();
 
-
-
-
 	
 	/**
 	 * @param atdl4jConfig the atdl4jConfig to set

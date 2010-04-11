@@ -46,8 +46,6 @@ public class StringConverter
 		return invertedString.toString();
 	}
 
-// 2/12/2010 public String convertValueToComparable(Object value)
-// 3/10/2010 Scott Atwell	public String convertValueToParameterComparable(Object value)
 	protected String convertValueToComparable(Object value)
 	{
 		return ( value == null || "".equals( value ) ) ? null : value.toString();
@@ -153,39 +151,12 @@ public class StringConverter
 	@Override
 	public Object convertControlValueToParameterValue(Object aValue)
 	{
-/*** 3/12/2010 Scott Atwell		
-		// -- handle PercentageT getParameter() coming through as String (eg minValue,
-		// maxValue) --
-		if ( ( aValue != null ) && ( isControlMultiplyBy100() ) )
-		{
-			BigDecimal tempBigDecimal;
-			try
-			{
-				tempBigDecimal = new BigDecimal( (String) aValue );
-			}
-			catch (NumberFormatException e)
-			{
-				throw new NumberFormatException( "Invalid Decimal Number Format: [" + aValue + "] for Parameter: " + getParameterName() );
-			}
-
-			// -- Divide Control's value by 100 --
-			tempBigDecimal = tempBigDecimal.scaleByPowerOfTen( -2 );
-// 3/11/2010 Scott Atwell			return tempBigDecimal.toString();
-			return tempBigDecimal;
-		}
-		else
-		{
-// 3/11/2010 Scott Atwell			return (String) aValue;
-			return getParameterTypeConverter().convertParameterStringToParameterValue( (String ) aValue );
-		}
-***/
 		// -- handle PercentageT getParameter() coming through as String (eg minValue, maxValue) --
 		if ( ( aValue != null ) && ( isControlMultiplyBy100() ) )
 		{
 			BigDecimal tempBigDecimal;
 			try
 			{
-// 3/12/2010 Scott Atwell				tempBigDecimal = new BigDecimal( (String) aValue );
 				tempBigDecimal = DatatypeConverter.convertValueToBigDecimalDatatype( aValue );
 			}
 			catch (NumberFormatException e)
@@ -195,13 +166,11 @@ public class StringConverter
 
 			// -- Divide Control's value by 100 --
 			tempBigDecimal = tempBigDecimal.scaleByPowerOfTen( -2 );
-// 3/11/2010 Scott Atwell			return tempBigDecimal.toString();
+			
 			return tempBigDecimal;
 		}
 		else
 		{
-// 3/11/2010 Scott Atwell			return (String) aValue;
-// 3/12/2010 Scott Atwell			return getParameterTypeConverter().convertParameterStringToParameterValue( (String ) aValue );
 			// -- aDatatypeIfNull=DatatypeConverter.DATATYPE_STRING --
 			return DatatypeConverter.convertValueToDatatype( aValue, getParameterDatatype( DatatypeConverter.DATATYPE_STRING ) );
 		}
@@ -213,72 +182,39 @@ public class StringConverter
 	@Override
 	public String convertParameterValueToControlValue(Object aValue)
 	{
-// 3/10/2010 Scott Atwell		String str = convertValueToControlComparable( value );
-//		String str = convertValueToComparable( aValue );
-//		if ( str != null )
-//		{
-//			if ( getParameter() instanceof MultipleCharValueT && ( (MultipleCharValueT) getParameter() ).isInvertOnWire() )
-//				return invertOnWire( str );
-//
-//			else if ( getParameter() instanceof MultipleStringValueT && ( (MultipleStringValueT) getParameter() ).isInvertOnWire() )
-//				return invertOnWire( str );
-//
-//			return str;
-//		}
-//		return null;
-// 3/11/2010 Scott Atwell		return convertValueToComparable( aValue );
-
-	if ( ( aValue == null ) || ( "".equals( aValue ) ) )
-	{
-		return null;
-	}
-	// -- handle PercentageT getParameter() coming through with BigDecial (eg from Load FIX Message) --
-	else if ( ( aValue != null ) && ( isControlMultiplyBy100() ) )
-	{
-		BigDecimal tempBigDecimal;
-		try
+		if ( ( aValue == null ) || ( "".equals( aValue ) ) )
 		{
-			if ( aValue instanceof BigDecimal )
-			{
-				tempBigDecimal = (BigDecimal) aValue;
-			}
-			else
-			{
-				tempBigDecimal = new BigDecimal( (String) aValue );
-			}
+			return null;
 		}
-		catch (NumberFormatException e)
+		// -- handle PercentageT getParameter() coming through with BigDecial (eg from Load FIX Message) --
+		else if ( ( aValue != null ) && ( isControlMultiplyBy100() ) )
 		{
-			throw new NumberFormatException( "Invalid Decimal Number Format: [" + aValue + "] for Parameter: " + getParameterName() );
-		}
-	
-		// -- Multiply Control's value by 100 --
-		tempBigDecimal = tempBigDecimal.scaleByPowerOfTen( 2 );
-		return tempBigDecimal.toString();
-	}
-//	else
-//	{
-//	//3/11/2010 Scott Atwell			return (String) aValue;
-////		return getParameterTypeConverter().convertParameterStringToParameterValue( (String ) aValue );
-//		return (String) aValue;
-//	}
-/*** 3/12/2010 Scott Atwell	
-	else if ( aValue instanceof String )
-	{
-		return (String) aValue;
-	}
-	else
-	{
-		return aValue.toString();
-	}
-***/
-	else
-	{
-		return DatatypeConverter.convertValueToStringDatatype( aValue );
+			BigDecimal tempBigDecimal;
+			try
+			{
+				if ( aValue instanceof BigDecimal )
+				{
+					tempBigDecimal = (BigDecimal) aValue;
+				}
+				else
+				{
+					tempBigDecimal = new BigDecimal( (String) aValue );
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				throw new NumberFormatException( "Invalid Decimal Number Format: [" + aValue + "] for Parameter: " + getParameterName() );
+			}
 		
-	}
-
-	
+			// -- Multiply Control's value by 100 --
+			tempBigDecimal = tempBigDecimal.scaleByPowerOfTen( 2 );
+			return tempBigDecimal.toString();
+		}
+		else
+		{
+			return DatatypeConverter.convertValueToStringDatatype( aValue );
+			
+		}
 	}
 
 	/* (non-Javadoc)

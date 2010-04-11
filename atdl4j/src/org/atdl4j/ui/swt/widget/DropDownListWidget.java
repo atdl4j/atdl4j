@@ -23,18 +23,6 @@ public class DropDownListWidget
 	private Combo dropDownList;
 	private Label label;
 
-	/**
-	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
-	 * ParameterT aParameter, Atdl4jConfig aAtdl4jConfig) throws JAXBException
-	 * public DropDownListWidget(DropDownListT control, ParameterT parameter)
-	 * throws JAXBException { this.control = control; this.parameter = parameter;
-	 * init(); }
-	 * 
-	 * public DropDownListWidget(EditableDropDownListT control, ParameterT
-	 * parameter) throws JAXBException { this.control = control; this.parameter =
-	 * parameter; init(); }
-	 **/
-
 	public Widget createWidget(Composite parent, int style)
 	{
 		String tooltip = getTooltip();
@@ -72,8 +60,6 @@ public class DropDownListWidget
 		dropDownList.select( 0 );
 
 		// select initValue if available
-//		String initValue = ( control instanceof EditableDropDownListT ) ? ( (EditableDropDownListT) control ).getInitValue()
-//				: ( (DropDownListT) control ).getInitValue();
 		String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jConfig() );
 		if ( initValue != null )
 			setValue( initValue, true );
@@ -88,23 +74,7 @@ public class DropDownListWidget
 				.getListItem();
 	}
 
-	/**
-	 * 2/10/2010 Scott Atwell public String getControlValue() { //TODO 1/24/2010
-	 * Scott Atwell added if ( ( dropDownList.isVisible() == false ) || (
-	 * dropDownList.isEnabled() == false ) ) { return null; }
-	 * 
-	 * int selection = dropDownList.getSelectionIndex(); if (selection >= 0)
-	 * return getListItems().get(selection).getEnumID();
-	 * 
-	 * else if (control instanceof EditableDropDownListT &&
-	 * dropDownList.getText() != null && dropDownList.getText() != "") { // use
-	 * the enumID if the text matches a combo box item, // even if the dropdown
-	 * was not used to select it for (int i = 0; i <
-	 * dropDownList.getItems().length; i++) { if
-	 * (dropDownList.getItems()[i].equals(dropDownList.getText())) return
-	 * getListItems().get(i+1).getEnumID(); } // else use the manually entered
-	 * text string return dropDownList.getText(); } return null; }
-	 **/
+
 	public String getControlValueRaw()
 	{
 		int selection = dropDownList.getSelectionIndex();

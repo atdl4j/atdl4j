@@ -33,17 +33,12 @@ public class LabelWidget
 		// label
 		label = new Label( parent, SWT.NONE );
 
-		// TODO 1/19/2010 Scott Atwell (some brokers provide initValue only, fails
-		// if null) label.setText(control.getLabel());
-		// TODO 1/19/2010 Scott Atwell changes BELOW
 		if ( control.getLabel() != null )
 		{
 			label.setText( control.getLabel() );
 		}
-//		else if ( ( control instanceof LabelT ) && ( ( (LabelT) control ).getInitValue() != null ) )
 		else if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
 		{
-//			label.setText( ( (LabelT) control ).getInitValue() );
 			label.setText( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ) );
 		}
 		else

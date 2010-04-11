@@ -53,12 +53,6 @@ public class RadioButtonListener
 		}
 	}
 
-	/*
-	 * public Object getControlValue() { for (Button button : buttons) { if
-	 * (button.getSelection()) return new Object(); // need a way to get
-	 * value!!!!!!! break; } return null; }
-	 */
-
 	/**
 	 * If no RadioButtons within the radioGroup are selected, then first one in
 	 * list will be selected.
@@ -86,7 +80,7 @@ public class RadioButtonListener
 		// -- Select first in list if no buttons are selected --
 		if ( tempSelectedButton == null )
 		{
-logger.info("Warning: no buttons were selected for RadioButtonListener.  Selecting first button in list: " + buttons.get(0) );
+			logger.info("Warning: no buttons were selected for RadioButtonListener.  Selecting first button in list: " + buttons.get(0) );
 			buttons.get( 0 ).setSelection( true );
 		}
 	}

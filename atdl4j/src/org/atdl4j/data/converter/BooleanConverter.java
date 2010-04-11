@@ -71,8 +71,6 @@ public class BooleanConverter
 				return new Boolean( false );
 			}
 		}
-//		else
-//			return new Boolean( false );
 		else
 		{
 			return null;
@@ -84,7 +82,6 @@ public class BooleanConverter
 	 */
 	public Object convertControlValueToParameterValue(Object aValue)
 	{
-// 3/12/2010 Scott Atwell		return (Boolean) aValue;
 		// -- aDatatypeIfNull=DATATYPE_BOOLEAN --
 		return DatatypeConverter.convertValueToDatatype( aValue, getParameterDatatype( DatatypeConverter.DATATYPE_BOOLEAN ) );
 	}
@@ -95,7 +92,6 @@ public class BooleanConverter
 	@Override
 	public Boolean convertParameterValueToControlValue(Object aValue)
 	{
-//	3/12/2010 Scott Atwell	return (Boolean) aValue;
 		return DatatypeConverter.convertValueToBooleanDatatype( aValue );
 	}
 
@@ -172,7 +168,6 @@ public class BooleanConverter
 			booleanT = (BooleanT) getParameter();
 		}
 
-//	3/10/2010 Scott Atwell	Boolean bool = convertValueToParameterComparable( aParameterValue ); 
 		Boolean bool = convertParameterValueToParameterComparable( aParameterValue ); 
 
 		// 2/1/2010 John Shields added
@@ -244,8 +239,6 @@ public class BooleanConverter
 				return new Boolean( false );
 			}
 		}
-//		else
-//			return new Boolean( false );
 		else
 		{
 			return null;

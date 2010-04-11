@@ -300,56 +300,7 @@ public abstract class AbstractAtdl4jCompositePanel
 		} 
 	}
 	
-/*** 3/8/2010 Scott Atwell refactored	
-	public void parseFixatdlFile( String aFilename ) 
-		throws JAXBException,
-				 IOException, 
-				 NumberFormatException 
-	{
-		setLastFixatdlFilename( null );
-		
-		// remove all strategy panels
-		getStrategiesPanel().removeAllStrategyPanels();
-		
-		// parses the XML document and build an object model
-		JAXBContext jc = JAXBContext.newInstance(StrategiesT.class.getPackage().getName());
-		Unmarshaller um = jc.createUnmarshaller();
 
-		try 
-		{
-			// try to parse as URL
-			URL url = new URL( aFilename );
-			JAXBElement<?> element = (JAXBElement<?>)um.unmarshal(url);
-			getAtdl4jConfig().setStrategies( (StrategiesT)element.getValue() );
-		} 
-		catch (MalformedURLException e) 
-		{
-			// try to parse as file
-			File file = new File( aFilename );		
-			JAXBElement<?> element = (JAXBElement<?>)um.unmarshal(file);
-//			getAtdl4jConfig().setStrategies( (StrategiesT)element.getValue() );
-			getAtdl4jConfig().setStrategies( null );
-		}
-
-		List<StrategyT> tempFilteredStrategyList = getAtdl4jConfig().getStrategiesFilteredStrategyList();
-		getStrategiesPanel().createStrategyPanels( tempFilteredStrategyList );
-		getStrategySelectionPanel().loadStrategyList( tempFilteredStrategyList );
-		
-		if ( ( getAtdl4jConfig().getInputAndFilterData() != null ) && 
-			  ( getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName() != null ) )
-		{
-			getStrategySelectionPanel().selectDropDownStrategy( getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName() );
-		}
-		else
-		{
-			getStrategySelectionPanel().selectFirstDropDownStrategy();
-		}
-
-		packLayout();
-		
-		setLastFixatdlFilename( aFilename );
-	}
-****/
 	/* 
 	 * Parses the FIXatdl file aFilename into StrategiesT storing the result via Atdl4jConfig().setStrategies().
 	 */

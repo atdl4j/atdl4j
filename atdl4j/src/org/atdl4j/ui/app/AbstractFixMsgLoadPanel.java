@@ -18,9 +18,6 @@ public abstract class AbstractFixMsgLoadPanel
 	
 	private List<FixMsgLoadPanelListener> listenerList = new Vector<FixMsgLoadPanelListener>();
 
-
-
-
 	
 	/**
 	 * @param atdl4jConfig the atdl4jConfig to set

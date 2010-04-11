@@ -315,7 +315,6 @@ public class DecimalConverter
 				}
 				catch (NumberFormatException e)
 				{
-// 3/8/2010 Scott Atwell					throw new NumberFormatException( "Invalid Decimal Number Format: [" + str + "] for Parameter: " + getParameter().getName() );
 					throw new NumberFormatException( "Invalid Decimal Number Format: [" + str + "] for Parameter: " + getParameterName() );
 				}
 			}
@@ -334,12 +333,8 @@ public class DecimalConverter
 				return null;
 		}
 		
-// 2/12/2010 Scott Atwell		
-// 3/9/2010 Scott Atwell		if ( ( tempBigDecimal != null ) && ( isMultiplyBy100() ) )
 		if ( ( tempBigDecimal != null ) && ( isControlMultiplyBy100() ) )
 		{
-// 2/12/2010 avoid stray decimal precision			return new BigDecimal( tempBigDecimal.doubleValue() / 100.0d );
-// 3/9/2010 Scott Atwell			return tempBigDecimal.scaleByPowerOfTen( -2 );
 			return tempBigDecimal.scaleByPowerOfTen( 2 );
 		}
 		else
@@ -354,15 +349,6 @@ public class DecimalConverter
 	@Override
 	public Object convertControlValueToParameterValue(Object aValue)
 	{
-/*** 3/12/2010 Scott Atwell 		
-		if ( ( aValue != null ) && ( isControlMultiplyBy100() ) )
-		{
-			// -- divide Control's value by 100 --
-			return ((BigDecimal) aValue).scaleByPowerOfTen( -2 );
-		}
-		
-		return (BigDecimal) aValue;
-***/		
 		BigDecimal tempBigDecimal = DatatypeConverter.convertValueToBigDecimalDatatype( aValue );
 		if ( ( tempBigDecimal != null ) && ( isControlMultiplyBy100() ) )
 		{
@@ -382,15 +368,6 @@ public class DecimalConverter
 	@Override
 	public BigDecimal convertParameterValueToControlValue(Object aValue)
 	{
-/*** 3/12/2010 Scott Atwell		
-		if ( ( aValue != null ) && ( isControlMultiplyBy100() ) )
-		{
-			// -- multiply Control's value by 100 --
-			return ((BigDecimal) aValue).scaleByPowerOfTen( 2 );
-		}
-		
-		return (BigDecimal) aValue;
-***/
 		BigDecimal tempBigDecimal = DatatypeConverter.convertValueToBigDecimalDatatype( aValue );
 		
 		if ( ( tempBigDecimal != null ) && ( isControlMultiplyBy100() ) )
@@ -515,7 +492,6 @@ public class DecimalConverter
 		
 		if ( aParameterValue instanceof BigDecimal )
 		{
-// 2/12/2010			return (BigDecimal) aParameterValue;
 			tempBigDecimal = (BigDecimal) aParameterValue;
 		}
 		else if ( aParameterValue instanceof String )
@@ -533,33 +509,10 @@ public class DecimalConverter
 				}
 				catch (NumberFormatException e)
 				{
-// 3/8/2010 Scott Atwell					throw new NumberFormatException( "Invalid Decimal Number Format: [" + str + "] for Parameter: " + getParameter().getName() );
 					throw new NumberFormatException( "Invalid Decimal Number Format: [" + str + "] for Parameter: " + getParameterName() );
 				}
 			}
 		}
-//		else if ( aParameterValue instanceof Boolean )
-//		{
-//			Boolean bool = (Boolean) aParameterValue;
-//			if ( bool != null )
-//			{
-//				if ( bool )
-//					tempBigDecimal = new BigDecimal( 1 );
-//				else
-//					tempBigDecimal = new BigDecimal( 0 );
-//			}
-//			else
-//				return null;
-//		}
-//		
-//// 2/12/2010 Scott Atwell		
-//// 3/9/2010 Scott Atwell		if ( ( tempBigDecimal != null ) && ( isMultiplyBy100() ) )
-//		if ( ( tempBigDecimal != null ) && ( isParameterMultiplyBy100() ) )
-//		{
-//// 2/12/2010 avoid stray decimal precision			return new BigDecimal( tempBigDecimal.doubleValue() / 100.0d );
-//// 3/9/2010 Scott Atwell			return tempBigDecimal.scaleByPowerOfTen( -2 );
-//			return tempBigDecimal.scaleByPowerOfTen( 2 );
-//		}
 		
 		return tempBigDecimal;
 	}

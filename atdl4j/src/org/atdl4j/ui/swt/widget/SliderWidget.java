@@ -24,13 +24,6 @@ public class SliderWidget
 	private Label label;
 	private List<Label> sliderLabels;
 
-	/**
-	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
-	 * ParameterT aParameter, Atdl4jConfig aAtdl4jConfig) throws JAXBException
-	 * public SliderWidget(SliderT control, ParameterT parameter) throws
-	 * JAXBException { this.control = control; this.parameter = parameter;
-	 * init(); }
-	 **/
 
 	public Widget createWidget(Composite parent, int style)
 	{
@@ -97,8 +90,6 @@ public class SliderWidget
 			label.setToolTipText( tooltip );
 		}
 
-//		if ( ( (SliderT) control ).getInitValue() != null )
-//			setValue( ( (SliderT) control ).getInitValue(), true );
 		if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
 			setValue( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ), true );
 
@@ -106,14 +97,6 @@ public class SliderWidget
 	}
 	
 	
-/** 2/10/2010 Scott Atwell	
-	public String getControlValue()
-	{
-		if ( !slider.isVisible() || !slider.isEnabled() )
-			return null;
-		return ( (SliderT) control ).getListItem().get( slider.getSelection() ).getEnumID();
-	}
-**/
 	public String getControlValueRaw()
 	{
 		return ( (SliderT) control ).getListItem().get( slider.getSelection() ).getEnumID();

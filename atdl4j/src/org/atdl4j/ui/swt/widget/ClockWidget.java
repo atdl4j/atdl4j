@@ -59,13 +59,7 @@ public class ClockWidget
 	private org.eclipse.swt.widgets.DateTime dateClock;
 	private org.eclipse.swt.widgets.DateTime timeClock;
 
-	// 1/20/2010 Scott Atwell added
-	// TODO: move this to app config
-// 2/10/2010 Scott Atwell moved to Atdl4jConfig.isShowEnabledCheckboxOnOptionalClockControl()	public static boolean showEnabledButton = false;
-
-	// TODO 1/20/2010 Scott Atwell added
-	// -- enabledButton (for optional parameters) and label are mutually
-	// exclusive (use the one that is not null) --
+	// -- enabledButton (for optional parameters) and label are mutually exclusive (use the one that is not null) --
 	private Button enabledButton;
 	private Label label;
 
@@ -73,16 +67,8 @@ public class ClockWidget
 	private boolean showDay;
 	private boolean showTime;
 
-	/**
-	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
-	 * ParameterT aParameter, Atdl4jConfig aAtdl4jConfig) throws JAXBException
-	 * public ClockWidget(ClockT control, ParameterT parameter) throws
-	 * JAXBException { this.control = control; this.parameter = parameter;
-	 * init(); }
-	 **/
 	public Widget createWidget(Composite parent, int style)
 	{
-
 		if ( parameter instanceof UTCTimestampT )
 		{
 			showMonthYear = true;
@@ -110,8 +96,6 @@ public class ClockWidget
 		
 		boolean hasLabelOrCheckbox = false;
 		
-		// 1/20/2010 Scott Atwell added to enable/disable "optional" Clock
-		// display BELOW
 		if ( ( getAtdl4jConfig() != null ) &&
 			  ( getAtdl4jConfig().isShowEnabledCheckboxOnOptionalClockControl() ) && 
 			  ( parameter != null ) && 
@@ -188,11 +172,9 @@ public class ClockWidget
 		}
 
 		// init value, if applicable
-//		setAndRenderInitValue( ((ClockT) control).getInitValue(), ((ClockT) control).getInitValueMode() );
 		setAndRenderInitValue( (XMLGregorianCalendar ) ControlHelper.getInitValue( control, getAtdl4jConfig() ), ((ClockT) control).getInitValueMode() );
 
 		
-		// TODO 1/20/2010 Scott Atwell
 		if ( enabledButton != null )
 		{
 			applyEnabledSetting();
@@ -204,38 +186,12 @@ public class ClockWidget
 	public DateTimeZone getLocalMktTz() 
 		throws IllegalArgumentException
 	{
-/*** 2/16/2010 Scott Atwell		
-		if ( parameter != null )
-		{
-			// List<String> timezones =
-			// Arrays.asList(TimeZone.getAvailableIDs());
-			if ( parameter instanceof UTCTimestampT
-			// 2/3/2010 the Control has its own localMktTz for initValue &&
-			// ((UTCTimestampT) parameter).getLocalMktTz() != null)
-					&& control != null && control instanceof ClockT && ( (ClockT) control ).getLocalMktTz() != null )
-			{
-				// try {
-				// This will throw IllegalArgumentException if ID cannot be resolved
-				return org.joda.time.DateTimeZone
-				// 2/3/2010 use Control's own localMktTz .forID(((UTCTimestampT)
-				// parameter).getLocalMktTz()
-						.forID( ( (ClockT) control ).getLocalMktTz().value() );
-				// } catch (IllegalArgumentException e) {
-				// }
-			}
-		}
-
-		return null;
-****/
 		// This will throw IllegalArgumentException if ID cannot be resolved
 		return DateTimeConverter.convertTimezoneToDateTimeZone( ((ClockT) control).getLocalMktTz() );
 	}
 
 	public DateTime getControlValueRaw()
 	{
-/*** 3/9/2010 Scott Atwell changed to handle UTCTimeOnly (dateClock is null) or DateOnly (timeClock is null)		
-		if ( ( dateClock == null ) || ( timeClock == null ) )
-***/		
 		if ( ( dateClock == null ) && ( timeClock == null ) )
 		{
 			return null; // disabled, no value to use
@@ -256,14 +212,12 @@ public class ClockWidget
 		// No conversion is needed for LocalMktTimeT, TZTimestampT, and TZTimeOnlyT.
 		if ( parameter == null || parameter instanceof UTCTimestampT || parameter instanceof UTCTimeOnlyT )
 		{
-// think this is the same, but we're using .withZone() in other places			result = result.toDateTime( DateTimeZone.UTC );
 			result = result.withZone( DateTimeZone.UTC );
 			logger.debug( "getControlValue() parameter: " + parameter + " result: " + result );
 		}
 		return result;
 	}
 
-//3/18/2010 Scott Atwell avoid compile error "type parameter org.joda.time.DateTime is not within its bound"		public void setValue(DateTime value)
 	public void setValue(Comparable<DateTime> value)
 	{
 		// Convert to UTC time for UTCTimestampT and UTCTimeOnlyT.
@@ -275,25 +229,7 @@ public class ClockWidget
 			// -- no need to adjust DateTime --
 		}
 		
-/*** 2/15/2010 Scott Atwell
-		if ( showMonthYear )
-		{
-			dateClock.setMonth( value.getMonthOfYear() - 1 );
-			dateClock.setYear( value.getYear() );
-		}
-		if ( showDay )
-		{
-			dateClock.setDay( value.getDayOfMonth() );
-		}
-		if ( showTime )
-		{
-			timeClock.setHours( tempLocalTzDateTime.getHourOfDay() );
-			timeClock.setMinutes( tempLocalTzDateTime.getMinuteOfHour() );
-			timeClock.setSeconds( tempLocalTzDateTime.getSecondOfMinute() );
-		}
-***/
 		// -- Force control to display time portion in local
-//3/18/2010 Scott Atwell avoid compile error "type parameter org.joda.time.DateTime is not within its bound"		DateTime tempLocalTzDateTime = value.withZone( DateTimeZone.getDefault() );
 		DateTime tempLocalTzDateTime = ((DateTime)value).withZone( DateTimeZone.getDefault() );
 		
 		if ( showMonthYear )
@@ -311,7 +247,6 @@ public class ClockWidget
 			timeClock.setMinutes( tempLocalTzDateTime.getMinuteOfHour() );
 			timeClock.setSeconds( tempLocalTzDateTime.getSecondOfMinute() );
 		}
-
 	}
 
 	public List<Control> getControls()
@@ -365,7 +300,6 @@ public class ClockWidget
 	}
 
 
-	// 1/20/2010 Scott Atwell added
 	private void applyEnabledSetting()
 	{
 		if ( enabledButton != null )
@@ -415,7 +349,6 @@ public class ClockWidget
 	{
 		if ( aValue != null )
 		{
-			// 2/1/2010 Scott Atwell DateTime tempNow = new DateTime(DateTimeZone.UTC);
 			// -- Note that this will throw IllegalArgumentException if timezone ID
 			// specified cannot be resolved --
 			DateTimeZone tempLocalMktTz = getLocalMktTz();
@@ -438,7 +371,6 @@ public class ClockWidget
 					( showMonthYear && aValue.getMinute() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getMinute() : 0,
 					( showMonthYear && aValue.getSecond() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getSecond(): 0, 
 					0,
-			// 2/1/2010 Scott Atwell DateTimeZone.UTC);
 					tempLocalMktTz );
 			
 			if ( ( aInitValueMode == Atdl4jConstants.CLOCK_INIT_VALUE_MODE_USE_CURRENT_TIME_IF_LATER ) &&
@@ -448,8 +380,7 @@ public class ClockWidget
 				tempInit = tempNow;
 			}
 			
-			// 2/3/2010 Scott Atwell -- we need to make sure that the value is
-			// rendered on the display in local timezone setValue(tempInit);
+			// -- Make sure that the value is rendered on the display in local timezone --
 			setValue( tempInit.withZone( DateTimeZone.getDefault() ) );
 		}
 	}

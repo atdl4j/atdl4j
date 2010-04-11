@@ -38,7 +38,6 @@ public class SWTStrategyDescriptionPanel
 	{
 		setAtdl4jConfig( atdl4jConfig );
 	
-//		composite = new Group(aParentComposite, SWT.NONE);
 		composite = new SWTVisibleGroup(aParentComposite, SWT.NONE);
 		((Group) composite).setText("Strategy Description");
 		composite.setLayout(new GridLayout(1, false));
@@ -74,72 +73,7 @@ public class SWTStrategyDescriptionPanel
 	@Override
 	public void setVisible(boolean aVisible)
 	{
-/*** 3/8/2010 Scott Atwell - replaced all of this with custom SWTVisibleGroup vs. Group as this handles setVisible() better (without consuming vertical space in GridLayout) 		
-// TODO TODO -- !!!! This helps, however, excess VERTICAL SPACE is still being consumed even when setVisible(false) !!!!
-		
-		if ( ( composite != null ) && ( strategyDescription != null ) )
-		{
-			strategyDescription.setVisible( aVisible );
-			composite.setVisible( aVisible );
-			
-// expandItem.setHeight(expandItem.getControl().computeSize(expandBar.getSize().x, SWT.DEFAULT, true).y); 
-		
-			// -- Adjust Grid Height of Text control --
-			if ( strategyDescription.getLayoutData() instanceof GridData )
-			{
-				GridData tempGridData = (GridData) strategyDescription.getLayoutData();
-				GridData tempNewGridData = new GridData( tempGridData.horizontalAlignment,
-																		tempGridData.verticalAlignment,
-																		tempGridData.grabExcessHorizontalSpace,
-																		tempGridData.grabExcessVerticalSpace,
-																		tempGridData.horizontalSpan,
-																		tempGridData.verticalSpan );
-				if ( aVisible )
-				{
-					tempNewGridData.heightHint = DEFAULT_STRATEGY_DESCRIPTION_HEIGHT_HINT;
-				}
-				else  // -- hide --
-				{
-					tempNewGridData.heightHint = 0;
-					tempNewGridData.verticalIndent = 0;
-				}
-
-//				strategyDescription.setLayoutData( tempGridData );
-				strategyDescription.setLayoutData( tempNewGridData );
-				strategyDescription.getParent().layout();
-			}
-
-			// -- Adjust Grid Height of Composite container --
-			if ( composite.getLayoutData() instanceof GridData )
-			{
-				GridData tempGridData = (GridData) composite.getLayoutData();
-				GridData tempNewGridData = new GridData( tempGridData.horizontalAlignment,
-																		tempGridData.verticalAlignment,
-																		tempGridData.grabExcessHorizontalSpace,
-																		tempGridData.grabExcessVerticalSpace,
-																		tempGridData.horizontalSpan,
-																		tempGridData.verticalSpan );
-				
-				if ( aVisible )
-				{
-					tempNewGridData.heightHint = DEFAULT_COMPOSITE_HEIGHT_HINT;
-				}
-				else  // -- hide --
-				{
-					tempNewGridData.heightHint = 0;
-					tempNewGridData.verticalIndent = 0;
-				}
-					
-				composite.setLayoutData( tempNewGridData );
-				composite.layout();
-			}
-//TODO 3/5/2010 Scott Atwell -- STILL NOT WORKING WITH THIS....
-composite.layout( true );
-//composite.getShell().layout( true );
-SWTStrategyPanelHelper.revalidateLayoutAsync( strategyDescription );	
-		}
-***/
-			
+		// -- Note that SWTVisibleGroup vs. Group as this handles setVisible() better (without consuming vertical space in GridLayout) --
 		if ( ( composite != null ) && ( ! composite.isDisposed() ) )
 		{
 			composite.setVisible( aVisible );

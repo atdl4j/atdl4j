@@ -28,7 +28,6 @@ public class SWTAtdl4jTesterPanel
 	public final Logger logger = Logger.getLogger(SWTAtdl4jTesterPanel.class);
 	private Composite parentComposite;
 	
-// 3/14/2010 Scott Atwell added
 	private Composite inputAndFilterDataAndLoadMessageComposite;
 	
 	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jConfig aAtdl4jConfig)
@@ -65,10 +64,7 @@ public class SWTAtdl4jTesterPanel
 //			    false));
 //		}
 
-/*** 3/14/2010 Scott Atwell		
-		// -- Build the SWT.Composite from FixMsgLoadPanel ("Input Data/Filter Criteria" button) --
-		getAtdl4jInputAndFilterDataSelectionPanel().buildAtdl4jInputAndFilterDataSelectionPanel( aParentOrShell, getAtdl4jConfig() );
-***/
+
 		inputAndFilterDataAndLoadMessageComposite = new Group( aParentOrShell, SWT.NONE );
 		((Group) inputAndFilterDataAndLoadMessageComposite).setText( "Testing Input" );
 		inputAndFilterDataAndLoadMessageComposite.setLayout( new org.eclipse.swt.layout.GridLayout(2, false) );
@@ -84,14 +80,6 @@ public class SWTAtdl4jTesterPanel
 		// -- Build the SWT.Composite from Atdl4jCompositePanel --
 		getAtdl4jCompositePanel().buildAtdl4jCompositePanel( aParentOrShell, aAtdl4jConfig );
 
-// moved within Atdl4jInputAndFilterDataSelectionPanel		
-//		// -- Build the SWT.Composite from FixMsgLoadPanel (Load Message button/text field) --
-//		getFixMsgLoadPanel().buildFixMsgLoadPanel( aParentOrShell, getAtdl4jConfig() );
-		
-//TODO 
-// build Load Message button and load Message Text		
-		
-//		return tempComposite;
 		return parentComposite;
 	}
 	
