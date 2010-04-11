@@ -1,6 +1,6 @@
 .project
 .settings/
-atdl4j-ui-swt/.classpath
-atdl4j-ui-swt/.project
-atdl4j-ui-swt/.settings
-atdl4j-ui-swt/target
+atdl4j/.classpath
+atdl4j/.project
+atdl4j/.settings
+atdl4j/target
