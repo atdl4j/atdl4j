@@ -6,6 +6,7 @@ import java.util.List;
 import org.atdl4j.fixatdl.core.BooleanT;
 import org.atdl4j.fixatdl.layout.CheckBoxT;
 import org.atdl4j.fixatdl.layout.RadioButtonT;
+import org.atdl4j.ui.ControlHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -53,6 +54,7 @@ public class ButtonWidget
 		if ( getTooltip() != null )
 			button.setToolTipText( getTooltip() );
 
+/*** 4/11/2010 Scott Atwell	
 		// init value
 		if ( control instanceof RadioButtonT )
 		{
@@ -64,6 +66,13 @@ public class ButtonWidget
 			if ( ( (CheckBoxT) control ).isInitValue() != null )
 				button.setSelection( ( (CheckBoxT) control ).isInitValue() );
 		}
+***/
+		Boolean tempInitValue = (Boolean) ControlHelper.getInitValue( control, getAtdl4jConfig() );
+		if ( tempInitValue != null )
+		{
+			setValue( tempInitValue );
+		}
+		
 		return parent;
 	}
 

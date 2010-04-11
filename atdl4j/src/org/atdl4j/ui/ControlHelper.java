@@ -198,7 +198,7 @@ public class ControlHelper
 		// -- initPolicy is INIT_POLICY_USE_VALUE  or  no input field value supplied/found for ControlT/@initFixField --
 		if ( aControl instanceof CheckBoxT )
 		{
-//			return ((CheckBoxT) aControl).getInitValue();
+			return ((CheckBoxT) aControl).isInitValue();
 		}
 		else if ( aControl instanceof CheckBoxListT )
 		{
@@ -234,7 +234,7 @@ public class ControlHelper
 		}
 		else if ( aControl instanceof RadioButtonT )
 		{
-//			return ((RadioButtonT) aControl).getInitValue();
+			return ((RadioButtonT) aControl).isInitValue();
 		}
 		else if ( aControl instanceof RadioButtonListT )
 		{

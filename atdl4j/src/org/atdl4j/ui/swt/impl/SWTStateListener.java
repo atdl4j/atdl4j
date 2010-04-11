@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Listener;
 public class SWTStateListener
 		implements Listener
 {
-
 	private SWTWidget<?> affectedWidget;
 	private StateRuleT stateRule;
 	private Map<String, SWTWidget<?>> controls;
@@ -93,6 +92,7 @@ public class SWTStateListener
 					String value = stateRule.getValue();
 					affectedWidget.setValueAsString( value );
 				}
+/*** 4/11/2010 Scott Atwell not necessary as setValueAsString() already handles Atdl4jConstants.VALUE_NULL_INDICATOR
 // 2/10/2010 Scott Atwell added the else clause
 				//  -- state arg is false and value involved is VALUE_NULL_INDICATOR --
 				else if ( Atdl4jConstants.VALUE_NULL_INDICATOR.equals( stateRule.getValue() ) )  
@@ -101,6 +101,7 @@ public class SWTStateListener
 // 2/11/2010 Scott Atwell					affectedWidget.setNullValue( false );
 					affectedWidget.setNullValue( Boolean.FALSE );
 				}
+***/			
 			}
 		}
 	}

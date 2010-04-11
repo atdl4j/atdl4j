@@ -3,6 +3,7 @@ package org.atdl4j.ui.swt.widget;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
@@ -19,6 +20,8 @@ import org.eclipse.swt.widgets.Listener;
 public class RadioButtonListener
 		implements Listener
 {
+	private static final Logger logger = Logger.getLogger( RadioButtonListener.class );
+
 	private List<Button> buttons;
 
 	public RadioButtonListener()
@@ -83,6 +86,7 @@ public class RadioButtonListener
 		// -- Select first in list if no buttons are selected --
 		if ( tempSelectedButton == null )
 		{
+logger.info("Warning: no buttons were selected for RadioButtonListener.  Selecting first button in list: " + buttons.get(0) );
 			buttons.get( 0 ).setSelection( true );
 		}
 	}
