@@ -635,6 +635,8 @@ public abstract class AbstractStrategyUI
 			int tag = Integer.parseInt( pair[ 0 ] );
 			String value = pair[ 1 ];
 
+			logger.debug("setFIXMessage() i: " + i + " extracted tag: " + tag + " value: " + value );
+
 			// not repeating group
 			if ( tag < Atdl4jConstants.TAG_NO_STRATEGY_PARAMETERS || tag > Atdl4jConstants.TAG_STRATEGY_PARAMETER_VALUE )
 			{
@@ -680,6 +682,7 @@ public abstract class AbstractStrategyUI
 		}
 
 		fireStateListeners();
+		logger.debug("setFIXMessage() complete.");
 	}
 
 	/* (non-Javadoc)

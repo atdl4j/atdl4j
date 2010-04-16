@@ -610,10 +610,12 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		
 		if ( ( tempValue == null ) && ( getNullValue() != null ) )
 		{
+			logger.debug( "setFIXValue: " + aFIXValue + " Parameter value: " + tempParameterValue + " Control value: " + tempValue + ".  Setting Control.nullValue=TRUE." );
 			setNullValue( Boolean.TRUE );
 		}
 		else
 		{
+			logger.debug( "setFIXValue: " + aFIXValue + " Parameter value: " + tempParameterValue + " Control value: " + tempValue );
 			setNullValue( Boolean.FALSE );
 		}
 		
