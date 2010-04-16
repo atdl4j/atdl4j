@@ -131,10 +131,21 @@ public class SWTStrategiesPanel
 	}  
 
 
-	public void adjustLayoutForSelectedStrategy(int aIndex)
+// 4/16/2010 Scott Atwell	public void adjustLayoutForSelectedStrategy(int aIndex)
+	public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
 	{
 		if ( strategiesPanel != null )
 		{
+// 4/16/2010 Scott Atwell added to obtain index for aStrategy			
+			int tempIndex = getIndexOfStrategyUIPanel( aStrategy );
+			logger.debug("adjustLayoutForSelectedStrategy() for aStrategy.getName(): " + aStrategy.getName() + " StrategyUI panel index: " + tempIndex );
+			
+			if ( tempIndex < 0 )
+			{
+				logger.info("ERROR:  getIndexOfStrategyUIPanel() for: " + aStrategy.getName() + " (aStrategy: " + aStrategy + " was not found (" + tempIndex + " was returned)." );
+				return;
+			}
+			
 // 4/2/2010 Scott Atwell added
 			// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
 			setVisible( false );
@@ -148,17 +159,17 @@ public class SWTStrategiesPanel
 					GridData tempGridData = (GridData) tempControl.getLayoutData();
 					if ( tempGridData != null )
 					{
-						tempGridData.heightHint = (i != aIndex) ? 0 : -1;
-						tempGridData.widthHint = (i != aIndex) ? 0 : -1;
+						tempGridData.heightHint = (i != tempIndex) ? 0 : -1;
+						tempGridData.widthHint = (i != tempIndex) ? 0 : -1;
 
-						if (i == aIndex) 
+						if (i == tempIndex) 
 						{
 							Composite tempComposite = (Composite) tempControl;
 
 // 4/2/2010 Scott Atwell added							
-							if ( ( strategyUIList != null ) && ( strategyUIList.size() > aIndex ) )
+							if ( ( strategyUIList != null ) && ( strategyUIList.size() > tempIndex ) )
 							{
-								StrategyUI tempStrategyUI = strategyUIList.get(  aIndex ); 
+								StrategyUI tempStrategyUI = strategyUIList.get(  tempIndex ); 
 								if ( tempStrategyUI != null )
 								{
 									logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );								
@@ -216,6 +227,29 @@ public class SWTStrategiesPanel
 		if ( strategiesPanel != null )
 		{
 			strategiesPanel.setVisible( aVisible );
+		}
+	}
+	
+	protected int getIndexOfStrategyUIPanel( StrategyT aStrategy )
+	{
+		StrategyUI tempMatchingStrategyUI = null;
+		
+		for ( StrategyUI tempStrategyUI : getAtdl4jConfig().getStrategyUIMap().values() )
+		{
+			if ( tempStrategyUI.getStrategy().equals( aStrategy ) )
+			{
+				tempMatchingStrategyUI = tempStrategyUI;
+				break;
+			}
+		}
+
+		if ( tempMatchingStrategyUI != null )
+		{
+			return strategyUIList.indexOf( tempMatchingStrategyUI );
+		}
+		else
+		{
+			return -1;  // -- not found --
 		}
 	}
 }

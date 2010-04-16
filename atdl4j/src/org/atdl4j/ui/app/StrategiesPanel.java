@@ -28,7 +28,8 @@ public interface StrategiesPanel
 
 	public void removeAllStrategyPanels();
 	
-	public void adjustLayoutForSelectedStrategy(int aIndex);
+// 4/16/2010 Scott Atwell	public void adjustLayoutForSelectedStrategy(int aIndex);
+	public void adjustLayoutForSelectedStrategy( StrategyT aStrategy );
 	
 	public Atdl4jConfig getAtdl4jConfig();
 

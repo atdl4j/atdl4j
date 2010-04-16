@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.app.AbstractStrategySelectionPanel;
 import org.eclipse.swt.SWT;
@@ -29,6 +30,7 @@ public class SWTStrategySelectionPanel
 	private final Logger logger = Logger.getLogger(SWTStrategySelectionPanel.class);
 	
 	private Combo strategiesDropDown;
+	private List<StrategyT> strategiesList; // -- kept in sync index-for-index with strategiesDropDown --
 	
 	public Object buildStrategySelectionPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig)
 	{
@@ -64,6 +66,7 @@ public class SWTStrategySelectionPanel
 				public void widgetSelected(SelectionEvent event) 
 				{
 					int index = strategiesDropDown.getSelectionIndex();
+logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelectionIndex(): " + index );					
 					selectDropDownStrategy( index );
 				}
 			} 
@@ -77,7 +80,7 @@ public class SWTStrategySelectionPanel
 	{
 		// remove all dropdown items
 		strategiesDropDown.removeAll();
-
+/*** 4/16/2010 Scott Atwell
 		List<String> tempStrategyUiRepOrNameList = getStrategyUiRepOrNameList( aStrategyList );
 		
 		if ( tempStrategyUiRepOrNameList == null )
@@ -90,18 +93,42 @@ public class SWTStrategySelectionPanel
 			// create dropdown item for strategy
 			strategiesDropDown.add( tempStrategy );
 		}
+***/
+		setStrategiesList( aStrategyList );
 
-		if (strategiesDropDown.getItemCount() > 0)
+		if ( getStrategiesList() == null )
 		{
-			strategiesDropDown.select( 0 );
+			return;
 		}
+
+		for (StrategyT tempStrategy : getStrategiesList()) 
+		{
+			logger.debug( "loadStrategyList() [" + strategiesDropDown.getItemCount() + "] strategiesDropDown.add: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
+			
+			// create dropdown item for strategy
+			strategiesDropDown.add( Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
+		}
+		
+		
+//		if (strategiesDropDown.getItemCount() > 0)
+//		{
+// 4/16/2010 Scott Atwell - Composite panel caller does this			strategiesDropDown.select( 0 );
+//		}
 	}
 
 
 	public void selectDropDownStrategy(int index) 
 	{
+		logger.debug( "selectDropDownStrategy() index: " + index );
+		
+		if ( getStrategiesList().size() != strategiesDropDown.getItemCount() )
+		{
+			throw new IllegalStateException( "UNEXPECTED ERROR: getStrategiesList().size(): " + getStrategiesList().size() + " does NOT MATCH strategiesDropDown.getItemCount(): " + strategiesDropDown.getItemCount() );
+		}
+		
 		strategiesDropDown.select( index );
 		
+/*** 4/16/2010 Scott Atwell		
 		if ( (getAtdl4jConfig() != null ) && (getAtdl4jConfig().getStrategies() != null) )
 		{
 			String tempSelectedDropDownName = strategiesDropDown.getItem( index );
@@ -117,11 +144,24 @@ public class SWTStrategySelectionPanel
 				}
 			}
 		}
+***/		
+		StrategyT tempStrategy = getStrategiesList().get( index );
+		
+		if ( ! strategiesDropDown.getItem( index ).equals( Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) ) )
+		{
+			throw new IllegalStateException( "UNEXPECTED ERROR: strategiesDropDown.getItem(" + index + "): " + strategiesDropDown.getItem( index ) + " DID NOT MATCH tempStrategy: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
+		}
+		
+		getAtdl4jConfig().setSelectedStrategy( tempStrategy );
+// 4/16/2010 Scott Atwell		fireStrategySelectedEvent( tempStrategy, index );
+		fireStrategySelectedEvent( tempStrategy );
 	}
 
 	
-	public void selectDropDownStrategy(String strategyName) 
+// 4/16/2010 Scott Atwell	public void selectDropDownStrategy(String strategyName) 
+	public void selectDropDownStrategyByStrategyName(String aStrategyName) 
 	{
+/*** 4/16/2010 Scott Atwell		
 		for (int i = 0; i < strategiesDropDown.getItemCount(); i++) 
 		{
 			if ( strategyName.equals( strategiesDropDown.getItem( i ) ) ) 
@@ -130,15 +170,72 @@ public class SWTStrategySelectionPanel
 				return;
 			}
 		}
+***/		
+		logger.debug( "selectDropDownStrategyByStrategyName() aStrategyName: " + aStrategyName );
+		
+		if ( getStrategiesList().size() != strategiesDropDown.getItemCount() )
+		{
+			throw new IllegalStateException( "UNEXPECTED ERROR: getStrategiesList().size(): " + getStrategiesList().size() + " does NOT MATCH strategiesDropDown.getItemCount(): " + strategiesDropDown.getItemCount() );
+		}
+			
+		for (int i = 0; i < getStrategiesList().size(); i++) 
+		{
+			StrategyT tempStrategy = getStrategiesList().get( i );
+			
+			if ( aStrategyName.equals( tempStrategy.getName() ) )
+			{
+				logger.debug( "selectDropDownStrategyByStrategyName() invoking selectDropDownStrategy( " + i + " )" );
+				selectDropDownStrategy( i );
+			}
+		}
 	}
 
+// 4/16/2010 Scott Atwell added	
+	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ) 
+	{
+		logger.debug( "selectDropDownStrategyByStrategyWireValue() aStrategyWireValue: " + aStrategyWireValue );
+		
+		if ( getStrategiesList().size() != strategiesDropDown.getItemCount() )
+		{
+			throw new IllegalStateException( "UNEXPECTED ERROR: getStrategiesList().size(): " + getStrategiesList().size() + " does NOT MATCH strategiesDropDown.getItemCount(): " + strategiesDropDown.getItemCount() );
+		}
+			
+		for (int i = 0; i < getStrategiesList().size(); i++) 
+		{
+			StrategyT tempStrategy = getStrategiesList().get( i );
+			
+			if ( aStrategyWireValue.equals( tempStrategy.getWireValue() ) )
+			{
+				logger.debug( "selectDropDownStrategyByStrategyWireValue() invoking selectDropDownStrategy( " + i + " )" );
+				selectDropDownStrategy( i );
+			}
+		}
+	}
+	
 	public void selectFirstDropDownStrategy()
 	{
 		if ( ( strategiesDropDown != null ) && 
 			  ( strategiesDropDown.getItemCount() > 0 ) )
 		{
 			strategiesDropDown.deselectAll();
+			logger.debug( "selectFirstDropDownStrategy() invoking selectDropDownStrategy( 0 )" );
 			selectDropDownStrategy( 0 );
 		}
+	}
+
+	/**
+	 * @param strategiesList the strategiesList to set
+	 */
+	protected void setStrategiesList(List<StrategyT> strategiesList)
+	{
+		this.strategiesList = strategiesList;
+	}
+
+	/**
+	 * @return the strategiesList
+	 */
+	protected List<StrategyT> getStrategiesList()
+	{
+		return strategiesList;
 	}
 }

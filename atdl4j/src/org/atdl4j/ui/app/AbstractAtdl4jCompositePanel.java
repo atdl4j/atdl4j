@@ -176,12 +176,14 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @see org.atdl4j.ui.app.StrategySelectionPanelListener#strategySelected(org.atdl4j.fixatdl.core.StrategyT, int)
 	 */
 	@Override
-	public void strategySelected(StrategyT aStrategy, int aIndex)
+// 4/16/2010 Scott Atwell	public void strategySelected(StrategyT aStrategy, int aIndex)
+	public void strategySelected(StrategyT aStrategy)
 	{
 		getAtdl4jConfig().setSelectedStrategyValidated( false );
 		setValidateOutputText( "" );
 		getStrategyDescriptionPanel().loadStrategyDescriptionVisible( aStrategy );
-		getStrategiesPanel().adjustLayoutForSelectedStrategy( aIndex );
+// 4/16/2010 Scott Atwell		getStrategiesPanel().adjustLayoutForSelectedStrategy( aIndex );
+		getStrategiesPanel().adjustLayoutForSelectedStrategy( aStrategy );
 
 		packLayout();
 		getStrategyDescriptionPanel().loadStrategyDescriptionText( aStrategy );
@@ -360,6 +362,20 @@ public abstract class AbstractAtdl4jCompositePanel
 			return;
 		}
 
+// 4/16/2010 Scott Atwell Added		
+		// -- Optional, can control the order in which the strategies will appear in the list, and can be used to restrict the list to a subset --
+		tempFilteredStrategyList = getAtdl4jConfig().getStrategyListUsingInputStrategyNameListFilter( tempFilteredStrategyList );
+
+		if ( tempFilteredStrategyList == null )
+		{
+			if ( getAtdl4jConfig().getStrategies() != null )
+			{
+				// -- Only generate the error message if Strategies have been parsed -- 
+				getAtdl4jConfig().getAtdl4jUserMessageHandler().displayMessage( "Unexpected Error", "Unexpected Error: getStrategyListUsingInputStrategyNameListFilter() was null." );
+			}
+			return;
+		}
+		
 // 4/2/2010 Scott Atwell added
 		// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
 		getStrategiesPanel().setVisible( false );
@@ -392,7 +408,7 @@ public abstract class AbstractAtdl4jCompositePanel
 		if ( ( getAtdl4jConfig().getInputAndFilterData() != null ) && 
 			  ( getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName() != null ) )
 		{
-			getStrategySelectionPanel().selectDropDownStrategy( getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName() );
+			getStrategySelectionPanel().selectDropDownStrategyByStrategyName( getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName() );
 		}
 		else
 		{
@@ -414,7 +430,7 @@ public abstract class AbstractAtdl4jCompositePanel
 			{
 				logger.info("getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName(): " + getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName());			
 				logger.info("Invoking selectDropDownStrategy: " + getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName() );							
-				getStrategySelectionPanel().selectDropDownStrategy( getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName() );
+				getStrategySelectionPanel().selectDropDownStrategyByStrategyName( getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName() );
 			}
 			else  // Match getWireValue() and then use getUiRep() if avail, otherwise getName()
 			{
@@ -425,6 +441,7 @@ public abstract class AbstractAtdl4jCompositePanel
 					logger.info("strategyWireValue: " + strategyWireValue);			
 					if ( strategyWireValue != null )
 					{
+/** 4/16/2010 Scott Atwell									
 						if ( getAtdl4jConfig().getStrategies().getStrategy() != null )
 						{
 							for ( StrategyT tempStrategy : getAtdl4jConfig().getStrategies().getStrategy() )
@@ -445,7 +462,11 @@ public abstract class AbstractAtdl4jCompositePanel
 								}
 							}
 						}
+***/									
+						logger.info("Invoking selectDropDownStrategy for strategyWireValue: " + strategyWireValue );							
+						getStrategySelectionPanel().selectDropDownStrategyByStrategyWireValue( strategyWireValue );
 					}
+					
 				}
 			}
 
@@ -460,7 +481,9 @@ public abstract class AbstractAtdl4jCompositePanel
 			// -- Note available getAtdl4jConfig().getStrategies() may be filtered due to SecurityTypes, Markets, or Region/Country rules --  
 			if ( ui != null )
 			{
+				logger.info( "Invoking ui.setFIXMessage() for: " + ui.getStrategy().getName() + " with FIX Message: " + aFixMessage );
 				ui.setFIXMessage(aFixMessage);
+				logger.info( "FIX string loaded successfully!" );
 				setValidateOutputText("FIX string loaded successfully!");
 				return true;
 			}

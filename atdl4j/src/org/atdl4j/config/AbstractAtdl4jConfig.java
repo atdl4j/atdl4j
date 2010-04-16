@@ -2146,4 +2146,61 @@ public abstract class AbstractAtdl4jConfig
 	{
 		this.defaultDigitsForSpinnerControl = aDefaultDigitsForSpinnerControl;
 	}
+	
+	/**
+	 * Uses, if specified, InputAndFilterData.getInputStrategyNameList() 
+	 * and InputAndFilterData.getApplyInputStrategyNameListAsFilter() 
+	 * to control the order presented to the user and, if so desired, exclude strategies against the available aStrategyList
+	 * 
+	 * @param aStrategyList
+	 * @return
+	 */
+	public List<StrategyT> getStrategyListUsingInputStrategyNameListFilter( List<StrategyT> aStrategyList )
+	{
+		if ( aStrategyList == null )
+		{
+			return null;
+		}
+
+		if ( ( getInputAndFilterData() != null ) &&
+			  ( getInputAndFilterData().getInputStrategyNameList() != null ) && 
+			  ( getInputAndFilterData().getInputStrategyNameList().size() > 0  ) )
+		{
+			List<StrategyT> tempAvailableStrategyList = new ArrayList<StrategyT>();
+
+			// -- Add the strategies according to their order in the specified InputStrategyNameList --
+			for ( String tempStrategyName : getInputAndFilterData().getInputStrategyNameList() )
+			{
+				for ( StrategyT tempStrategy : aStrategyList )
+				{
+					if ( tempStrategyName.equals(  tempStrategy.getName() ) )
+					{
+						// -- Strategy is in the InputStrategyNameList --
+						tempAvailableStrategyList.add( tempStrategy );
+					}
+				}				
+			}
+			
+			// -- Add any other strategyNames (in their order within the FIXatdl file) to the end unless setting specifies the input list is a filter --
+			if ( ! Boolean.TRUE.equals( getInputAndFilterData().getApplyInputStrategyNameListAsFilter() ) )
+			{
+				for ( StrategyT tempStrategy : aStrategyList )
+				{
+					if ( ! tempAvailableStrategyList.contains( tempStrategy ) )
+					{
+						tempAvailableStrategyList.add( tempStrategy );
+					}
+				}
+			}
+			
+			logger.debug("getStrategyListUsingInputStrategyNameListFilter() returning: " + tempAvailableStrategyList);
+			return tempAvailableStrategyList;
+		}
+		else
+		{
+			// -- Return the original list unfiltered --
+			return aStrategyList;
+		}
+	}
+
 }

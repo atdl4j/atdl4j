@@ -15,5 +15,6 @@ import org.atdl4j.fixatdl.core.StrategyT;
  */
 public interface StrategySelectionPanelListener
 {
-	public void strategySelected(StrategyT strategy, int index);
+// 4/16/2010 Scott Atwell	public void strategySelected(StrategyT strategy, int index);
+	public void strategySelected(StrategyT strategy);
 }

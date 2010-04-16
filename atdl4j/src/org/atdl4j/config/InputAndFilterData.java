@@ -55,8 +55,10 @@ public class InputAndFilterData
 	// -- Used to pass "other standard FIX message fields (eg FIX_OrderQty, FIX_Price, FIX_TimeInForce, etc)" and Strategy-eligibility ones (eg FIX_FIXatdl_Region, FIX_FIXatdl_Country, etc) -- 
 	private Map<String, String> inputHiddenFieldNameValueMap = null;
 	
-	private List<String> inputStrategyUiRepOrNameList = null;  // -- if specified, controls the order strategy name choices presented to the user --
-	private Boolean applyInputStrategyUiRepOrNameListAsFilter = null; // -- if specified, exclude any strategyNames not in inputStrategyUiRepOrNameList -- 
+// 4/16/2010 Scott Atwell renamed (removed UiRepOr part as is optional and not req'd unique)	private List<String> inputStrategyUiRepOrNameList = null;  // -- if specified, controls the order strategy name choices presented to the user --
+// 4/16/2010 Scott Atwell renamed (removed UiRepOr part as is optional and not req'd unique)	private Boolean applyInputStrategyUiRepOrNameListAsFilter = null; // -- if specified, exclude any strategyNames not in inputStrategyUiRepOrNameList -- 
+	private List<String> inputStrategyNameList = null;  // -- if specified, controls the order strategy name choices presented to the user --
+	private Boolean applyInputStrategyNameListAsFilter = null; // -- if specified, exclude any strategyNames not in inputStrategyNameList -- 
 
 	private String inputSelectStrategyName = null;
 
@@ -284,38 +286,38 @@ public class InputAndFilterData
 
 	/**
 	 * If specified, controls the order strategy name choices presented to the user
-	 * @param inputStrategyUiRepOrNameList the inputStrategyUiRepOrNameList to set
+	 * @param inputStrategyNameList the inputStrategyNameList to set
 	 */
-	public void setInputStrategyUiRepOrNameList(List<String> inputStrategyUiRepOrNameList)
+	public void setInputStrategyNameList(List<String> inputStrategyNameList)
 	{
-		this.inputStrategyUiRepOrNameList = inputStrategyUiRepOrNameList;
+		this.inputStrategyNameList = inputStrategyNameList;
 	}
 
 	/**
 	 * If specified, controls the order strategy name choices presented to the user
-	 * @return the inputStrategyUiRepOrNameList
+	 * @return the inputStrategyNameList
 	 */
-	public List<String> getInputStrategyUiRepOrNameList()
+	public List<String> getInputStrategyNameList()
 	{
-		return inputStrategyUiRepOrNameList;
+		return inputStrategyNameList;
 	}
 
 	/**
-	 * If specified, exclude any strategyNames not in inputStrategyUiRepOrNameList
-	 * @param applyInputStrategyUiRepOrNameListAsFilter the applyInputStrategyUiRepOrNameListAsFilter to set
+	 * If specified, exclude any strategyNames not in inputStrategyNameList
+	 * @param applyInputStrategyNameListAsFilter the applyInputStrategyNameListAsFilter to set
 	 */
-	public void setApplyInputStrategyUiRepOrNameListAsFilter(Boolean applyInputStrategyUiRepOrNameListAsFilter)
+	public void setApplyInputStrategyNameListAsFilter(Boolean applyInputStrategyNameListAsFilter)
 	{
-		this.applyInputStrategyUiRepOrNameListAsFilter = applyInputStrategyUiRepOrNameListAsFilter;
+		this.applyInputStrategyNameListAsFilter = applyInputStrategyNameListAsFilter;
 	}
 
 	/**
-	 * If specified, exclude any strategyNames not in inputStrategyUiRepOrNameList
-	 * @return the applyInputStrategyUiRepOrNameListAsFilter
+	 * If specified, exclude any strategyNames not in inputStrategyNameList
+	 * @return the applyInputStrategyNameListAsFilter
 	 */
-	public Boolean getApplyInputStrategyUiRepOrNameListAsFilter()
+	public Boolean getApplyInputStrategyNameListAsFilter()
 	{
-		return applyInputStrategyUiRepOrNameListAsFilter;
+		return applyInputStrategyNameListAsFilter;
 	}
 
 	/**

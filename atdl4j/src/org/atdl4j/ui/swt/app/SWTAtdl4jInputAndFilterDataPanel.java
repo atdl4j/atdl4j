@@ -371,8 +371,8 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		getAtdl4jConfig().getInputAndFilterData().setInputCxlReplaceMode( getCheckboxValue( checkboxInputCxlReplaceMode, null ).booleanValue() );
 		
 		getAtdl4jConfig().getInputAndFilterData().setInputSelectStrategyName( getTextValue( textSelectStrategyName ) );
-		getAtdl4jConfig().getInputAndFilterData().setApplyInputStrategyUiRepOrNameListAsFilter( getCheckboxValue( checkboxInputStrategyListAsFilter, Boolean.FALSE ) );
-		getAtdl4jConfig().getInputAndFilterData().setInputStrategyUiRepOrNameList( getTextList( textAreaStrategyNameFilterList ) );
+		getAtdl4jConfig().getInputAndFilterData().setApplyInputStrategyNameListAsFilter( getCheckboxValue( checkboxInputStrategyListAsFilter, Boolean.FALSE ) );
+		getAtdl4jConfig().getInputAndFilterData().setInputStrategyNameList( getTextList( textAreaStrategyNameFilterList ) );
 		
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_ORD_TYPE, dropDownListFixFieldOrdType );
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_SIDE, dropDownListFixFieldSide );
@@ -431,8 +431,8 @@ public class SWTAtdl4jInputAndFilterDataPanel
 			setCheckboxValue( checkboxInputCxlReplaceMode, getAtdl4jConfig().getInputAndFilterData().getInputCxlReplaceMode(), Boolean.FALSE );
 
 			setTextValue( textSelectStrategyName, getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName() );
-			setCheckboxValue( checkboxInputStrategyListAsFilter, getAtdl4jConfig().getInputAndFilterData().getApplyInputStrategyUiRepOrNameListAsFilter(), Boolean.FALSE );
-			setTextList( textAreaStrategyNameFilterList, getAtdl4jConfig().getInputAndFilterData().getInputStrategyUiRepOrNameList() );
+			setCheckboxValue( checkboxInputStrategyListAsFilter, getAtdl4jConfig().getInputAndFilterData().getApplyInputStrategyNameListAsFilter(), Boolean.FALSE );
+			setTextList( textAreaStrategyNameFilterList, getAtdl4jConfig().getInputAndFilterData().getInputStrategyNameList() );
 
 			selectDropDownItem( dropDownListFixFieldOrdType, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_ORD_TYPE ) );
 			selectDropDownItem( dropDownListFixFieldSide, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_SIDE ) );

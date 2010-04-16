@@ -166,4 +166,15 @@ public interface Atdl4jConfig
 
 	public void setDebugLoggingLevel( boolean aDebugLevelFlag );
 	public boolean isDebugLoggingLevel();
+	
+	/**
+	 * Uses, if specified, InputAndFilterData.getInputStrategyNameList() 
+	 * and InputAndFilterData.getApplyInputStrategyNameListAsFilter() 
+	 * to control the order presented to the user and, if so desired, exclude strategies against the available aStrategyList
+	 * 
+	 * @param aStrategyList
+	 * @return
+	 */
+	public List<StrategyT> getStrategyListUsingInputStrategyNameListFilter( List<StrategyT> aStrategyList );
+
 }
