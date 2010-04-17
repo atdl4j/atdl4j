@@ -9,8 +9,12 @@ import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.app.AbstractStrategySelectionPanel;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -29,6 +33,7 @@ public class SWTStrategySelectionPanel
 {
 	private final Logger logger = Logger.getLogger(SWTStrategySelectionPanel.class);
 	
+	private Composite dropdownComposite;
 	private Combo strategiesDropDown;
 	private List<StrategyT> strategiesList; // -- kept in sync index-for-index with strategiesDropDown --
 	
@@ -42,7 +47,7 @@ public class SWTStrategySelectionPanel
 		setAtdl4jConfig( atdl4jConfig );
 		
 		// Strategy selector dropdown
-		Composite dropdownComposite = new Composite(aParentComposite, SWT.NONE);
+		dropdownComposite = new Composite(aParentComposite, SWT.NONE);
 		GridLayout dropdownLayout = new GridLayout(2, false);
 		dropdownComposite.setLayout(dropdownLayout);
 		dropdownComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -51,7 +56,30 @@ public class SWTStrategySelectionPanel
 		strategiesDropDownLabel.setText("Strategy");
 		// dropDownList
 		strategiesDropDown = new Combo(dropdownComposite, SWT.READ_ONLY | SWT.BORDER);
-		strategiesDropDown.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+// 4/17/2010 Scott Atwell avoid taking the full width of screen for relatively short strategy names		strategiesDropDown.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		strategiesDropDown.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+
+		// -- Increase font size for Drop Down --
+		FontData[] fontData = strategiesDropDown.getFont().getFontData(); 
+		for(int i = 0; i < fontData.length; ++i)
+		{
+		    fontData[i].setHeight( fontData[i].getHeight() + 3 ); 
+		    fontData[i].setStyle( SWT.BOLD );
+		}
+		
+		final Font newFont = new Font(strategiesDropDown.getDisplay(), fontData); 
+		strategiesDropDown.setFont(newFont); 
+		 
+		// Since you created the font, you must dispose it 
+		strategiesDropDown.addDisposeListener(new DisposeListener()
+		{
+		    public void widgetDisposed(DisposeEvent e) 
+		    { 
+		        newFont.dispose(); 
+		    } 
+		}); 
+		
+// TODO wish to avoid issue with changing the font causes the initial combo box display to be very narrow 
 		
 		if ( ( atdl4jConfig != null ) && ( atdl4jConfig.getStrategyDropDownItemDepth() != null ) )
 		{
@@ -109,7 +137,7 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 			strategiesDropDown.add( Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
 		}
 		
-		
+		dropdownComposite.layout();
 //		if (strategiesDropDown.getItemCount() > 0)
 //		{
 // 4/16/2010 Scott Atwell - Composite panel caller does this			strategiesDropDown.select( 0 );

@@ -12,11 +12,14 @@ import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategiesUIFactory;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.AbstractStrategiesPanel;
+import org.atdl4j.ui.swt.impl.SWTStrategyUI;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Represents the SWT-specific available strategy choices GUI component.
@@ -49,11 +52,14 @@ public class SWTStrategiesPanel
 
 		// Main strategies panel
 		strategiesPanel = new Composite( aParentComposite, SWT.NONE );
-		GridLayout strategiesLayout = new GridLayout( 1, false );
-		strategiesLayout.verticalSpacing = 0;
+//		GridLayout strategiesLayout = new GridLayout( 1, false );
+//		strategiesLayout.verticalSpacing = 0;
+//		strategiesPanel.setLayout( strategiesLayout );
+//		strategiesPanel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+// 4/16/2010 Scott Atwell switched to StackLayout (equivalent of Swing's CardLayout)		
+		StackLayout strategiesLayout = new StackLayout();
 		strategiesPanel.setLayout( strategiesLayout );
-		strategiesPanel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-
+		
 		return strategiesPanel;
 	}
 
@@ -68,7 +74,7 @@ public class SWTStrategiesPanel
 	{
 		StrategiesUI<?> strategiesUI = null;
 		setPreCached( false );
-	
+		
 		try
 		{
 			StrategiesUIFactory factory = getAtdl4jConfig().getStrategiesUIFactory();
@@ -91,16 +97,27 @@ public class SWTStrategiesPanel
 			Composite strategyParent = new Composite( strategiesPanel, SWT.NONE );
 			//strategyParent.setLayout( new FillLayout() );
 			
-			GridLayout strategyParentLayout = new GridLayout( 1, false );
+//			GridLayout strategyParentLayout = new GridLayout( 1, false );
+//			strategyParentLayout.verticalSpacing = 0;
+//			strategyParent.setLayout( strategyParentLayout );
+// 4/16/2010 Scott Atwell (using StackLayout vs. GridLayout)			strategyParent.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+			GridLayout strategyParentLayout = new GridLayout( 2, false );
 			strategyParentLayout.verticalSpacing = 0;
 			strategyParent.setLayout( strategyParentLayout );
-			strategyParent.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 			
 			StrategyUI ui;
 
 			// build strategy and catch strategy-specific errors
 				try {
 					ui = strategiesUI.createUI( strategy, strategyParent );
+// 4/17/2010 Scott Atwell -- add additional components to take up space on left and bottom
+Label tempLabel = new Label( strategyParent, SWT.NONE );
+tempLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
+Label tempLabel2 = new Label( strategyParent, SWT.NONE );
+tempLabel2.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
+Label tempLabel3 = new Label( strategyParent, SWT.NONE );
+tempLabel3.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
+					
 //	4/4/2010 Scott Atwell			} catch (JAXBException e) {
 				} catch (Throwable e) {
 					getAtdl4jConfig().getAtdl4jUserMessageHandler().displayException( "Strategy Load Error",
@@ -130,7 +147,7 @@ public class SWTStrategiesPanel
 		setPreCached( true );
 	}  
 
-
+/***** 4/16/2010 Scott Atwell -- before switch to use StackLayout
 // 4/16/2010 Scott Atwell	public void adjustLayoutForSelectedStrategy(int aIndex)
 	public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
 	{
@@ -193,7 +210,33 @@ public class SWTStrategiesPanel
 			strategiesPanel.layout();
 		}
 	}
+****/
 
+// 4/16/2010 Scott Atwell - added to use with StackLayout	
+	public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
+	{
+		if ( strategiesPanel != null )
+		{
+			StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUIMap().get( aStrategy );
+			
+			if ( tempStrategyUI == null  )
+			{
+				logger.info("ERROR:  Strategy name: " + aStrategy.getName() + " not found in getAtdl4jConfig().getStrategyUIMap().  (aStrategy: " + aStrategy + ")" );
+				return;
+			}
+
+			SWTStrategyUI tempSWTStrategyUI = (SWTStrategyUI) tempStrategyUI;
+			
+			((StackLayout) strategiesPanel.getLayout()).topControl = tempSWTStrategyUI.getParent();
+
+			logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );								
+			tempStrategyUI.reinitStrategyPanel();
+
+			strategiesPanel.layout();
+		}
+	}
+
+	
 	/* (non-Javadoc)
 	 * @see org.atdl4j.ui.app.StrategiesPanel#reinitStrategyPanels()
 	 */
