@@ -97,10 +97,11 @@ public class SWTStrategiesPanel
 			Composite strategyParent = new Composite( strategiesPanel, SWT.NONE );
 			//strategyParent.setLayout( new FillLayout() );
 			
-//			GridLayout strategyParentLayout = new GridLayout( 1, false );
-//			strategyParentLayout.verticalSpacing = 0;
-//			strategyParent.setLayout( strategyParentLayout );
-// 4/16/2010 Scott Atwell (using StackLayout vs. GridLayout)			strategyParent.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+// 4/17/2010 Scott Atwell (using StackLayout vs. GridLayout)			GridLayout strategyParentLayout = new GridLayout( 1, false );
+// 4/17/2010 Scott Atwell (using StackLayout vs. GridLayout)			strategyParentLayout.verticalSpacing = 0;
+// 4/17/2010 Scott Atwell (using StackLayout vs. GridLayout)			strategyParent.setLayout( strategyParentLayout );
+// 4/17/2010 Scott Atwell (using StackLayout vs. GridLayout)			strategyParent.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+// 4/17/2010 Scott Atwell use GridLayout of 2 columns to support additional component to occupy the right and bottom space to support proper fit of main component			
 			GridLayout strategyParentLayout = new GridLayout( 2, false );
 			strategyParentLayout.verticalSpacing = 0;
 			strategyParent.setLayout( strategyParentLayout );
@@ -108,18 +109,20 @@ public class SWTStrategiesPanel
 			StrategyUI ui;
 
 			// build strategy and catch strategy-specific errors
-				try {
+				try 
+				{
 					ui = strategiesUI.createUI( strategy, strategyParent );
-// 4/17/2010 Scott Atwell -- add additional components to take up space on left and bottom
-Label tempLabel = new Label( strategyParent, SWT.NONE );
-tempLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
-Label tempLabel2 = new Label( strategyParent, SWT.NONE );
-tempLabel2.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
-Label tempLabel3 = new Label( strategyParent, SWT.NONE );
-tempLabel3.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
 					
-//	4/4/2010 Scott Atwell			} catch (JAXBException e) {
-				} catch (Throwable e) {
+					// 4/17/2010 Scott Atwell -- add additional components to take up space on left and bottom
+					Label tempLabel = new Label( strategyParent, SWT.NONE );
+					tempLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
+					Label tempLabel2 = new Label( strategyParent, SWT.NONE );
+					tempLabel2.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
+					Label tempLabel3 = new Label( strategyParent, SWT.NONE );
+					tempLabel3.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
+				} 
+				catch (Throwable e) 
+				{
 					getAtdl4jConfig().getAtdl4jUserMessageHandler().displayException( "Strategy Load Error",
 							"Error in Strategy: " + Atdl4jHelper.getStrategyUiRepOrName( strategy ), e );
 
@@ -273,6 +276,7 @@ tempLabel3.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 		}
 	}
 	
+/*** 4/16/2010 Scott Atwell
 	protected int getIndexOfStrategyUIPanel( StrategyT aStrategy )
 	{
 		StrategyUI tempMatchingStrategyUI = null;
@@ -295,4 +299,5 @@ tempLabel3.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 			return -1;  // -- not found --
 		}
 	}
+***/	
 }

@@ -137,7 +137,7 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 			strategiesDropDown.add( Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
 		}
 		
-		dropdownComposite.layout();
+		dropdownComposite.layout(); 
 //		if (strategiesDropDown.getItemCount() > 0)
 //		{
 // 4/16/2010 Scott Atwell - Composite panel caller does this			strategiesDropDown.select( 0 );
