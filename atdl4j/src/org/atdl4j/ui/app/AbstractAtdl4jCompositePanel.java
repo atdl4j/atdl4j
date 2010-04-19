@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,6 +16,8 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.InputAndFilterData;
+import org.atdl4j.data.Atdl4jConstants;
+import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.data.FIXMessageParser;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.core.StrategiesT;
@@ -325,6 +328,9 @@ public abstract class AbstractAtdl4jCompositePanel
 			URL url = new URL( aFilename );
 			
 			JAXBElement<?> element = (JAXBElement<?>) um.unmarshal(url);
+			
+// 4/18/2010 Scott Atwell added
+			validateParsedFixatdlFileContents( (StrategiesT) element.getValue() );
 
 			getAtdl4jConfig().setStrategies( (StrategiesT) element.getValue() );
 			
@@ -337,11 +343,39 @@ public abstract class AbstractAtdl4jCompositePanel
 			
 			JAXBElement<?> element = (JAXBElement<?>) um.unmarshal(file);
 			
+// 4/18/2010 Scott Atwell added
+			validateParsedFixatdlFileContents( (StrategiesT) element.getValue() );
+
 			getAtdl4jConfig().setStrategies( (StrategiesT) element.getValue() );
 			
 			setLastFixatdlFilename( aFilename );
 		}
 	}
+	
+	public void validateParsedFixatdlFileContents( StrategiesT aStrategies )
+		throws JAXBException
+	{
+		List<String> tempStrategyNameList = new ArrayList<String>();
+		
+		for ( StrategyT tempStrategy : aStrategies.getStrategy() )
+		{
+			if ( ! Atdl4jHelper.isStrategyNameValid( tempStrategy.getName() ) )
+			{
+				throw new JAXBException("Strategy/@name SYNTAX ERROR: \"" + tempStrategy.getName() + "\" does not match FIXatdl schema pattern: \"" + Atdl4jConstants.PATTERN_STRATEGY_NAME + "\"" );
+			}
+			
+			// -- Check for duplicate Strategy/@name values --
+			if ( tempStrategyNameList.contains( tempStrategy.getName() ) )
+			{
+				throw new JAXBException("DUPLICATE Strategy/@name ERROR: \"" + tempStrategy.getName() + "\" already exists." );
+			}
+			else
+			{
+				tempStrategyNameList.add( tempStrategy.getName() );
+			}
+		}
+	}
+	
 	
 	/**
 	 * Can be invoked/re-invoked at anytime provided that parseFixatdlFile() has successfully parsed the
