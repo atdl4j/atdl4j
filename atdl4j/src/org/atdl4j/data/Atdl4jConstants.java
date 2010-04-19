@@ -61,4 +61,5 @@ public class Atdl4jConstants
 		STRATEGY_FILTER_SECURITY_TYPE_ForexSpot,
 		STRATEGY_FILTER_SECURITY_TYPE_ForexForward };  // @see Strategy/@securityType
 
+	public static String PATTERN_STRATEGY_NAME = "[A-Za-z][A-za-z0-9_]{0,255}";
 }

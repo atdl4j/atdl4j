@@ -4,6 +4,7 @@
  */
 package org.atdl4j.config;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -177,4 +178,11 @@ public interface Atdl4jConfig
 	 */
 	public List<StrategyT> getStrategyListUsingInputStrategyNameListFilter( List<StrategyT> aStrategyList );
 
+	public BigDecimal getDefaultIncrementValue();
+	public void setDefaultIncrementValue(BigDecimal aValue);
+	public BigDecimal getDefaultLotSizeIncrementValue();
+	public void setDefaultLotSizeIncrementValue(BigDecimal aValue);
+	public BigDecimal getDefaultTickIncrementValue();
+	public void setDefaultTickIncrementValue(BigDecimal aValue);
+	
 }

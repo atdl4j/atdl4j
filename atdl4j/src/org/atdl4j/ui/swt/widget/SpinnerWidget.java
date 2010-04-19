@@ -53,7 +53,14 @@ public class SpinnerWidget
 
 		public void widgetSelected(SelectionEvent event)
 		{
-			spinner.setSelection( spinner.getSelection() + increment );
+			if ( spinner.getSelection() != null )
+			{
+				spinner.setSelection( spinner.getSelection() + increment );
+			}
+			else
+			{
+				spinner.setSelection( increment );
+			}
 		}
 	}
 
@@ -181,21 +188,39 @@ public class SpinnerWidget
 
 		if ( control instanceof DoubleSpinnerT )
 		{
-			if ( ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() ) != null )
-				spinner.setIncrement( ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() ).intValue() );
-
+// 4/18/2010 Scott Atwell			if ( ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() ) != null )
+//	4/18/2010 Scott Atwell				spinner.setIncrement( ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() ).intValue() );
+			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() );
+			if ( tempInnerIncrement != null )
+			{
+				// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
+				spinner.setIncrement( new Double( tempInnerIncrement.doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue() );
+			}
+			
 			int outerStepSize = 1 * (int) Math.pow( 10, spinner.getDigits() );
 			
-			if ( ControlHelper.getOuterIncrementValue( control, getAtdl4jConfig() ) != null )
-				outerStepSize = ControlHelper.getOuterIncrementValue( control, getAtdl4jConfig() ).intValue();
+// 4/18/2010 Scott Atwell			if ( ControlHelper.getOuterIncrementValue( control, getAtdl4jConfig() ) != null )
+// 4/18/2010 Scott Atwell				outerStepSize = ControlHelper.getOuterIncrementValue( control, getAtdl4jConfig() ).intValue();
+			BigDecimal tempOuterIncrement = ControlHelper.getOuterIncrementValue( control, getAtdl4jConfig() );
+			if ( tempOuterIncrement != null )
+			{
+// TODO ?? verrify				outerStepSize = (int) tempOuterIncrement.doubleValue();
+				outerStepSize = new Double( tempOuterIncrement.doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue();
+			}
 
 			buttonUp.addSelectionListener( new DoubleSpinnerSelection( spinner, outerStepSize ) );
 			buttonDown.addSelectionListener( new DoubleSpinnerSelection( spinner, -1 * outerStepSize ) );
 		}
 		else if ( control instanceof SingleSpinnerT )
 		{
-			if ( ControlHelper.getIncrementValue( control, getAtdl4jConfig() ) != null )
-				spinner.setIncrement( ControlHelper.getIncrementValue( control, getAtdl4jConfig() ).intValue() );
+// 4/18/2010 Scott Atwell			if ( ControlHelper.getIncrementValue( control, getAtdl4jConfig() ) != null )
+// 4/18/2010 Scott Atwell				spinner.setIncrement( ControlHelper.getIncrementValue( control, getAtdl4jConfig() ).intValue() );
+			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jConfig() );
+			if ( tempIncrement != null )
+			{
+				// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
+				spinner.setIncrement( new Double( tempIncrement.doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue() );
+			}
 		}
 
 		applyInitialValue();

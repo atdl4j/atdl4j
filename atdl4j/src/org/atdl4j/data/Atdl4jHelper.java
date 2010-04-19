@@ -38,4 +38,8 @@ public class Atdl4jHelper
 	}
 
 
+	public static boolean isStrategyNameValid( String aStrategyName )
+	{
+		return aStrategyName.matches( Atdl4jConstants.PATTERN_STRATEGY_NAME );
+	}
 }

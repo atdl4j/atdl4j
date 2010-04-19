@@ -1,5 +1,6 @@
 package org.atdl4j.ui.swt.app;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -387,8 +388,10 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		getAtdl4jConfig().setShowValidateOutputSection( getCheckboxValue( checkboxAtd4ljShowValidateOutputSection, null ).booleanValue() );
 		getAtdl4jConfig().setShowCompositePanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowCompositePanelOkCancelButtonSection, null ).booleanValue() );
 
-		getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigInteger( textIncrementPolicyLotSize ) );
-		getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigInteger( textIncrementPolicyTick ) );
+// 4/18/2010 Scott Atwell		getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigInteger( textIncrementPolicyLotSize ) );
+//	4/18/2010 Scott Atwell	getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigInteger( textIncrementPolicyTick ) );
+		getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigDecimal( textIncrementPolicyLotSize ) );
+		getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigDecimal( textIncrementPolicyTick ) );
 		
 		return true;
 	}
@@ -527,6 +530,31 @@ public class SWTAtdl4jInputAndFilterDataPanel
 	}
 	
 	public static void setTextValue( Text aText, BigInteger aValue )
+	{
+		if ( aValue == null )
+		{
+			aText.setText( "" );
+		}
+		else
+		{
+			aText.setText( aValue.toString() );
+		}
+	}
+	
+	public static BigDecimal getTextValueAsBigDecimal( Text aText )
+	{
+		String tempText = aText.getText();
+		if ( "".equals( tempText ) )
+		{
+			return null;
+		}
+		else
+		{
+			return new BigDecimal( tempText );
+		}
+	}
+	
+	public static void setTextValue( Text aText, BigDecimal aValue )
 	{
 		if ( aValue == null )
 		{

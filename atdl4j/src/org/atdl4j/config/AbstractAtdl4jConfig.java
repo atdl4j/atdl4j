@@ -4,6 +4,7 @@
  */
 package org.atdl4j.config;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +79,7 @@ public abstract class AbstractAtdl4jConfig
 	public static String DEFAULT_CLASS_NAME_CONTROL_UI_FACTORY = "org.atdl4j.ui.impl.BaseControlUIFactory";
 	public static String DEFAULT_CLASS_NAME_TYPE_CONVERTER_FACTORY = "org.atdl4j.data.TypeConverterFactory";
 	
-
+	
 	// -- UI Infrastructure --
 	private String classNameStrategiesUIFactory;
 	private StrategiesUIFactory strategiesUIFactory;
@@ -175,6 +176,10 @@ public abstract class AbstractAtdl4jConfig
 		return DEFAULT_CLASS_NAME_TYPE_CONVERTER_FACTORY;
 	}
 	
+	private BigDecimal defaultIncrementValue = new BigDecimal( "1.0" );
+	private BigDecimal defaultLotSizeIncrementValue = new BigDecimal( "1.0" );
+	private BigDecimal defaultTickIncrementValue = new BigDecimal( "1.0" );
+
 	
 	// -- UI Infrastructure --
 	abstract protected String getDefaultClassNameStrategiesUI();
@@ -2203,4 +2208,54 @@ public abstract class AbstractAtdl4jConfig
 		}
 	}
 
+	/**
+	 * @return the defaultIncrementValue
+	 */
+	public BigDecimal getDefaultIncrementValue()
+	{
+		return this.defaultIncrementValue;
+	}
+
+	/**
+	 * @param aDefaultIncrementValue the defaultIncrementValue to set
+	 */
+	public void setDefaultIncrementValue(BigDecimal aDefaultIncrementValue)
+	{
+		this.defaultIncrementValue = aDefaultIncrementValue;
+	}
+
+	/**
+	 * @return the defaultLotSizeIncrementValue
+	 */
+	public BigDecimal getDefaultLotSizeIncrementValue()
+	{
+		return this.defaultLotSizeIncrementValue;
+	}
+
+	/**
+	 * @param aDefaultLotSizeIncrementValue the defaultLotSizeIncrementValue to set
+	 */
+	public void setDefaultLotSizeIncrementValue(BigDecimal aDefaultLotSizeIncrementValue)
+	{
+		this.defaultLotSizeIncrementValue = aDefaultLotSizeIncrementValue;
+	}
+
+	/**
+	 * @return the defaultTickIncrementValue
+	 */
+	public BigDecimal getDefaultTickIncrementValue()
+	{
+		return this.defaultTickIncrementValue;
+	}
+
+	/**
+	 * @param aDefaultTickIncrementValue the defaultTickIncrementValue to set
+	 */
+	public void setDefaultTickIncrementValue(BigDecimal aDefaultTickIncrementValue)
+	{
+		this.defaultTickIncrementValue = aDefaultTickIncrementValue;
+	}
+
+
+	
 }

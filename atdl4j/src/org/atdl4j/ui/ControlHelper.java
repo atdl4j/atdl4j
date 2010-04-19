@@ -4,6 +4,7 @@
  */
 package org.atdl4j.ui;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.atdl4j.config.Atdl4jConfig;
@@ -41,9 +42,10 @@ public class ControlHelper
 	 * @param aAtdl4jConfig
 	 * @return
 	 */
-	public static BigInteger getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+// 4/18/2010 Scott Atwell	public static BigInteger getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
 	{
-		if ( aControl instanceof SingleSpinnerT )
+      if ( aControl instanceof SingleSpinnerT )
 		{
 			return determineIncrementValue( ((SingleSpinnerT) aControl).getIncrement(), 
 													  ((SingleSpinnerT) aControl).getIncrementPolicy(),
@@ -58,7 +60,8 @@ public class ControlHelper
 	 * @param aAtdl4jConfig
 	 * @return
 	 */
-	public static BigInteger getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+// 4/18/2010 Scott Atwell	public static BigInteger getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
 	{
 		if ( aControl instanceof DoubleSpinnerT )
 		{
@@ -75,7 +78,8 @@ public class ControlHelper
 	 * @param aAtdl4jConfig
 	 * @return
 	 */
-	public static BigInteger getOuterIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+// 4/18/2010 Scott Atwell	public static BigInteger getOuterIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+	public static BigDecimal getOuterIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
 	{
 		if ( aControl instanceof DoubleSpinnerT )
 		{
@@ -94,8 +98,18 @@ public class ControlHelper
 	 * @param aAtdl4jConfig
 	 * @return
 	 */
-	public static BigInteger determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jConfig aAtdl4jConfig )
-	{
+// 4/18/2010 Scott Atwell	public static BigInteger determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jConfig aAtdl4jConfig )
+	public static BigDecimal determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jConfig aAtdl4jConfig )
+	{ 
+		// -- FIXatdl 1.1 Schema documentation: --
+		//		<xs:documentation>
+		//      Describes how to use increment. If undefined then take value from increment
+		//      attribute, if LotSize use value based on symbol lot size. (If lot size is not available use value of
+		//      increment attribute.) If Tick use value based on symbol tick size. (If tick size is not available
+		//      use value of increment attribute.) If increment is to be used and is not defined then use a system
+		//      default value.
+		//    </xs:documentation>
+
 		if ( Atdl4jConstants.INCREMENT_POLICY_LOT_SIZE.equals( aIncrementPolicy ) ) 
 		{
 			if ( ( aAtdl4jConfig != null ) &&
@@ -104,9 +118,18 @@ public class ControlHelper
 			{
 				return aAtdl4jConfig.getInputAndFilterData().getInputIncrementPolicy_LotSize();
 			}
+//	4/18/2010 Scott Atwell removed
+//			else
+//			{
+//				throw new IllegalArgumentException( "LotSize for security was not specified.  Unable to support IncrementPolicy=" + aIncrementPolicy );
+//			}
+			else if ( aIncrement != null )
+			{
+				return new BigDecimal( aIncrement );
+			}
 			else
 			{
-				throw new IllegalArgumentException( "LotSize for security was not specified.  Unable to support IncrementPolicy=" + aIncrementPolicy );
+				return aAtdl4jConfig.getDefaultLotSizeIncrementValue();
 			}
 		}
 		else if ( Atdl4jConstants.INCREMENT_POLICY_TICK.equals( aIncrementPolicy ) ) 
@@ -117,20 +140,31 @@ public class ControlHelper
 			{
 				return aAtdl4jConfig.getInputAndFilterData().getInputIncrementPolicy_Tick();
 			}
+//	4/18/2010 Scott Atwell removed
+//			else
+//			{
+//				throw new IllegalArgumentException( "Tick size for security was not specified.  Unable to support IncrementPolicy=" + aIncrementPolicy );
+//			}
+			else if ( aIncrement != null )
+			{
+				return new BigDecimal( aIncrement );
+			}
 			else
 			{
-				throw new IllegalArgumentException( "Tick size for security was not specified.  Unable to support IncrementPolicy=" + aIncrementPolicy );
+				return aAtdl4jConfig.getDefaultTickIncrementValue();
 			}
 		} 
 		else  // -- Use aIncrement value when aIncrementPolicy null or Atdl4jConstants.INCREMENT_POLICY_STATIC --
 		{
 			if ( aIncrement != null )
 			{
-				return BigInteger.valueOf( aIncrement.longValue() ); 
+// 4/18/2010 Scott Atwell replaced				return BigInteger.valueOf( aIncrement.longValue() ); 
+				return new BigDecimal( aIncrement ); 
 			}
 			else
 			{
-				return null;
+// 4/18/2010 Scott Atwell replaced				return null;
+				return aAtdl4jConfig.getDefaultIncrementValue();
 			}
 		}
 	}

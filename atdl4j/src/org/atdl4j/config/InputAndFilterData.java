@@ -4,6 +4,7 @@
  */
 package org.atdl4j.config;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -227,12 +228,14 @@ public class InputAndFilterData
 	
 	/**
 	 */
-	public BigInteger getInputIncrementPolicy_LotSize()
+// 4/18/2010 Scott Atwell	public BigInteger getInputIncrementPolicy_LotSize()
+	public BigDecimal getInputIncrementPolicy_LotSize()
 	{
 		String tempValue = getInputHiddenFieldValue( INPUT_FIELD_NAME_INCREMENT_POLICY_LotSize );
 		if ( tempValue != null )
 		{
-			return new BigInteger( tempValue );
+// 4/18/2010 Scott Atwell			return new BigInteger( tempValue );
+			return new BigDecimal( tempValue );
 		}
 		else
 		{
@@ -242,12 +245,14 @@ public class InputAndFilterData
 	
 	/**
 	 */
-	public BigInteger getInputIncrementPolicy_Tick()
+// 4/18/2010 Scott Atwell	public BigInteger getInputIncrementPolicy_Tick()
+	public BigDecimal getInputIncrementPolicy_Tick()
 	{
 		String tempValue = getInputHiddenFieldValue( INPUT_FIELD_NAME_INCREMENT_POLICY_Tick );
 		if ( tempValue != null )
 		{
-			return new BigInteger( tempValue );
+// 4/18/2010 Scott Atwell			return new BigInteger( tempValue );
+			return new BigDecimal( tempValue );
 		}
 		else
 		{
@@ -257,7 +262,8 @@ public class InputAndFilterData
 
 	/**
 	 */
-	public void setInputIncrementPolicy_LotSize( BigInteger aLotSize )
+// 4/18/2010 Scott Atwell	public void setInputIncrementPolicy_LotSize( BigInteger aLotSize )
+	public void setInputIncrementPolicy_LotSize( BigDecimal aLotSize )
 	{
 		if ( aLotSize != null )
 		{
@@ -271,7 +277,8 @@ public class InputAndFilterData
 	
 	/**
 	 */
-	public void setInputIncrementPolicy_Tick( BigInteger aTick )
+// 4/18/2010 Scott Atwell	public void setInputIncrementPolicy_Tick( BigInteger aTick )
+	public void setInputIncrementPolicy_Tick( BigDecimal aTick )
 	{
 		if ( aTick != null )
 		{
