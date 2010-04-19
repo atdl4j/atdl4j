@@ -7,6 +7,7 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.log4j.Logger;
+import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.converter.DateTimeConverter;
 import org.atdl4j.fixatdl.core.LocalMktDateT;
@@ -409,5 +410,42 @@ public class ClockWidget
 	protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd)
 	{
 		// TODO ?? adjust the visual appearance of the control ??
+	}
+
+	/* (non-Javadoc)
+	 * @see org.atdl4j.ui.impl.AbstractControlUI#setFIXValue(java.lang.String)
+	 */
+	@Override
+	public void setFIXValue(String aFIXValue)
+	{
+		super.setFIXValue( aFIXValue );
+		
+		DateTime tempFIXValueTime = getControlValueRaw();
+		DateTime tempCurrentTime = new DateTime();
+		
+		// -- Check to see if the time set is < current time --
+		if ( tempCurrentTime.isAfter( tempFIXValueTime ) )
+		{
+			logger.debug( "setFIXValue(" + aFIXValue + ") resulted in time < present (" + tempFIXValueTime + " < " + tempCurrentTime + ")" );
+			
+			Integer tempClockPastTimeSetFIXValueRule = getAtdl4jConfig().getClockPastTimeSetFIXValueRule( getControl() );
+			logger.debug( "Control: " + getControl().getID() + " tempClockPastTimeSetFIXValueRule: " + tempClockPastTimeSetFIXValueRule );
+			
+			if ( Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS.equals( tempClockPastTimeSetFIXValueRule ) )
+			{
+				// -- keep as-is --
+				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS rule -- Retaining: " + tempFIXValueTime );
+			}
+			else if ( Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT.equals( tempClockPastTimeSetFIXValueRule ) )
+			{
+				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT rule -- Setting: " + tempCurrentTime + " ( vs. " + tempFIXValueTime + ")" );
+				setValue( tempCurrentTime );
+			} 
+			else if ( Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL.equals( tempClockPastTimeSetFIXValueRule ) )
+			{
+				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL rule -- Setting control to 'null value' ( vs. " + tempFIXValueTime + ")" );
+				setValueAsString( Atdl4jConstants.VALUE_NULL_INDICATOR );
+			} 
+		}
 	}
 }

@@ -21,6 +21,7 @@ import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.fixatdl.layout.CheckBoxListT;
 import org.atdl4j.fixatdl.layout.CheckBoxT;
 import org.atdl4j.fixatdl.layout.ClockT;
+import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.fixatdl.layout.DoubleSpinnerT;
 import org.atdl4j.fixatdl.layout.DropDownListT;
 import org.atdl4j.fixatdl.layout.EditableDropDownListT;
@@ -180,8 +181,15 @@ public abstract class AbstractAtdl4jConfig
 	private BigDecimal defaultLotSizeIncrementValue = new BigDecimal( "1.0" );
 	private BigDecimal defaultTickIncrementValue = new BigDecimal( "1.0" );
 
+	// -- Controls Clock control's behavior when FIX message timestamp (eg "StartTime" or "EffectiveTime") is older than current time --
+	private Integer clockStartTimeSetFIXValueWithPastTimeRule = CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT;
+	private Integer clockEndTimeSetFIXValueWithPastTimeRule = CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL;
+	private Integer clockUnknownSetFIXValueWithPastTimeRule = CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS;
+	// -- Used by isClockControlStartTime() and isClockControlEndTime() to check aControl.getID() to see if it contains any of the String "IDValueFragments" within these lists --
+	private String[] clockControlStartTimeIDValueFragmentList = new String[]{ "Start", "Effective", "Begin" };
+	private String[] clockControlEndTimeIDValueFragmentList = new String[]{ "End", "Expire", "Stop" };
 	
-	// -- UI Infrastructure --
+		// -- UI Infrastructure --
 	abstract protected String getDefaultClassNameStrategiesUI();
 	abstract protected String getDefaultClassNameStrategyUI();
 
@@ -2256,6 +2264,173 @@ public abstract class AbstractAtdl4jConfig
 		this.defaultTickIncrementValue = aDefaultTickIncrementValue;
 	}
 
+	/**
+	 * @param clockStartTimeSetFIXValueWithPastTimeRule the clockStartTimeSetFIXValueWithPastTimeRule to set
+	 */
+	public void setClockStartTimeSetFIXValueWithPastTimeRule(Integer aClockPastTimeSetFIXValueRule)
+	{
+		this.clockStartTimeSetFIXValueWithPastTimeRule = aClockPastTimeSetFIXValueRule;
+	}
 
+	/**
+	 * @return the clockStartTimeSetFIXValueWithPastTimeRule
+	 */
+	public Integer getClockStartTimeSetFIXValueWithPastTimeRule()
+	{
+		return clockStartTimeSetFIXValueWithPastTimeRule;
+	}
+
+	/**
+	 * @param clockEndTimeSetFIXValueWithPastTimeRule the clockEndTimeSetFIXValueWithPastTimeRule to set
+	 */
+	public void setClockEndTimeSetFIXValueWithPastTimeRule(Integer aClockPastTimeSetFIXValueRule)
+	{
+		this.clockEndTimeSetFIXValueWithPastTimeRule = aClockPastTimeSetFIXValueRule;
+	}
+
+	/**
+	 * @return the clockEndTimeSetFIXValueWithPastTimeRule
+	 */
+	public Integer getClockEndTimeSetFIXValueWithPastTimeRule()
+	{
+		return clockEndTimeSetFIXValueWithPastTimeRule;
+	}
+
+	/**
+	 * @param clockUnknownSetFIXValueWithPastTimeRule the clockUnknownSetFIXValueWithPastTimeRule to set
+	 */
+	public void setClockUnknownSetFIXValueWithPastTimeRule(Integer aClockPastTimeSetFIXValueRule)
+	{
+		this.clockUnknownSetFIXValueWithPastTimeRule = aClockPastTimeSetFIXValueRule;
+	}
+
+	/**
+	 * @return the clockUnknownSetFIXValueWithPastTimeRule
+	 */
+	public Integer getClockUnknownSetFIXValueWithPastTimeRule()
+	{
+		return clockUnknownSetFIXValueWithPastTimeRule;
+	}
+
+	/**
+	 * 'Identifies' Clock controls (by string within Control/@ID) as a 'Start', 'End', or 'Unknown' control 
+	 * and returns the appropriate getClock___SetFIXValueWithPastTimeRule() value
+	 * @param aControl
+	 * @return
+	 */
+	public Integer getClockPastTimeSetFIXValueRule( ControlT aControl )
+	{
+		if ( aControl == null )
+		{
+			throw new IllegalStateException( "aControl provided was null.");
+		}
+		
+		if ( ( aControl instanceof ClockT ) == false )
+		{
+			throw new IllegalStateException( "aControl: " + aControl + " ID: " + aControl.getID() + " was not a ClockT" );
+		}
+		
+		if ( isClockControlStartTime( aControl ) )
+		{
+			logger.debug( "aControl: " + aControl.getID() + " identified as 'StartTime'.  Returning: " + getClockStartTimeSetFIXValueWithPastTimeRule() );
+			return getClockStartTimeSetFIXValueWithPastTimeRule();
+		}
+		else if ( isClockControlEndTime( aControl ) )
+		{
+			logger.debug( "aControl: " + aControl.getID() + " identified as 'EndTime'.  Returning: " + getClockEndTimeSetFIXValueWithPastTimeRule() );
+			return getClockEndTimeSetFIXValueWithPastTimeRule();
+		}
+		else
+		{
+			logger.debug( "aControl: " + aControl.getID() + " WAS NOT identified as either 'StartTime' or 'EndTime'.  Returning: " + getClockUnknownSetFIXValueWithPastTimeRule() );
+			return getClockUnknownSetFIXValueWithPastTimeRule();
+		}
+	}
+	
+	/**
+	 * Checks aControl.getID() to see if it contains any of the String "IDValueFragments" within getClockControlStartTimeIDValueFragmentList()
+	 * @param aControl
+	 * @return
+	 */
+	protected boolean isClockControlStartTime( ControlT aControl )
+	{
+		if ( ( aControl != null ) && ( aControl instanceof ClockT ) )
+		{
+			String tempControlID = aControl.getID();
+			
+			if ( getClockControlStartTimeIDValueFragmentList() != null )
+			{
+				for ( String tempIDValueFragment : getClockControlStartTimeIDValueFragmentList() )
+				{
+					if ( tempControlID.contains( tempIDValueFragment ) )
+					{
+						logger.debug( "aControl: " + aControl.getID() + " identified as 'StartTime' via IDValueFragment: " + tempIDValueFragment );
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Checks aControl.getID() to see if it contains any of the String "IDValueFragments" within getClockControlEndTimeIDValueFragmentList()
+	 * @param aControl
+	 * @return
+	 */
+	protected boolean isClockControlEndTime( ControlT aControl )
+	{
+		if ( ( aControl != null ) && ( aControl instanceof ClockT ) )
+		{
+			String tempControlID = aControl.getID();
+			
+			if ( getClockControlEndTimeIDValueFragmentList() != null )
+			{
+				for ( String tempIDValueFragment : getClockControlEndTimeIDValueFragmentList() )
+				{
+					if ( tempControlID.contains( tempIDValueFragment ) )
+					{
+						logger.debug( "aControl: " + aControl.getID() + " identified as 'EndTime' via IDValueFragment: " + tempIDValueFragment );
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * @return the clockControlStartTimeIDValueFragmentList
+	 */
+	public String[] getClockControlStartTimeIDValueFragmentList()
+	{
+		return this.clockControlStartTimeIDValueFragmentList;
+	}
+
+	/**
+	 * @param aClockControlStartTimeIDValueFragmentList the clockControlStartTimeIDValueFragmentList to set
+	 */
+	public void setClockControlStartTimeIDValueFragmentList(String[] aClockControlStartTimeIDValueFragmentList)
+	{
+		this.clockControlStartTimeIDValueFragmentList = aClockControlStartTimeIDValueFragmentList;
+	}
+
+	/**
+	 * @return the clockControlEndTimeIDValueFragmentList
+	 */
+	public String[] getClockControlEndTimeIDValueFragmentList()
+	{
+		return this.clockControlEndTimeIDValueFragmentList;
+	}
+
+	/**
+	 * @param aClockControlEndTimeIDValueFragmentList the clockControlEndTimeIDValueFragmentList to set
+	 */
+	public void setClockControlEndTimeIDValueFragmentList(String[] aClockControlEndTimeIDValueFragmentList)
+	{
+		this.clockControlEndTimeIDValueFragmentList = aClockControlEndTimeIDValueFragmentList;
+	}
 	
 }

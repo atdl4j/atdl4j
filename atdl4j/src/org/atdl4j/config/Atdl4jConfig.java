@@ -16,6 +16,7 @@ import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.fixatdl.layout.CheckBoxListT;
 import org.atdl4j.fixatdl.layout.CheckBoxT;
 import org.atdl4j.fixatdl.layout.ClockT;
+import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.fixatdl.layout.DoubleSpinnerT;
 import org.atdl4j.fixatdl.layout.DropDownListT;
 import org.atdl4j.fixatdl.layout.EditableDropDownListT;
@@ -52,6 +53,12 @@ import org.atdl4j.ui.app.StrategySelectionPanel;
  */
 public interface Atdl4jConfig
 {
+	// -- Controls Clock control's behavior when FIX message timestamp (eg "StartTime" or "EffectiveTime") is older than current time --
+	public static final Integer CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS = new Integer( 0 );
+	public static final Integer CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT = new Integer( 1 );
+	public static final Integer CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL = new Integer( 2 );
+	
+
 	// -- UI Infrastructure --
 	/**
 	 * @return the strategiesUIFactory
@@ -184,5 +191,27 @@ public interface Atdl4jConfig
 	public void setDefaultLotSizeIncrementValue(BigDecimal aValue);
 	public BigDecimal getDefaultTickIncrementValue();
 	public void setDefaultTickIncrementValue(BigDecimal aValue);
+
+	public void setClockStartTimeSetFIXValueWithPastTimeRule(Integer aClockPastTimeSetFIXValueRule);
+	public Integer getClockStartTimeSetFIXValueWithPastTimeRule();
+	public void setClockEndTimeSetFIXValueWithPastTimeRule(Integer aClockPastTimeSetFIXValueRule);
+	public Integer getClockEndTimeSetFIXValueWithPastTimeRule();
+	public void setClockUnknownSetFIXValueWithPastTimeRule(Integer aClockPastTimeSetFIXValueRule);
+	public Integer getClockUnknownSetFIXValueWithPastTimeRule();
 	
+	/**
+	 * 'Identifies' Clock controls (by string within Control/@ID) as a 'Start' (via isClockControlStartTime()), 
+	 * 'End' (via isClockControlEndTime()), or 'Unknown' control and returns the 
+	 * appropriate getClock___SetFIXValueWithPastTimeRule() value
+	 * @param aControl
+	 * @return
+	 */
+	public Integer getClockPastTimeSetFIXValueRule( ControlT aControl );
+	
+	// -- Used by isClockControlStartTime() and isClockControlEndTime() to check aControl.getID() to see if it contains any of the String "IDValueFragments" within these lists -- 
+	public String[] getClockControlStartTimeIDValueFragmentList();
+	public void setClockControlStartTimeIDValueFragmentList(String[] aClockControlStartTimeIDValueFragmentList);
+	public String[] getClockControlEndTimeIDValueFragmentList();
+	public void setClockControlEndTimeIDValueFragmentList(String[] aClockControlEndTimeIDValueFragmentList);
+
 }
