@@ -77,6 +77,10 @@ public class SWTAtdl4jInputAndFilterDataPanel
 	public static String[] DEFAULT_FIX_FIELD_TIME_IN_FORCE_SUBSET_LIST = new String[] { "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };  // just to seed it with some  
 	public static String FIX_FIELD_NAME_TIME_IN_FORCE = "FIX_TimeInForce";  // tag 59
 	
+	private Combo dropDownListFixFieldClOrdLinkID;
+	public static String[] DEFAULT_FIX_FIELD_CL_ORD_LINK_ID_SUBSET_LIST = new String[] { "", "COMMON_ID_1", "COMMON_ID_2" };  // just to seed it with some  
+	public static String FIX_FIELD_NAME_CL_ORD_LINK_ID = "FIX_ClOrdLinkID";  // tag 583
+
 	private Button checkboxAtdl4jUsePreCachedStrategyPanels;
 	private Button checkboxAtd4ljShowStrategyDescription;
 	private Button checkboxAtd4ljShowValidateOutputSection;
@@ -290,6 +294,14 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		dropDownListFixFieldTimeInForce.setVisibleItemCount( DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT );
 		dropDownListFixFieldTimeInForce.setToolTipText( "Specify FIX Field value\nExample list provided." );
 		
+		Label tempLabelStrategyFilterClOrdLinkID = new Label( tempStandardFixFieldsGroup, SWT.NONE );
+		tempLabelStrategyFilterClOrdLinkID.setText( "ClOrdLinkID:" );
+		dropDownListFixFieldClOrdLinkID = new Combo( tempStandardFixFieldsGroup, SWT.NONE );
+		dropDownListFixFieldClOrdLinkID.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
+		dropDownListFixFieldClOrdLinkID.setItems( DEFAULT_FIX_FIELD_CL_ORD_LINK_ID_SUBSET_LIST );
+		dropDownListFixFieldClOrdLinkID.setVisibleItemCount( DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT );
+		dropDownListFixFieldClOrdLinkID.setToolTipText( "Specify FIX Field value (eg for PAIRS strategy)\nExample list provided." );
+
 		return tempStandardFixFieldsGroup;
 	}
 	
@@ -382,6 +394,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_HANDL_INST, dropDownListFixFieldHandlInst );
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_EXEC_INST, dropDownListFixFieldExecInst );
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_TIME_IN_FORCE, dropDownListFixFieldTimeInForce );
+		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_CL_ORD_LINK_ID, dropDownListFixFieldClOrdLinkID );
 	
 		getAtdl4jConfig().setUsePreCachedStrategyPanels( getCheckboxValue( checkboxAtdl4jUsePreCachedStrategyPanels, null ).booleanValue() );
 		getAtdl4jConfig().setShowStrategyDescription( getCheckboxValue( checkboxAtd4ljShowStrategyDescription, null ).booleanValue() );
@@ -444,6 +457,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 			selectDropDownItem( dropDownListFixFieldHandlInst, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_HANDL_INST ) );
 			selectDropDownItem( dropDownListFixFieldExecInst, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_EXEC_INST ) );
 			selectDropDownItem( dropDownListFixFieldTimeInForce, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_TIME_IN_FORCE ) );
+			selectDropDownItem( dropDownListFixFieldClOrdLinkID, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_CL_ORD_LINK_ID ) );
 			
 			return true;
 		}
