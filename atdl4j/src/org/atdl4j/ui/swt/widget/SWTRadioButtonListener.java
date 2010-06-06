@@ -17,14 +17,14 @@ import org.eclipse.swt.widgets.Listener;
  * @author johnnyshields
  */
 
-public class RadioButtonListener
+public class SWTRadioButtonListener
 		implements Listener
 {
-	private static final Logger logger = Logger.getLogger( RadioButtonListener.class );
+	private static final Logger logger = Logger.getLogger( SWTRadioButtonListener.class );
 
 	private List<Button> buttons;
 
-	public RadioButtonListener()
+	public SWTRadioButtonListener()
 	{
 		buttons = new Vector<Button>();
 	}
@@ -35,7 +35,7 @@ public class RadioButtonListener
 		button.addListener( SWT.Selection, this );
 	}
 
-	public void addButton(ButtonWidget buttonWidget)
+	public void addButton(SWTButtonWidget buttonWidget)
 	{
 		addButton( buttonWidget.getButton() );
 	}

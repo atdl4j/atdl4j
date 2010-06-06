@@ -1,4 +1,4 @@
-package org.atdl4j.ui.swt.widget;
+package org.atdl4j.ui.swing.widget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +50,12 @@ import org.joda.time.DateTimeZone;
  * 
  * @author john.shields
  */
-public class ClockWidget
+public class SwingClockWidget
 //3/18/2010 Scott Atwell avoid compile error "type parameter org.joda.time.DateTime is not within its bound"		extends AbstractSWTWidget<DateTime>
-	extends AbstractSWTWidget<Comparable<DateTime>>
+	extends AbstractSwingWidget<Comparable<DateTime>>
 {
 
-	private static final Logger logger = Logger.getLogger( ClockWidget.class );
+	private static final Logger logger = Logger.getLogger( SwingClockWidget.class );
 
 	private org.eclipse.swt.widgets.DateTime dateClock;
 	private org.eclipse.swt.widgets.DateTime timeClock;

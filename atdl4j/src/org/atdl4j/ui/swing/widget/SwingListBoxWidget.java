@@ -1,4 +1,4 @@
-package org.atdl4j.ui.swt.widget;
+package org.atdl4j.ui.swing.widget;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +16,8 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class ListBoxWidget
-		extends AbstractSWTWidget<String>
+public class SwingListBoxWidget
+		extends AbstractSwingWidget<String>
 {
 
 	private List listBox;

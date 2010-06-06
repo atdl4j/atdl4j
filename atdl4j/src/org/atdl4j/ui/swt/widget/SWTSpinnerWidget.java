@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class SpinnerWidget
+public class SWTSpinnerWidget
 		extends AbstractSWTWidget<BigDecimal>
 {
 	private NullableSpinner spinner;

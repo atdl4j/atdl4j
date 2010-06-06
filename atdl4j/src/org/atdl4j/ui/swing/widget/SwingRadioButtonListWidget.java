@@ -1,4 +1,4 @@
-package org.atdl4j.ui.swt.widget;
+package org.atdl4j.ui.swing.widget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class RadioButtonListWidget
-		extends AbstractSWTWidget<String>
+public class SwingRadioButtonListWidget
+		extends AbstractSwingWidget<String>
 {
-	private static final Logger logger = Logger.getLogger( RadioButtonListWidget.class );
+	private static final Logger logger = Logger.getLogger( SwingRadioButtonListWidget.class );
 
 	private List<Button> buttons = new ArrayList<Button>();
 	private Label label;

@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class CheckBoxListWidget
+public class SWTCheckBoxListWidget
 		extends AbstractSWTWidget<String>
 {
 

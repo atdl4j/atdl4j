@@ -1,4 +1,4 @@
-package org.atdl4j.ui.swt.widget;
+package org.atdl4j.ui.swing.widget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +17,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Widget;
 
-public class SliderWidget
-		extends AbstractSWTWidget<String>
+public class SwingSliderWidget
+		extends AbstractSwingWidget<String>
 {
 	private Scale slider;
 	private Label label;

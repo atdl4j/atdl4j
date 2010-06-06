@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class DropDownListWidget
+public class SWTDropDownListWidget
 		extends AbstractSWTWidget<String>
 {
 

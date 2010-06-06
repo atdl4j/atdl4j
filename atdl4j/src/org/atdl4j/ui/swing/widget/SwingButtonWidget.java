@@ -1,4 +1,4 @@
-package org.atdl4j.ui.swt.widget;
+package org.atdl4j.ui.swing.widget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +20,12 @@ import org.eclipse.swt.widgets.Widget;
 /*
  * Implements either a CheckBox or a RadioButton
  */
-public class ButtonWidget
-		extends AbstractSWTWidget<Boolean>
+public class SwingButtonWidget
+		extends AbstractSwingWidget<Boolean>
 {
 	private Button button;
 	private Label label;
-	private RadioButtonListener radioButtonListener;
+	private SwingRadioButtonListener radioButtonListener;
 
 	public Widget createWidget(Composite parent, int style)
 	{
@@ -177,7 +177,7 @@ public class ButtonWidget
 	/**
 	 * @return the radioButtonListener
 	 */
-	public RadioButtonListener getRadioButtonListener()
+	public SwingRadioButtonListener getRadioButtonListener()
 	{
 		return this.radioButtonListener;
 	}
@@ -185,7 +185,7 @@ public class ButtonWidget
 	/**
 	 * @param aRadioButtonListener the radioButtonListener to set
 	 */
-	public void setRadioButtonListener(RadioButtonListener aRadioButtonListener)
+	public void setRadioButtonListener(SwingRadioButtonListener aRadioButtonListener)
 	{
 		this.radioButtonListener = aRadioButtonListener;
 	}

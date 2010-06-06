@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class HiddenFieldWidget
+public class SWTHiddenFieldWidget
 		extends HiddenFieldUI
 		implements SWTWidget<String>
 {

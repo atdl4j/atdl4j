@@ -1,4 +1,4 @@
-package org.atdl4j.ui.swt.impl;
+package org.atdl4j.ui.swing.impl;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,10 +31,10 @@ import org.eclipse.swt.widgets.Control;
  * SWT-specific UI representation for a Strategy object.
  * 
  */
-public class SWTStrategyUI
+public class SwingStrategyUI
 		extends AbstractStrategyUI
 {
-	protected static final Logger logger = Logger.getLogger( SWTStrategyUI.class );
+	protected static final Logger logger = Logger.getLogger( SwingStrategyUI.class );
 
 	protected Map<String, SWTWidget<?>> controlMap;  // formerly:  controls
 	
@@ -42,19 +42,19 @@ public class SWTStrategyUI
 	
 	protected Map<String, SWTRadioButtonListener> radioGroupMap;	// formerly:  radioGroups
 	
-	protected List<SWTStateListener> stateListenerList;	// formerly:  stateListeners
+	protected List<SwingStateListener> stateListenerList;	// formerly:  stateListeners
 	
-	protected Map<SWTWidget<?>, Set<SWTStateListener>> widgetStateListenerMap; 	// formerly:  widgetStateListeners
+	protected Map<SWTWidget<?>, Set<SwingStateListener>> widgetStateListenerMap; 	// formerly:  widgetStateListeners
 	
 	private Composite parent;
 
-	private SWTFactory controlFactory;  // note this is lazy-init'd (adjust getControlFactory() if you wish to override/substitute concrete class)
+	private SwingFactory controlFactory;  // note this is lazy-init'd (adjust getControlFactory() if you wish to override/substitute concrete class)
 
 
 	/*
 	 * Call init() after invoking the no arg constructor
 	 */
-	public SWTStrategyUI()
+	public SwingStrategyUI()
 	{
 	}
 
@@ -69,7 +69,7 @@ public class SWTStrategyUI
 		setControlWithParameterMap( new HashMap<String, SWTWidget<?>>() );
 		
 //TODO !!! verify, as it does not appear that getWidgetStateListenerMap() is ever being populated (though, is being initialized)		
-		setWidgetStateListenerMap( new HashMap<SWTWidget<?>, Set<SWTStateListener>>() );
+		setWidgetStateListenerMap( new HashMap<SWTWidget<?>, Set<SwingStateListener>>() );
 	}
 
 	protected void buildControlMap()
@@ -110,7 +110,7 @@ public class SWTStrategyUI
 
 		// set all CxlRpl on all state listeners and fire
 		// once for good measure
-		for ( SWTStateListener stateListener : getStateListenerList() )
+		for ( SwingStateListener stateListener : getStateListenerList() )
 		{
 			stateListener.setCxlReplaceMode( cxlReplaceMode );
 			stateListener.handleEvent( null );
@@ -120,15 +120,15 @@ public class SWTStrategyUI
 	// Create a map of StateListeners to be added to each widget. This is to
 	// ensure
 	// that each StateListener is only added once to a given widget.
-	private void putStateListener(SWTWidget<?> widget, SWTStateListener stateListener)
+	private void putStateListener(SWTWidget<?> widget, SwingStateListener stateListener)
 	{
 		if ( !getWidgetStateListenerMap().containsKey( widget ) )
-			getWidgetStateListenerMap().put( widget, new HashSet<SWTStateListener>() );
+			getWidgetStateListenerMap().put( widget, new HashSet<SwingStateListener>() );
 		if ( !getWidgetStateListenerMap().get( widget ).contains( stateListener ) )
 			getWidgetStateListenerMap().get( widget ).add( stateListener );
 	}
 
-	private void attachRuleToControls(ValidationRule rule, SWTStateListener stateRuleListener)
+	private void attachRuleToControls(ValidationRule rule, SwingStateListener stateRuleListener)
 	{
 		if ( rule instanceof LogicalOperatorValidationRule )
 		{
@@ -148,7 +148,7 @@ public class SWTStrategyUI
 		}
 	}
 
-	private void attachFieldToControls(String field, SWTStateListener stateRuleListener)
+	private void attachFieldToControls(String field, SwingStateListener stateRuleListener)
 	{
 		if ( field != null )
 		{
@@ -355,7 +355,7 @@ public class SWTStrategyUI
 	 */
 	protected void attachGlobalStateRulesToControls()
 	{
-		List<SWTStateListener> tempStateListenerList = new Vector<SWTStateListener>();
+		List<SwingStateListener> tempStateListenerList = new Vector<SwingStateListener>();
 		
 		// loop through all UI controls
 		for ( SWTWidget<?> widget : getControlMap().values() )
@@ -370,7 +370,7 @@ public class SWTStrategyUI
 				{
 	
 					SWTWidget<?> affectedWidget = getControlMap().get( control.getID() );
-					SWTStateListener stateListener = new SWTStateListener( affectedWidget, stateRule, getControlMap(), getCompleteValidationRuleMap() );
+					SwingStateListener stateListener = new SwingStateListener( affectedWidget, stateRule, getControlMap(), getCompleteValidationRuleMap() );
 	
 					// attach the stateListener's rule to controls
 					attachRuleToControls( stateListener.getRule(), stateListener );
@@ -406,7 +406,7 @@ public class SWTStrategyUI
 	/**
 	 * @return the stateListenerList
 	 */
-	protected List<SWTStateListener> getStateListenerList()
+	protected List<SwingStateListener> getStateListenerList()
 	{
 		return this.stateListenerList;
 	}
@@ -414,7 +414,7 @@ public class SWTStrategyUI
 	/**
 	 * @param aStateListenerList the stateListenerList to set
 	 */
-	protected void setStateListenerList(List<SWTStateListener> aStateListenerList)
+	protected void setStateListenerList(List<SwingStateListener> aStateListenerList)
 	{
 		this.stateListenerList = aStateListenerList;
 	}
@@ -422,7 +422,7 @@ public class SWTStrategyUI
 	/**
 	 * @return the widgetStateListenerMap
 	 */
-	protected Map<SWTWidget<?>, Set<SWTStateListener>> getWidgetStateListenerMap()
+	protected Map<SWTWidget<?>, Set<SwingStateListener>> getWidgetStateListenerMap()
 	{
 		return this.widgetStateListenerMap;
 	}
@@ -430,7 +430,7 @@ public class SWTStrategyUI
 	/**
 	 * @param aWidgetStateListenerMap the widgetStateListenerMap to set
 	 */
-	protected void setWidgetStateListenerMap(Map<SWTWidget<?>, Set<SWTStateListener>> aWidgetStateListenerMap)
+	protected void setWidgetStateListenerMap(Map<SWTWidget<?>, Set<SwingStateListener>> aWidgetStateListenerMap)
 	{
 		this.widgetStateListenerMap = aWidgetStateListenerMap;
 	}
@@ -443,9 +443,9 @@ public class SWTStrategyUI
 	{
 //TODO !!! verify, as it does not appear that getWidgetStateListenerMap() is ever being populated (though, is being initialized)		
 		// add all StateListeners to the controls
-		for ( Entry<SWTWidget<?>, Set<SWTStateListener>> entry : getWidgetStateListenerMap().entrySet() )
+		for ( Entry<SWTWidget<?>, Set<SwingStateListener>> entry : getWidgetStateListenerMap().entrySet() )
 		{
-			for ( SWTStateListener listener : entry.getValue() )
+			for ( SwingStateListener listener : entry.getValue() )
 				entry.getKey().addListener( listener );
 		}
 	}
@@ -471,11 +471,11 @@ public class SWTStrategyUI
 	 * 
 	 * @return the controlFactory
 	 */
-	public SWTFactory getControlFactory() 
+	public SwingFactory getControlFactory() 
 	{
 		if ( this.controlFactory == null )
 		{
-			this.controlFactory = new SWTFactory( getAtdl4jConfig() );
+			this.controlFactory = new SwingFactory( getAtdl4jConfig() );
 		}
 		return this.controlFactory;
 	}
@@ -483,7 +483,7 @@ public class SWTStrategyUI
 	/**
 	 * @param aControlFactory the controlFactory to set
 	 */
-	protected void setControlFactory(SWTFactory aControlFactory)
+	protected void setControlFactory(SwingFactory aControlFactory)
 	{
 		this.controlFactory = aControlFactory;
 	}
@@ -491,13 +491,13 @@ public class SWTStrategyUI
 	protected void fireStateListeners()
 	{
 		// fire state listeners once for good measure
-		for ( SWTStateListener stateListener : getStateListenerList() )
+		for ( SwingStateListener stateListener : getStateListenerList() )
 			stateListener.handleEvent( null );
 	}
 
 	protected void fireStateListenersForControl( ControlUI aControl )
 	{
-		for ( SWTStateListener stateListener : getStateListenerList() )
+		for ( SwingStateListener stateListener : getStateListenerList() )
 		{
 			if ( aControl.equals( stateListener.getAffectedWidget() ) )
 			{
@@ -512,7 +512,7 @@ public class SWTStrategyUI
 	 */
 	protected void fireLoadFixMessageStateListenersForControl( ControlUI aControl )
 	{
-		for ( SWTStateListener stateListener : getStateListenerList() )
+		for ( SwingStateListener stateListener : getStateListenerList() )
 		{
 			stateListener.handleLoadFixMessageEvent( null );
 		}
