@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Composite;
 public class SWTVisibleComposite
 		extends Composite
 {
+	public static Point POINT_0_0 = new Point( 0, 0 );
+	
 	/**
 	 * @param aParent
 	 * @param aStyle
@@ -38,7 +40,8 @@ public class SWTVisibleComposite
 	{
 		if ( !isVisible() )
 		{
-			return new Point( 0, 0 );
+// 6/23/2010 SWL avoid re-constructing			return new Point( 0, 0 );
+			return POINT_0_0;
 		}
 		else
 		{
