@@ -70,6 +70,60 @@ public class SWTStrategiesPanel
 			control.dispose();
 	}
 
+// 6/23/2010 Scott Atwell added moving logic from createStrategiesPanels() loop	
+	public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStrategy)
+	{
+		// create composite
+		Composite strategyParent = new Composite( strategiesPanel, SWT.NONE );
+		//strategyParent.setLayout( new FillLayout() );
+		
+//4/17/2010 Scott Atwell (using StackLayout vs. GridLayout)			GridLayout strategyParentLayout = new GridLayout( 1, false );
+//4/17/2010 Scott Atwell (using StackLayout vs. GridLayout)			strategyParentLayout.verticalSpacing = 0;
+//4/17/2010 Scott Atwell (using StackLayout vs. GridLayout)			strategyParent.setLayout( strategyParentLayout );
+//4/17/2010 Scott Atwell (using StackLayout vs. GridLayout)			strategyParent.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+//4/17/2010 Scott Atwell use GridLayout of 2 columns to support additional component to occupy the right and bottom space to support proper fit of main component			
+		GridLayout strategyParentLayout = new GridLayout( 2, false );
+		strategyParentLayout.verticalSpacing = 0;
+		strategyParent.setLayout( strategyParentLayout );
+		
+		StrategyUI ui;
+
+		// build strategy and catch strategy-specific errors
+			try 
+			{
+				ui = aStrategiesUI.createUI( aStrategy, strategyParent );
+				
+				// 4/17/2010 Scott Atwell -- add additional components to take up space on left and bottom
+				Label tempLabel = new Label( strategyParent, SWT.NONE );
+				tempLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
+				Label tempLabel2 = new Label( strategyParent, SWT.NONE );
+				tempLabel2.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
+				Label tempLabel3 = new Label( strategyParent, SWT.NONE );
+				tempLabel3.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );					
+			} 
+			catch (Throwable e) 
+			{
+				getAtdl4jConfig().getAtdl4jUserMessageHandler().displayException( "Strategy Load Error",
+						"Error in Strategy: " + Atdl4jHelper.getStrategyUiRepOrName( aStrategy ), e );
+
+				// rollback changes
+				strategyParent.dispose();
+
+				// skip to next strategy
+// TODO 6/23/2010 Scott Atwell				continue;
+				return null;
+			} 
+
+ 			
+// TODO 6/23/2010 Scott Atwell		getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
+////4/2/2010 Scott Atwell added
+// TODO 6/23/2010 Scott Atwell		strategyUIList.add( ui );
+
+		ui.setCxlReplaceMode( getAtdl4jConfig().getInputAndFilterData().getInputCxlReplaceMode() );
+
+		return ui;
+	}
+
 	public void createStrategyPanels(List<StrategyT> aFilteredStrategyList)
 	{
 		StrategiesUI<?> strategiesUI = null;
@@ -93,6 +147,7 @@ public class SWTStrategiesPanel
 		
 		for ( StrategyT strategy : aFilteredStrategyList )
 		{
+/*** 6/23/2010 Scott Atwell moved logic to createStrategyPanel()			
 			// create composite
 			Composite strategyParent = new Composite( strategiesPanel, SWT.NONE );
 			//strategyParent.setLayout( new FillLayout() );
@@ -138,6 +193,17 @@ public class SWTStrategiesPanel
 			strategyUIList.add( ui );
 
 			ui.setCxlReplaceMode( getAtdl4jConfig().getInputAndFilterData().getInputCxlReplaceMode() );
+***  6/23/2010 Scott Atwell ****/
+			StrategyUI ui = createStrategyPanel( strategiesUI, strategy );
+			if ( ui == null )
+			{
+				// skip to next strategy
+				continue;
+			}
+			getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
+// 4/2/2010 Scott Atwell added
+			strategyUIList.add( ui );
+			
 		}
 
 /** 4/2/2010 Scott Atwell - this is already been handled by AbstractAtdl4jCompositePanel.loadScreenWithFilteredStrategies()		
