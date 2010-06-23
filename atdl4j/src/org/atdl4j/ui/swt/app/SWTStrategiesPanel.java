@@ -3,6 +3,7 @@ package org.atdl4j.ui.swt.app;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
@@ -33,7 +34,9 @@ public class SWTStrategiesPanel
 	private final Logger logger = Logger.getLogger( SWTStrategiesPanel.class );
 
 	private Composite strategiesPanel;
-	private List<StrategyUI> strategyUIList;
+// 6/23/2010 Scott Atwell	private List<StrategyUI> strategyUIList;
+//TODO 6/23/2010 Scott Atwell
+Map<StrategyT, StrategyUI> strategyUIMap = new HashMap<StrategyT, StrategyUI>();
 
 	public Object buildStrategiesPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig)
 	{
@@ -141,9 +144,11 @@ public class SWTStrategiesPanel
 			return;
 		}
 		
-		getAtdl4jConfig().setStrategyUIMap( new HashMap<StrategyT, StrategyUI>() );
+// 6/23/2010 Scott Atwell		getAtdl4jConfig().setStrategyUIMap( new HashMap<StrategyT, StrategyUI>() );
+strategyUIMap = new HashMap<StrategyT, StrategyUI>();
+
 // 4/2/2010 Scott Atwell added		
-		strategyUIList = new ArrayList<StrategyUI>();		
+// 6/23/2010 Scott Atwell		strategyUIList = new ArrayList<StrategyUI>();		
 		
 		for ( StrategyT strategy : aFilteredStrategyList )
 		{
@@ -200,9 +205,10 @@ public class SWTStrategiesPanel
 				// skip to next strategy
 				continue;
 			}
-			getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
+//TODO 6/23/2010			getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
+strategyUIMap.put( strategy, ui );
 // 4/2/2010 Scott Atwell added
-			strategyUIList.add( ui );
+// 6/23/2010 Scott Atwell			strategyUIList.add( ui );
 			
 		}
 
@@ -286,7 +292,8 @@ public class SWTStrategiesPanel
 	{
 		if ( strategiesPanel != null )
 		{
-			StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUIMap().get( aStrategy );
+// 6/23/2010 Scott Atwell			StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUIMap().get( aStrategy );
+			StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUI( aStrategy );
 			
 			if ( tempStrategyUI == null  )
 			{
@@ -312,13 +319,26 @@ public class SWTStrategiesPanel
 	@Override
 	public void reinitStrategyPanels()
 	{
+/***		
+// TODO 6/23/2010 Scott Atwell
 		for ( StrategyUI tempStrategyUI : getAtdl4jConfig().getStrategyUIMap().values() )
 		{
 			logger.info( "Invoking StrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
 
 			tempStrategyUI.reinitStrategyPanel();
 		}
-
+***/
+		// -- Only re-init for the selected strategy --
+		if ( getAtdl4jConfig().getSelectedStrategy() != null )
+		{
+			StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUI( getAtdl4jConfig().getSelectedStrategy() );
+			if ( tempStrategyUI != null )
+			{
+				logger.info( "Invoking StrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
+				tempStrategyUI.reinitStrategyPanel();
+			}
+		}
+		
 /*** 4/2/2010 Scott Atwell		
 		// -- Force the display to only show the Composite panels for the first strategy, otherwise the first screen is a jumbled mess of all strategy's parameters sequentially --
 		if ( getAtdl4jConfig().getStrategyUIMap().size() > 0 )
@@ -366,4 +386,11 @@ public class SWTStrategiesPanel
 		}
 	}
 ***/	
+	
+// 6/23/2010 Scott Atwell added
+	public StrategyUI getStrategyUI( StrategyT aStrategy )
+	{
+		return strategyUIMap.get( aStrategy );
+	}
+
 }

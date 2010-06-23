@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.fixatdl.core.StrategyT;
+import org.atdl4j.ui.StrategyUI;
 
 
 /**
@@ -44,5 +45,9 @@ public interface StrategiesPanel
 	public void removeListener(StrategiesPanelListener strategiesUIListener);
 
 	public void setVisible( boolean aVisible );
+	
+// 6/23/2010 Scott Atwell
+	public StrategyUI getStrategyUI( StrategyT aStrategy );
+
 }
  

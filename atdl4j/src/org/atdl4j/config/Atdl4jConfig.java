@@ -127,9 +127,9 @@ public interface Atdl4jConfig
 	public StrategiesT getStrategies();
 	public void setStrategies(StrategiesT strategies);
 
-	public Map<StrategyT, StrategyUI> getStrategyUIMap();
-	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap);
-
+// 6/23/2010 Scott Atwell	public Map<StrategyT, StrategyUI> getStrategyUIMap();
+// 6/23/2010 Scott Atwell	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap);
+	public StrategyUI getStrategyUI( StrategyT aStrategy );
 	public StrategyT getSelectedStrategy();
 	public void setSelectedStrategy(StrategyT selectedStrategy);
 

@@ -288,7 +288,8 @@ public abstract class AbstractAtdl4jCompositePanel
 		
 		try 
 		{
-			StrategyUI ui = getAtdl4jConfig().getStrategyUIMap().get(tempSelectedStrategy);
+// 6/23/2010 Scott Atwell			StrategyUI ui = getAtdl4jConfig().getStrategyUIMap().get(tempSelectedStrategy);
+			StrategyUI ui = getAtdl4jConfig().getStrategyUI(tempSelectedStrategy);
 			ui.validate();
 			String tempUiFixMsg = ui.getFIXMessage();
 			setValidateOutputText( tempUiFixMsg );
@@ -510,7 +511,8 @@ public abstract class AbstractAtdl4jCompositePanel
 				return false;
 			}
 			
-			StrategyUI ui = getAtdl4jConfig().getStrategyUIMap().get(getAtdl4jConfig().getSelectedStrategy());
+// 6/23/2010 Scott Atwell			StrategyUI ui = getAtdl4jConfig().getStrategyUIMap().get(getAtdl4jConfig().getSelectedStrategy());
+			StrategyUI ui = getAtdl4jConfig().getStrategyUI(getAtdl4jConfig().getSelectedStrategy());
 			
 			// -- Note available getAtdl4jConfig().getStrategies() may be filtered due to SecurityTypes, Markets, or Region/Country rules --  
 			if ( ui != null )

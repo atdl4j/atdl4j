@@ -174,7 +174,8 @@ public abstract class AbstractAtdl4jTesterPanel
 		{
 			try
 			{
-				StrategyUI ui = getAtdl4jConfig().getStrategyUIMap().get( getAtdl4jConfig().getSelectedStrategy() );
+// 6/23/2010 Scott Atwell				StrategyUI ui = getAtdl4jConfig().getStrategyUIMap().get( getAtdl4jConfig().getSelectedStrategy() );
+				StrategyUI ui = getAtdl4jConfig().getStrategyUI( getAtdl4jConfig().getSelectedStrategy() );
 				ui.validate();
 				String tempFixMsgFragment = ui.getFIXMessage();
 

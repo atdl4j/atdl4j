@@ -154,7 +154,7 @@ public abstract class AbstractAtdl4jConfig
 	private int defaultDigitsForSpinnerControl = 2;
 
 	private StrategiesT strategies;
-	private Map<StrategyT, StrategyUI> strategyUIMap;
+// 6/23/2010 Scott Atwell	private Map<StrategyT, StrategyUI> strategyUIMap;
 	private StrategyT selectedStrategy;
 	
 	private boolean catchAllStrategyLoadExceptions  = false;
@@ -329,6 +329,15 @@ public abstract class AbstractAtdl4jConfig
 		return classNameStrategiesUI;
 	}
 	
+	/**
+	 * @param aStrategy
+	 * @return
+	 */
+	public StrategyUI getStrategyUI(StrategyT aStrategy)
+	{
+		return getStrategiesPanel().getStrategyUI(aStrategy);
+	}
+
 	/**
 	 * Constructs a new instance every call.
 	 * 
@@ -1262,18 +1271,18 @@ public abstract class AbstractAtdl4jConfig
 	/**
 	 * @param strategyUIMap the strategyUIMap to set
 	 */
-	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap)
-	{
-		this.strategyUIMap = strategyUIMap;
-	}
+// 6/23/2010 Scott Atwell	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap)
+//	{
+//		this.strategyUIMap = strategyUIMap;
+//	}
 
 	/**
 	 * @return the strategyUIMap
 	 */
-	public Map<StrategyT, StrategyUI> getStrategyUIMap()
-	{
-		return strategyUIMap;
-	}
+// 6/23/2010 Scott Atwell	public Map<StrategyT, StrategyUI> getStrategyUIMap()
+//	{
+//		return strategyUIMap;
+//	}
 
 	/**
 	 * @param selectedStrategy the selectedStrategy to set
