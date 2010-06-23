@@ -147,8 +147,8 @@ public interface Atdl4jConfig
 
 	public List<StrategyT> getStrategiesFilteredStrategyList();
 
-	public boolean isUsePreCachedStrategyPanels();
-	public void setUsePreCachedStrategyPanels(boolean aUsePreCachedStrategyPanels);
+// 6/23/2010 Scott Atwell	public boolean isUsePreCachedStrategyPanels();
+// 6/23/2010 Scott Atwell	public void setUsePreCachedStrategyPanels(boolean aUsePreCachedStrategyPanels);
 	
 	public boolean isTreatControlVisibleFalseAsNull();
 	public boolean isTreatControlEnabledFalseAsNull();

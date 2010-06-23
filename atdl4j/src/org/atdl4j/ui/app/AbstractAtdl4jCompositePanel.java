@@ -317,7 +317,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	{
 		setLastFixatdlFilename( null );
 		getAtdl4jConfig().setStrategies( null );
-		getStrategiesPanel().setPreCached( false );
+// 6/23/2010 Scott Atwell		getStrategiesPanel().setPreCached( false );
 		
 		// parses the XML document and build an object model
 		JAXBContext jc = JAXBContext.newInstance(StrategiesT.class.getPackage().getName());
@@ -416,27 +416,27 @@ public abstract class AbstractAtdl4jCompositePanel
 		getStrategiesPanel().setVisible( false );
 
 		
-		if ( getAtdl4jConfig().isUsePreCachedStrategyPanels() )
-		{
-			if ( ! getStrategiesPanel().isPreCached() )
-			{
-				// remove all strategy panels
-				getStrategiesPanel().removeAllStrategyPanels();
-				
-				List<StrategyT> tempUnfilteredStrategyList = getAtdl4jConfig().getStrategies().getStrategy();
-				
-				// -- Need to Pre-cached panels, load complete, unfiltered list --
-				getStrategiesPanel().createStrategyPanels( tempUnfilteredStrategyList );
-			}
-		}
-		else
-		{
+// 6/23/2010 Scott Atwell		if ( getAtdl4jConfig().isUsePreCachedStrategyPanels() )
+//		{
+//			if ( ! getStrategiesPanel().isPreCached() )
+//			{
+//				// remove all strategy panels
+//				getStrategiesPanel().removeAllStrategyPanels();
+//				
+//				List<StrategyT> tempUnfilteredStrategyList = getAtdl4jConfig().getStrategies().getStrategy();
+//				
+//				// -- Need to Pre-cached panels, load complete, unfiltered list --
+//				getStrategiesPanel().createStrategyPanels( tempUnfilteredStrategyList );
+//			}
+//		}
+//		else
+//		{
 			// remove all strategy panels
 			getStrategiesPanel().removeAllStrategyPanels();
 			
 			// -- Always build StrategyPanels anew (can be time intensive) --
 			getStrategiesPanel().createStrategyPanels( tempFilteredStrategyList );
-		}
+//		}
 		
 		getStrategySelectionPanel().loadStrategyList( tempFilteredStrategyList );
 		

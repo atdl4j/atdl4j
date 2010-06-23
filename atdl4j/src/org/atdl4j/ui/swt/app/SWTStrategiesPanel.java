@@ -1,9 +1,6 @@
 package org.atdl4j.ui.swt.app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
@@ -15,7 +12,7 @@ import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.AbstractStrategiesPanel;
 import org.atdl4j.ui.swt.impl.SWTStrategyUI;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -24,6 +21,13 @@ import org.eclipse.swt.widgets.Label;
 
 /**
  * Represents the SWT-specific available strategy choices GUI component.
+ * 
+ * 6/23/2010 Scott Atwell:
+ * Note that we are creating the StrategyUI for each Strategy in the file, however, we are 
+ * disposing/discarding the previously built StrategyUI instances.  
+ * SWTStrategiesPanel will have at most only one StrategyUI that has not been disposed.
+ * This is required to avoid very large FIXatdl instance files (or multiple instances of SWTAtdl4jCompositePanel with own file)
+ * consuming tons of Windows USER Objects and generating "org.eclipse.swt.SWTError: No more handles"
  * 
  * @see org.atdl4j.ui.app.Atdl4jCompositePanel for AbstractAtdl4jTesterApp->AbstractAtdl4jTesterPanel->AbstractAtdl4jCompositePanel layering structure. *
  *
@@ -34,9 +38,8 @@ public class SWTStrategiesPanel
 	private final Logger logger = Logger.getLogger( SWTStrategiesPanel.class );
 
 	private Composite strategiesPanel;
-// 6/23/2010 Scott Atwell	private List<StrategyUI> strategyUIList;
-//TODO 6/23/2010 Scott Atwell
-Map<StrategyT, StrategyUI> strategyUIMap = new HashMap<StrategyT, StrategyUI>();
+	StrategiesUI<?> strategiesUI = null;
+	StrategyUI currentlyDisplayedStrategyUI = null;
 
 	public Object buildStrategiesPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig)
 	{
@@ -60,7 +63,8 @@ Map<StrategyT, StrategyUI> strategyUIMap = new HashMap<StrategyT, StrategyUI>();
 //		strategiesPanel.setLayout( strategiesLayout );
 //		strategiesPanel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 // 4/16/2010 Scott Atwell switched to StackLayout (equivalent of Swing's CardLayout)		
-		StackLayout strategiesLayout = new StackLayout();
+// 6/23/2010 Scott Atwell abandoned StackLayout due to No More Handles		StackLayout strategiesLayout = new StackLayout();
+		FillLayout strategiesLayout = new FillLayout( SWT.VERTICAL );
 		strategiesPanel.setLayout( strategiesLayout );
 		
 		return strategiesPanel;
@@ -73,7 +77,7 @@ Map<StrategyT, StrategyUI> strategyUIMap = new HashMap<StrategyT, StrategyUI>();
 			control.dispose();
 	}
 
-// 6/23/2010 Scott Atwell added moving logic from createStrategiesPanels() loop	
+// 6/23/2010 Scott Atwell added, moving logic from createStrategiesPanels() loop	
 	public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStrategy)
 	{
 		// create composite
@@ -119,18 +123,20 @@ Map<StrategyT, StrategyUI> strategyUIMap = new HashMap<StrategyT, StrategyUI>();
 
  			
 // TODO 6/23/2010 Scott Atwell		getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
-////4/2/2010 Scott Atwell added
-// TODO 6/23/2010 Scott Atwell		strategyUIList.add( ui );
 
 		ui.setCxlReplaceMode( getAtdl4jConfig().getInputAndFilterData().getInputCxlReplaceMode() );
 
+// 6/23/2010 Scott Atwell added		
+		currentlyDisplayedStrategyUI = ui;
+		
 		return ui;
 	}
 
 	public void createStrategyPanels(List<StrategyT> aFilteredStrategyList)
 	{
-		StrategiesUI<?> strategiesUI = null;
+// 6/23/2010 Scott Atwell moved up		StrategiesUI<?> strategiesUI = null;
 		setPreCached( false );
+		currentlyDisplayedStrategyUI = null;
 		
 		try
 		{
@@ -145,11 +151,7 @@ Map<StrategyT, StrategyUI> strategyUIMap = new HashMap<StrategyT, StrategyUI>();
 		}
 		
 // 6/23/2010 Scott Atwell		getAtdl4jConfig().setStrategyUIMap( new HashMap<StrategyT, StrategyUI>() );
-strategyUIMap = new HashMap<StrategyT, StrategyUI>();
 
-// 4/2/2010 Scott Atwell added		
-// 6/23/2010 Scott Atwell		strategyUIList = new ArrayList<StrategyUI>();		
-		
 		for ( StrategyT strategy : aFilteredStrategyList )
 		{
 /*** 6/23/2010 Scott Atwell moved logic to createStrategyPanel()			
@@ -199,6 +201,15 @@ strategyUIMap = new HashMap<StrategyT, StrategyUI>();
 
 			ui.setCxlReplaceMode( getAtdl4jConfig().getInputAndFilterData().getInputCxlReplaceMode() );
 ***  6/23/2010 Scott Atwell ****/
+			/********************************************************************************************
+			 * 6/23/2010 Scott Atwell
+			 * Note that we are creating the StrategyUI for each Strategy in the file, however, we are 
+			 * disposing/discarding the previously built StrategyUI instances.  
+			 * SWTStrategiesPanel will have at most only one StrategyUI that has not been disposed.
+			 * This is required to avoid very large FIXatdl instance files (or multiple instances of SWTAtdl4jCompositePanel with own file)
+			 * consuming tons of Windows USER Objects and generating "org.eclipse.swt.SWTError: No more handles"
+			 *********************************************************************************************/
+			removeAllStrategyPanels();
 			StrategyUI ui = createStrategyPanel( strategiesUI, strategy );
 			if ( ui == null )
 			{
@@ -206,88 +217,22 @@ strategyUIMap = new HashMap<StrategyT, StrategyUI>();
 				continue;
 			}
 //TODO 6/23/2010			getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
-strategyUIMap.put( strategy, ui );
-// 4/2/2010 Scott Atwell added
-// 6/23/2010 Scott Atwell			strategyUIList.add( ui );
 			
 		}
 
-/** 4/2/2010 Scott Atwell - this is already been handled by AbstractAtdl4jCompositePanel.loadScreenWithFilteredStrategies()		
-		// -- Force the display to only show the Composite panels for the first strategy, otherwise the first screen is a jumbled mess of all strategy's parameters sequentially --
-		if ( getAtdl4jConfig().getStrategyUIMap().size() > 0 )
-		{
-			adjustLayoutForSelectedStrategy( 0 );
-		}
-**/		
 		setPreCached( true );
 	}  
-
-/***** 4/16/2010 Scott Atwell -- before switch to use StackLayout
-// 4/16/2010 Scott Atwell	public void adjustLayoutForSelectedStrategy(int aIndex)
-	public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
+	
+	
+// 6/23/2010 Scott Atwell added
+	public StrategyUI getCurrentlyDisplayedStrategyUI()
 	{
-		if ( strategiesPanel != null )
-		{
-// 4/16/2010 Scott Atwell added to obtain index for aStrategy			
-			int tempIndex = getIndexOfStrategyUIPanel( aStrategy );
-			logger.debug("adjustLayoutForSelectedStrategy() for aStrategy.getName(): " + aStrategy.getName() + " StrategyUI panel index: " + tempIndex );
-			
-			if ( tempIndex < 0 )
-			{
-				logger.info("ERROR:  getIndexOfStrategyUIPanel() for: " + aStrategy.getName() + " (aStrategy: " + aStrategy + " was not found (" + tempIndex + " was returned)." );
-				return;
-			}
-			
-// 4/2/2010 Scott Atwell added
-			// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
-			setVisible( false );
-
-			// -- These were the remnants from selectDropDownStrategy(int index) that did not become part of StrategySelectionPanel
-			for (int i = 0; i < strategiesPanel.getChildren().length; i++) 
-			{
-				Control tempControl = strategiesPanel.getChildren()[i];
-				if ( tempControl != null ) 
-				{
-					GridData tempGridData = (GridData) tempControl.getLayoutData();
-					if ( tempGridData != null )
-					{
-						tempGridData.heightHint = (i != tempIndex) ? 0 : -1;
-						tempGridData.widthHint = (i != tempIndex) ? 0 : -1;
-
-						if (i == tempIndex) 
-						{
-							Composite tempComposite = (Composite) tempControl;
-
-// 4/2/2010 Scott Atwell added							
-							if ( ( strategyUIList != null ) && ( strategyUIList.size() > tempIndex ) )
-							{
-								StrategyUI tempStrategyUI = strategyUIList.get(  tempIndex ); 
-								if ( tempStrategyUI != null )
-								{
-									logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );								
-									tempStrategyUI.reinitStrategyPanel();
-								}
-							}
-							
-							
-							//tempComposite.pack();
-							tempComposite.getParent().layout(true, true);
-						}
-					}
-				}
-			}
-
-// 4/2/2010 Scott Atwell added
-			// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
-			setVisible( true );
-			
-			
-			strategiesPanel.layout();
-		}
+		return currentlyDisplayedStrategyUI;
 	}
-****/
-
+	
+	
 // 4/16/2010 Scott Atwell - added to use with StackLayout	
+// 6/23/2010 Scott Atwell abandoned StackLayout due to No More Handles
 	public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
 	{
 		if ( strategiesPanel != null )
@@ -297,14 +242,15 @@ strategyUIMap.put( strategy, ui );
 			
 			if ( tempStrategyUI == null  )
 			{
-				logger.info("ERROR:  Strategy name: " + aStrategy.getName() + " not found in getAtdl4jConfig().getStrategyUIMap().  (aStrategy: " + aStrategy + ")" );
+				logger.info("ERROR:  Strategy name: " + aStrategy.getName() + " was not found.  (aStrategy: " + aStrategy + ")" );
 				return;
 			}
 
 			SWTStrategyUI tempSWTStrategyUI = (SWTStrategyUI) tempStrategyUI;
 			
-			((StackLayout) strategiesPanel.getLayout()).topControl = tempSWTStrategyUI.getParent();
-
+// 6/23/2010 Scott Atwell abandoned StackLayout due to No More Handles ((StackLayout) strategiesPanel.getLayout()).topControl = tempSWTStrategyUI.getParent();
+// 6/23/2010 Scott Atwell -- note that getStrategyUI(StrategyT) now handles the Composite population/layout
+			
 			logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );								
 			tempStrategyUI.reinitStrategyPanel();
 
@@ -319,8 +265,7 @@ strategyUIMap.put( strategy, ui );
 	@Override
 	public void reinitStrategyPanels()
 	{
-/***		
-// TODO 6/23/2010 Scott Atwell
+/*** 6/23/2010 Scott Atwell
 		for ( StrategyUI tempStrategyUI : getAtdl4jConfig().getStrategyUIMap().values() )
 		{
 			logger.info( "Invoking StrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
@@ -338,14 +283,6 @@ strategyUIMap.put( strategy, ui );
 				tempStrategyUI.reinitStrategyPanel();
 			}
 		}
-		
-/*** 4/2/2010 Scott Atwell		
-		// -- Force the display to only show the Composite panels for the first strategy, otherwise the first screen is a jumbled mess of all strategy's parameters sequentially --
-		if ( getAtdl4jConfig().getStrategyUIMap().size() > 0 )
-		{
-			adjustLayoutForSelectedStrategy( 0 );
-		}
-***/		
 	}
 
 	/* 
@@ -362,35 +299,21 @@ strategyUIMap.put( strategy, ui );
 		}
 	}
 	
-/*** 4/16/2010 Scott Atwell
-	protected int getIndexOfStrategyUIPanel( StrategyT aStrategy )
-	{
-		StrategyUI tempMatchingStrategyUI = null;
-		
-		for ( StrategyUI tempStrategyUI : getAtdl4jConfig().getStrategyUIMap().values() )
-		{
-			if ( tempStrategyUI.getStrategy().equals( aStrategy ) )
-			{
-				tempMatchingStrategyUI = tempStrategyUI;
-				break;
-			}
-		}
-
-		if ( tempMatchingStrategyUI != null )
-		{
-			return strategyUIList.indexOf( tempMatchingStrategyUI );
-		}
-		else
-		{
-			return -1;  // -- not found --
-		}
-	}
-***/	
 	
 // 6/23/2010 Scott Atwell added
 	public StrategyUI getStrategyUI( StrategyT aStrategy )
 	{
-		return strategyUIMap.get( aStrategy );
+		if ( aStrategy.equals( getCurrentlyDisplayedStrategy() ) )
+		{
+			logger.debug("Strategy name: " + aStrategy.getName() + " is currently being displayed.  Returning getCurrentlyDisplayedStrategyUI()" );
+			return getCurrentlyDisplayedStrategyUI();
+		}
+		else
+		{
+			logger.debug("Strategy name: " + aStrategy.getName() + " is not currently displayed.  Invoking removeAllStrategyPanels() and returning createStrategyPanel()" );
+			removeAllStrategyPanels();
+			return createStrategyPanel( strategiesUI, aStrategy );
+		}
 	}
 
 }

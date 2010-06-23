@@ -48,6 +48,8 @@ public interface StrategiesPanel
 	
 // 6/23/2010 Scott Atwell
 	public StrategyUI getStrategyUI( StrategyT aStrategy );
+	public StrategyUI getCurrentlyDisplayedStrategyUI();
+	public StrategyT getCurrentlyDisplayedStrategy();
 
 }
  

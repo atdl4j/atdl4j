@@ -141,7 +141,7 @@ public abstract class AbstractAtdl4jConfig
 	private Integer strategyDropDownItemDepth = new Integer( 15 );  // ComboBox drop down 'depth' (aka VisibleItemCount)
 	private boolean selectedStrategyValidated = false;
 	
-	private boolean usePreCachedStrategyPanels = true;
+// 6/23/2010 Scott Atwell	private boolean usePreCachedStrategyPanels = true;
 
 	private boolean treatControlVisibleFalseAsNull = false;
 	private boolean treatControlEnabledFalseAsNull = false;	
@@ -1974,18 +1974,18 @@ public abstract class AbstractAtdl4jConfig
 	/**
 	 * @return the usePreCachedStrategyPanels
 	 */
-	public boolean isUsePreCachedStrategyPanels()
-	{
-		return this.usePreCachedStrategyPanels;
-	}
+// 6/23/2010 Scott Atwell	public boolean isUsePreCachedStrategyPanels()
+//	{
+//		return this.usePreCachedStrategyPanels;
+//	}
 
 	/**
 	 * @param aUsePreCachedStrategyPanels the usePreCachedStrategyPanels to set
 	 */
-	public void setUsePreCachedStrategyPanels(boolean aUsePreCachedStrategyPanels)
-	{
-		this.usePreCachedStrategyPanels = aUsePreCachedStrategyPanels;
-	}
+// 6/23/2010 Scott Atwell	public void setUsePreCachedStrategyPanels(boolean aUsePreCachedStrategyPanels)
+//	{
+//		this.usePreCachedStrategyPanels = aUsePreCachedStrategyPanels;
+//	}
 	
 	/**
 	 * @return the catchAllStrategyLoadExceptions
