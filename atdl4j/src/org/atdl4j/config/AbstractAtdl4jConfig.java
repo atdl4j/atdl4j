@@ -177,9 +177,11 @@ public abstract class AbstractAtdl4jConfig
 		return DEFAULT_CLASS_NAME_TYPE_CONVERTER_FACTORY;
 	}
 	
-	private BigDecimal defaultIncrementValue = new BigDecimal( "1.0" );
+// 7/7/2010 Scott Atwell changed to null	private BigDecimal defaultIncrementValue = new BigDecimal( "1.0" );
+	private BigDecimal defaultIncrementValue = null;
 	private BigDecimal defaultLotSizeIncrementValue = new BigDecimal( "1.0" );
-	private BigDecimal defaultTickIncrementValue = new BigDecimal( "1.0" );
+// 7/6/2010 Scott Atwell	private BigDecimal defaultTickIncrementValue = new BigDecimal( "1.0" );
+	private BigDecimal defaultTickIncrementValue = new BigDecimal( "0.0001" );
 
 	// -- Controls Clock control's behavior when FIX message timestamp (eg "StartTime" or "EffectiveTime") is older than current time --
 	private Integer clockStartTimeSetFIXValueWithPastTimeRule = CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT;
