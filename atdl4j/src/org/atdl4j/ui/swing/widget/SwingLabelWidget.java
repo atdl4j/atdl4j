@@ -3,23 +3,22 @@ package org.atdl4j.ui.swing.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.atdl4j.ui.ControlHelper;
 import org.atdl4j.ui.impl.LabelUI;
-import org.atdl4j.ui.swt.SWTWidget;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
+import org.atdl4j.ui.swing.SwingListener;
+import org.atdl4j.ui.swing.SwingWidget;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Widget;
 
 public class SwingLabelWidget
 		extends LabelUI
-		implements SWTWidget<String>
+		implements SwingWidget<String>
 {
 
-	private Label label;
+	private JLabel label;
 
 	/**
 	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
@@ -27,11 +26,10 @@ public class SwingLabelWidget
 	 * public LabelWidget(LabelT control) { super(control); }
 	 **/
 
-	public Widget createWidget(Composite parent, int style)
+	public void createWidget(JPanel parent)
 	{
-
 		// label
-		label = new Label( parent, SWT.NONE );
+		label = new JLabel();
 
 		if ( control.getLabel() != null )
 		{
@@ -45,16 +43,11 @@ public class SwingLabelWidget
 		{
 			label.setText( "" );
 		}
-		GridData gd = new GridData( SWT.LEFT, SWT.TOP, false, false );
-		gd.horizontalSpan = 2;
-		label.setLayoutData( gd );
-
+		
 		// tooltip
-		String tooltip = getTooltip();
-		if ( tooltip != null )
-			label.setToolTipText( tooltip );
+		if (getTooltip() != null) label.setToolTipText(getTooltip());
 
-		return parent;
+		parent.add(label);
 	}
 
 	public void generateStateRuleListener(Listener listener)
@@ -62,67 +55,59 @@ public class SwingLabelWidget
 		// do nothing
 	}
 
-	public List<Control> getControls()
-	{
-		List<Control> widgets = new ArrayList<Control>();
-		widgets.add( label );
+	public List<JComponent> getComponents() {
+		List<JComponent> widgets = new ArrayList<JComponent>();
+		widgets.add(label);
 		return widgets;
 	}
 
-	public List<Control> getControlsExcludingLabel()
-	{
-		return getControls();
+	public List<JComponent> getComponentsExcludingLabel() {
+		return getComponents();
 	}
-
-	public void addListener(Listener listener)
-	{
+	
+	public void addListener(SwingListener listener) {
 		// do nothing
 	}
-
-	public void removeListener(Listener listener)
-	{
+	
+	public void removeListener(SwingListener listener) {
 		// do nothing
 	}
-
+	
 	public void setVisible(boolean visible)
 	{
-		for ( Control control : getControls() )
-		{
-			control.setVisible( visible );
+		for (JComponent control : getComponents()) {
+			control.setVisible(visible);
 		}
 	}
-
+	
 	public void setEnabled(boolean enabled)
 	{
-		for ( Control control : getControls() )
-		{
-			control.setEnabled( enabled );
+		for (JComponent control : getComponents()) {
+			control.setEnabled(enabled);
 		}
 	}
 
 	public boolean isVisible()
 	{
-		for ( Control control : getControls() )
+		for ( JComponent control : getComponents() )
 		{
 			if ( control.isVisible() )
 			{
 				return true;
 			}
 		}
-
 		return false;
 	}
 
 	public boolean isEnabled()
 	{
-		for ( Control control : getControls() )
+		for ( JComponent control : getComponents() )
 		{
 			if ( control.isEnabled() )
 			{
 				return true;
 			}
 		}
-
 		return false;
 	}
 	
@@ -132,7 +117,7 @@ public class SwingLabelWidget
 	@Override
 	public void processReinit( Object aControlInitValue )
 	{
-		if ( ( label != null ) && ( ! label.isDisposed() ) )
+		if ( ( label != null ) )
 		{
 			label.setText( (aControlInitValue != null ) ? (String) aControlInitValue : "" );
 		}

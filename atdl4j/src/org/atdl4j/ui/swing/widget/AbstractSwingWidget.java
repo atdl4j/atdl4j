@@ -1,20 +1,20 @@
 package org.atdl4j.ui.swing.widget;
 
-import org.atdl4j.ui.impl.AbstractControlUI;
-import org.atdl4j.ui.swt.SWTWidget;
-import org.eclipse.swt.widgets.Control;
+import javax.swing.JComponent;
 
+import org.atdl4j.ui.impl.AbstractControlUI;
+import org.atdl4j.ui.swing.SwingWidget;
 /**
  * Abstract class that represents a Parameter SWT Widget. Implements the FIX
  * value getters's methods.
  */
 public abstract class AbstractSwingWidget<E extends Comparable<?>>
 		extends AbstractControlUI<E>
-		implements SWTWidget<E>
+		implements SwingWidget<E>
 {
 	public void setVisible(boolean visible)
-	{
-		for ( Control control : getControls() )
+	{		
+		for ( JComponent control : getComponents() )
 		{
 			control.setVisible( visible );
 		}
@@ -22,7 +22,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 
 	public void setEnabled(boolean enabled)
 	{
-		for ( Control control : getControls() )
+		for ( JComponent control : getComponents() )
 		{
 			control.setEnabled( enabled );
 		}
@@ -30,7 +30,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 
 	public boolean isVisible()
 	{
-		for ( Control control : getControls() )
+		for ( JComponent control : getComponents() )
 		{
 			if ( control.isVisible() )
 			{
@@ -43,7 +43,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 
 	public boolean isEnabled()
 	{
-		for ( Control control : getControls() )
+		for ( JComponent control : getComponents() )
 		{
 			if ( control.isEnabled() )
 			{
@@ -56,7 +56,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 
 	public void setControlExcludingLabelEnabled(boolean enabled)
 	{
-		for ( Control control : getControlsExcludingLabel() )
+		for ( JComponent control : getComponentsExcludingLabel() )
 		{
 			control.setEnabled( enabled );
 		}
@@ -64,7 +64,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 
 	public boolean isControlExcludingLabelEnabled()
 	{
-		for ( Control control : getControlsExcludingLabel() )
+		for ( JComponent control : getComponentsExcludingLabel() )
 		{
 			if ( control.isEnabled() )
 			{

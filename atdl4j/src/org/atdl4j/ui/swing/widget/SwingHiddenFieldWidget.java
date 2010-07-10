@@ -2,16 +2,17 @@ package org.atdl4j.ui.swing.widget;
 
 import java.util.List;
 
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
 import org.atdl4j.ui.impl.HiddenFieldUI;
-import org.atdl4j.ui.swt.SWTWidget;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.atdl4j.ui.swing.SwingListener;
+import org.atdl4j.ui.swing.SwingWidget;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Widget;
 
 public class SwingHiddenFieldWidget
 		extends HiddenFieldUI
-		implements SWTWidget<String>
+		implements SwingWidget<String>
 {
 /** 2/9/2010 Scott Atwell	@see AbstractControlUI.init(ControlT aControl, ParameterT aParameter, Atdl4jConfig aAtdl4jConfig) throws JAXBException
 	public HiddenFieldWidget(HiddenFieldT control, ParameterT parameter) throws JAXBException {
@@ -19,31 +20,32 @@ public class SwingHiddenFieldWidget
 	}
 	 **/
 
-	public Widget createWidget(Composite parent, int style)
-	{
-		return null;
-	}
-
-	public void generateStateRuleListener(Listener listener)
-	{
-	}
-
-	public List<Control> getControls()
-	{
-		return null;
-	}
-
-	public List<Control> getControlsExcludingLabel()
-	{
-		return getControls();
-	}
-
-	public void addListener(Listener listener)
+	public void createWidget(JPanel parent)
 	{
 		// do nothing
 	}
 
-	public void removeListener(Listener listener)
+	public void generateStateRuleListener(Listener listener)
+	{
+		// do nothing
+	}
+
+	public List<JComponent> getComponents()
+	{
+		return null;
+	}
+
+	public List<JComponent> getComponentsExcludingLabel()
+	{
+		return getComponents();
+	}
+
+	public void addListener(SwingListener listener)
+	{
+		// do nothing
+	}
+
+	public void removeListener(SwingListener listener)
 	{
 		// do nothing
 	}

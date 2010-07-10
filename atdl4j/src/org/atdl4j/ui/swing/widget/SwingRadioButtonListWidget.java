@@ -3,50 +3,44 @@ package org.atdl4j.ui.swing.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
 import org.apache.log4j.Logger;
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.layout.ListItemT;
 import org.atdl4j.fixatdl.layout.PanelOrientationT;
 import org.atdl4j.fixatdl.layout.RadioButtonListT;
 import org.atdl4j.ui.ControlHelper;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Widget;
+import org.atdl4j.ui.swing.SwingListener;
 
 public class SwingRadioButtonListWidget
 		extends AbstractSwingWidget<String>
 {
 	private static final Logger logger = Logger.getLogger( SwingRadioButtonListWidget.class );
 
-	private List<Button> buttons = new ArrayList<Button>();
-	private Label label;
+	private List<JRadioButton> buttons = new ArrayList<JRadioButton>();
+	private ButtonGroup group = new ButtonGroup();	
+	private JLabel label;
 
-
-	public Widget createWidget(Composite parent, int style)
-	{
-		String tooltip = getTooltip();
-		GridData controlGD = new GridData( SWT.FILL, SWT.FILL, false, false );
-		
+	public void createWidget(JPanel parent)
+	{		
+		JPanel wrapper = new JPanel();
+	    String tooltip = getTooltip();
+	        	    
 		// label
 		if ( control.getLabel() != null ) {
-			label = new Label( parent, SWT.NONE );
+			label = new JLabel();
 			label.setText( control.getLabel() );
 			if ( tooltip != null ) label.setToolTipText( tooltip );
-			controlGD.horizontalSpan = 1;
-		} else {
-			controlGD.horizontalSpan = 2;
-		}
+			parent.add(label);
+		}	
 		
-		Composite c = new Composite( parent, SWT.NONE );
-		c.setLayoutData(controlGD);
-
+		/*
+		 //TODO: implement horiz/vert orientation for Swing
 		if ( ((RadioButtonListT) control).getOrientation() != null &&
 			 PanelOrientationT.VERTICAL.equals( ((RadioButtonListT) control).getOrientation() ) )
 		{
@@ -56,12 +50,12 @@ public class SwingRadioButtonListWidget
 			rl.wrap = false;
 			c.setLayout( rl );
 		}
-
+		 */
+		
 		// radioButton
 		for ( ListItemT listItem : ( (RadioButtonListT) control ).getListItem() )
 		{
-
-			Button radioElement = new Button( c, style | SWT.RADIO );
+			JRadioButton radioElement = new JRadioButton();
 			radioElement.setText( listItem.getUiRep() );
 			if ( parameter != null )
 			{
@@ -75,8 +69,12 @@ public class SwingRadioButtonListWidget
 				}
 			}
 			else
+			{
 				radioElement.setToolTipText( tooltip );
+			}
+			group.add( radioElement );
 			buttons.add( radioElement );
+			wrapper.add( radioElement );
 		}
 
 		// set initValue (Note that this has to be the enumID, not the
@@ -84,16 +82,16 @@ public class SwingRadioButtonListWidget
 		// set initValue
 		if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
 			setValue( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ), true );
-
-		return c;
+		
+		parent.add(wrapper);
 	}
 
 	public String getControlValueRaw()
 	{
 		for ( int i = 0; i < this.buttons.size(); i++ )
 		{
-			Button b = buttons.get( i );
-			if ( b.getSelection() )
+			JRadioButton b = buttons.get( i );
+			if ( b.isSelected() )
 			{
 				return ( (RadioButtonListT) control ).getListItem().get( i ).getEnumID();
 			}
@@ -113,51 +111,45 @@ public class SwingRadioButtonListWidget
 
 	public void setValue(String value, boolean setValueAsControl)
 	{
-		for ( int i = 0; i < buttons.size(); i++ )
-		{
-			Button b = buttons.get( i );
-			if ( setValueAsControl || parameter == null )
-			{
-				b.setSelection( value.equals( getListItems().get( i ).getEnumID() ) );
-			}
-			else
-			{
-				b.setSelection( value.equals( parameter.getEnumPair().get( i ).getWireValue() ) );
+		for (int i = 0; i < buttons.size(); i++) {
+			JRadioButton b = buttons.get(i);
+			if (setValueAsControl || parameter == null) {
+				b.setSelected(value.equals(getListItems().get(i).getEnumID()));
+			} else {
+				b.setSelected(value.equals(parameter.getEnumPair().get(i)
+						.getWireValue()));
 			}
 		}
 	}
-
-	public List<Control> getControls()
+	
+	public List<JComponent> getComponents()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<JComponent> widgets = new ArrayList<JComponent>();
 		if (label != null) widgets.add( label );
 		widgets.addAll( buttons );
 		return widgets;
 	}
 
-	public List<Control> getControlsExcludingLabel()
-	{
-		List<Control> widgets = new ArrayList<Control>();
+	public List<JComponent> getComponentsExcludingLabel() {
+		List<JComponent> widgets = new ArrayList<JComponent>();
 		widgets.addAll( buttons );
 		return widgets;
-	}
-
-	public void addListener(Listener listener)
-	{
-		for ( Button b : buttons )
+	}	
+	
+	public void addListener(SwingListener listener) {
+		for ( JRadioButton b : buttons )
 		{
-			b.addListener( SWT.Selection, listener );
+			b.addActionListener(listener);
 		}
 	}
 
-	public void removeListener(Listener listener)
-	{
-		for ( Button b : buttons )
+	public void removeListener(SwingListener listener) {
+		for ( JRadioButton b : buttons )
 		{
-			b.removeListener( SWT.Selection, listener );
+			b.removeActionListener(listener);
 		}
-	}
-
+	}	
+	
 	/* (non-Javadoc)
 	 * @see org.atdl4j.ui.ControlUI#reinit()
 	 */
@@ -172,11 +164,11 @@ public class SwingRadioButtonListWidget
 		else
 		{
 			// -- reset each when no initValue exists --
-			for ( Button tempButton : buttons )
+			for ( JRadioButton tempButton : buttons )
 			{
-				if ( ( tempButton != null ) && ( ! tempButton.isDisposed() ) )
+				if ( ( tempButton != null ) )
 				{
-					tempButton.setSelection( false );
+					tempButton.setSelected( false );
 				}
 			}
 		}

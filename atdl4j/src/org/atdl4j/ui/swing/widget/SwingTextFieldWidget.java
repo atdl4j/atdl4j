@@ -3,52 +3,70 @@ package org.atdl4j.ui.swing.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.atdl4j.ui.ControlHelper;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Widget;
+import org.atdl4j.ui.swing.SwingListener;
+/*
+import org.atdl4j.fixatdl.core.IntT;
+import org.atdl4j.fixatdl.core.LengthT;
+import org.atdl4j.fixatdl.core.NumInGroupT;
+import org.atdl4j.fixatdl.core.NumberFormatVerifier;
+import org.atdl4j.fixatdl.core.NumericT;
+import org.atdl4j.fixatdl.core.ParameterT;
+import org.atdl4j.fixatdl.core.SeqNumT;
+import org.atdl4j.fixatdl.core.TagNumT;
+*/
 
 public class SwingTextFieldWidget
 		extends AbstractSwingWidget<String>
 {
+	private JFormattedTextField textField;
+	private JLabel label;
 
-	private Text textField;
-	private Label label;
-
-
-	public Widget createWidget(Composite parent, int style)
+	public void createWidget(JPanel parent)
 	{
-		String tooltip = getTooltip();
-		GridData controlGD = new GridData( SWT.FILL, SWT.CENTER, true, false );
-		
-		// label
+		// tooltip
+		String tooltip = control.getTooltip();
+							
+		// label		
 		if ( control.getLabel() != null ) {
-			label = new Label( parent, SWT.NONE );
-			label.setText( control.getLabel() );
+			label = new JLabel();
+			label.setText(control.getLabel());
 			if ( tooltip != null ) label.setToolTipText( tooltip );
-			controlGD.horizontalSpan = 1;
-		} else {
-			controlGD.horizontalSpan = 2;
+			parent.add(label);
 		}
 				
 		// textField
-		textField = new Text( parent, style | SWT.BORDER );
-		textField.setLayoutData( controlGD );
-
-
+		textField = new JFormattedTextField();
+		
+		/*
+		// type validation
+		if (parameter instanceof IntT ||
+			parameter instanceof TagNumT ||
+			parameter instanceof LengthT ||	
+			parameter instanceof SeqNumT ||
+			parameter instanceof NumInGroupT) {
+			// Integer types
+			textField.setInputVerifier(new NumberFormatVerifier(new DecimalFormat("#"), false));
+		} else if (parameter instanceof NumericT) {
+			// Decimal types
+			textField.setInputVerifier(new NumberFormatVerifier(new DecimalFormat("0.0"), false));
+		}
+		// TODO: add regex verifier for MultipleCharValueT and MultipleStringValueT
+		*/
+		
 		// init value
 		if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
 			textField.setText( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ) );
 
 		// tooltip
-		if ( tooltip != null ) textField.setToolTipText( tooltip );
+		if (tooltip != null) textField.setToolTipText(tooltip);
 
-		return parent;
+		parent.add(textField);
 	}
 
 
@@ -70,30 +88,26 @@ public class SwingTextFieldWidget
 	{
 		textField.setText( ( value == null ) ? "" : value.toString() );
 	}
-
-	public List<Control> getControls()
-	{
-		List<Control> widgets = new ArrayList<Control>();
-		if (label != null) widgets.add( label );
-		widgets.add( textField );
+	
+	public List<JComponent> getComponents() {
+		List<JComponent> widgets = new ArrayList<JComponent>();
+		if (label != null) widgets.add(label);
+		widgets.add(textField);
 		return widgets;
 	}
 
-	public List<Control> getControlsExcludingLabel()
-	{
-		List<Control> widgets = new ArrayList<Control>();
-		widgets.add( textField );
+	public List<JComponent> getComponentsExcludingLabel() {
+		List<JComponent> widgets = new ArrayList<JComponent>();
+		widgets.add(textField);
 		return widgets;
+	}	
+	
+	public void addListener(SwingListener listener) {
+		textField.addActionListener(listener);
 	}
 
-	public void addListener(Listener listener)
-	{
-		textField.addListener( SWT.Modify, listener );
-	}
-
-	public void removeListener(Listener listener)
-	{
-		textField.removeListener( SWT.Modify, listener );
+	public void removeListener(SwingListener listener) {
+		textField.addActionListener(listener);
 	}
 
 	/**
@@ -121,7 +135,7 @@ public class SwingTextFieldWidget
 	@Override
 	public void processReinit( Object aControlInitValue )
 	{
-		if ( ( textField != null ) && ( ! textField.isDisposed() ) )
+		if ( ( textField != null ) )
 		{
 			textField.setText( (aControlInitValue != null ) ? (String) aControlInitValue : "" );
 		}

@@ -1,11 +1,16 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
-
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.data.Atdl4jConstants;
@@ -18,19 +23,13 @@ import org.atdl4j.fixatdl.core.UTCTimestampT;
 import org.atdl4j.fixatdl.core.UseT;
 import org.atdl4j.fixatdl.layout.ClockT;
 import org.atdl4j.ui.ControlHelper;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Widget;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+
+import org.atdl4j.ui.swing.SwingListener;
+
+import com.jidesoft.spinner.DateSpinner;
+
 
 /**
  * Clock widget which will display differently depending on the parameter type
@@ -57,19 +56,24 @@ public class SwingClockWidget
 
 	private static final Logger logger = Logger.getLogger( SwingClockWidget.class );
 
-	private org.eclipse.swt.widgets.DateTime dateClock;
-	private org.eclipse.swt.widgets.DateTime timeClock;
-
-	// -- enabledButton (for optional parameters) and label are mutually exclusive (use the one that is not null) --
-	private Button enabledButton;
-	private Label label;
-
+	public static boolean showEnabledButton = false;
+	public boolean hasLabelOrCheckbox = false;
+	private JCheckBox enabledButton;
+	
+	private JLabel label;
+	
+	private DateSpinner dateClock;
+	private DateSpinner timeClock;
+	
 	private boolean showMonthYear;
 	private boolean showDay;
 	private boolean showTime;
 
-	public Widget createWidget(Composite parent, int style)
+	public void createWidget(JPanel parent)
 	{
+		// tooltip
+		String tooltip = control.getTooltip();		
+		
 		if ( parameter instanceof UTCTimestampT )
 		{
 			showMonthYear = true;
@@ -95,93 +99,55 @@ public class SwingClockWidget
 			showTime = true;
 		}
 		
-		boolean hasLabelOrCheckbox = false;
-		
 		if ( ( getAtdl4jConfig() != null ) &&
 			  ( getAtdl4jConfig().isShowEnabledCheckboxOnOptionalClockControl() ) && 
 			  ( parameter != null ) && 
 			  ( UseT.OPTIONAL.equals( parameter.getUse() ) ) )
 		{
 			hasLabelOrCheckbox = true;
-			enabledButton = new Button( parent, SWT.CHECK );
-			if ( control.getLabel() != null )
-			{
-				enabledButton.setText( control.getLabel() );
+			enabledButton = new JCheckBox();
+			if (control.getLabel() != null) {
+				enabledButton.setText(control.getLabel());
 			}
-			enabledButton.setToolTipText( "Check to enable and specify or uncheck to disable this optional parameter value" );
-			enabledButton.setSelection( false ); // TODO disabled by default ????
-			enabledButton.addSelectionListener( new SelectionAdapter()
-			{
-				@Override
-				public void widgetSelected(SelectionEvent e)
-				{
-					applyEnabledSetting();
+			enabledButton.setToolTipText("Click to enable optional parameter");
+			enabledButton.setSelected(false);
+			enabledButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					applyEnabledSetting();					
 				}
-			} );
-		}
-		else
-		// "required" -- use standard label without preceding checkbox
+			});
+			parent.add(enabledButton);
+		}		
+		else if (control.getLabel() != null)
 		{
-			// label
+			// add label
 			hasLabelOrCheckbox = true;
-			label = new Label( parent, SWT.NONE );
-			if ( control.getLabel() != null )
-				label.setText( control.getLabel() );
+			label = new JLabel();
+			label.setText(control.getLabel());
+			if (tooltip != null) label.setToolTipText(tooltip);
+			parent.add(label);
 		}
-
-		Composite c = new Composite( parent, SWT.NONE );
-		GridLayout gridLayout = new GridLayout( 2, true );
-		gridLayout.horizontalSpacing = 2;
-		gridLayout.verticalSpacing = 0;
-		gridLayout.marginLeft = gridLayout.marginRight = 0;
-		gridLayout.marginTop = gridLayout.marginBottom = 0;
-		gridLayout.marginWidth = gridLayout.marginHeight = 0;
-		c.setLayout( gridLayout );
-		GridData controlGD = new GridData( SWT.FILL, SWT.FILL, false, false );
-		controlGD.horizontalSpan = hasLabelOrCheckbox ? 1 : 2;
-		c.setLayoutData(controlGD);
-		
-		GridData clockGD = new GridData( SWT.FILL, SWT.FILL, false, false );
-		clockGD.horizontalSpan = (showMonthYear && showTime) ? 1 : 2;						
 		
 		// date clock
-		if ( showMonthYear )
-		{
-			dateClock = new org.eclipse.swt.widgets.DateTime( c, style | SWT.BORDER | SWT.DATE | ( showDay ? SWT.MEDIUM : SWT.SHORT ) );
-			dateClock.setLayoutData(clockGD);
-
+		if (showMonthYear) {
+			dateClock = new DateSpinner(showDay ? "DD/MM/YYYY" : "MM/YYYY");
+			if (tooltip != null) dateClock.setToolTipText(tooltip);
+			parent.add(dateClock);
 		}
 		// time clock
-		if ( showTime )
-		{
-			timeClock = new org.eclipse.swt.widgets.DateTime( c, style | SWT.BORDER | SWT.TIME | SWT.MEDIUM );
-			timeClock.setLayoutData(clockGD);
-		}
-
-		// tooltip
-		String tooltip = getTooltip();
-		if ( tooltip != null )
-		{
-			if ( showMonthYear )
-				dateClock.setToolTipText( tooltip );
-			if ( showTime )
-				timeClock.setToolTipText( tooltip );
-			if ( label != null )
-				label.setToolTipText( tooltip );
-			if ( enabledButton != null && tooltip != null )
-				enabledButton.setToolTipText( tooltip );
+		if (showTime) {
+			timeClock = new DateSpinner();
+			if (tooltip != null) timeClock.setToolTipText(tooltip);
+			parent.add(timeClock);
 		}
 
 		// init value, if applicable
 		setAndRenderInitValue( (XMLGregorianCalendar ) ControlHelper.getInitValue( control, getAtdl4jConfig() ), ((ClockT) control).getInitValueMode() );
-
 		
 		if ( enabledButton != null )
 		{
 			applyEnabledSetting();
 		}
-
-		return parent;
 	}
 
 	public DateTimeZone getLocalMktTz() 
@@ -190,22 +156,26 @@ public class SwingClockWidget
 		// This will throw IllegalArgumentException if ID cannot be resolved
 		return DateTimeConverter.convertTimezoneToDateTimeZone( ((ClockT) control).getLocalMktTz() );
 	}
-
+	
 	public DateTime getControlValueRaw()
 	{
-		if ( ( dateClock == null ) && ( timeClock == null ) )
+		if ((dateClock == null) && (timeClock == null))
 		{
 			return null; // disabled, no value to use
 		}
 
-		DateTime result = new DateTime( showMonthYear ? dateClock.getYear() : 1970,
-				showMonthYear ? dateClock.getMonth() + 1 : 1,
-				showDay ? dateClock.getDay() : 1,
-				showTime ? timeClock.getHours() : 0,
-				showTime ? timeClock.getMinutes() : 0,
-				showTime ? timeClock.getSeconds() : 0, 
-				0, 
-				DateTimeZone.getDefault() );
+		DateTime date = null;
+		DateTime time = null;
+		if (showMonthYear) date = new DateTime(dateClock.getValue());
+		if (showTime) time = new DateTime(timeClock.getValue());
+		DateTime result = new DateTime(showMonthYear ? date.getYear() : 1970,
+									showMonthYear ? date.getMonthOfYear() : 1,
+									showDay ? date.getDayOfMonth() : 1, 
+									showTime ? time.getHourOfDay() : 0,
+									showTime ? time.getMinuteOfHour() : 0,
+									showTime ? time.getSecondOfMinute() : 0,
+									0,
+									DateTimeZone.getDefault() );
 		
 
 		// Convert to UTC time for UTCTimestampT and UTCTimeOnlyT.
@@ -218,7 +188,7 @@ public class SwingClockWidget
 		}
 		return result;
 	}
-
+	
 	public void setValue(Comparable<DateTime> value)
 	{
 		// Convert to UTC time for UTCTimestampT and UTCTimeOnlyT.
@@ -233,73 +203,9 @@ public class SwingClockWidget
 		// -- Force control to display time portion in local
 		DateTime tempLocalTzDateTime = ((DateTime)value).withZone( DateTimeZone.getDefault() );
 		
-		if ( showMonthYear )
-		{
-			dateClock.setMonth( tempLocalTzDateTime.getMonthOfYear() - 1 );
-			dateClock.setYear( tempLocalTzDateTime.getYear() );
-		}
-		if ( showDay )
-		{
-			dateClock.setDay( tempLocalTzDateTime.getDayOfMonth() );
-		}
-		if ( showTime )
-		{
-			timeClock.setHours( tempLocalTzDateTime.getHourOfDay() );
-			timeClock.setMinutes( tempLocalTzDateTime.getMinuteOfHour() );
-			timeClock.setSeconds( tempLocalTzDateTime.getSecondOfMinute() );
-		}
+		if (showMonthYear) dateClock.setValue(tempLocalTzDateTime.toDate());
+		if (showTime) timeClock.setValue(tempLocalTzDateTime.toLocalTime());
 	}
-
-	public List<Control> getControls()
-	{
-		List<Control> widgets = new ArrayList<Control>();
-		// TODO 1/20/2010 Scott Atwell added
-		if ( enabledButton != null )
-		{
-			widgets.add( enabledButton );
-		}
-
-		// TODO 1/20/2010 Scott Atwell widgets.add(label);
-		if ( label != null )
-		{
-			widgets.add( label );
-		}
-
-		if ( showMonthYear )
-		{
-			widgets.add( dateClock );
-		}
-		if ( showTime )
-		{
-			widgets.add( timeClock );
-		}
-		return widgets;
-	}
-
-	public List<Control> getControlsExcludingLabel()
-	{
-		List<Control> widgets = new ArrayList<Control>();
-//		if ( enabledButton != null )
-//		{
-//			widgets.add( enabledButton );
-//		}
-//
-//		if ( label != null )
-//		{
-//			widgets.add( label );
-//		}
-
-		if ( showMonthYear )
-		{
-			widgets.add( dateClock );
-		}
-		if ( showTime )
-		{
-			widgets.add( timeClock );
-		}
-		return widgets;
-	}
-
 
 	private void applyEnabledSetting()
 	{
@@ -307,40 +213,42 @@ public class SwingClockWidget
 		{
 			if ( ( dateClock != null ) && ( dateClock.isVisible() ) )
 			{
-				dateClock.setEnabled( enabledButton.getSelection() );
+				dateClock.setEnabled( enabledButton.isSelected() );
 			}
 
 			if ( ( timeClock != null ) && ( timeClock.isVisible() ) )
 			{
-				timeClock.setEnabled( enabledButton.getSelection() );
+				timeClock.setEnabled( enabledButton.isSelected() );
 			}
 		}
 	}
-
-	public void addListener(Listener listener)
-	{
-		if ( showMonthYear )
-		{
-			dateClock.addListener( SWT.Selection, listener );
-		}
-		if ( showTime )
-		{
-			timeClock.addListener( SWT.Selection, listener );
-		}
+	
+	public List<JComponent> getComponents() {
+		List<JComponent> widgets = new ArrayList<JComponent>();
+		if (enabledButton != null) widgets.add(enabledButton);
+		if (label != null) widgets.add(label);
+		if (showMonthYear) widgets.add(dateClock);
+		if (showTime) widgets.add(timeClock);
+		return widgets;
+	}
+	
+	public List<JComponent> getComponentsExcludingLabel() {
+		List<JComponent> widgets = new ArrayList<JComponent>();
+		if (showMonthYear) widgets.add(dateClock);
+		if (showTime) widgets.add(timeClock);
+		return widgets;
+	}
+	
+	public void addListener(SwingListener listener) {
+		if (showMonthYear) dateClock.addChangeListener(listener);
+		if (showTime) timeClock.addChangeListener(listener);
 	}
 
-	public void removeListener(Listener listener)
-	{
-		if ( showMonthYear )
-		{
-			dateClock.removeListener( SWT.Selection, listener );
-		}
-		if ( showTime )
-		{
-			timeClock.removeListener( SWT.Selection, listener );
-		}
+	public void removeListener(SwingListener listener) {
+		if (showMonthYear) dateClock.removeChangeListener(listener);
+		if (showTime) timeClock.removeChangeListener(listener);
 	}
-
+	
 	/**
 	 * Used when applying Clock@initValue (xs:time)
 	 * @param aValue

@@ -4,28 +4,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.layout.CheckBoxListT;
 import org.atdl4j.fixatdl.layout.ListItemT;
 import org.atdl4j.fixatdl.layout.PanelOrientationT;
-import org.atdl4j.ui.ControlHelper;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Widget;
+import org.atdl4j.ui.swing.SwingListener;
 
 public class SwingCheckBoxListWidget
 		extends AbstractSwingWidget<String>
 {
-
-	private List<Button> multiCheckBox = new ArrayList<Button>();
-	private Label label;
+	private List<JCheckBox> multiCheckBox = new ArrayList<JCheckBox>();
+	private JLabel label;
 
 	// -- Overriden --
 	protected void initPreCheck()
@@ -36,72 +30,63 @@ public class SwingCheckBoxListWidget
 					+ "\" are not equal in number." );
 	}
 
-	public Widget createWidget(Composite parent, int style)
+	public void createWidget(JPanel parent)
 	{
-		String tooltip = getTooltip();
-		GridData controlGD = new GridData( SWT.FILL, SWT.FILL, false, false );
+		// wrapper
+		JPanel wrapper = new JPanel();
 		
+		// tooltip
+		String tooltip = control.getTooltip();
+				
 		// label
-		if ( control.getLabel() != null ) {
-			label = new Label( parent, SWT.NONE );
-			label.setText( control.getLabel() );
-			if ( tooltip != null ) label.setToolTipText( tooltip );
-			controlGD.horizontalSpan = 1;
-		} else {
-			controlGD.horizontalSpan = 2;
+		if (control.getLabel() != null)
+		{
+			label = new JLabel();
+			label.setText(control.getLabel());
+			if (tooltip != null) label.setToolTipText(tooltip);
+			wrapper.add(label);
 		}
 		
-		Composite c = new Composite( parent, SWT.NONE );
-		c.setLayoutData(controlGD);
-		
 		if ( ((CheckBoxListT) control).getOrientation() != null &&
-			 PanelOrientationT.VERTICAL.equals( ((CheckBoxListT) control).getOrientation() ) )
+				 PanelOrientationT.VERTICAL.equals( ((CheckBoxListT) control).getOrientation() ) )
 		{
-			c.setLayout( new GridLayout( 1, false ) );
+			// TODO: NOT IMPLEMENTED
 		} 
 		else 
 		{
-			RowLayout rl = new RowLayout();
-			rl.wrap = false;
-			c.setLayout( rl );
+			// TODO: NOT IMPLEMENTED
 		}
 		
 		// checkBoxes
-		List<ListItemT> listItems = ( (CheckBoxListT) control ).getListItem();
-		for ( ListItemT listItem : listItems )
-		{
-			Button checkBox = new Button( c, style | SWT.CHECK );
-			checkBox.setText( listItem.getUiRep() );
-
-			if ( parameter != null )
-			{
-				for ( EnumPairT enumPair : parameter.getEnumPair() )
-				{
-					if ( enumPair.getEnumID().equals( listItem.getEnumID() ) )
-					{
-
+		List<ListItemT> listItems = ((CheckBoxListT)control).getListItem();
+		for (ListItemT listItem : listItems) {
+			JCheckBox checkBox = new JCheckBox();
+			if (listItem.getUiRep() != null) checkBox.setText(listItem.getUiRep());
+			
+			if (parameter != null) {
+				for (EnumPairT enumPair :  parameter.getEnumPair()) {
+					if (enumPair.getEnumID() == listItem.getEnumID()) {
+						
 						// set tooltip
-						if ( enumPair.getDescription() != null )
-							checkBox.setToolTipText( enumPair.getDescription() );
-						else if ( tooltip != null )
-							checkBox.setToolTipText( tooltip );
+						if (enumPair.getDescription() != null)
+							checkBox.setToolTipText(enumPair.getDescription());
+						else if (tooltip != null)
+							checkBox.setToolTipText(tooltip);
 						break;
 					}
 				}
+			} else {
+				if (tooltip != null) checkBox.setToolTipText(tooltip);
 			}
-			else
-			{
-				if ( tooltip != null )
-					checkBox.setToolTipText( tooltip );
-			}
-			multiCheckBox.add( checkBox );
+			multiCheckBox.add(checkBox);
+			wrapper.add(checkBox);
 		}
-
+		
 		// set initValue
-		if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
-			setValue( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ), true );
-
-		return parent;
+		if  (((CheckBoxListT)control).getInitValue() != null)
+			setValue(((CheckBoxListT)control).getInitValue(), true);
+		
+		parent.add(wrapper);
 	}
 
 	public String getControlValueRaw()
@@ -109,8 +94,8 @@ public class SwingCheckBoxListWidget
 		String value = "";
 		for ( int i = 0; i < multiCheckBox.size(); i++ )
 		{
-			Button b = multiCheckBox.get( i );
-			if ( b.getSelection() )
+			JCheckBox b = multiCheckBox.get( i );
+			if ( b.isSelected() )
 			{
 				if ( "".equals( value ) )
 				{
@@ -141,51 +126,47 @@ public class SwingCheckBoxListWidget
 		List<String> values = Arrays.asList( value.split( "\\s" ) );
 		for ( int i = 0; i < multiCheckBox.size(); i++ )
 		{
-			Button b = multiCheckBox.get( i );
+			JCheckBox b = multiCheckBox.get( i );
 			if ( setValueAsControl || parameter == null )
 			{
 				String enumID = ( (CheckBoxListT) control ).getListItem().get( i ).getEnumID();
-				b.setSelection( values.contains( enumID ) );
+				b.setSelected( values.contains( enumID ) );
 			}
 			else
 			{
 				String wireValue = parameter.getEnumPair().get( i ).getWireValue();
-				b.setSelection( values.contains( wireValue ) );
+				b.setSelected( values.contains( wireValue ) );
 			}
 		}
 	}
-
-	public List<Control> getControls()
+	
+	public List<JComponent> getComponents()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<JComponent> widgets = new ArrayList<JComponent>();
 		if (label != null) widgets.add( label );
 		widgets.addAll( multiCheckBox );
 		return widgets;
 	}
 
-	public List<Control> getControlsExcludingLabel()
-	{
-		List<Control> widgets = new ArrayList<Control>();
-//		widgets.add( label );
+	public List<JComponent> getComponentsExcludingLabel() {
+		List<JComponent> widgets = new ArrayList<JComponent>();
 		widgets.addAll( multiCheckBox );
 		return widgets;
-	}
-
-	public void addListener(Listener listener)
-	{
-		for ( Button checkBox : multiCheckBox )
+	}	
+	
+	public void addListener(SwingListener listener) {
+		for ( JCheckBox b : multiCheckBox )
 		{
-			checkBox.addListener( SWT.Selection, listener );
+			b.addActionListener(listener);
 		}
 	}
 
-	public void removeListener(Listener listener)
-	{
-		for ( Button b : multiCheckBox )
+	public void removeListener(SwingListener listener) {
+		for ( JCheckBox b : multiCheckBox )
 		{
-			b.removeListener( SWT.Selection, listener );
+			b.removeActionListener(listener);
 		}
-	}
+	}	
 
 	/* (non-Javadoc)
 	 * @see org.atdl4j.ui.ControlUI#reinit()
@@ -201,11 +182,11 @@ public class SwingCheckBoxListWidget
 		else
 		{
 			// -- reset each when no initValue exists --
-			for ( Button tempButton : multiCheckBox )
+			for ( JCheckBox tempButton : multiCheckBox )
 			{
-				if ( ( tempButton != null ) && ( ! tempButton.isDisposed() ) )
+				if ( ( tempButton != null ) )
 				{
-					tempButton.setSelection( false );
+					tempButton.setSelected( false );
 				}
 			}
 		}

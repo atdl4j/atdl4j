@@ -1,36 +1,33 @@
 package org.atdl4j.ui.swing.widget;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
 
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.layout.ListItemT;
 import org.atdl4j.fixatdl.layout.SliderT;
 import org.atdl4j.ui.ControlHelper;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Widget;
+import org.atdl4j.ui.swing.SwingListener;
 
 public class SwingSliderWidget
 		extends AbstractSwingWidget<String>
 {
-	private Scale slider;
-	private Label label;
-	private List<Label> sliderLabels;
+	private JSlider slider;
+	private JLabel label;
 
-
-	public Widget createWidget(Composite parent, int style)
-	{
-		sliderLabels = new ArrayList<Label>();
-		String tooltip = getTooltip();
-		GridData controlGD = new GridData( SWT.FILL, SWT.FILL, false, false );
+	public void createWidget(JPanel parent)
+	{		
+		// label
+		label = new JLabel();
+		if (control.getLabel() != null) label.setText(control.getLabel());
 		
+		/** swt branch 
 		// label
 		if ( control.getLabel() != null ) {
 			label = new Label( parent, SWT.NONE );
@@ -43,34 +40,29 @@ public class SwingSliderWidget
 		
 		Composite c = new Composite( parent, SWT.NONE );
 		c.setLayoutData(controlGD);
-
-		int numColumns = ( ( (SliderT) control ).getListItem() != null && ( (SliderT) control ).getListItem().size() > 0 ) ? ( (SliderT) control )
-				.getListItem().size() : 1;
-		c.setLayout( new GridLayout( numColumns, true ) );
+**/
+		
+		int numColumns = ((SliderT)control).getListItem().size();
 
 		// slider
-		slider = new Scale( c, style | SWT.HORIZONTAL );
-		slider.setIncrement( 1 );
-		slider.setPageIncrement( 1 );
-		GridData sliderData = new GridData( SWT.FILL, SWT.FILL, true, false );
-		sliderData.horizontalSpan = numColumns;
-		slider.setLayoutData( sliderData );
-		slider.setMaximum( numColumns > 1 ? numColumns - 1 : 1 );
+		slider = new JSlider(JSlider.HORIZONTAL, 0, numColumns - 1, 0);
 
+		// add major tick marks
+		slider.setMajorTickSpacing(1);
+		slider.setPaintTicks(true);
+		
 		// labels based on parameter ListItemTs
-		if ( ( (SliderT) control ).getListItem() != null )
-		{
+	//	if ( ( (SliderT) control ).getListItem() != null )
+	//	{
+			Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();			
+			int i = 0;
 			for ( ListItemT li : ( (SliderT) control ).getListItem() )
 			{
-				Label label = new Label( c, SWT.NONE );
+				JLabel label = new JLabel();
 				if (li.getUiRep() != null && !li.getUiRep().equals(""))
 				{
 					label.setText( li.getUiRep() );
-				} else {
-					// add some whitespace for hover tooltips
-					label.setText( "   " );
-				}			
-				label.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, false, false ) );
+				}
 				for ( EnumPairT ep : parameter.getEnumPair() )
 				{
 				    if (ep.getEnumID().equals(li.getEnumID()) && ep.getDescription() != null && !ep.getDescription().equals(""))
@@ -78,28 +70,31 @@ public class SwingSliderWidget
 				    	label.setToolTipText(ep.getDescription());
 				    }
 				}
-				sliderLabels.add(label);
+				labelTable.put(new Integer(i), label);				
+				i++;
 			}
-		}
-
+			slider.setLabelTable(labelTable);
+			slider.setPaintLabels(true);
+	//	}
+		
 		// tooltip
-
-		if ( tooltip != null )
+		if ( getTooltip() != null )
 		{
-			slider.setToolTipText( tooltip );
-			label.setToolTipText( tooltip );
+			slider.setToolTipText( getTooltip() );
+			if (label != null) label.setToolTipText( getTooltip() );
 		}
-
+		
 		if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
 			setValue( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ), true );
-
-		return parent;
+		
+		//TODO: make this a composite
+		parent.add(label);
+		parent.add(slider);
 	}
-	
 	
 	public String getControlValueRaw()
 	{
-		return ( (SliderT) control ).getListItem().get( slider.getSelection() ).getEnumID();
+		return ( (SliderT) control ).getListItem().get( slider.getValue() ).getEnumID();
 	}
 
 	public String getParameterValue()
@@ -120,7 +115,7 @@ public class SwingSliderWidget
 			{
 				if ( getListItems().get( i ).getEnumID().equals( value ) )
 				{
-					slider.setSelection( i );
+					slider.setValue( i );
 					break;
 				}
 			}
@@ -128,38 +123,35 @@ public class SwingSliderWidget
 			{
 				if ( parameter.getEnumPair().get( i ).getWireValue().equals( value ) )
 				{
-					slider.setSelection( i );
+					slider.setValue( i );
 					break;
 				}
 			}
 		}
 	}
-
-	public List<Control> getControls()
-	{
-		List<Control> widgets = new ArrayList<Control>();
-		if (label != null) widgets.add( label );
-		widgets.add( slider );
-		widgets.addAll( sliderLabels );
+	
+	public List<JComponent> getComponents() {
+		List<JComponent> widgets = new ArrayList<JComponent>();
+		widgets.add(label);
+		widgets.add(slider);
 		return widgets;
 	}
 
-	public List<Control> getControlsExcludingLabel()
+	public List<JComponent> getComponentsExcludingLabel()
 	{
-		List<Control> widgets = new ArrayList<Control>();
-		widgets.add( slider );
-		widgets.addAll( sliderLabels );
+		List<JComponent> widgets = new ArrayList<JComponent>();
+		widgets.add(slider);
 		return widgets;
 	}
 
-	public void addListener(Listener listener)
-	{
-		slider.addListener( SWT.Selection, listener );
+	@Override
+	public void addListener(SwingListener listener) {
+		slider.addChangeListener(listener);
 	}
 
-	public void removeListener(Listener listener)
-	{
-		slider.removeListener( SWT.Selection, listener );
+	@Override
+	public void removeListener(SwingListener listener) {
+		slider.removeChangeListener(listener);
 	}
 
 	/* (non-Javadoc)
@@ -168,7 +160,7 @@ public class SwingSliderWidget
 	@Override
 	public void processReinit( Object aControlInitValue )
 	{
-		if ( ( slider != null ) && ( ! slider.isDisposed() ) )
+		if ( ( slider != null ) )
 		{
 			if ( aControlInitValue != null )
 			{
@@ -178,7 +170,7 @@ public class SwingSliderWidget
 			else
 			{
 				// -- set to minimum when no initValue exists --
-				slider.setSelection( slider.getMinimum() );
+				slider.setValue( slider.getMinimum() );
 			}
 		}
 	}

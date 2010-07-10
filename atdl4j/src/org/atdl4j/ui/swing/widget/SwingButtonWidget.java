@@ -3,19 +3,18 @@ package org.atdl4j.ui.swing.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
+
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.fixatdl.core.BooleanT;
 import org.atdl4j.fixatdl.layout.CheckBoxT;
 import org.atdl4j.fixatdl.layout.RadioButtonT;
 import org.atdl4j.ui.ControlHelper;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Widget;
+import org.atdl4j.ui.swing.SwingListener;
 
 /*
  * Implements either a CheckBox or a RadioButton
@@ -23,93 +22,73 @@ import org.eclipse.swt.widgets.Widget;
 public class SwingButtonWidget
 		extends AbstractSwingWidget<Boolean>
 {
-	private Button button;
-	private Label label;
-	private SwingRadioButtonListener radioButtonListener;
+	private JToggleButton button;
+	//private SwingRadioButtonListener radioButtonListener;
 
-	public Widget createWidget(Composite parent, int style)
-	{
-
+	public void createWidget(JPanel parent) {
+		
 		// button
-		button = new Button( parent, style | ( control instanceof RadioButtonT ? SWT.RADIO : SWT.CHECK ) );
-		GridData gd = new GridData( GridData.GRAB_HORIZONTAL );
-		gd.horizontalSpan = 2;
-		button.setLayoutData( gd );
-
-		if ( control.getLabel() != null )
-			button.setText( control.getLabel() );
-		if ( getTooltip() != null )
-			button.setToolTipText( getTooltip() );
-
-/*** 4/11/2010 Scott Atwell	
-		// init value
-		if ( control instanceof RadioButtonT )
-		{
-			if ( ( (RadioButtonT) control ).isInitValue() != null )
-				button.setSelection( ( (RadioButtonT) control ).isInitValue() );
+		if (control instanceof RadioButtonT) {
+			button = new JRadioButton();			
+		} else {
+			button = new JCheckBox();
 		}
-		else
-		{
-			if ( ( (CheckBoxT) control ).isInitValue() != null )
-				button.setSelection( ( (CheckBoxT) control ).isInitValue() );
-		}
-***/
+		
+		// set label and tooltips
+		if ( control.getLabel() != null ) button.setText( control.getLabel() );
+		if ( getTooltip() != null ) button.setToolTipText( getTooltip() );
+		// if (control.getTooltip() != null) button.setToolTipText(control.getTooltip());
+				
+		// init value		
+		/*if (control instanceof RadioButtonT) {
+			if (((RadioButtonT)control).isInitValue() != null) 
+				button.setEnabled(((RadioButtonT)control).isInitValue());
+		} else {
+			if (((CheckBoxT)control).isInitValue() != null)
+				button.setEnabled(((CheckBoxT)control).isInitValue());
+		}*/
 		Boolean tempInitValue = (Boolean) ControlHelper.getInitValue( control, getAtdl4jConfig() );
 		if ( tempInitValue != null )
 		{
 			setValue( tempInitValue );
 		}
 		
-		return parent;
+		parent.add(button);
 	}
-
+	
 	public void setValue(Boolean value)
 	{
-		button.setSelection( value.booleanValue() );
-		
-		if ( getRadioButtonListener() != null )
-		{
-			getRadioButtonListener().handleEvent( button );
-		}
+		button.setEnabled(value.booleanValue());
 	}
 
-	public List<Control> getControls()
+	public List<JComponent> getComponents()
 	{
-		List<Control> widgets = new ArrayList<Control>();
-		if ( label != null )
-		{
-			widgets.add( label );
-		}
-		widgets.add( button );
+		List<JComponent> widgets = new ArrayList<JComponent>();
+		widgets.add(button);
 		return widgets;
 	}
 
-	public List<Control> getControlsExcludingLabel()
-	{
-		List<Control> widgets = new ArrayList<Control>();
-//		widgets.add( label );
-		widgets.add( button );
-		return widgets;
-	}
-
-	public Button getButton()
+	public List<JComponent> getComponentsExcludingLabel() {
+		// Label is part of the button control
+		return getComponents();
+	}	
+	
+	public JToggleButton getButton()
 	{
 		return button;
 	}
 
-	public void addListener(Listener listener)
-	{
-		button.addListener( SWT.Selection, listener );
+	public void addListener(SwingListener listener) {
+		button.addActionListener(listener);
 	}
 
-	public void removeListener(Listener listener)
-	{
-		button.removeListener( SWT.Selection, listener );
-	}
-
+	public void removeListener(SwingListener listener) {
+		button.removeActionListener(listener);
+	}	
+	
 	public Boolean getControlValueRaw()
 	{
-		return button.getSelection() ? Boolean.TRUE : Boolean.FALSE;
+		return button.isSelected() ? Boolean.TRUE : Boolean.FALSE;
 	}
 
 	// Parameter value looks up checkedEnumRef and uncheckedEnumRef
@@ -125,8 +104,7 @@ public class SwingButtonWidget
 		}
 		else if ( getControlValue().equals( Boolean.TRUE ) )
 		{
-			String checkedEnumRef = control instanceof RadioButtonT ? ( (RadioButtonT) control ).getCheckedEnumRef() : ( (CheckBoxT) control )
-					.getCheckedEnumRef();
+			String checkedEnumRef = control instanceof RadioButtonT ? ((RadioButtonT) control).getCheckedEnumRef() : ( (CheckBoxT) control ).getCheckedEnumRef();
 			if ( checkedEnumRef != null && !checkedEnumRef.equals( "" ) )
 			{
 				if ( checkedEnumRef.equals( Atdl4jConstants.VALUE_NULL_INDICATOR ) )
@@ -168,26 +146,9 @@ public class SwingButtonWidget
 	@Override
 	public void processReinit( Object aControlInitValue )
 	{
-		if ( ( button != null ) && ( ! button.isDisposed() ) )
+		if ( ( button != null ) )
 		{
-			button.setSelection( (aControlInitValue != null ) ? ((Boolean) aControlInitValue).booleanValue() : false );
+			button.setSelected( (aControlInitValue != null ) ? ((Boolean) aControlInitValue).booleanValue() : false );
 		}
 	}
-
-	/**
-	 * @return the radioButtonListener
-	 */
-	public SwingRadioButtonListener getRadioButtonListener()
-	{
-		return this.radioButtonListener;
-	}
-
-	/**
-	 * @param aRadioButtonListener the radioButtonListener to set
-	 */
-	public void setRadioButtonListener(SwingRadioButtonListener aRadioButtonListener)
-	{
-		this.radioButtonListener = aRadioButtonListener;
-	}
-	
 }

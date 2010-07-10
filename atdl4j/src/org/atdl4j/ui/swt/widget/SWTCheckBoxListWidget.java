@@ -71,7 +71,7 @@ public class SWTCheckBoxListWidget
 		for ( ListItemT listItem : listItems )
 		{
 			Button checkBox = new Button( c, style | SWT.CHECK );
-			checkBox.setText( listItem.getUiRep() );
+			if (listItem.getUiRep() != null) checkBox.setText( listItem.getUiRep() );
 
 			if ( parameter != null )
 			{

@@ -2,62 +2,54 @@ package org.atdl4j.ui.swing.widget;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 
 import org.atdl4j.fixatdl.layout.ListItemT;
 import org.atdl4j.fixatdl.layout.MultiSelectListT;
 import org.atdl4j.fixatdl.layout.SingleSelectListT;
 import org.atdl4j.ui.ControlHelper;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Widget;
+import org.atdl4j.ui.swing.SwingListener;
 
 public class SwingListBoxWidget
 		extends AbstractSwingWidget<String>
 {
+	private JList listBox;
+	private JLabel label;
+	private Vector<String> list = new Vector<String>();
 
-	private List listBox;
-	private Label label;
-
-	public Widget createWidget(Composite parent, int style)
+	public void createWidget(JPanel parent)
 	{
 		String tooltip = getTooltip();
-		GridData controlGD = new GridData( SWT.FILL, SWT.TOP, false, false );
-		
+
 		// label
 		if ( control.getLabel() != null ) {
-			label = new Label( parent, SWT.NONE );
+			label = new JLabel();
 			label.setText( control.getLabel() );
 			if ( tooltip != null ) label.setToolTipText( tooltip );
-			label.setLayoutData( new GridData( SWT.LEFT, SWT.TOP, false, false ) );
-			controlGD.horizontalSpan = 1;
-		} else {
-			controlGD.horizontalSpan = 2;
+			parent.add(label);
 		}
 
-		// dropDownList
-		style = style | SWT.BORDER;
-		if ( control instanceof MultiSelectListT )
-		{
-			style |= SWT.MULTI;
+		// listbox
+		listBox =  new JList(list);
+		if (control instanceof MultiSelectListT) {
+			listBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		} else if (control instanceof SingleSelectListT) {
+			listBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		}
-		else if ( control instanceof SingleSelectListT )
-		{
-			style |= SWT.SINGLE;
-		}
-		listBox = new List( parent, style );
-		listBox.setLayoutData( controlGD );
-
+		
 		// listBox items
 		java.util.List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem()
 				: ( (SingleSelectListT) control ).getListItem();
 		for ( ListItemT listItem : listItems )
 		{
-			listBox.add( listItem.getUiRep() );
+			list.add(listItem.getUiRep() != null ? listItem.getUiRep() : "");
 		}
 
 		// tooltip
@@ -65,19 +57,16 @@ public class SwingListBoxWidget
 
 		// init value
 		String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jConfig() );
-		if ( initValue != null )
-			setValue( initValue, true );
+		if ( initValue != null ) setValue( initValue, true );
 
-		return parent;
 	}
-
-
+	
 	public String getControlValueRaw()
 	{
 		String value = "";
-		java.util.List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem()
+		List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem()
 				: ( (SingleSelectListT) control ).getListItem();
-		int[] selection = listBox.getSelectionIndices();
+		int[] selection = listBox.getSelectedIndices();
 
 		for ( int i = 0; i < selection.length; i++ )
 		{
@@ -102,7 +91,7 @@ public class SwingListBoxWidget
 	public void setValue(String value, boolean setValueAsControl)
 	{
 		// split string by spaces in case of MultiSelectList
-		java.util.List<String> values = Arrays.asList( value.split( "\\s" ) );
+		List<String> values = Arrays.asList( value.split( "\\s" ) );
 		for ( String singleValue : values )
 		{
 			for ( int i = 0; i < getListItems().size(); i++ )
@@ -111,7 +100,7 @@ public class SwingListBoxWidget
 				{
 					if ( getListItems().get( i ).getEnumID().equals( singleValue ) )
 					{
-						listBox.select( i );
+						listBox.setSelectedIndex( i );
 						break;
 					}
 				}
@@ -119,46 +108,44 @@ public class SwingListBoxWidget
 				{
 					if ( parameter.getEnumPair().get( i ).getWireValue().equals( singleValue ) )
 					{
-						listBox.select( i );
+						listBox.setSelectedIndex( i );
 						break;
 					}
 				}
 			}
 		}
 	}
-
-	public java.util.List<Control> getControls()
-	{
-		java.util.List<Control> widgets = new ArrayList<Control>();
-		if (label != null) widgets.add( label );
-		widgets.add( listBox );
+	
+	public List<JComponent> getComponents() {
+		List<JComponent> widgets = new ArrayList<JComponent>();
+		if (label != null) widgets.add(label);
+		widgets.add(listBox);
 		return widgets;
 	}
 
-	public java.util.List<Control> getControlsExcludingLabel()
+	public List<JComponent> getComponentsExcludingLabel()
 	{
-		java.util.List<Control> widgets = new ArrayList<Control>();
+		List<JComponent> widgets = new ArrayList<JComponent>();
 		widgets.add( listBox );
 		return widgets;
 	}
-
-	public void addListener(Listener listener)
-	{
-		listBox.addListener( SWT.Selection, listener );
+	
+	public void addListener(SwingListener listener) {
+		listBox.addListSelectionListener(listener);
 	}
 
-	public void removeListener(Listener listener)
-	{
-		listBox.removeListener( SWT.Selection, listener );
+	public void removeListener(SwingListener listener) {
+		listBox.removeListSelectionListener(listener);
 	}
-
+	
+	
 	/* (non-Javadoc)
 	 * @see org.atdl4j.ui.ControlUI#reinit()
 	 */
 	@Override
 	public void processReinit( Object aControlInitValue )
 	{
-		if ( ( listBox != null ) && ( ! listBox.isDisposed() ) )
+		if ( listBox != null )
 		{
 			if ( aControlInitValue != null )
 			{
@@ -168,9 +155,9 @@ public class SwingListBoxWidget
 			else
 			{
 				// -- set to first when no initValue exists --
-				if ( listBox.getItemCount() > 0 )
+				if ( list.size() > 0 )
 				{
-					listBox.select( 0 );
+					listBox.setSelectedIndex( 0 );
 				}
 			}
 		}
