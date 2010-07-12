@@ -116,7 +116,9 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 			
 			if ( tempConstValue != null )
 			{
-				E tempControlValue = controlConverter.convertParameterValueToControlValue( tempConstValue );
+			// 7/11/2010 Scott Atwell need to handle CheckBox control checkedEnumRef and uncheckedEnumRef (eg "100" -> true, "0" -> false)				E tempControlValue = controlConverter.convertParameterValueToControlValue( tempConstValue );
+				E tempControlValue = controlConverter.convertParameterValueToControlValue( tempConstValue, getControl() );
+				
 				if ( tempControlValue != null )
 				{
 					setValue( tempControlValue );
@@ -352,6 +354,7 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	{
 		if ( parameter != null )
 		{
+/**			
 			java.util.List<EnumPairT> enumPairs = parameter.getEnumPair();
 			for ( EnumPairT enumPair : enumPairs )
 			{
@@ -367,6 +370,8 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 					}
 				}
 			}
+**/
+			return ParameterHelper.getWireValueForEnumID( parameter, enumID );
 			// throw error?
 		}
 		return null;
@@ -606,7 +611,8 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	{
 		// -- Must use parameterConverter's convertToControlString (eg TextField's controlConverter is a StringConverter, not a DecimalConverter like the Parameter's would be) --
 		Object tempParameterValue = parameterConverter.convertFixWireValueToParameterValue( aFIXValue ); 
-		E tempValue = controlConverter.convertParameterValueToControlValue( tempParameterValue );
+// 7/11/2010 Scott Atwell need to handle CheckBox control checkedEnumRef and uncheckedEnumRef (eg "100" -> true)		E tempValue = controlConverter.convertParameterValueToControlValue( tempParameterValue );
+		E tempValue = controlConverter.convertParameterValueToControlValue( tempParameterValue, getControl() );
 		
 		if ( ( tempValue == null ) && ( getNullValue() != null ) )
 		{

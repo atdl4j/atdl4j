@@ -9,6 +9,7 @@ import org.atdl4j.fixatdl.core.CharT;
 import org.atdl4j.fixatdl.core.CountryT;
 import org.atdl4j.fixatdl.core.CurrencyT;
 import org.atdl4j.fixatdl.core.DataT;
+import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.core.ExchangeT;
 import org.atdl4j.fixatdl.core.FloatT;
 import org.atdl4j.fixatdl.core.IntT;
@@ -681,4 +682,50 @@ public class ParameterHelper
 		
 		return null;
 	}	
+	
+	public static EnumPairT getEnumPairForEnumID( ParameterT aParameter, String aEnumID)
+	{
+		for ( EnumPairT enumPair : aParameter.getEnumPair() )
+		{
+			if ( enumPair.getEnumID().equals( aEnumID ) )
+			{
+				return enumPair;
+			}
+		}
+		
+		return null;
+	}
+	
+	public static EnumPairT getEnumPairForWireValue( ParameterT aParameter, String aWireValue)
+	{
+		for ( EnumPairT enumPair : aParameter.getEnumPair() )
+		{
+			if ( enumPair.getWireValue().equals( aWireValue ) )
+			{
+				return enumPair;
+			}
+		}
+		
+		return null;
+	}
+	
+	public static String getWireValueForEnumID( ParameterT aParameter, String aEnumID )
+	{
+		EnumPairT tempEnumPair = getEnumPairForEnumID( aParameter, aEnumID );
+		if ( tempEnumPair != null )
+		{
+			if ( Atdl4jConstants.VALUE_NULL_INDICATOR.equals( tempEnumPair.getWireValue() ) )
+			{
+				return null;
+			}
+			else
+			{
+				return tempEnumPair.getWireValue();
+			}
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

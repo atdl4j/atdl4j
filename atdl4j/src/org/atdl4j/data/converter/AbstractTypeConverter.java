@@ -1,10 +1,19 @@
 package org.atdl4j.data.converter;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.apache.log4j.Logger;
 import org.atdl4j.data.ControlTypeConverter;
+import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.data.ParameterTypeConverter;
 import org.atdl4j.data.TypeConverterFactory;
+import org.atdl4j.data.validation.Field2OperatorValidationRule;
+import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.core.PercentageT;
+import org.atdl4j.fixatdl.layout.CheckBoxT;
+import org.atdl4j.fixatdl.layout.ControlT;
+import org.joda.time.DateTime;
 
 /**
  * Base class for ParameterTypeConverter and ControlTypeConverter interfaces
@@ -16,6 +25,7 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 {
 	private ParameterT parameter;  // used by ParameterTypeConverter
 	private ParameterTypeConverter<?> parameterTypeConverter;  // used by ControlTypeConverter
+	private static final Logger logger = Logger.getLogger(ParameterTypeConverter.class);
 	
 	
 	/**
@@ -181,5 +191,50 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 		}
 		
 	}
+
+	/* No conversion applicable for this type.  Returns aValue.
+	 * @see org.atdl4j.data.ControlTypeConverter#convertParameterValueToControlValue(java.lang.Object)
+	 */
+	@Override
+	public E convertParameterValueToControlValue(Object aValue, ControlT aControl)
+	{
+// 7/11/2010 Scott Atwell need to handle CheckBox control checkedEnumRef and uncheckedEnumRef (eg "100" -> true, "0" -> false)
+///		Object tempValue = adjustParameterValueForEnumRefValue( aValue, getParameter(), aControl );
+		Object tempValue = adjustParameterValueForEnumRefValue( aValue, getParameterTypeConverter().getParameter(), aControl );
+		return convertParameterValueToControlValue( tempValue );
+	}
+	
+	public abstract E convertParameterValueToControlValue(Object aValue);
+	
+
+
+	public Object adjustParameterValueForEnumRefValue( Object aParameterValue, ParameterT aParameter, ControlT aControl )
+	{
+		logger.debug("aParameterValue: " + aParameterValue + " aParameter: " + aParameter + " aControl: " + aControl );
+		if ( ( aParameterValue != null ) && ( aParameter != null ) && ( aControl != null ) )
+		{
+			if ( aControl instanceof CheckBoxT )
+			{
+				CheckBoxT tempCheckBox = (CheckBoxT) aControl;
+				
+				EnumPairT tempCheckedEnumPair = ParameterHelper.getEnumPairForEnumID( aParameter, tempCheckBox.getCheckedEnumRef() );
+				EnumPairT tempUncheckedEnumPair = ParameterHelper.getEnumPairForEnumID( aParameter, tempCheckBox.getUncheckedEnumRef() );
+				String tempParameterValueString = aParameterValue.toString();
+				logger.debug("tempParameterValueString: " + tempParameterValueString + " tempCheckedEnumPair: " + tempCheckedEnumPair + " tempUncheckedEnumPair: " + tempUncheckedEnumPair );
+
+				if ( ( tempCheckedEnumPair != null ) && ( tempParameterValueString.equals( tempCheckedEnumPair.getWireValue() ) ) )
+				{
+					return Boolean.TRUE.toString();
+				}
+				else if ( ( tempUncheckedEnumPair != null ) && ( tempParameterValueString.equals( tempUncheckedEnumPair.getWireValue() ) ) )
+				{
+					return Boolean.FALSE.toString();
+				}
+			}
+		}
+		
+		return aParameterValue;
+	}
+
 
 }
