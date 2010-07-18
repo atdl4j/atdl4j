@@ -125,7 +125,8 @@ public class ControlHelper
 //			}
 			else if ( aIncrement != null )
 			{
-				return new BigDecimal( aIncrement );
+// 7/18/2010 Scott Atwell				return new BigDecimal( aIncrement );
+				return new BigDecimal( aIncrement.toString() );
 			}
 			else
 			{
@@ -147,7 +148,8 @@ public class ControlHelper
 //			}
 			else if ( aIncrement != null )
 			{
-				return new BigDecimal( aIncrement );
+// 7/18/2010 Scott Atwell				return new BigDecimal( aIncrement );
+				return new BigDecimal( aIncrement.toString() );
 			}
 			else
 			{
@@ -159,7 +161,8 @@ public class ControlHelper
 			if ( aIncrement != null )
 			{
 // 4/18/2010 Scott Atwell replaced				return BigInteger.valueOf( aIncrement.longValue() ); 
-				return new BigDecimal( aIncrement ); 
+// 7/18/2010 Scott Atwell				return new BigDecimal( aIncrement );
+				return new BigDecimal( aIncrement.toString() );
 			}
 			else
 			{
