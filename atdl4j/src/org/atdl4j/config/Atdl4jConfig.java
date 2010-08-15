@@ -153,7 +153,11 @@ public interface Atdl4jConfig
 	public boolean isTreatControlVisibleFalseAsNull();
 	public boolean isTreatControlEnabledFalseAsNull();
 	public boolean isRestoreLastNonNullStateControlValueBehavior();
-	
+// 8/15/2010 Scott Atwell
+	// FIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file.
+	public void setAccommodateMixOfStrategyPanelsAndControls(boolean accommodateMixOfStrategyPanelsAndControls);
+	public boolean isAccommodateMixOfStrategyPanelsAndControls();
+
 	public boolean isShowEnabledCheckboxOnOptionalClockControl();
 
 	public int getDefaultDigitsForSpinnerControl( ParameterT aParameter );

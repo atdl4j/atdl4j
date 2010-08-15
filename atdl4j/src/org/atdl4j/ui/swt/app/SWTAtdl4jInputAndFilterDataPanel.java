@@ -85,6 +85,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 	private Button checkboxAtd4ljShowStrategyDescription;
 	private Button checkboxAtd4ljShowValidateOutputSection;
 	private Button checkboxAtd4ljShowCompositePanelOkCancelButtonSection;
+	private Button checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls;
 
 	private Text textIncrementPolicyLotSize;
 	private Text textIncrementPolicyTick;
@@ -333,6 +334,11 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setToolTipText( "When checked, \"OK\" and \"Close\" buttons will be displayed and available." );
 		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setSelection( getAtdl4jConfig().isShowCompositePanelOkCancelButtonSection() );
 		
+		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
+		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls.setText( "Accommodate SP/Controls Mix" );
+		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls.setToolTipText( "Accommodates StrategyPanel containing a mix of StrategyPanel and Controls.\nFIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file." );
+		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls.setSelection( getAtdl4jConfig().isAccommodateMixOfStrategyPanelsAndControls() );
+		
 		return tempAtdl4jConfigSettingsGroup;
 	}
 	
@@ -400,6 +406,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		getAtdl4jConfig().setShowStrategyDescription( getCheckboxValue( checkboxAtd4ljShowStrategyDescription, null ).booleanValue() );
 		getAtdl4jConfig().setShowValidateOutputSection( getCheckboxValue( checkboxAtd4ljShowValidateOutputSection, null ).booleanValue() );
 		getAtdl4jConfig().setShowCompositePanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowCompositePanelOkCancelButtonSection, null ).booleanValue() );
+		getAtdl4jConfig().setAccommodateMixOfStrategyPanelsAndControls( getCheckboxValue( checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls, null ).booleanValue() );
 
 // 4/18/2010 Scott Atwell		getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigInteger( textIncrementPolicyLotSize ) );
 //	4/18/2010 Scott Atwell	getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigInteger( textIncrementPolicyTick ) );

@@ -146,6 +146,8 @@ public abstract class AbstractAtdl4jConfig
 	private boolean treatControlVisibleFalseAsNull = false;
 	private boolean treatControlEnabledFalseAsNull = false;	
 	private boolean restoreLastNonNullStateControlValueBehavior = true;	
+// 8/15/2010 Scott Atwell added
+	private boolean accommodateMixOfStrategyPanelsAndControls = false;  // FIXatdl 1.1 spec recommends against vs. prohibits
 	
 	private boolean showEnabledCheckboxOnOptionalClockControl = false;
 	
@@ -2442,6 +2444,26 @@ public abstract class AbstractAtdl4jConfig
 	public void setClockControlEndTimeIDValueFragmentList(String[] aClockControlEndTimeIDValueFragmentList)
 	{
 		this.clockControlEndTimeIDValueFragmentList = aClockControlEndTimeIDValueFragmentList;
+	}
+
+	/**
+	 * FIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file.
+	 *  
+	 * @param accommodateMixOfStrategyPanelsAndControls the accommodateMixOfStrategyPanelsAndControls to set
+	 */
+	public void setAccommodateMixOfStrategyPanelsAndControls(boolean accommodateMixOfStrategyPanelsAndControls)
+	{
+		this.accommodateMixOfStrategyPanelsAndControls = accommodateMixOfStrategyPanelsAndControls;
+	}
+
+	/**
+	 * FIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file.
+	 * 
+	 * @return the accommodateMixOfStrategyPanelsAndControls
+	 */
+	public boolean isAccommodateMixOfStrategyPanelsAndControls()
+	{
+		return accommodateMixOfStrategyPanelsAndControls;
 	}
 	
 }

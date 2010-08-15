@@ -21,10 +21,12 @@ public class SWTFactory
 	private static final Logger logger = Logger.getLogger( SWTFactory.class );
 
 	private ControlUIFactory controlWidgetFactory;
+	private Atdl4jConfig atdl4jConfig;
 
 	public SWTFactory(Atdl4jConfig aAtdl4jConfig)
 	{
 		controlWidgetFactory = aAtdl4jConfig.getControlUIFactory();
+		atdl4jConfig = aAtdl4jConfig;
 	}
 
 	// Used to create a single parameter widget
@@ -61,7 +63,31 @@ public class SWTFactory
 
 
 		if ( panel.getStrategyPanel().size() > 0 && panel.getControl().size() > 0 )
-			throw new IllegalStateException( "StrategyPanel may not contain both StrategyPanel and Control elements." );
+		{
+			// -- Wrap each Control with an auto-built StrategyPanel if setting is true --
+			if ( atdl4jConfig.isAccommodateMixOfStrategyPanelsAndControls() )
+			{
+// 7/20/2010 Scott Atwell			throw new IllegalStateException( "StrategyPanel may not contain both StrategyPanel and Control elements." );
+				// -- FIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file. --
+				logger.warn( "StrategyPanel contains both StrategyPanel (" + panel.getStrategyPanel().size() +") and Control ( " + panel.getControl().size() + " elements." );
+				
+				StrategyPanelT tempPanel = new StrategyPanelT();
+				tempPanel.setCollapsible( Boolean.FALSE );
+				tempPanel.setCollapsed( Boolean.FALSE );
+				tempPanel.setOrientation( panel.getOrientation() );
+				tempPanel.setColor( panel.getColor() );
+				
+				logger.warn( "Creating a StrategyPanel to contain " + panel.getControl().size() + " Controls." );
+				tempPanel.getControl().addAll( panel.getControl() );
+				panel.getControl().clear();
+				panel.getStrategyPanel().add(  tempPanel );
+			}
+			else
+			{
+				// 7/20/2010 -- original behavior:
+				throw new IllegalStateException( "StrategyPanel may not contain both StrategyPanel and Control elements." );
+			}
+		}
 
 		// build panels widgets recursively
 		for ( StrategyPanelT p : panel.getStrategyPanel() )
