@@ -317,7 +317,8 @@ public class SpinnerWidget
 
 	public void addListener(Listener listener)
 	{
-		spinner.addListener( SWT.Modify, listener );
+// 8/15/2010 Scott Atwell (use NullableSpinner's implementation vs. default Control's)		spinner.addListener( SWT.Modify, listener );
+		spinner.addListener( listener );
 		if ( control instanceof DoubleSpinnerT )
 		{
 			buttonUp.addListener( SWT.Selection, listener );
@@ -327,7 +328,8 @@ public class SpinnerWidget
 
 	public void removeListener(Listener listener)
 	{
-		spinner.removeListener( SWT.Modify, listener );
+// 8/15/2010 Scott Atwell (use NullableSpinner's implementation vs. default Control's)		spinner.removeListener( SWT.Modify, listener );
+		spinner.removeListener( listener );
 		if ( control instanceof DoubleSpinnerT )
 		{
 			buttonUp.removeListener( SWT.Selection, listener );

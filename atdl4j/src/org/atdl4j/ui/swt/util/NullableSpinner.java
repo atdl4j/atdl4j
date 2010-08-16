@@ -2,28 +2,27 @@
 
 package org.atdl4j.ui.swt.util;
 
-import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import org.apache.log4j.Logger;
+import org.atdl4j.ui.swt.impl.SWTStrategyPanelHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
 
-public class NullableSpinner extends Composite {
-
+public class NullableSpinner extends Composite 
+{
+	private static final Logger logger = Logger.getLogger( NullableSpinner.class );
+	
 	static final int BUTTON_WIDTH = 20;
 	Text text;
 	Button up, down;
@@ -33,7 +32,7 @@ public class NullableSpinner extends Composite {
 	int digits = 0;
 	public static BigDecimal MIN_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( -Integer.MAX_VALUE );
 	public static BigDecimal MAX_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( Integer.MAX_VALUE );
-
+	
 	public NullableSpinner(Composite parent, int style) {
 		super(parent, style);
 		
@@ -51,6 +50,13 @@ public class NullableSpinner extends Composite {
 				verify(e);
 			}
 		});
+
+		text.addListener(SWT.Modify, new Listener() {
+			public void handleEvent(Event e) {
+				stripExtraDecimalPoints();
+			}
+		});
+
 
 		text.addListener(SWT.Traverse, new Listener() {
 			public void handleEvent(Event e) {
@@ -267,10 +273,25 @@ public class NullableSpinner extends Composite {
 // note this is what we had to use in SpinnerWidget when getSelection() returned equiv of BigDecimal.unscaledValue()
 //	return BigDecimal.valueOf( spinner.getSelection(), spinner.getDigits() );
 			BigDecimal tempValue = new BigDecimal( text.getText() );
-			BigDecimal tempValueScaled = tempValue.setScale( getDigits(), RoundingMode.HALF_UP );
+			BigDecimal tempValueScaled = tempValue.setScale( getDigits(), RoundingMode.HALF_UP );			
 			if ( ! tempValue.equals( tempValueScaled ) )
 			{
-				text.setText( tempValueScaled.toPlainString() );
+				String tempNewValueString = tempValueScaled.toPlainString();
+				logger.debug( "tempValue: " + tempValue + " tempValueScaled: " + tempValueScaled + " tempValueScaled.toPlainString(): " + tempNewValueString );				
+				int tempCaretPosition = text.getCaretPosition();
+				logger.debug( "getCaretPosition(): " + text.getCaretPosition() );
+				// -- Handle user entering ".12" and formatter converting to "0.12" -- avoid result of "0.21") --
+				if ( ( tempCaretPosition == 2 ) && 
+					  ( text.getText().charAt(0) == '.' ) && 
+					  ( tempNewValueString.startsWith( "0." ) ) )
+				{
+					// -- we're notified at ".1" but formatted value is converting to "0.1" --
+					logger.debug("Incrementing CaretPosition (was " + tempCaretPosition + ") to account for formatted string having \".\" converted to \"0.\" automatically." );		
+					tempCaretPosition++;
+				}
+				
+				text.setText( tempNewValueString );
+				text.setSelection( tempCaretPosition, tempCaretPosition );
 			}
 			
 			return tempValueScaled;
@@ -381,5 +402,68 @@ public class NullableSpinner extends Composite {
 	public void setIncrement(BigDecimal aIncrement)
 	{
 		this.increment = aIncrement;
+	}
+	
+// 8/15/2010 Scott Atwell added
+	public void addListener(Listener listener)
+	{
+		text.addListener( SWT.Modify, listener );
+	}
+
+	public void removeListener(Listener listener)
+	{
+		text.removeListener( SWT.Modify, listener );
+	}
+	
+	/**
+    * Spinners with decimal places use DecimalFormatter to automatically render/re-render the string value.  
+    * When entering a decimal value via keyboard within an empty Spinner text field, the displayed value
+    * will automatically adjust (eg entering "1.23" in a field with 2 decimal places will render "1.23.00")
+    * without the use of this adjustment method.
+    *
+	 * @return true if extra decimal point characters had to be stripped
+	 */
+	private boolean stripExtraDecimalPoints()
+	{
+		String tempText = text.getText();
+		if ( tempText.length() > 0 )
+		{
+			int tempFirstDecimalPoint = tempText.indexOf( '.', 0 );
+			if ( tempFirstDecimalPoint >= 0 )
+			{
+				int tempNextDecimalPoint = tempText.indexOf( '.', (tempFirstDecimalPoint + 1) );
+				if ( tempNextDecimalPoint >= 0 )
+				{
+					logger.debug(" Multiple decimal points...  tempText: " + tempText );					
+					boolean tempDecimalPointFound = false;
+					StringBuffer tempStringBuffer = new StringBuffer();
+					for ( int i=0; i < tempText.length(); i++ )
+					{
+						if ( tempText.charAt( i ) == '.' )
+						{
+							if ( ! tempDecimalPointFound )
+							{
+								tempDecimalPointFound = true;
+							}
+							else
+							{
+								// skip/omit the character
+								continue;
+							}
+						}
+						
+						tempStringBuffer.append( tempText.charAt( i ) );
+					}
+					
+					logger.debug(" text.setText( tempStringBuffer.toString() ): " + tempStringBuffer.toString() );		
+					int tempCaretPosition = text.getCaretPosition();
+					text.setText( tempStringBuffer.toString() );
+					text.setSelection( tempCaretPosition, tempCaretPosition );
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 }
