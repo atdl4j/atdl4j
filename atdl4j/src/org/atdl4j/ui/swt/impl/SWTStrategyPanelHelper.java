@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * 
@@ -152,6 +153,8 @@ public class SWTStrategyPanelHelper
 // 4/18/2010 Scott Atwell added
 		// -- Needed to ensure that strategy panel is expanded vertically as panels go from collapsed to expanded
 		expandBar.getShell().layout();
+// 8/19/2010 Scott Atwell added		
+		expandBar.getShell().pack();
 	}
 	
 	/**
