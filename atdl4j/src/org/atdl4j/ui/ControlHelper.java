@@ -40,16 +40,19 @@ public class ControlHelper
 	/**
 	 * @param aControl
 	 * @param aAtdl4jConfig
+	 * @param aDigits
 	 * @return
 	 */
 // 4/18/2010 Scott Atwell	public static BigInteger getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
-	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+// 8/17/2010 Scott Atwell	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig, int aDigits )
 	{
       if ( aControl instanceof SingleSpinnerT )
 		{
 			return determineIncrementValue( ((SingleSpinnerT) aControl).getIncrement(), 
 													  ((SingleSpinnerT) aControl).getIncrementPolicy(),
-													  aAtdl4jConfig );
+													  aAtdl4jConfig,
+													  aDigits );
 		}
 		
 		return null;
@@ -58,16 +61,19 @@ public class ControlHelper
 	/**
 	 * @param aControl
 	 * @param aAtdl4jConfig
+	 * @param aDigits
 	 * @return
 	 */
 // 4/18/2010 Scott Atwell	public static BigInteger getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
-	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+// 8/17/2010 Scott Atwell	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig, int aDigits  )
+	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig, int aDigits  )
 	{
 		if ( aControl instanceof DoubleSpinnerT )
 		{
 			return determineIncrementValue( ((DoubleSpinnerT) aControl).getInnerIncrement(), 
 													  ((DoubleSpinnerT) aControl).getInnerIncrementPolicy(),
-													  aAtdl4jConfig );
+													  aAtdl4jConfig,
+													  aDigits );
 		}
 		
 		return null;
@@ -92,6 +98,28 @@ public class ControlHelper
 	}
 	
 
+	/**
+	 * @param aIncrement
+	 * @param aIncrementPolicy
+	 * @param aAtdl4jConfig
+	 * @param aDigits
+	 * @return
+	 */
+	public static BigDecimal determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jConfig aAtdl4jConfig, int aDigits )
+	{ 
+		BigDecimal tempBigDecimal = determineIncrementValue( aIncrement, aIncrementPolicy, aAtdl4jConfig );
+		
+		if ( tempBigDecimal != null )
+		{
+			return tempBigDecimal.setScale( aDigits );
+		}
+		else
+		{
+			return tempBigDecimal;
+		}
+	}
+	
+	
 	/**
 	 * @param aIncrement
 	 * @param aIncrementPolicy

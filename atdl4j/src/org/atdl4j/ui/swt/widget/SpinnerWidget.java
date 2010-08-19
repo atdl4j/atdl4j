@@ -209,7 +209,8 @@ public class SpinnerWidget
 		{
 // 4/18/2010 Scott Atwell			if ( ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() ) != null )
 //	4/18/2010 Scott Atwell				spinner.setIncrement( ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() ).intValue() );
-			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() );
+// 8/19/2010 Scott Atwell (avoid "1.0" vs. "1" on Int_t)			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() );
+			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig(), spinner.getDigits() );
 			if ( tempInnerIncrement != null )
 			{
 				// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
@@ -238,7 +239,8 @@ public class SpinnerWidget
 		{
 // 4/18/2010 Scott Atwell			if ( ControlHelper.getIncrementValue( control, getAtdl4jConfig() ) != null )
 // 4/18/2010 Scott Atwell				spinner.setIncrement( ControlHelper.getIncrementValue( control, getAtdl4jConfig() ).intValue() );
-			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jConfig() );
+// 8/19/2010 Scott Atwell (avoid "1.0" vs. "1" on Int_t)			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jConfig() );
+			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jConfig(), spinner.getDigits() );
 			if ( tempIncrement != null )
 			{
 				// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
