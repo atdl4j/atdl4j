@@ -26,6 +26,7 @@ import org.atdl4j.fixatdl.layout.RadioButtonListT;
 import org.atdl4j.fixatdl.layout.RadioButtonT;
 import org.atdl4j.fixatdl.layout.SingleSelectListT;
 import org.atdl4j.fixatdl.layout.SliderT;
+import org.atdl4j.fixatdl.layout.StrategyPanelT;
 import org.atdl4j.ui.ControlHelper;
 import org.atdl4j.ui.ControlUI;
 
@@ -51,6 +52,9 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 
 	private boolean hiddenFieldForInputAndFilterData = false;
 
+// 8/21/2010 Scott Atwell added
+	private StrategyPanelT parentStrategyPanel;
+	private Object parent;
 
 	public void init(ControlT aControl, ParameterT aParameter, Atdl4jConfig aAtdl4jConfig)
 	{
@@ -692,5 +696,37 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		{
 			return super.hashCode();
 		}
+	}
+
+	/**
+	 * @return the parentStrategyPanel
+	 */
+	public StrategyPanelT getParentStrategyPanel()
+	{
+		return this.parentStrategyPanel;
+	}
+
+	/**
+	 * @param aParentStrategyPanel the parentStrategyPanel to set
+	 */
+	public void setParentStrategyPanel(StrategyPanelT aParentStrategyPanel)
+	{
+		this.parentStrategyPanel = aParentStrategyPanel;
+	}
+
+	/**
+	 * @return the parent
+	 */
+	public Object getParent()
+	{
+		return this.parent;
+	}
+
+	/**
+	 * @param aParent the parent to set
+	 */
+	public void setParent(Object aParent)
+	{
+		this.parent = aParent;
 	}
 }

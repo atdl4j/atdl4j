@@ -5,6 +5,7 @@ import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
+import org.atdl4j.fixatdl.layout.StrategyPanelT;
 
 /**
  * An interface for an UI widget which will be 
@@ -97,4 +98,11 @@ public interface ControlUI<E extends Comparable<?>>
 	
 	public boolean isHiddenFieldForInputAndFilterData();
 	public void setHiddenFieldForInputAndFilterData(boolean aBoolean);
+	
+	public StrategyPanelT getParentStrategyPanel();
+	public void setParentStrategyPanel( StrategyPanelT aStrategyPanel );
+	
+	public Object getParent();
+	public void setParent( Object aParent );
+
 }

@@ -33,6 +33,7 @@ import org.atdl4j.ui.ControlUI;
 import org.atdl4j.ui.ControlUIFactory;
 import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategiesUIFactory;
+import org.atdl4j.ui.StrategyPanelHelper;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jCompositePanel;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel;
@@ -218,4 +219,5 @@ public interface Atdl4jConfig
 	public String[] getClockControlEndTimeIDValueFragmentList();
 	public void setClockControlEndTimeIDValueFragmentList(String[] aClockControlEndTimeIDValueFragmentList);
 
+	public StrategyPanelHelper getStrategyPanelHelper();
 }

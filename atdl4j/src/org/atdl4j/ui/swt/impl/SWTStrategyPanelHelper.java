@@ -4,18 +4,18 @@ import org.apache.log4j.Logger;
 import org.atdl4j.fixatdl.layout.BorderT;
 import org.atdl4j.fixatdl.layout.PanelOrientationT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
+import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.StrategyPanelHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Layout;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * 
@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Shell;
  * @version 1.0, Mar 3, 2010
  */
 public class SWTStrategyPanelHelper
+	implements StrategyPanelHelper
 {
 	private static final Logger logger = Logger.getLogger( SWTStrategyPanelHelper.class );
 
@@ -318,4 +319,48 @@ public class SWTStrategyPanelHelper
 		return null;
 	}
 
+	/**
+	 * Navigates through aWidget's getParent() looking for ExpandBar with ExpandItems not-yet-expanded and expands those
+	 * @param aWidget
+	 * @return boolean indicating whether any ExpandBar ExpandItems were adjusted
+	 */
+	public boolean expandControlParentStrategyPanel( ControlUI<?> aWidget )
+	{
+		boolean tempAdjustedFlag = false;
+		if ( ( aWidget.getParent() != null ) && ( aWidget.getParent() instanceof Composite ) )
+		{
+			Composite tempParent = (Composite) aWidget.getParent();
+			
+			while ( tempParent != null ) 
+			{
+				// -- Expand if necessary --
+				if ( tempParent instanceof ExpandBar )
+				{
+					ExpandBar tempExpandBar = (ExpandBar) tempParent;
+					for ( ExpandItem tempExpandItem : tempExpandBar.getItems() )
+					{
+						if ( ! tempExpandItem.getExpanded() )
+						{
+							tempExpandItem.setExpanded( true );
+							// -- (relayoutParents=false) --
+							relayoutExpandBar( tempExpandBar, false );
+							tempAdjustedFlag = true;
+						}
+					}
+				}
+
+				// -- Iterate to next parent --
+				if ( ( tempParent.getParent() != null ) && ( ( tempParent.getParent() instanceof Composite ) ) )
+				{
+					tempParent = (Composite) tempParent.getParent();
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+
+		return tempAdjustedFlag;
+	}
 }

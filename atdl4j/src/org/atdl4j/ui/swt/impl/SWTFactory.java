@@ -117,6 +117,10 @@ public class SWTFactory
 					throw new IllegalStateException( "Cannot find Parameter \"" + control.getParameterRef() + "\" for Control ID: \"" + control.getID() + "\"" );
 			}
 			SWTWidget<?> widget = createWidget( c, control, parameter, style );
+			
+// 8/22/2010 Scott Atwell			
+			widget.setParentStrategyPanel( panel );
+			widget.setParent( c );
 
 			// check for duplicate Control IDs
 			if ( control.getID() != null )

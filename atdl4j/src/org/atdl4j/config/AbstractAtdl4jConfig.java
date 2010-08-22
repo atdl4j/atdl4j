@@ -38,6 +38,7 @@ import org.atdl4j.ui.ControlUI;
 import org.atdl4j.ui.ControlUIFactory;
 import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategiesUIFactory;
+import org.atdl4j.ui.StrategyPanelHelper;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jCompositePanel;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel;
@@ -85,11 +86,13 @@ public abstract class AbstractAtdl4jConfig
 	private String classNameStrategiesUIFactory;
 	private StrategiesUIFactory strategiesUIFactory;
 	private TypeConverterFactory typeConverterFactory;
+	private StrategyPanelHelper strategyPanelHelper;
 	
 	private String classNameStrategiesUI;
 	private String classNameStrategyUI;
 	private String classNameControlUIFactory;
 	private String classNameTypeConverterFactory;
+	private String classNameStrategyPanelHelper;
 
 	
 	// -- Controls/Widgets -- 
@@ -196,7 +199,8 @@ public abstract class AbstractAtdl4jConfig
 		// -- UI Infrastructure --
 	abstract protected String getDefaultClassNameStrategiesUI();
 	abstract protected String getDefaultClassNameStrategyUI();
-
+	abstract protected String getDefaultClassNameStrategyPanelHelper();
+	
 	// -- Controls/Widgets -- 
 	abstract protected String getDefaultClassNameControlUIForCheckBoxT();
 	abstract protected String getDefaultClassNameControlUIForDropDownListT();
@@ -237,6 +241,7 @@ public abstract class AbstractAtdl4jConfig
 		setClassNameStrategyUI( getDefaultClassNameStrategyUI() );
 		setClassNameControlUIFactory( getDefaultClassNameControlUIFactory() );
 		setClassNameTypeConverterFactory( getDefaultClassNameTypeConverterFactory() );
+		setClassNameStrategyPanelHelper( getDefaultClassNameStrategyPanelHelper() );
 
 		// -- Controls/Widgets -- 
 		setClassNameControlUIForCheckBoxT( getDefaultClassNameControlUIForCheckBoxT() );
@@ -2465,5 +2470,43 @@ public abstract class AbstractAtdl4jConfig
 	{
 		return accommodateMixOfStrategyPanelsAndControls;
 	}
+
+	/**
+	 * @return the classNameStrategyPanelHelper
+	 */
+	public String getClassNameStrategyPanelHelper()
+	{
+		return this.classNameStrategyPanelHelper;
+	}
+
+	/**
+	 * @param aClassNameStrategyPanelHelper the classNameStrategyPanelHelper to set
+	 */
+	public void setClassNameStrategyPanelHelper(String aClassNameStrategyPanelHelper)
+	{
+		this.classNameStrategyPanelHelper = aClassNameStrategyPanelHelper;
+	}
 	
+	/**
+	 * @return
+	 */
+	public StrategyPanelHelper getStrategyPanelHelper()
+	{
+		if ( ( strategyPanelHelper == null ) && ( getClassNameStrategyPanelHelper() != null ) )
+		{
+			String tempClassName = getClassNameStrategyPanelHelper();
+			logger.debug( "getStrategyPanelHelper() loading class named: " + tempClassName );
+			try
+			{
+				strategyPanelHelper = ((Class<StrategyPanelHelper>) Class.forName( tempClassName ) ).newInstance();
+			}
+			catch ( Exception e )
+			{
+				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+			}
+		}
+		
+		return strategyPanelHelper;
+	}
 }
