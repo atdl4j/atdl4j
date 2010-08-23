@@ -5,7 +5,7 @@
 package org.atdl4j.ui;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.RoundingMode;
 
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.data.Atdl4jConstants;
@@ -111,7 +111,18 @@ public class ControlHelper
 		
 		if ( tempBigDecimal != null )
 		{
-			return tempBigDecimal.setScale( aDigits );
+// 8/23/2010  (handle "Tick" digits 2 - Atdl4jConfig default to .0001 and java.lang.ArithmeticException: Rounding necessary
+// 8/23/2010			return tempBigDecimal.setScale( aDigits );
+			BigDecimal tempBigDecimal2 = tempBigDecimal.setScale( aDigits, RoundingMode.HALF_UP );
+			if ( tempBigDecimal2.doubleValue() == 0.0d )
+			{
+				// -- if aDigits is 2 then ".01" --
+				return new BigDecimal( 1 ).scaleByPowerOfTen( - aDigits );
+			}
+			else
+			{
+				return tempBigDecimal2;
+			}
 		}
 		else
 		{
