@@ -1,5 +1,6 @@
 package org.atdl4j.ui.swt.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +27,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.ExpandBar;
 
 /**
  * SWT-specific UI representation for a Strategy object.
@@ -50,6 +52,7 @@ public class SWTStrategyUI
 
 	private SWTFactory controlFactory;  // note this is lazy-init'd (adjust getControlFactory() if you wish to override/substitute concrete class)
 
+	private List<ExpandBar> expandBarList;  // 8/27/2010 Scott Atwell added
 
 	/*
 	 * Call init() after invoking the no arg constructor
@@ -243,10 +246,14 @@ public class SWTStrategyUI
 	{
 		Map<String, SWTWidget<?>> tempControlMap = new HashMap<String, SWTWidget<?>>();
 		
+// 8/24/2010 Scott Atwell		
+		setExpandBarList( new ArrayList<ExpandBar>() );
+
 		// build panels and widgets recursively
 		for ( StrategyPanelT panel : aStrategyPanelList )
 		{
-			tempControlMap.putAll( getControlFactory().createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE ) );
+//	8/24/2010 Scott Atwell		tempControlMap.putAll( getControlFactory().createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE ) );
+			tempControlMap.putAll( getControlFactory().createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE, getExpandBarList()	) );
 		}
 	
 		// 3/13/2010 John Shields HACK: make the first panel take the full width of the window
@@ -263,6 +270,18 @@ public class SWTStrategyUI
 		setControlMap( tempControlMap );
 	}
 
+	public void relayoutCollapsibleStrategyPanels()
+	{
+// 8/27/2010 Scott Atwell added (to avoid lots of 'thrash' during initial build/load of the various Strategy panels containing one or more collapsible panels --		
+		for ( ExpandBar tempExpandBar : getExpandBarList() )
+		{
+			// -- Force re-sizing (to support non-collapsed, collapsible ExpandBar components) --
+			if ( tempExpandBar.getItem( 0 ).getExpanded() )
+			{
+				SWTStrategyPanelHelper.relayoutExpandBar( tempExpandBar, false );
+			}
+		}
+	}
 
 	protected void createRadioGroups()
 	{
@@ -531,5 +550,23 @@ public class SWTStrategyUI
 				tempRadioButtonListener.processReinit();
 			}
 		}
+	}
+
+
+	/**
+	 * @return the expandBarList
+	 */
+	protected List<ExpandBar> getExpandBarList()
+	{
+		return this.expandBarList;
+	}
+
+
+	/**
+	 * @param aExpandBarList the expandBarList to set
+	 */
+	protected void setExpandBarList(List<ExpandBar> aExpandBarList)
+	{
+		this.expandBarList = aExpandBarList;
 	}
 }

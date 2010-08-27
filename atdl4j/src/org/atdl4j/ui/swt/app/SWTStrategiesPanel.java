@@ -312,7 +312,15 @@ public class SWTStrategiesPanel
 		{
 			logger.debug("Strategy name: " + aStrategy.getName() + " is not currently displayed.  Invoking removeAllStrategyPanels() and returning createStrategyPanel()" );
 			removeAllStrategyPanels();
-			return createStrategyPanel( strategiesUI, aStrategy );
+
+// 8/27/2010 Scott Atwell			return createStrategyPanel( strategiesUI, aStrategy );
+			StrategyUI tempStrategyUI = createStrategyPanel( strategiesUI, aStrategy );
+			
+// 8/27/2010 Scott Atwell added
+			logger.debug("Invoking relayoutCollapsibleStrategyPanels() for: " + aStrategy.getName() );
+			tempStrategyUI.relayoutCollapsibleStrategyPanels();
+			
+			return tempStrategyUI;
 		}
 	}
 

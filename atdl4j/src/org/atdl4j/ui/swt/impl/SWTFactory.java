@@ -1,6 +1,7 @@
 package org.atdl4j.ui.swt.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -51,7 +52,8 @@ public class SWTFactory
 
 	// Given a panel, recursively populates a map of Panels and Parameter widgets
 	// Can also process options for a group frame instead of a single panel
-	public Map<String, SWTWidget<?>> createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style)
+// 8/24/2010	public Map<String, SWTWidget<?>> createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style)
+	public Map<String, SWTWidget<?>> createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style, List<ExpandBar> aExpandBarList)
 	{
 		logger.debug( "createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style)" + " invoked with parms parent: "
 				+ parent + " panel: " + panel + " parameters: " + parameters + " style: " + style );
@@ -92,7 +94,8 @@ public class SWTFactory
 		// build panels widgets recursively
 		for ( StrategyPanelT p : panel.getStrategyPanel() )
 		{
-			Map<String, SWTWidget<?>> widgets = createStrategyPanelAndWidgets( c, p, parameters, style );
+// 8/24/2010			Map<String, SWTWidget<?>> widgets = createStrategyPanelAndWidgets( c, p, parameters, style );
+			Map<String, SWTWidget<?>> widgets = createStrategyPanelAndWidgets( c, p, parameters, style, aExpandBarList );
 			// check for duplicate IDs
 			for ( String newID : widgets.keySet() )
 			{
@@ -141,7 +144,17 @@ public class SWTFactory
 
 		
 		// -- Force re-sizing (to support non-collapsed, collapsible ExpandBar components) --
-		if (c.getParent() instanceof ExpandBar) SWTStrategyPanelHelper.relayoutExpandBar( (ExpandBar)c.getParent(), false );
+// 8/24/2010 Scott Atwell		if (c.getParent() instanceof ExpandBar) SWTStrategyPanelHelper.relayoutExpandBar( (ExpandBar)c.getParent(), false );
+/** 8/24/2010 
+ 		if ( (c.getParent() instanceof ExpandBar) && ( ! panel.isCollapsed() ) )
+ 		{
+			SWTStrategyPanelHelper.relayoutExpandBar( (ExpandBar)c.getParent(), false );
+		}
+**/
+		if ( c.getParent() instanceof ExpandBar )
+		{
+			aExpandBarList.add( (ExpandBar)c.getParent() );
+		}
 		
 		return controlWidgets;
 	}

@@ -45,4 +45,7 @@ public interface StrategyUI
 	public Map<String, ValidationRule> getCompleteValidationRuleMap();
 
 	public void reinitStrategyPanel();
+	
+// 8/27/2010 Scott Atwell added
+	public void relayoutCollapsibleStrategyPanels();
 }
