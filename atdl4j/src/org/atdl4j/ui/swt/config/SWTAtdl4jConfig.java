@@ -158,5 +158,10 @@ public class SWTAtdl4jConfig
 	{
 		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.TextFieldWidget";
 	}
+
+	protected String getDefaultClassNameStrategyPanelHelper()
+	{
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "impl.SWTStrategyPanelHelper";
+	}
 	
 }

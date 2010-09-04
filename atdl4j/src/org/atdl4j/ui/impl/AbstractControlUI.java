@@ -26,6 +26,7 @@ import org.atdl4j.fixatdl.layout.RadioButtonListT;
 import org.atdl4j.fixatdl.layout.RadioButtonT;
 import org.atdl4j.fixatdl.layout.SingleSelectListT;
 import org.atdl4j.fixatdl.layout.SliderT;
+import org.atdl4j.fixatdl.layout.StrategyPanelT;
 import org.atdl4j.ui.ControlHelper;
 import org.atdl4j.ui.ControlUI;
 
@@ -51,6 +52,9 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 
 	private boolean hiddenFieldForInputAndFilterData = false;
 
+// 8/21/2010 Scott Atwell added
+	private StrategyPanelT parentStrategyPanel;
+	private Object parent;
 
 	public void init(ControlT aControl, ParameterT aParameter, Atdl4jConfig aAtdl4jConfig)
 	{
@@ -116,7 +120,9 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 			
 			if ( tempConstValue != null )
 			{
-				E tempControlValue = controlConverter.convertParameterValueToControlValue( tempConstValue );
+			// 7/11/2010 Scott Atwell need to handle CheckBox control checkedEnumRef and uncheckedEnumRef (eg "100" -> true, "0" -> false)				E tempControlValue = controlConverter.convertParameterValueToControlValue( tempConstValue );
+				E tempControlValue = controlConverter.convertParameterValueToControlValue( tempConstValue, getControl() );
+				
 				if ( tempControlValue != null )
 				{
 					setValue( tempControlValue );
@@ -352,6 +358,7 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	{
 		if ( parameter != null )
 		{
+/**			
 			java.util.List<EnumPairT> enumPairs = parameter.getEnumPair();
 			for ( EnumPairT enumPair : enumPairs )
 			{
@@ -367,6 +374,8 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 					}
 				}
 			}
+**/
+			return ParameterHelper.getWireValueForEnumID( parameter, enumID );
 			// throw error?
 		}
 		return null;
@@ -606,7 +615,8 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	{
 		// -- Must use parameterConverter's convertToControlString (eg TextField's controlConverter is a StringConverter, not a DecimalConverter like the Parameter's would be) --
 		Object tempParameterValue = parameterConverter.convertFixWireValueToParameterValue( aFIXValue ); 
-		E tempValue = controlConverter.convertParameterValueToControlValue( tempParameterValue );
+// 7/11/2010 Scott Atwell need to handle CheckBox control checkedEnumRef and uncheckedEnumRef (eg "100" -> true)		E tempValue = controlConverter.convertParameterValueToControlValue( tempParameterValue );
+		E tempValue = controlConverter.convertParameterValueToControlValue( tempParameterValue, getControl() );
 		
 		if ( ( tempValue == null ) && ( getNullValue() != null ) )
 		{
@@ -686,5 +696,37 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		{
 			return super.hashCode();
 		}
+	}
+
+	/**
+	 * @return the parentStrategyPanel
+	 */
+	public StrategyPanelT getParentStrategyPanel()
+	{
+		return this.parentStrategyPanel;
+	}
+
+	/**
+	 * @param aParentStrategyPanel the parentStrategyPanel to set
+	 */
+	public void setParentStrategyPanel(StrategyPanelT aParentStrategyPanel)
+	{
+		this.parentStrategyPanel = aParentStrategyPanel;
+	}
+
+	/**
+	 * @return the parent
+	 */
+	public Object getParent()
+	{
+		return this.parent;
+	}
+
+	/**
+	 * @param aParent the parent to set
+	 */
+	public void setParent(Object aParent)
+	{
+		this.parent = aParent;
 	}
 }

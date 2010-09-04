@@ -33,6 +33,7 @@ import org.atdl4j.ui.ControlUI;
 import org.atdl4j.ui.ControlUIFactory;
 import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategiesUIFactory;
+import org.atdl4j.ui.StrategyPanelHelper;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jCompositePanel;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel;
@@ -127,9 +128,9 @@ public interface Atdl4jConfig
 	public StrategiesT getStrategies();
 	public void setStrategies(StrategiesT strategies);
 
-	public Map<StrategyT, StrategyUI> getStrategyUIMap();
-	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap);
-
+// 6/23/2010 Scott Atwell	public Map<StrategyT, StrategyUI> getStrategyUIMap();
+// 6/23/2010 Scott Atwell	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap);
+	public StrategyUI getStrategyUI( StrategyT aStrategy );
 	public StrategyT getSelectedStrategy();
 	public void setSelectedStrategy(StrategyT selectedStrategy);
 
@@ -147,13 +148,17 @@ public interface Atdl4jConfig
 
 	public List<StrategyT> getStrategiesFilteredStrategyList();
 
-	public boolean isUsePreCachedStrategyPanels();
-	public void setUsePreCachedStrategyPanels(boolean aUsePreCachedStrategyPanels);
+// 6/23/2010 Scott Atwell	public boolean isUsePreCachedStrategyPanels();
+// 6/23/2010 Scott Atwell	public void setUsePreCachedStrategyPanels(boolean aUsePreCachedStrategyPanels);
 	
 	public boolean isTreatControlVisibleFalseAsNull();
 	public boolean isTreatControlEnabledFalseAsNull();
 	public boolean isRestoreLastNonNullStateControlValueBehavior();
-	
+// 8/15/2010 Scott Atwell
+	// FIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file.
+	public void setAccommodateMixOfStrategyPanelsAndControls(boolean accommodateMixOfStrategyPanelsAndControls);
+	public boolean isAccommodateMixOfStrategyPanelsAndControls();
+
 	public boolean isShowEnabledCheckboxOnOptionalClockControl();
 
 	public int getDefaultDigitsForSpinnerControl( ParameterT aParameter );
@@ -214,4 +219,5 @@ public interface Atdl4jConfig
 	public String[] getClockControlEndTimeIDValueFragmentList();
 	public void setClockControlEndTimeIDValueFragmentList(String[] aClockControlEndTimeIDValueFragmentList);
 
+	public StrategyPanelHelper getStrategyPanelHelper();
 }

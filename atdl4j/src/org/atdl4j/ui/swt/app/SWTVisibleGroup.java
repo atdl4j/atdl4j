@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Group;
 public class SWTVisibleGroup
 		extends Group
 {
+	public static Point POINT_0_0 = new Point( 0, 0 );
 
 	/**
 	 * @param aParent
@@ -41,7 +42,8 @@ public class SWTVisibleGroup
 	{
 		if ( !isVisible() )
 		{
-			return new Point( 0, 0 );
+// 6/23/2010 SWL avoid re-constructing			return new Point( 0, 0 );
+			return POINT_0_0;
 		}
 		else
 		{

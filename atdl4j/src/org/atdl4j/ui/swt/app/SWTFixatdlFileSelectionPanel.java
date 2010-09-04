@@ -75,6 +75,8 @@ public class SWTFixatdlFileSelectionPanel
 			public void widgetSelected(SelectionEvent e)
 			{
 				FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
+				dialog.setFilterExtensions( new String[] { "*.xml", "*.*" } );
+				dialog.setFilterNames( new String[] { "XML Files (*.xml)", "All Files (*.*)" } );
 				String filepath = dialog.open();
 				if (filepath != null) 
 				{

@@ -53,11 +53,25 @@ public class DatatypeConverter
 		}
 		else if ( aToDatatypeObject instanceof DateTime )
 		{
-			throw new IllegalArgumentException( "DateTime datatype conversion is not supported (due to timezone offests)." );
+			if ( aValue == null )
+			{
+				return (DateTime) null;
+			}
+			else
+			{
+				throw new IllegalArgumentException( "DateTime datatype conversion is not supported (due to timezone offests).  [aValue: " + aValue + "]" );
+			}
 		}
 		else if ( aToDatatypeObject instanceof XMLGregorianCalendar )
 		{
-			throw new IllegalArgumentException( "XMLGregorianCalendar datatype conversion is not supported (due to timezone offests)." );
+			if ( aValue == null )
+			{
+				return (XMLGregorianCalendar) null;
+			}
+			else
+			{
+				throw new IllegalArgumentException( "XMLGregorianCalendar datatype conversion is not supported (due to timezone offests).  [aValue: " + aValue + "]" );
+			}
 		}
 		else if ( aToDatatypeObject instanceof BigDecimal )
 		{
@@ -69,7 +83,7 @@ public class DatatypeConverter
 		}
 		else
 		{
-			throw new IllegalArgumentException( "Unsupported aToDatatypeObject type: " + aToDatatypeObject.getClass() );
+			throw new IllegalArgumentException( "Unsupported aToDatatypeObject type: " + aToDatatypeObject.getClass() + " [aValue: " + aValue + "]" );
 		}
 	}
 

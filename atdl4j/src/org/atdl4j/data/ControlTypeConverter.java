@@ -1,6 +1,8 @@
 
 package org.atdl4j.data;
 
+import org.atdl4j.fixatdl.layout.ControlT;
+
 
 /**
  * An interface for an algorithmic parameter container class. Classes which implement
@@ -33,9 +35,11 @@ Used by:
 		- AbstractStrategyUI.setFIXMessage()
 	
 	 * @param value
+	 * @param aControl
 	 * @return
 	 */
-	public E convertParameterValueToControlValue(Object value);
+// 7/11/2010 Scott Atwell need to handle CheckBox control checkedEnumRef and uncheckedEnumRef (eg "100" -> true, "0" -> false)	public E convertParameterValueToControlValue(Object value);
+	public E convertParameterValueToControlValue(Object value, ControlT aControl);
 
 	
 	/**

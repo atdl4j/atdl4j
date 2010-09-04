@@ -3,6 +3,7 @@ package org.atdl4j.data.validation;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.flow.StateRuleT;
@@ -49,6 +50,15 @@ public class ValueOperatorValidationRule
 		ControlUI<?> target = targets.get( field );
 		if ( target == null )
 		{
+// 7/18/2010 Scott Atwell Added to handle "FIX_fieldname" of "NX"
+			if ( ( field != null ) && 
+				  ( field.startsWith( InputAndFilterData.FIX_DEFINED_FIELD_PREFIX ) )&&
+				  ( operator == OperatorT.NX ) )
+			{
+				logger.debug( "Special handling to accept NOT EXISTS (\"NX\") check for FIX_DEFINED_FIELD_PREFIX field: " + field + " avoiding: \"No parameter defined for field\".");
+				return;
+			}
+
 			String tempMsg = "No parameter defined for field \"" + field + "\" in this context (ValueOperatorValidationRule) field: " + field
 					+ " operator: " + operator + " value: " + value + " parent: " + parent + " refRules: " + refRules;
 			String tempMsg2 = tempMsg + " targets: " + targets;

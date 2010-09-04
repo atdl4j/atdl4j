@@ -645,12 +645,15 @@ public abstract class AbstractStrategyUI
 				{
 					if ( widget.getParameter().getFixTag() != null && widget.getParameter().getFixTag().equals( BigInteger.valueOf( tag ) ) )
 					{
+/** 8/22/2010 Scott Atwell - refactored into common method							
 						widget.setFIXValue( value );
 						
 						// -- Handles toggling associated controls (eg checkbox or radio button) when control is set to a non Atdl4jConstants.VALUE_NULL_INDICATOR value --
 						fireLoadFixMessageStateListenersForControl( widget );
 
 						fireStateListenersForControl( widget );
+**/						
+						loadControlWithFIXValue( widget, value );
 					}
 				}
 			}
@@ -668,12 +671,15 @@ public abstract class AbstractStrategyUI
 					{
 						if ( widget.getParameter().getName() != null && widget.getParameter().getName().equals( name ) )
 						{
+/** 8/22/2010 Scott Atwell - refactored into common method							
 							widget.setFIXValue( value2 );
 							
 							// -- Handles toggling associated controls (eg checkbox or radio button) when control is set to a non Atdl4jConstants.VALUE_NULL_INDICATOR value --
 							fireLoadFixMessageStateListenersForControl( widget );
 
 							fireStateListenersForControl( widget );
+**/
+							loadControlWithFIXValue( widget, value2 );
 						}
 					}
 					i = i + 3;
@@ -683,6 +689,33 @@ public abstract class AbstractStrategyUI
 
 		fireStateListeners();
 		logger.debug("setFIXMessage() complete.");
+	}
+
+	/**
+	 * @param aWidget
+	 * @param aValue
+	 * @return boolean indicating whether any Collapsible panels were adjusted;
+	 */
+	protected boolean loadControlWithFIXValue( ControlUI<?> aWidget, String aValue )
+	{
+		aWidget.setFIXValue( aValue );
+		
+		// -- Handles toggling associated controls (eg checkbox or radio button) when control is set to a non Atdl4jConstants.VALUE_NULL_INDICATOR value --
+		fireLoadFixMessageStateListenersForControl( aWidget );
+
+		fireStateListenersForControl( aWidget );
+		
+// 8/22/2010 Scott Atwell
+		// -- If the specified aWidget is part of a Collapsible StrategyPanel which is currently Collapsed, then expand it -- 
+		if ( ( getAtdl4jConfig() != null ) && ( getAtdl4jConfig().getStrategyPanelHelper() != null ) )
+		{
+			// -- (aCollapsed=false) --
+			return getAtdl4jConfig().getStrategyPanelHelper().expandControlParentStrategyPanel( aWidget );
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/* (non-Javadoc)

@@ -2,31 +2,37 @@
 
 package org.atdl4j.ui.swt.util;
 
-import java.awt.Color;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
+import org.apache.log4j.Logger;
+import org.atdl4j.ui.swt.impl.SWTStrategyPanelHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
 
-public class NullableSpinner extends Composite {
-
+public class NullableSpinner extends Composite 
+{
+	private static final Logger logger = Logger.getLogger( NullableSpinner.class );
+	
 	static final int BUTTON_WIDTH = 20;
 	Text text;
 	Button up, down;
-	int minimum, maximum, increment, digits;
-
+// 7/7/2010 Scott Atwell changed from int to BigDecimal	int minimum, maximum, increment, digits;
+	BigDecimal minimum, maximum;
+	BigDecimal increment = new BigDecimal( 1 );
+	int digits = 0;
+	public static BigDecimal MIN_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( -Integer.MAX_VALUE );
+	public static BigDecimal MAX_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( Integer.MAX_VALUE );
+	
 	public NullableSpinner(Composite parent, int style) {
 		super(parent, style);
 		
@@ -44,6 +50,13 @@ public class NullableSpinner extends Composite {
 				verify(e);
 			}
 		});
+
+		text.addListener(SWT.Modify, new Listener() {
+			public void handleEvent(Event e) {
+				stripExtraDecimalPoints();
+			}
+		});
+
 
 		text.addListener(SWT.Traverse, new Listener() {
 			public void handleEvent(Event e) {
@@ -76,17 +89,29 @@ public class NullableSpinner extends Composite {
 		});
 
 		text.setFont(getFont());
-		minimum = 0;
-		maximum = 9;
-		increment = 1;
-		digits = 0;
+// 7/7/2010 use null		minimum = 0;
+//	7/7/2010 use null	maximum = 9;
+//	7/7/2010 use data member default	increment = 1;
+//	7/7/2010 use data member default		digits = 0;
 	}
 
-	void verify(Event e) {
-		try {
+	void verify(Event e) 
+	{
+		try 
+		{
 			if (e.text==null||e.text.equals("")) return;
-			Integer.parseInt(e.text);
-		} catch (NumberFormatException ex) {
+// 7/7/2010 Scott Atwell re-wrote   	Integer.parseInt(e.text);
+			if ( ( e.text.equals( "." ) )	|| ( e.text.endsWith( "." ) ) )
+			{
+				// -- Let it go, assume user is entering the decimal place portion and just entered the "." part thus far --
+			}
+			else
+			{
+				BigDecimal tempBigDecimal = new BigDecimal( e.text );
+			}
+		} 
+		catch (NumberFormatException ex) 
+		{
 			e.doit = false;
 		}
 	}
@@ -111,23 +136,85 @@ public class NullableSpinner extends Composite {
 		}
 	}
 	
-	void up() {
+	void up() 
+	{
+/*** 7/7/2010 Scott Atwell re-wrote		
 		if (getSelection()==null) {
-			setSelection(getMinimum());
+// 7/7/2010 Scott Atwell (do not want -Integer.MAX_VALUE) 			setSelection(getMinimum());
+			if ( getMinimum() != -Integer.MAX_VALUE )
+			{
+				setSelection(getMinimum());
+			}
+			else
+			{
+				setSelection( -getIncrement() );
+			}
 		}
 		else {
 			setSelection(getSelection() + getIncrement());
 		}
+***/		
+		BigDecimal tempValue = getValue();
+		if ( tempValue == null )
+		{
+// 7/7/2010 Scott Atwell (do not want -Integer.MAX_VALUE) 			setSelection(getMinimum());
+// 7/7/2010			if ( getMinimum() != -Integer.MAX_VALUE )
+			if ( ( getMinimum() != null ) && ( ! MIN_INTEGER_VALUE_AS_BIG_DECIMAL.equals( getMinimum() ) ) )
+			{
+				setValue( getMinimum() );
+			}
+			else
+			{
+				setValue( getIncrement() );
+			}
+		}
+		else 
+		{
+// 7/7/2010			setSelection(getSelection() + getIncrement());
+			increment( getIncrement() );
+		}
+		
 		notifyListeners(SWT.Selection, new Event());
 	}
 
-	void down() {
+	void down() 
+	{
+/*** 7/7/2010 Scott Atwell re-wrote		
 		if (getSelection()==null) {
-			setSelection(getMaximum());
+// 7/7/2010 Scott Atwell (do not want -Integer.MAX_VALUE)			setSelection(getMaximum());
+			if ( getMaximum() != Integer.MAX_VALUE )
+			{
+				setSelection(getMaximum());
+			}
+			else
+			{
+				setSelection( getIncrement() );
+			}
 		}
 		else {
 			setSelection(getSelection() - getIncrement());
 		}
+***/
+		BigDecimal tempValue = getValue();
+		if ( tempValue == null )
+		{
+// 7/7/2010 Scott Atwell (do not want -Integer.MAX_VALUE)			setSelection(getMaximum());
+// 7/7/2010			if ( getMaximum() != Integer.MAX_VALUE )
+			if ( ( getMaximum() != null ) && ( ! MAX_INTEGER_VALUE_AS_BIG_DECIMAL.equals( getMaximum() ) ) )
+			{
+				setValue( getMaximum() );
+			}
+			else
+			{
+				setValue( getIncrement() );
+			}
+		}
+		else 
+		{
+// 7/7/2010			setSelection(getSelection() - getIncrement());
+			decrement( getIncrement() );
+		}
+		
 		notifyListeners(SWT.Selection, new Event());
 	}
 
@@ -140,6 +227,7 @@ public class NullableSpinner extends Composite {
 		text.setFont(font);
 	}
 
+/**** 7/7/2010 SWL replaced setSelection() and getSelection() with BigDecimal-based setValue() and getValue()	
 	public void setSelection(int selection) {
 		if (selection < minimum) {
 			selection = minimum;
@@ -155,24 +243,62 @@ public class NullableSpinner extends Composite {
 		if (text.getText()==null||text.getText().equals("")) return null;
 		return Integer.parseInt(text.getText());
 	}
-
-	public void setMaximum(int maximum) {
-		checkWidget();
-		this.maximum = maximum;
+****/
+	public void setValue(BigDecimal aValue) 
+	{
+		BigDecimal tempValue = aValue;
+		
+		if ( ( getMinimum() != null ) && ( tempValue.compareTo( getMinimum() ) < 0 ) )
+		{
+			tempValue = getMinimum();
+		}
+		else if ( ( getMaximum() != null ) && ( tempValue.compareTo( getMaximum() ) > 0 ) )
+		{
+			tempValue = getMaximum();
+		} 
+			
+		text.setText( tempValue.toPlainString() );
+		text.selectAll();
+		text.setFocus();
 	}
 
-	public int getMaximum() {
-		return maximum;
+	public BigDecimal getValue() 
+	{
+		if ( ( text.getText()==null ) || ( text.getText().equals("") ) )
+		{
+			return null;
+		}
+		else
+		{
+// note this is what we had to use in SpinnerWidget when getSelection() returned equiv of BigDecimal.unscaledValue()
+//	return BigDecimal.valueOf( spinner.getSelection(), spinner.getDigits() );
+			BigDecimal tempValue = new BigDecimal( text.getText() );
+			BigDecimal tempValueScaled = tempValue.setScale( getDigits(), RoundingMode.HALF_UP );			
+			if ( ! tempValue.equals( tempValueScaled ) )
+			{
+				String tempNewValueString = tempValueScaled.toPlainString();
+				logger.debug( "tempValue: " + tempValue + " tempValueScaled: " + tempValueScaled + " tempValueScaled.toPlainString(): " + tempNewValueString );				
+				int tempCaretPosition = text.getCaretPosition();
+				logger.debug( "getCaretPosition(): " + text.getCaretPosition() );
+				// -- Handle user entering ".12" and formatter converting to "0.12" -- avoid result of "0.21") --
+				if ( ( tempCaretPosition == 2 ) && 
+					  ( text.getText().charAt(0) == '.' ) && 
+					  ( tempNewValueString.startsWith( "0." ) ) )
+				{
+					// -- we're notified at ".1" but formatted value is converting to "0.1" --
+					logger.debug("Incrementing CaretPosition (was " + tempCaretPosition + ") to account for formatted string having \".\" converted to \"0.\" automatically." );		
+					tempCaretPosition++;
+				}
+				
+				text.setText( tempNewValueString );
+				text.setSelection( tempCaretPosition, tempCaretPosition );
+			}
+			
+			return tempValueScaled;
+		}
 	}
-
-	public void setMinimum(int minimum) {
-		this.minimum = minimum;
-	}
-
-	public int getMinimum() {
-		return minimum;
-	}
-
+	
+	
 	void resize() {
 		Point pt = computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		int textWidth = pt.x - BUTTON_WIDTH;
@@ -197,19 +323,147 @@ public class NullableSpinner extends Composite {
 		addListener(SWT.Selection, new TypedListener(listener));
 	}
 
-	public void setIncrement(int anIncrement) {
-		increment = anIncrement;
-	}
-	
-	public int getIncrement() {
-		return increment;	
-	}
-	
 	public void setDigits(int aDigits) {
 		digits = aDigits;
 	}
 	
 	public int getDigits() {
 		return digits;
+	}
+
+	public void increment( BigDecimal aIncrement )
+	{
+		// 7/7/2010 Scott Atwell Moved logic from SpinnerWidget.DoubleSpinnerSelection.widgetSelected()
+		if ( getValue() != null )
+		{
+			setValue( getValue().add( aIncrement ) );
+		}
+		else if ( aIncrement != null )
+		{
+			setValue( aIncrement );
+		}
+	}
+
+	public void decrement( BigDecimal aDecrement )
+	{
+		if ( getValue() != null )
+		{
+			setValue( getValue().subtract( aDecrement ) );
+		}
+		else if ( aDecrement != null )
+		{
+			setValue( aDecrement );
+		}
+	}
+
+	/**
+	 * @return the minimum
+	 */
+	public BigDecimal getMinimum()
+	{
+		return this.minimum;
+	}
+
+	/**
+	 * @param aMinimum the minimum to set
+	 */
+	public void setMinimum(BigDecimal aMinimum)
+	{
+		this.minimum = aMinimum;
+	}
+
+	/**
+	 * @return the maximum
+	 */
+	public BigDecimal getMaximum()
+	{
+		return this.maximum;
+	}
+
+	/**
+	 * @param aMaximum the maximum to set
+	 */
+	public void setMaximum(BigDecimal aMaximum)
+	{
+		this.maximum = aMaximum;
+	}
+
+	/**
+	 * @return the increment
+	 */
+	public BigDecimal getIncrement()
+	{
+		return this.increment;
+	}
+
+	/**
+	 * @param aIncrement the increment to set
+	 */
+	public void setIncrement(BigDecimal aIncrement)
+	{
+		this.increment = aIncrement;
+	}
+	
+// 8/15/2010 Scott Atwell added
+	public void addListener(Listener listener)
+	{
+		text.addListener( SWT.Modify, listener );
+	}
+
+	public void removeListener(Listener listener)
+	{
+		text.removeListener( SWT.Modify, listener );
+	}
+	
+	/**
+    * Spinners with decimal places use DecimalFormatter to automatically render/re-render the string value.  
+    * When entering a decimal value via keyboard within an empty Spinner text field, the displayed value
+    * will automatically adjust (eg entering "1.23" in a field with 2 decimal places will render "1.23.00")
+    * without the use of this adjustment method.
+    *
+	 * @return true if extra decimal point characters had to be stripped
+	 */
+	private boolean stripExtraDecimalPoints()
+	{
+		String tempText = text.getText();
+		if ( tempText.length() > 0 )
+		{
+			int tempFirstDecimalPoint = tempText.indexOf( '.', 0 );
+			if ( tempFirstDecimalPoint >= 0 )
+			{
+				int tempNextDecimalPoint = tempText.indexOf( '.', (tempFirstDecimalPoint + 1) );
+				if ( tempNextDecimalPoint >= 0 )
+				{
+					logger.debug(" Multiple decimal points...  tempText: " + tempText );					
+					boolean tempDecimalPointFound = false;
+					StringBuffer tempStringBuffer = new StringBuffer();
+					for ( int i=0; i < tempText.length(); i++ )
+					{
+						if ( tempText.charAt( i ) == '.' )
+						{
+							if ( ! tempDecimalPointFound )
+							{
+								tempDecimalPointFound = true;
+							}
+							else
+							{
+								// skip/omit the character
+								continue;
+							}
+						}
+						
+						tempStringBuffer.append( tempText.charAt( i ) );
+					}
+					
+					logger.debug(" text.setText( tempStringBuffer.toString() ): " + tempStringBuffer.toString() );		
+					int tempCaretPosition = text.getCaretPosition();
+					text.setText( tempStringBuffer.toString() );
+					text.setSelection( tempCaretPosition, tempCaretPosition );
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 }

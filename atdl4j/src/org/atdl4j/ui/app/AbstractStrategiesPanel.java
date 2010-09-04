@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.fixatdl.core.StrategyT;
+import org.atdl4j.ui.StrategyUI;
 
 /**
  * Represents the base, non-GUI system-specific display panel of availabel FIXatdl strategies (StrategiesUI).
@@ -78,4 +79,19 @@ public abstract class AbstractStrategiesPanel
 	{
 		this.preCached = aPreCached;
 	}
+	
+// 6/23/2010 Scott Atwell added
+	public StrategyT getCurrentlyDisplayedStrategy()
+	{
+		StrategyUI tempStrategyUI = getCurrentlyDisplayedStrategyUI();
+		if ( tempStrategyUI != null )
+		{
+			return tempStrategyUI.getStrategy();
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 }

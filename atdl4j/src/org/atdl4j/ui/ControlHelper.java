@@ -5,7 +5,7 @@
 package org.atdl4j.ui;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.RoundingMode;
 
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.data.Atdl4jConstants;
@@ -40,16 +40,19 @@ public class ControlHelper
 	/**
 	 * @param aControl
 	 * @param aAtdl4jConfig
+	 * @param aDigits
 	 * @return
 	 */
 // 4/18/2010 Scott Atwell	public static BigInteger getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
-	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+// 8/17/2010 Scott Atwell	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig, int aDigits )
 	{
       if ( aControl instanceof SingleSpinnerT )
 		{
 			return determineIncrementValue( ((SingleSpinnerT) aControl).getIncrement(), 
 													  ((SingleSpinnerT) aControl).getIncrementPolicy(),
-													  aAtdl4jConfig );
+													  aAtdl4jConfig,
+													  aDigits );
 		}
 		
 		return null;
@@ -58,16 +61,19 @@ public class ControlHelper
 	/**
 	 * @param aControl
 	 * @param aAtdl4jConfig
+	 * @param aDigits
 	 * @return
 	 */
 // 4/18/2010 Scott Atwell	public static BigInteger getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
-	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+// 8/17/2010 Scott Atwell	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig, int aDigits  )
+	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig, int aDigits  )
 	{
 		if ( aControl instanceof DoubleSpinnerT )
 		{
 			return determineIncrementValue( ((DoubleSpinnerT) aControl).getInnerIncrement(), 
 													  ((DoubleSpinnerT) aControl).getInnerIncrementPolicy(),
-													  aAtdl4jConfig );
+													  aAtdl4jConfig,
+													  aDigits );
 		}
 		
 		return null;
@@ -92,6 +98,39 @@ public class ControlHelper
 	}
 	
 
+	/**
+	 * @param aIncrement
+	 * @param aIncrementPolicy
+	 * @param aAtdl4jConfig
+	 * @param aDigits
+	 * @return
+	 */
+	public static BigDecimal determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jConfig aAtdl4jConfig, int aDigits )
+	{ 
+		BigDecimal tempBigDecimal = determineIncrementValue( aIncrement, aIncrementPolicy, aAtdl4jConfig );
+		
+		if ( tempBigDecimal != null )
+		{
+// 8/23/2010  (handle "Tick" digits 2 - Atdl4jConfig default to .0001 and java.lang.ArithmeticException: Rounding necessary
+// 8/23/2010			return tempBigDecimal.setScale( aDigits );
+			BigDecimal tempBigDecimal2 = tempBigDecimal.setScale( aDigits, RoundingMode.HALF_UP );
+			if ( tempBigDecimal2.doubleValue() == 0.0d )
+			{
+				// -- if aDigits is 2 then ".01" --
+				return new BigDecimal( 1 ).scaleByPowerOfTen( - aDigits );
+			}
+			else
+			{
+				return tempBigDecimal2;
+			}
+		}
+		else
+		{
+			return tempBigDecimal;
+		}
+	}
+	
+	
 	/**
 	 * @param aIncrement
 	 * @param aIncrementPolicy
@@ -125,7 +164,8 @@ public class ControlHelper
 //			}
 			else if ( aIncrement != null )
 			{
-				return new BigDecimal( aIncrement );
+// 7/18/2010 Scott Atwell				return new BigDecimal( aIncrement );
+				return new BigDecimal( aIncrement.toString() );
 			}
 			else
 			{
@@ -147,7 +187,8 @@ public class ControlHelper
 //			}
 			else if ( aIncrement != null )
 			{
-				return new BigDecimal( aIncrement );
+// 7/18/2010 Scott Atwell				return new BigDecimal( aIncrement );
+				return new BigDecimal( aIncrement.toString() );
 			}
 			else
 			{
@@ -159,7 +200,8 @@ public class ControlHelper
 			if ( aIncrement != null )
 			{
 // 4/18/2010 Scott Atwell replaced				return BigInteger.valueOf( aIncrement.longValue() ); 
-				return new BigDecimal( aIncrement ); 
+// 7/18/2010 Scott Atwell				return new BigDecimal( aIncrement );
+				return new BigDecimal( aIncrement.toString() );
 			}
 			else
 			{

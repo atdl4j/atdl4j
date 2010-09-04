@@ -38,6 +38,7 @@ import org.atdl4j.ui.ControlUI;
 import org.atdl4j.ui.ControlUIFactory;
 import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategiesUIFactory;
+import org.atdl4j.ui.StrategyPanelHelper;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jCompositePanel;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel;
@@ -85,11 +86,13 @@ public abstract class AbstractAtdl4jConfig
 	private String classNameStrategiesUIFactory;
 	private StrategiesUIFactory strategiesUIFactory;
 	private TypeConverterFactory typeConverterFactory;
+	private StrategyPanelHelper strategyPanelHelper;
 	
 	private String classNameStrategiesUI;
 	private String classNameStrategyUI;
 	private String classNameControlUIFactory;
 	private String classNameTypeConverterFactory;
+	private String classNameStrategyPanelHelper;
 
 	
 	// -- Controls/Widgets -- 
@@ -141,11 +144,13 @@ public abstract class AbstractAtdl4jConfig
 	private Integer strategyDropDownItemDepth = new Integer( 15 );  // ComboBox drop down 'depth' (aka VisibleItemCount)
 	private boolean selectedStrategyValidated = false;
 	
-	private boolean usePreCachedStrategyPanels = true;
+// 6/23/2010 Scott Atwell	private boolean usePreCachedStrategyPanels = true;
 
 	private boolean treatControlVisibleFalseAsNull = false;
 	private boolean treatControlEnabledFalseAsNull = false;	
 	private boolean restoreLastNonNullStateControlValueBehavior = true;	
+// 8/15/2010 Scott Atwell added
+	private boolean accommodateMixOfStrategyPanelsAndControls = false;  // FIXatdl 1.1 spec recommends against vs. prohibits
 	
 	private boolean showEnabledCheckboxOnOptionalClockControl = false;
 	
@@ -154,7 +159,7 @@ public abstract class AbstractAtdl4jConfig
 	private int defaultDigitsForSpinnerControl = 2;
 
 	private StrategiesT strategies;
-	private Map<StrategyT, StrategyUI> strategyUIMap;
+// 6/23/2010 Scott Atwell	private Map<StrategyT, StrategyUI> strategyUIMap;
 	private StrategyT selectedStrategy;
 	
 	private boolean catchAllStrategyLoadExceptions  = false;
@@ -177,9 +182,11 @@ public abstract class AbstractAtdl4jConfig
 		return DEFAULT_CLASS_NAME_TYPE_CONVERTER_FACTORY;
 	}
 	
-	private BigDecimal defaultIncrementValue = new BigDecimal( "1.0" );
+// 7/7/2010 Scott Atwell changed to null	private BigDecimal defaultIncrementValue = new BigDecimal( "1.0" );
+	private BigDecimal defaultIncrementValue = null;
 	private BigDecimal defaultLotSizeIncrementValue = new BigDecimal( "1.0" );
-	private BigDecimal defaultTickIncrementValue = new BigDecimal( "1.0" );
+// 7/6/2010 Scott Atwell	private BigDecimal defaultTickIncrementValue = new BigDecimal( "1.0" );
+	private BigDecimal defaultTickIncrementValue = new BigDecimal( "0.0001" );
 
 	// -- Controls Clock control's behavior when FIX message timestamp (eg "StartTime" or "EffectiveTime") is older than current time --
 	private Integer clockStartTimeSetFIXValueWithPastTimeRule = CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT;
@@ -192,7 +199,8 @@ public abstract class AbstractAtdl4jConfig
 		// -- UI Infrastructure --
 	abstract protected String getDefaultClassNameStrategiesUI();
 	abstract protected String getDefaultClassNameStrategyUI();
-
+	abstract protected String getDefaultClassNameStrategyPanelHelper();
+	
 	// -- Controls/Widgets -- 
 	abstract protected String getDefaultClassNameControlUIForCheckBoxT();
 	abstract protected String getDefaultClassNameControlUIForDropDownListT();
@@ -233,6 +241,7 @@ public abstract class AbstractAtdl4jConfig
 		setClassNameStrategyUI( getDefaultClassNameStrategyUI() );
 		setClassNameControlUIFactory( getDefaultClassNameControlUIFactory() );
 		setClassNameTypeConverterFactory( getDefaultClassNameTypeConverterFactory() );
+		setClassNameStrategyPanelHelper( getDefaultClassNameStrategyPanelHelper() );
 
 		// -- Controls/Widgets -- 
 		setClassNameControlUIForCheckBoxT( getDefaultClassNameControlUIForCheckBoxT() );
@@ -329,6 +338,15 @@ public abstract class AbstractAtdl4jConfig
 		return classNameStrategiesUI;
 	}
 	
+	/**
+	 * @param aStrategy
+	 * @return
+	 */
+	public StrategyUI getStrategyUI(StrategyT aStrategy)
+	{
+		return getStrategiesPanel().getStrategyUI(aStrategy);
+	}
+
 	/**
 	 * Constructs a new instance every call.
 	 * 
@@ -1262,18 +1280,18 @@ public abstract class AbstractAtdl4jConfig
 	/**
 	 * @param strategyUIMap the strategyUIMap to set
 	 */
-	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap)
-	{
-		this.strategyUIMap = strategyUIMap;
-	}
+// 6/23/2010 Scott Atwell	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap)
+//	{
+//		this.strategyUIMap = strategyUIMap;
+//	}
 
 	/**
 	 * @return the strategyUIMap
 	 */
-	public Map<StrategyT, StrategyUI> getStrategyUIMap()
-	{
-		return strategyUIMap;
-	}
+// 6/23/2010 Scott Atwell	public Map<StrategyT, StrategyUI> getStrategyUIMap()
+//	{
+//		return strategyUIMap;
+//	}
 
 	/**
 	 * @param selectedStrategy the selectedStrategy to set
@@ -1965,18 +1983,18 @@ public abstract class AbstractAtdl4jConfig
 	/**
 	 * @return the usePreCachedStrategyPanels
 	 */
-	public boolean isUsePreCachedStrategyPanels()
-	{
-		return this.usePreCachedStrategyPanels;
-	}
+// 6/23/2010 Scott Atwell	public boolean isUsePreCachedStrategyPanels()
+//	{
+//		return this.usePreCachedStrategyPanels;
+//	}
 
 	/**
 	 * @param aUsePreCachedStrategyPanels the usePreCachedStrategyPanels to set
 	 */
-	public void setUsePreCachedStrategyPanels(boolean aUsePreCachedStrategyPanels)
-	{
-		this.usePreCachedStrategyPanels = aUsePreCachedStrategyPanels;
-	}
+// 6/23/2010 Scott Atwell	public void setUsePreCachedStrategyPanels(boolean aUsePreCachedStrategyPanels)
+//	{
+//		this.usePreCachedStrategyPanels = aUsePreCachedStrategyPanels;
+//	}
 	
 	/**
 	 * @return the catchAllStrategyLoadExceptions
@@ -2432,5 +2450,63 @@ public abstract class AbstractAtdl4jConfig
 	{
 		this.clockControlEndTimeIDValueFragmentList = aClockControlEndTimeIDValueFragmentList;
 	}
+
+	/**
+	 * FIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file.
+	 *  
+	 * @param accommodateMixOfStrategyPanelsAndControls the accommodateMixOfStrategyPanelsAndControls to set
+	 */
+	public void setAccommodateMixOfStrategyPanelsAndControls(boolean accommodateMixOfStrategyPanelsAndControls)
+	{
+		this.accommodateMixOfStrategyPanelsAndControls = accommodateMixOfStrategyPanelsAndControls;
+	}
+
+	/**
+	 * FIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file.
+	 * 
+	 * @return the accommodateMixOfStrategyPanelsAndControls
+	 */
+	public boolean isAccommodateMixOfStrategyPanelsAndControls()
+	{
+		return accommodateMixOfStrategyPanelsAndControls;
+	}
+
+	/**
+	 * @return the classNameStrategyPanelHelper
+	 */
+	public String getClassNameStrategyPanelHelper()
+	{
+		return this.classNameStrategyPanelHelper;
+	}
+
+	/**
+	 * @param aClassNameStrategyPanelHelper the classNameStrategyPanelHelper to set
+	 */
+	public void setClassNameStrategyPanelHelper(String aClassNameStrategyPanelHelper)
+	{
+		this.classNameStrategyPanelHelper = aClassNameStrategyPanelHelper;
+	}
 	
+	/**
+	 * @return
+	 */
+	public StrategyPanelHelper getStrategyPanelHelper()
+	{
+		if ( ( strategyPanelHelper == null ) && ( getClassNameStrategyPanelHelper() != null ) )
+		{
+			String tempClassName = getClassNameStrategyPanelHelper();
+			logger.debug( "getStrategyPanelHelper() loading class named: " + tempClassName );
+			try
+			{
+				strategyPanelHelper = ((Class<StrategyPanelHelper>) Class.forName( tempClassName ) ).newInstance();
+			}
+			catch ( Exception e )
+			{
+				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+			}
+		}
+		
+		return strategyPanelHelper;
+	}
 }
