@@ -1,9 +1,11 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Container;
+import java.awt.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,7 +29,7 @@ public class SwingTextFieldWidget
 	private JFormattedTextField textField;
 	private JLabel label;
 
-	public void createWidget(JPanel parent)
+	public void createWidget(Container parent)
 	{
 		// tooltip
 		String tooltip = control.getTooltip();
@@ -89,15 +91,15 @@ public class SwingTextFieldWidget
 		textField.setText( ( value == null ) ? "" : value.toString() );
 	}
 	
-	public List<JComponent> getComponents() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponents() {
+		List<Component> widgets = new ArrayList<Component>();
 		if (label != null) widgets.add(label);
 		widgets.add(textField);
 		return widgets;
 	}
 
-	public List<JComponent> getComponentsExcludingLabel() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponentsExcludingLabel() {
+		List<Component> widgets = new ArrayList<Component>();
 		widgets.add(textField);
 		return widgets;
 	}	

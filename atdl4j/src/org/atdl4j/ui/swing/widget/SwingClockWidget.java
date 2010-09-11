@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
+import java.awt.Component;
+import java.awt.Container;
+
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.log4j.Logger;
@@ -29,7 +30,6 @@ import org.joda.time.DateTimeZone;
 import org.atdl4j.ui.swing.SwingListener;
 
 import com.jidesoft.spinner.DateSpinner;
-
 
 /**
  * Clock widget which will display differently depending on the parameter type
@@ -57,6 +57,8 @@ public class SwingClockWidget
 	private static final Logger logger = Logger.getLogger( SwingClockWidget.class );
 
 	public static boolean showEnabledButton = false;
+	public static boolean show24HourClock = true;
+	
 	public boolean hasLabelOrCheckbox = false;
 	private JCheckBox enabledButton;
 	
@@ -69,7 +71,7 @@ public class SwingClockWidget
 	private boolean showDay;
 	private boolean showTime;
 
-	public void createWidget(JPanel parent)
+	public void createWidget(Container parent)
 	{
 		// tooltip
 		String tooltip = control.getTooltip();		
@@ -136,7 +138,7 @@ public class SwingClockWidget
 		}
 		// time clock
 		if (showTime) {
-			timeClock = new DateSpinner();
+			timeClock = new DateSpinner(show24HourClock ? "HH:mm:ss" : "hh:mm:ss");
 			if (tooltip != null) timeClock.setToolTipText(tooltip);
 			parent.add(timeClock);
 		}
@@ -223,8 +225,8 @@ public class SwingClockWidget
 		}
 	}
 	
-	public List<JComponent> getComponents() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponents() {
+		List<Component> widgets = new ArrayList<Component>();
 		if (enabledButton != null) widgets.add(enabledButton);
 		if (label != null) widgets.add(label);
 		if (showMonthYear) widgets.add(dateClock);
@@ -232,8 +234,8 @@ public class SwingClockWidget
 		return widgets;
 	}
 	
-	public List<JComponent> getComponentsExcludingLabel() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponentsExcludingLabel() {
+		List<Component> widgets = new ArrayList<Component>();
 		if (showMonthYear) widgets.add(dateClock);
 		if (showTime) widgets.add(timeClock);
 		return widgets;

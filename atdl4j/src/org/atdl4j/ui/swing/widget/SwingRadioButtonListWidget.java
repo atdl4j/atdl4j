@@ -1,10 +1,11 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -26,7 +27,7 @@ public class SwingRadioButtonListWidget
 	private ButtonGroup group = new ButtonGroup();	
 	private JLabel label;
 
-	public void createWidget(JPanel parent)
+	public void createWidget(Container parent)
 	{		
 		JPanel wrapper = new JPanel();
 	    String tooltip = getTooltip();
@@ -122,16 +123,16 @@ public class SwingRadioButtonListWidget
 		}
 	}
 	
-	public List<JComponent> getComponents()
+	public List<Component> getComponents()
 	{
-		List<JComponent> widgets = new ArrayList<JComponent>();
+		List<Component> widgets = new ArrayList<Component>();
 		if (label != null) widgets.add( label );
 		widgets.addAll( buttons );
 		return widgets;
 	}
 
-	public List<JComponent> getComponentsExcludingLabel() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponentsExcludingLabel() {
+		List<Component> widgets = new ArrayList<Component>();
 		widgets.addAll( buttons );
 		return widgets;
 	}	

@@ -1,7 +1,11 @@
 package org.atdl4j.ui.swing.impl;
 
+import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
 
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.ValidationRule;
@@ -12,21 +16,20 @@ import org.atdl4j.fixatdl.flow.StateRuleT;
 import org.atdl4j.fixatdl.validation.OperatorT;
 import org.atdl4j.ui.ControlHelper;
 import org.atdl4j.ui.ControlUI;
-import org.atdl4j.ui.swt.SWTWidget;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
+import org.atdl4j.ui.swing.SwingListener;
+import org.atdl4j.ui.swing.SwingWidget;
 
 public class SwingStateListener
-		implements Listener
+		implements SwingListener
 {
-	private SWTWidget<?> affectedWidget;
+	private SwingWidget<?> affectedWidget;
 	private StateRuleT stateRule;
-	private Map<String, SWTWidget<?>> controls;
+	private Map<String, SwingWidget<?>> controls;
 	private Map<String, ValidationRule> refRules;
 	private ValidationRule rule;
 	private boolean cxlReplaceMode = false;
 
-	public SwingStateListener(SWTWidget<?> affectedWidget, StateRuleT stateRule, Map<String, SWTWidget<?>> controls, Map<String, ValidationRule> refRules)
+	public SwingStateListener(SwingWidget<?> affectedWidget, StateRuleT stateRule, Map<String, SwingWidget<?>> controls, Map<String, ValidationRule> refRules)
 	{
 		this.affectedWidget = affectedWidget;
 		this.stateRule = stateRule;
@@ -43,7 +46,7 @@ public class SwingStateListener
 		return rule;
 	}
 
-	public void handleEvent(Event event)
+	public void handleEvent()
 	{
 
 		// Create a casted map so that Validatable<?> can be used
@@ -114,7 +117,7 @@ public class SwingStateListener
 	/**
 	 * @return the affectedWidget
 	 */
-	public SWTWidget<?> getAffectedWidget()
+	public SwingWidget<?> getAffectedWidget()
 	{
 		return this.affectedWidget;
 	}
@@ -142,7 +145,7 @@ public class SwingStateListener
 	 * nulls the control's value to be selected when control has a value set)
 	 * @param event
 	 */
-	public void handleLoadFixMessageEvent(Event event)
+	public void handleLoadFixMessageEvent()
 	{
 		// -- If the StateRule sets value to VALUE_NULL_INDICATOR, however, the Control has 'externally' had 
 		// -- its value set to non-null value, then 'toggle' the state of the control (eg checkbox or radio button)
@@ -185,4 +188,18 @@ public class SwingStateListener
 		}
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    handleEvent();
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+	    handleEvent();
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent arg0) {
+	    handleEvent();
+	}
 }

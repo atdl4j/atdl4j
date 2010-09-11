@@ -1,5 +1,7 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -20,7 +22,7 @@ public class SwingHiddenFieldWidget
 	}
 	 **/
 
-	public void createWidget(JPanel parent)
+	public void createWidget(Container parent)
 	{
 		// do nothing
 	}
@@ -30,12 +32,12 @@ public class SwingHiddenFieldWidget
 		// do nothing
 	}
 
-	public List<JComponent> getComponents()
+	public List<Component> getComponents()
 	{
 		return null;
 	}
 
-	public List<JComponent> getComponentsExcludingLabel()
+	public List<Component> getComponentsExcludingLabel()
 	{
 		return getComponents();
 	}

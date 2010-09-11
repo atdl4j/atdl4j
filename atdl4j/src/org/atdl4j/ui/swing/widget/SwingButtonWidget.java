@@ -1,5 +1,7 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class SwingButtonWidget
 	private JToggleButton button;
 	//private SwingRadioButtonListener radioButtonListener;
 
-	public void createWidget(JPanel parent) {
+	public void createWidget(Container parent) {
 		
 		// button
 		if (control instanceof RadioButtonT) {
@@ -61,14 +63,14 @@ public class SwingButtonWidget
 		button.setEnabled(value.booleanValue());
 	}
 
-	public List<JComponent> getComponents()
+	public List<Component> getComponents()
 	{
-		List<JComponent> widgets = new ArrayList<JComponent>();
+		List<Component> widgets = new ArrayList<Component>();
 		widgets.add(button);
 		return widgets;
 	}
 
-	public List<JComponent> getComponentsExcludingLabel() {
+	public List<Component> getComponentsExcludingLabel() {
 		// Label is part of the button control
 		return getComponents();
 	}	

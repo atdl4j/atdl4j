@@ -313,10 +313,12 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		tempAtdl4jConfigSettingsGroup.setLayout(tempAtdl4jConfigSettingsGroupLayout);
 		tempAtdl4jConfigSettingsGroup.setLayoutData(new GridData(SWT.TOP, SWT.FILL, false, false));
 		
+		/*
 		checkboxAtdl4jUsePreCachedStrategyPanels = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
 		checkboxAtdl4jUsePreCachedStrategyPanels.setText( "Pre-Cache Strategy Panels" );
 		checkboxAtdl4jUsePreCachedStrategyPanels.setToolTipText( "When checked, Strategy Panels are built once when FIXatdl XML file is loaded and then re-used/re-init'd upon subsequent 'load' operations (Improves performance)" );
 		checkboxAtdl4jUsePreCachedStrategyPanels.setSelection( getAtdl4jConfig().isUsePreCachedStrategyPanels() );
+		*/
 		
 		checkboxAtd4ljShowStrategyDescription = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljShowStrategyDescription.setText( "Show Strategy Description" );
@@ -396,7 +398,7 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_TIME_IN_FORCE, dropDownListFixFieldTimeInForce );
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_CL_ORD_LINK_ID, dropDownListFixFieldClOrdLinkID );
 	
-		getAtdl4jConfig().setUsePreCachedStrategyPanels( getCheckboxValue( checkboxAtdl4jUsePreCachedStrategyPanels, null ).booleanValue() );
+		// getAtdl4jConfig().setUsePreCachedStrategyPanels( getCheckboxValue( checkboxAtdl4jUsePreCachedStrategyPanels, null ).booleanValue() );
 		getAtdl4jConfig().setShowStrategyDescription( getCheckboxValue( checkboxAtd4ljShowStrategyDescription, null ).booleanValue() );
 		getAtdl4jConfig().setShowValidateOutputSection( getCheckboxValue( checkboxAtd4ljShowValidateOutputSection, null ).booleanValue() );
 		getAtdl4jConfig().setShowCompositePanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowCompositePanelOkCancelButtonSection, null ).booleanValue() );

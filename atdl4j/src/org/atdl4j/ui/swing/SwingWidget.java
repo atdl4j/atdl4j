@@ -1,10 +1,9 @@
 
 package org.atdl4j.ui.swing;
 
+import java.awt.Container;
+import java.awt.Component;
 import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 import org.atdl4j.ui.ControlUI;
 
@@ -14,13 +13,13 @@ import org.atdl4j.ui.ControlUI;
  */
 public interface SwingWidget<E extends Comparable<?>> extends ControlUI<E> 
 {
-	public void createWidget(JPanel parent);
+	public void createWidget(Container parent);
 	
 	// This gets all child SWT UI controls, do not confuse with ControlT
-	public List<JComponent> getComponents();
+	public List<Component> getComponents();
 		
 	// This gets all child SWT UI controls (excluding preceding label), do not confuse with ControlT
-	public List<JComponent> getComponentsExcludingLabel();
+	public List<Component> getComponentsExcludingLabel();
 		
 	public void addListener(SwingListener listener);
 

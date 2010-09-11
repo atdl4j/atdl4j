@@ -1,20 +1,13 @@
 package org.atdl4j.ui.swing.impl;
 
+import java.awt.Container;
+
+import javax.swing.JPanel;
+
 import org.apache.log4j.Logger;
 import org.atdl4j.fixatdl.layout.BorderT;
 import org.atdl4j.fixatdl.layout.PanelOrientationT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.ExpandBar;
-import org.eclipse.swt.widgets.ExpandItem;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Layout;
 
 /**
  * 
@@ -29,152 +22,31 @@ import org.eclipse.swt.widgets.Layout;
 public class SwingStrategyPanelHelper
 {
 	private static final Logger logger = Logger.getLogger( SwingStrategyPanelHelper.class );
-
-	/**
-	 * Invokes revalidateLayout() within Display.getCurrent().asyncExec(new
-	 * Runnable() ... )
-	 * 
-	 * @param aControl
-	 */
-	public static void revalidateLayoutAsync(ExpandBar anExpandBar)
-	{
-		SwingRelayoutExpandBarThread tempRevalidateLayoutThread = new SwingRelayoutExpandBarThread( anExpandBar );
-		tempRevalidateLayoutThread.start();
-	}
-
-	/**
-	 * Helper method contributed on web:
-	 * http://stackoverflow.com/questions/586414
-	 * /why-does-an-swt-composite-sometimes
-	 * -require-a-call-to-resize-to-layout-correctl
-	 * 
-	 * @author http://stackoverflow.com/users/63293/peter-walser
-	 * @param control
-	 */
-	// 3/13/2010 John Shields
-	// streamlined method to increase speed; previously was doing too much
-	// layout work which made the app very slow.
-
-	public static void relayoutExpandBar(ExpandBar expandBar)
-	{
-		relayoutExpandBar( expandBar, true );
-	}
-
-// 4/18/2010 Scott Atwell - refactored to support StrategyUI panels within StackLayout (equiv of Swing CardLayout)
-// 4/18/2010 Scott Atwell -- needed GridData.widthHint set to width of widest ExpandItem.getControl()
-// 4/18/2010 Scott Atwell -- needed expandBar.getParent().layout() when relayoutParents=false
-// 4/18/2010 Scott Atwell -- needed expandBar.getShell().layout() at very end
-	public static void relayoutExpandBar(ExpandBar expandBar, boolean relayoutParents)
-	{
-		Composite c = expandBar;
-		int tempMaxControlX = 0;
-		
-// 4/18/2010 Scott Atwell Added
-		logger.debug( "----- relayoutExpandBar (relayoutParents: " + relayoutParents + " expandBar: " + expandBar + " -----" );
-		
-		do
-		{
-// 4/18/2010 Scott Atwell Added
-			logger.debug( "c: " + c.getClass() + " c.getParent(): " + c.getParent().getClass() );
-			
-			if ( c instanceof ExpandBar )
-			{
-				ExpandBar eb = (ExpandBar) c;
-				
-// 4/18/2010 Scott Atwell Added
-				logger.debug( "ExpandBar.getSize(): " + eb.getSize() );
-				
-				for ( ExpandItem expandItem : eb.getItems() )
-				{
-// 4/18/2010 Scott Atwell Added
-					logger.debug( "expandItem: " + expandItem + " text: " + expandItem.getText() + " control: " + expandItem.getControl() + " controlLocation: " + expandItem.getControl().getLocation());					
-					logger.debug( "before pack(): expandItem.getControl().getSize(): " + expandItem.getControl().getSize() );
-
-// note Johnny had added this earlier
-					expandItem.getControl().pack();
-					
-// 4/18/2010 Scott Atwell Added
-					if ( expandItem.getControl().getSize().x > tempMaxControlX )
-					{
-						tempMaxControlX = expandItem.getControl().getSize().x;
-					}
-
-// 4/18/2010 Scott Atwell Added
-					logger.debug( "before: expandItem.getHeight(): " + expandItem.getHeight() + " expandItem.getControl().getSize(): " + expandItem.getControl().getSize() );
-
-					expandItem.setHeight( expandItem.getControl().computeSize( eb.getSize().x, SWT.DEFAULT, true ).y );
-				}
-
-// 4/18/2010 Scott Atwell Added
-				// -- Need to set ExpandBar's GridData.widthHint to the width of the widest control within it -- 
-				GridData tempGridData2 = (GridData) expandBar.getLayoutData();
-				tempGridData2.widthHint = tempMaxControlX;
-				// do not set height as ExpandBar handles this tempGridData2.heightHint = expandBar.getSize().y;
-				expandBar.setLayoutData( tempGridData2 );
-				
- 				
-				if ( relayoutParents )
-				{
-					Control p = c.getParent();
-					
-					if ( p instanceof ScrolledComposite )
-					{
-						ScrolledComposite scrolledComposite = (ScrolledComposite) p;
-						if ( scrolledComposite.getExpandHorizontal() || scrolledComposite.getExpandVertical() )
-						{
-							scrolledComposite.setMinSize( scrolledComposite.getContent().computeSize( SWT.DEFAULT, SWT.DEFAULT, true ) );
-						}
-						else
-						{
-							scrolledComposite.getContent().pack( true );
-						}
-					}
-
-					if ( p instanceof Composite )
-					{
-						Composite composite = (Composite) p;
-						composite.layout();
-					}
-				}
-				else
-				{
-// 4/18/2010 Scott Atwell added this else clause (needed when relayoutParents=false)				
-					// -- this (or relayoutParents=true) is needed (otherwise ExampleStrategyPanelTests2.xml with 2 "columns" of StrategyPanels may not draw all of the ExpandBars initially) --
-					expandBar.getParent().layout();
-				}
-
-			}
-			c = c.getParent();
-		}
-		while ( c != null && c.getParent() != null && !( c instanceof ScrolledComposite ) );
-
-
-// 4/18/2010 Scott Atwell added
-		// -- Needed to ensure that strategy panel is expanded vertically as panels go from collapsed to expanded
-		expandBar.getShell().layout();
-	}
 	
 	/**
-	 * Builds the appropriate 'container' Composite for aStrategyPanel.
+	 * Builds the appropriate 'container' Container for aStrategyPanel.
 	 * 
 	 * Supports:
 	 * 	- aStrategyPanel.isCollapsible() returning ExpandBar (collapsed state based upon aStrategyPanel.isCollapsed())
 	 * 	- aStrategyPanel.getTitle() returning Group
 	 * 	- aStrategyPanel.getBorder() of BorderT.LINE returning Group (without Text)
-	 * 	- default returns Composite
+	 * 	- default returns Container
 	 * 
 	 * @param aStrategyPanel
 	 * @param aParent
 	 * @param aStyle
 	 * @return
 	 */
-	public static Composite createStrategyPanelContainer(StrategyPanelT aStrategyPanel, Composite aParent, int aStyle)
+	public static Container createStrategyPanelContainer(StrategyPanelT aStrategyPanel, Container aParent)
 	{
-		Composite c;
+		Container c;
 
 		// -- Check for Collapsible --
 		if ( aStrategyPanel.isCollapsible() )
 		{
+		    // TODO: implement JIDE CollapsiblePane
+		    
+		    /*
 			ExpandBar tempExpandBar = new ExpandBar( aParent, SWT.NONE );
 			tempExpandBar.setSpacing( 1 );
 //TODO if want to get rid of white background, likely want a border around whole thing...
@@ -193,62 +65,68 @@ public class SwingStrategyPanelHelper
 				tempExpandBar.setLayoutData( tempGridData );
 			}
 
-			Composite tempExpandBarComposite = new Composite( tempExpandBar, SWT.NONE );
+			Container tempExpandBarContainer = new Container( tempExpandBar, SWT.NONE );
 			// "c" is 'standard' composite containing StrategyPanel as Data
-			c = tempExpandBarComposite;
+			c = tempExpandBarContainer;
 
 			// -- since we're using GridLayout, need to force the aParent with that
 			// layout to resize via aParent.layout() when ExpandBar button is
 			// expanded/collapsed --
-			tempExpandBar.addExpandListener( new SwingExpandBarResizer( tempExpandBarComposite ) );
+			tempExpandBar.addExpandListener( new SwingExpandBarResizer( tempExpandBarContainer ) );
 
 			ExpandItem tempExpandItem = new ExpandItem( tempExpandBar, SWT.NONE, 0 );
 			if ( aStrategyPanel.getTitle() != null )
 			{
 				tempExpandItem.setText( aStrategyPanel.getTitle() );
 			}
-			tempExpandItem.setControl( tempExpandBarComposite );
+			tempExpandItem.setControl( tempExpandBarContainer );
 
 			// -- not very helpful in this context, we need revalidateLayout( c )
 			// executed _after_ the "c" component is loaded with Controls --
 			tempExpandItem.setHeight( tempExpandItem.getControl().computeSize( SWT.DEFAULT, SWT.DEFAULT ).y );
 
-			tempExpandItem.setExpanded( !aStrategyPanel.isCollapsed() );
+			tempExpandItem.setExpanded( !aStrategyPanel.isCollapsed() );*/
 		}
 		// -- Check for titled border --
 		else if ( aStrategyPanel.getTitle() != null )
 		{
+		    /*
 			c = new Group( aParent, aStyle );
 			( (Group) c ).setText( aStrategyPanel.getTitle() );
+			*/
 		}
 		// -- Check for Line border (no title) --
 		else if ( BorderT.LINE.equals( aStrategyPanel.getBorder() ) )
 		{
-			c = new Group( aParent, aStyle );
+		    //	c = new Group( aParent, aStyle );
 		}
 		else
 		{
-			// -- normal, non-collapsible, non-bordered StrategyPanel --
-			c = new Composite( aParent, aStyle );
+		   // -- normal, non-collapsible, non-bordered StrategyPanel --
+		   // c = new Container( aParent, aStyle );
 		}
 
-		// -- Set the layout and layoutData for the SWT Composite containing the
+		// -- Set the layout and layoutData for the SWT Container containing the
 		// set of FIXatdl Controls --
+		/*
 		c.setLayout( createStrategyPanelLayout( aStrategyPanel ) );
 		c.setLayoutData( createStrategyPanelLayoutData( c ) );
+		*/
 
 		// -- Keep StrategyPanel in data object --
-		c.setData( aStrategyPanel );
-
+		//c.setData( aStrategyPanel );
+		// TODO: remove me!!
+		c = new JPanel();
 		return c;
 	}
 
 	/**
-	 * Creates the layout for the SWT Composite containing the set of FIXatdl Controls
+	 * Creates the layout for the SWT Container containing the set of FIXatdl Controls
 	 * 
 	 * @param c
 	 * @return
 	 */
+	/*
 	protected static Layout createStrategyPanelLayout(StrategyPanelT panel)
 	{
 		PanelOrientationT orientation = panel.getOrientation();
@@ -274,15 +152,16 @@ public class SwingStrategyPanelHelper
 			throw new IllegalStateException( "ERROR StrategyPanel (" + panel.getTitle() + ") is missing orientation attribute." );
 		}
 		// return null;
-	}
+	}*/
 
 	/**
-	 * Creates the layoutData for the SWT Composite containing the set of FIXatdl Controls
+	 * Creates the layoutData for the SWT Container containing the set of FIXatdl Controls
 	 * 
 	 * @param c
 	 * @return
 	 */
-	protected static Object createStrategyPanelLayoutData(Composite c)
+	/*
+	protected static Object createStrategyPanelLayoutData(Container c)
 	{
 		// if parent is a strategy panel
 		if ( c.getParent().getData() instanceof StrategyPanelT )
@@ -314,5 +193,6 @@ public class SwingStrategyPanelHelper
 		}
 		return null;
 	}
+	*/
 
 }

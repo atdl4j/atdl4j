@@ -1,12 +1,12 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import org.atdl4j.fixatdl.layout.DropDownListT;
 import org.atdl4j.fixatdl.layout.EditableDropDownListT;
@@ -21,7 +21,7 @@ public class SwingDropDownListWidget
 	private JComboBox dropDownList;
 	private JLabel label;
 
-	public void createWidget(JPanel parent)
+	public void createWidget(Container parent)
 	{
 		String tooltip = getTooltip();
 		
@@ -140,15 +140,15 @@ public class SwingDropDownListWidget
 		// TODO: needs to handle case of editable dropdown list;
 	}
 	
-	public List<JComponent> getComponents() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponents() {
+		List<Component> widgets = new ArrayList<Component>();
 		if (label != null) widgets.add(label);
 		widgets.add(dropDownList);
 		return widgets;
 	}
 
-	public List<JComponent> getComponentsExcludingLabel() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponentsExcludingLabel() {
+		List<Component> widgets = new ArrayList<Component>();
 		widgets.add(dropDownList);
 		return widgets;
 	}

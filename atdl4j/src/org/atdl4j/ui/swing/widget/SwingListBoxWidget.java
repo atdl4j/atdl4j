@@ -1,11 +1,12 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.JComponent;
+import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -24,7 +25,7 @@ public class SwingListBoxWidget
 	private JLabel label;
 	private Vector<String> list = new Vector<String>();
 
-	public void createWidget(JPanel parent)
+	public void createWidget(Container parent)
 	{
 		String tooltip = getTooltip();
 
@@ -116,16 +117,16 @@ public class SwingListBoxWidget
 		}
 	}
 	
-	public List<JComponent> getComponents() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponents() {
+		List<Component> widgets = new ArrayList<Component>();
 		if (label != null) widgets.add(label);
 		widgets.add(listBox);
 		return widgets;
 	}
 
-	public List<JComponent> getComponentsExcludingLabel()
+	public List<Component> getComponentsExcludingLabel()
 	{
-		List<JComponent> widgets = new ArrayList<JComponent>();
+		List<Component> widgets = new ArrayList<Component>();
 		widgets.add( listBox );
 		return widgets;
 	}

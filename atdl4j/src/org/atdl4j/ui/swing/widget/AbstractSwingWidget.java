@@ -1,6 +1,6 @@
 package org.atdl4j.ui.swing.widget;
 
-import javax.swing.JComponent;
+import java.awt.Component;
 
 import org.atdl4j.ui.impl.AbstractControlUI;
 import org.atdl4j.ui.swing.SwingWidget;
@@ -14,7 +14,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 {
 	public void setVisible(boolean visible)
 	{		
-		for ( JComponent control : getComponents() )
+		for ( Component control : getComponents() )
 		{
 			control.setVisible( visible );
 		}
@@ -22,7 +22,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 
 	public void setEnabled(boolean enabled)
 	{
-		for ( JComponent control : getComponents() )
+		for ( Component control : getComponents() )
 		{
 			control.setEnabled( enabled );
 		}
@@ -30,7 +30,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 
 	public boolean isVisible()
 	{
-		for ( JComponent control : getComponents() )
+		for ( Component control : getComponents() )
 		{
 			if ( control.isVisible() )
 			{
@@ -43,7 +43,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 
 	public boolean isEnabled()
 	{
-		for ( JComponent control : getComponents() )
+		for ( Component control : getComponents() )
 		{
 			if ( control.isEnabled() )
 			{
@@ -56,7 +56,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 
 	public void setControlExcludingLabelEnabled(boolean enabled)
 	{
-		for ( JComponent control : getComponentsExcludingLabel() )
+		for ( Component control : getComponentsExcludingLabel() )
 		{
 			control.setEnabled( enabled );
 		}
@@ -64,7 +64,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 
 	public boolean isControlExcludingLabelEnabled()
 	{
-		for ( JComponent control : getComponentsExcludingLabel() )
+		for ( Component control : getComponentsExcludingLabel() )
 		{
 			if ( control.isEnabled() )
 			{

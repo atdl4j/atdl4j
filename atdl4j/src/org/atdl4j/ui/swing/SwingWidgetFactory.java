@@ -1,10 +1,11 @@
 package org.atdl4j.ui.swing;
 
+import java.awt.Container;
+
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
-import org.eclipse.swt.widgets.Composite;
 
 public interface SwingWidgetFactory 
 {
-	public SwingWidget<?> createWidget(Composite parent, ControlT control, ParameterT parameter, int style);
+	public SwingWidget<?> createWidget(Container parent, ControlT control, ParameterT parameter);
 }

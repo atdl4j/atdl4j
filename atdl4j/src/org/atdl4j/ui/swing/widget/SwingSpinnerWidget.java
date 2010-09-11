@@ -1,5 +1,7 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -7,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -48,7 +49,7 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 		}
 	}
 	
-	public void createWidget(JPanel parent) {
+	public void createWidget(Container parent) {
 		String tooltip = getTooltip();
 
 		// label
@@ -179,8 +180,8 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 		// TODO ?? adjust the visual appearance of the control ??
 	}
 
-	public List<JComponent> getComponents() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponents() {
+		List<Component> widgets = new ArrayList<Component>();
 		widgets.add(label);
 		widgets.add(spinner);
 		if (control instanceof DoubleSpinnerT)
@@ -191,8 +192,8 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 		return widgets;
 	}
 	
-	public List<JComponent> getComponentsExcludingLabel() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponentsExcludingLabel() {
+		List<Component> widgets = new ArrayList<Component>();
 		widgets.add(spinner);
 		if (control instanceof DoubleSpinnerT)
 		{

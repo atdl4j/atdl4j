@@ -87,9 +87,9 @@ public class SwingStrategiesPanel
 			return;
 		}
 		
-		getAtdl4jConfig().setStrategyUIMap( new HashMap<StrategyT, StrategyUI>() );
+		//getAtdl4jConfig().setStrategyUIMap( new HashMap<StrategyT, StrategyUI>() );
 // 4/2/2010 Scott Atwell added		
-		strategyUIList = new ArrayList<StrategyUI>();		
+		//strategyUIList = new ArrayList<StrategyUI>();		
 		
 		for ( StrategyT strategy : aFilteredStrategyList )
 		{
@@ -133,7 +133,7 @@ public class SwingStrategiesPanel
 					continue;
 				} 
 
-			getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
+			// getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
 // 4/2/2010 Scott Atwell added
 			strategyUIList.add( ui );
 
@@ -220,7 +220,7 @@ public class SwingStrategiesPanel
 	{
 		if ( strategiesPanel != null )
 		{
-			StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUIMap().get( aStrategy );
+			StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUI( aStrategy );
 			
 			if ( tempStrategyUI == null  )
 			{
@@ -246,20 +246,16 @@ public class SwingStrategiesPanel
 	@Override
 	public void reinitStrategyPanels()
 	{
-		for ( StrategyUI tempStrategyUI : getAtdl4jConfig().getStrategyUIMap().values() )
+		// -- Only re-init for the selected strategy --
+		if ( getAtdl4jConfig().getSelectedStrategy() != null )
 		{
-			logger.info( "Invoking StrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
-
-			tempStrategyUI.reinitStrategyPanel();
+			StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUI( getAtdl4jConfig().getSelectedStrategy() );
+			if ( tempStrategyUI != null )
+			{
+				logger.info( "Invoking StrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
+				tempStrategyUI.reinitStrategyPanel();
+			}
 		}
-
-/*** 4/2/2010 Scott Atwell		
-		// -- Force the display to only show the Composite panels for the first strategy, otherwise the first screen is a jumbled mess of all strategy's parameters sequentially --
-		if ( getAtdl4jConfig().getStrategyUIMap().size() > 0 )
-		{
-			adjustLayoutForSelectedStrategy( 0 );
-		}
-***/		
 	}
 
 	/* 
@@ -274,6 +270,18 @@ public class SwingStrategiesPanel
 		{
 			strategiesPanel.setVisible( aVisible );
 		}
+	}
+
+	@Override
+	public StrategyUI getStrategyUI(StrategyT aStrategy) {
+	    // do nothing
+	    return null;
+	}
+
+	@Override
+	public StrategyUI getCurrentlyDisplayedStrategyUI() {
+	    // do nothing
+	    return null;
 	}
 	
 /*** 4/16/2010 Scott Atwell

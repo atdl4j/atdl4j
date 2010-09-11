@@ -1,12 +1,12 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 import org.atdl4j.fixatdl.core.EnumPairT;
@@ -21,7 +21,7 @@ public class SwingSliderWidget
 	private JSlider slider;
 	private JLabel label;
 
-	public void createWidget(JPanel parent)
+	public void createWidget(Container parent)
 	{		
 		// label
 		label = new JLabel();
@@ -130,16 +130,16 @@ public class SwingSliderWidget
 		}
 	}
 	
-	public List<JComponent> getComponents() {
-		List<JComponent> widgets = new ArrayList<JComponent>();
+	public List<Component> getComponents() {
+		List<Component> widgets = new ArrayList<Component>();
 		widgets.add(label);
 		widgets.add(slider);
 		return widgets;
 	}
 
-	public List<JComponent> getComponentsExcludingLabel()
+	public List<Component> getComponentsExcludingLabel()
 	{
-		List<JComponent> widgets = new ArrayList<JComponent>();
+		List<Component> widgets = new ArrayList<Component>();
 		widgets.add(slider);
 		return widgets;
 	}
