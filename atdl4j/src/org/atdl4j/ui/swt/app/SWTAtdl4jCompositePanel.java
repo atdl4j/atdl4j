@@ -136,7 +136,6 @@ public class SWTAtdl4jCompositePanel
 		outputFixMessageText = new Text(validateOutputSection, SWT.BORDER);
 		outputFixMessageText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		
-		// -- triggers getAtdl4jConfig().isShowValidateOutputSection() check and setVisibleValidateOutputSection() --
 		setValidateOutputText( "" );
 		
 		return validateOutputSection;
@@ -158,18 +157,18 @@ public class SWTAtdl4jCompositePanel
 			if ( aText != null )
 			{
 				outputFixMessageText.setText( aText.replace( '\n', ' ' ) );
-				setVisibleValidateOutputSection( true );
+//				setVisibleValidateOutputSection( true );
 			}
 			else
 			{
 				outputFixMessageText.setText( "" );
-				setVisibleValidateOutputSection( false );
+//				setVisibleValidateOutputSection( false );
 			}
 		}
 		else
 		{
 			outputFixMessageText.setText( aText.replace( '\n', ' ' ) );
-			setVisibleValidateOutputSection( false );
+//			setVisibleValidateOutputSection( false );
 		}	
 	}
 
