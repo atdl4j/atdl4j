@@ -140,6 +140,9 @@ public interface Atdl4jConfig
 	public void setShowTimezoneSelector(boolean showTimezoneSelector);
 	public boolean isShowTimezoneSelector();
 	
+	public void setShowFileSelectionSection(boolean showFileSelectionSection);
+	public boolean isShowFileSelectionSection();
+	
 	public void setShowValidateOutputSection(boolean showValidateOutputSection);
 	public boolean isShowValidateOutputSection();
 

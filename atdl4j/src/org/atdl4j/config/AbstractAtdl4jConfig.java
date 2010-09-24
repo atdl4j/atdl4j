@@ -139,6 +139,7 @@ public abstract class AbstractAtdl4jConfig
 	
 	private boolean showStrategyDescription = true;
 	private boolean showTimezoneSelector = false;
+	private boolean showFileSelectionSection = true;
 	private boolean showValidateOutputSection = true;
 	private boolean showCompositePanelOkCancelButtonSection = true;
 	private Integer strategyDropDownItemDepth = new Integer( 15 );  // ComboBox drop down 'depth' (aka VisibleItemCount)
@@ -1339,6 +1340,22 @@ public abstract class AbstractAtdl4jConfig
 	public boolean isShowTimezoneSelector()
 	{
 		return showTimezoneSelector;
+	}
+
+	/**
+	 * @param showFileSelectionSection the showFileSelectionSection to set
+	 */
+	public void setShowFileSelectionSection(boolean showFileSelectionSection)
+	{
+		this.showFileSelectionSection = showFileSelectionSection;
+	}
+
+	/**
+	 * @return the showFileSelectionSection
+	 */
+	public boolean isShowFileSelectionSection()
+	{
+		return showFileSelectionSection;
 	}
 
 	/**

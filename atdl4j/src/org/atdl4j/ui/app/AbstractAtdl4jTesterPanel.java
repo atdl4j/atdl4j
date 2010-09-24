@@ -145,6 +145,10 @@ public abstract class AbstractAtdl4jTesterPanel
 	{
 		try
 		{
+			getAtdl4jCompositePanel().setVisibleFileSelectionSection( getAtdl4jConfig().isShowFileSelectionSection() );
+			getAtdl4jCompositePanel().setVisibleValidateOutputSection( getAtdl4jConfig().isShowValidateOutputSection() );
+			getAtdl4jCompositePanel().setVisibleOkCancelButtonSection( getAtdl4jConfig().isShowCompositePanelOkCancelButtonSection() );
+			
 			// -- Reloads the screen for the pre-loaded/cached FIXatdl file (if specified and cached) --
 			getAtdl4jCompositePanel().loadScreenWithFilteredStrategies();
 		}

@@ -83,6 +83,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 
 // 6/23/2010 Scott Atwell	private Button checkboxAtdl4jUsePreCachedStrategyPanels;
 	private Button checkboxAtd4ljShowStrategyDescription;
+	private Button checkboxAtd4ljShowFileSelectionSection;
 	private Button checkboxAtd4ljShowValidateOutputSection;
 	private Button checkboxAtd4ljShowCompositePanelOkCancelButtonSection;
 	private Button checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls;
@@ -324,6 +325,11 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		checkboxAtd4ljShowStrategyDescription.setToolTipText( "When checked, Strategy Description panel will be shown when Strategy's Description has been specified." );
 		checkboxAtd4ljShowStrategyDescription.setSelection( getAtdl4jConfig().isShowStrategyDescription() );
 		
+		checkboxAtd4ljShowFileSelectionSection = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
+		checkboxAtd4ljShowFileSelectionSection.setText( "Show File Selection" );
+		checkboxAtd4ljShowFileSelectionSection.setToolTipText( "When checked, File Selection panel will be shown." );
+		checkboxAtd4ljShowFileSelectionSection.setSelection( getAtdl4jConfig().isShowFileSelectionSection() );
+		
 		checkboxAtd4ljShowValidateOutputSection = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljShowValidateOutputSection.setText( "Show Validation Section" );
 		checkboxAtd4ljShowValidateOutputSection.setToolTipText( "When checked, Validation panel will be shown providing \"Validate\" button and output text field." );
@@ -404,6 +410,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 	
 // 6/23/2010 Scott Atwell		getAtdl4jConfig().setUsePreCachedStrategyPanels( getCheckboxValue( checkboxAtdl4jUsePreCachedStrategyPanels, null ).booleanValue() );
 		getAtdl4jConfig().setShowStrategyDescription( getCheckboxValue( checkboxAtd4ljShowStrategyDescription, null ).booleanValue() );
+		getAtdl4jConfig().setShowFileSelectionSection( getCheckboxValue( checkboxAtd4ljShowFileSelectionSection, null ).booleanValue() );
 		getAtdl4jConfig().setShowValidateOutputSection( getCheckboxValue( checkboxAtd4ljShowValidateOutputSection, null ).booleanValue() );
 		getAtdl4jConfig().setShowCompositePanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowCompositePanelOkCancelButtonSection, null ).booleanValue() );
 		getAtdl4jConfig().setAccommodateMixOfStrategyPanelsAndControls( getCheckboxValue( checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls, null ).booleanValue() );

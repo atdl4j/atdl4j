@@ -3,6 +3,7 @@ package org.atdl4j.ui.swt.app;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.ui.app.AbstractAtdl4jCompositePanel;
+import org.atdl4j.ui.swt.util.SWTMenuHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -10,7 +11,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -69,9 +74,45 @@ public class SWTAtdl4jCompositePanel
 		// -- Build the SWT.Composite containing "OK" and "Cancel" buttons --
 		createOkCancelButtonSection();
 		
+		// -- Build the SWT MenuItems --
+		createMenuItems();
+		
 		return aParentComposite;
 	}
 
+	protected void createMenuItems()
+	{
+		// -- "Show File Selection" --
+		setVisibleFileSelectionSection( getAtdl4jConfig().isShowFileSelectionSection() );
+		final MenuItem tempShowFileSelectionMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show File Selection" );
+		tempShowFileSelectionMenuItem.setSelection( getAtdl4jConfig().isShowFileSelectionSection() );
+		tempShowFileSelectionMenuItem.addListener( SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(Event aEvent)
+			{
+				setVisibleFileSelectionSection( tempShowFileSelectionMenuItem.getSelection() );
+			}
+		});
+		
+		
+		// -- "Show Validate Output" --
+		setVisibleValidateOutputSection( getAtdl4jConfig().isShowValidateOutputSection() );
+		final MenuItem tempShowValidateOutputMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show Validate Output" );
+		tempShowValidateOutputMenuItem.setSelection( getAtdl4jConfig().isShowValidateOutputSection() );
+		tempShowValidateOutputMenuItem.addListener( SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(Event aEvent)
+			{
+				setVisibleValidateOutputSection( tempShowValidateOutputMenuItem.getSelection() );
+			}
+		});
+		
+		
+	}
+	
+	
 	protected Composite createValidateOutputSection()
 	{
 		// -- SWTVisibleGroup avoids consuming vertical space when hidden via setVisible(false) --
@@ -106,6 +147,7 @@ public class SWTAtdl4jCompositePanel
 		 if ( ( validateOutputSection != null ) && ( ! validateOutputSection.isDisposed() ) )
 		 {
 			 validateOutputSection.setVisible( aVisible );
+			 packLayout();
 		 }
 	}
 	
@@ -131,6 +173,16 @@ public class SWTAtdl4jCompositePanel
 		}	
 	}
 
+	public void setVisibleFileSelectionSection( boolean aVisible )
+	{
+//		 if ( ( getFixatdlFileSelectionPanel() != null ) && ( ! getFixatdlFileSelectionPanel().isDisposed() ) )
+		 if ( getFixatdlFileSelectionPanel() != null ) 
+		 {
+			 getFixatdlFileSelectionPanel().setVisible( aVisible );
+			 packLayout();
+		 }
+	}
+	
 	protected Composite createOkCancelButtonSection()
 	{
 		// -- SWTVisibleComposite avoids consuming vertical space when hidden via setVisible(false) --

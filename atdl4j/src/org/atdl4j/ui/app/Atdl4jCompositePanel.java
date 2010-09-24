@@ -108,6 +108,8 @@ public interface Atdl4jCompositePanel
 	 */
 	public void reloadFixatdlFile() throws Exception;
 	
+	public void setVisibleFileSelectionSection( boolean aVisible );
+	
 	public void setVisibleValidateOutputSection( boolean aVisible );
 	
 	public void setVisibleOkCancelButtonSection( boolean aVisible );

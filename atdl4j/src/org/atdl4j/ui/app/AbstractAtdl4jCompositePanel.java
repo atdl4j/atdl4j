@@ -54,6 +54,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	abstract protected Object createValidateOutputSection();
 	abstract protected void setValidateOutputText(String aText);
 	abstract public void setVisibleValidateOutputSection( boolean aVisible );
+	abstract public void setVisibleFileSelectionSection( boolean aVisible );
 	abstract public void setVisibleOkCancelButtonSection( boolean aVisible );
 	abstract protected void packLayout();
 
