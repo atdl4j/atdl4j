@@ -77,11 +77,13 @@ public interface Atdl4jConfig
 
 	/**
 	 * @param strategy
+	 * @param aStrategies
 	 * @param strategiesRules
 	 * @param parentContainer (for SWT: should be swt.Composite)
 	 * @return
 	 */
-	public StrategyUI getStrategyUI(StrategyT strategy, Map<String, ValidationRule> strategiesRules, Object parentContainer);
+// 9/27/2010 Scott Atwell added StrategiesT	public StrategyUI getStrategyUI(StrategyT strategy, Map<String, ValidationRule> strategiesRules, Object parentContainer);
+	public StrategyUI getStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer);
 	
 	/**
 	 * @return
@@ -127,8 +129,8 @@ public interface Atdl4jConfig
 	public InputAndFilterData getInputAndFilterData();
 	public void setInputAndFilterData(InputAndFilterData inputAndFilterData);
 	
-	public StrategiesT getStrategies();
-	public void setStrategies(StrategiesT strategies);
+//TODO 9/27/2010 Scott Atwell removed	public StrategiesT getStrategies();
+//TODO 9/27/2010 Scott Atwell removed	public void setStrategies(StrategiesT strategies);
 
 // 6/23/2010 Scott Atwell	public Map<StrategyT, StrategyUI> getStrategyUIMap();
 // 6/23/2010 Scott Atwell	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap);
@@ -151,7 +153,7 @@ public interface Atdl4jConfig
 	public void setShowCompositePanelOkCancelButtonSection(boolean showCompositePanelOkCancelButtonSection);
 	public boolean isShowCompositePanelOkCancelButtonSection();
 
-	public List<StrategyT> getStrategiesFilteredStrategyList();
+//TODO 9/27/2010 Scott Atwell removed/moved to AbstractAtdl4jCompositePanel	public List<StrategyT> getStrategiesFilteredStrategyList();
 
 // 6/23/2010 Scott Atwell	public boolean isUsePreCachedStrategyPanels();
 // 6/23/2010 Scott Atwell	public void setUsePreCachedStrategyPanels(boolean aUsePreCachedStrategyPanels);

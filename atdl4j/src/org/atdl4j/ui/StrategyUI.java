@@ -8,17 +8,20 @@ import org.atdl4j.data.StrategyRuleset;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.core.ParameterT;
+import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
 
 public interface StrategyUI 
 {
 	/**
 	 * @param strategy
+	 * @param aStrategies
 	 * @param aAtdl4jConfig (contains getStrategies())
 	 * @param strategiesRules
 	 * @param parentContainer (should be swt.Composite)
 	 */
-	public void init(StrategyT strategy, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer);
+// TODO 9/27/2010 Scott Atwell added StrategiesT	public void init(StrategyT strategy, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer);
+	public void init(StrategyT strategy, StrategiesT aStrategies, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer);
    
 	public void validate() throws ValidationException;
 

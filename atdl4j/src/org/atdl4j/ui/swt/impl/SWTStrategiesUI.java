@@ -90,7 +90,8 @@ public void init(Atdl4jConfig aAtdl4jConfig)
 	
 public StrategyUI createUI(StrategyT strategy, Composite parent)
 {
-	return getAtdl4jConfig().getStrategyUI( strategy, strategiesRules, parent );
+//TODO 9/27/2010 Scott Atwell	return getAtdl4jConfig().getStrategyUI( strategy, strategiesRules, parent );
+	return getAtdl4jConfig().getStrategyUI( strategy, strategies, strategiesRules, parent );
 }
 
 public StrategyUI createUI(StrategyT strategy, Object parent)

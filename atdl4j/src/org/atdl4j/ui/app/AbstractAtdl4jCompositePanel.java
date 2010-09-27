@@ -52,6 +52,9 @@ public abstract class AbstractAtdl4jCompositePanel
 	private StrategyDescriptionPanel strategyDescriptionPanel;
 // TODO 9/26/2010 Scott Atwell	private StrategiesPanel strategiesPanel;
 	private StrategiesUI strategiesUI;
+	
+//TODO 9/27/2010 Scott Atwell added (moved from Atdl4jConfig)
+	private StrategiesT strategies; 
 
 	abstract protected Object createValidateOutputSection();
 	abstract protected void setValidateOutputText(String aText);
@@ -323,7 +326,7 @@ public abstract class AbstractAtdl4jCompositePanel
 				 NumberFormatException 
 	{
 		setLastFixatdlFilename( null );
-		getAtdl4jConfig().setStrategies( null );
+		setStrategies( null );
 // 6/23/2010 Scott Atwell		getStrategiesPanel().setPreCached( false );
 		
 		// parses the XML document and build an object model
@@ -340,7 +343,7 @@ public abstract class AbstractAtdl4jCompositePanel
 // 4/18/2010 Scott Atwell added
 			validateParsedFixatdlFileContents( (StrategiesT) element.getValue() );
 
-			getAtdl4jConfig().setStrategies( (StrategiesT) element.getValue() );
+			setStrategies( (StrategiesT) element.getValue() );
 			
 			setLastFixatdlFilename( aFilename );
 		} 
@@ -354,7 +357,7 @@ public abstract class AbstractAtdl4jCompositePanel
 // 4/18/2010 Scott Atwell added
 			validateParsedFixatdlFileContents( (StrategiesT) element.getValue() );
 
-			getAtdl4jConfig().setStrategies( (StrategiesT) element.getValue() );
+			setStrategies( (StrategiesT) element.getValue() );
 			
 			setLastFixatdlFilename( aFilename );
 		}
@@ -392,14 +395,15 @@ public abstract class AbstractAtdl4jCompositePanel
 	public void loadScreenWithFilteredStrategies()
 	{
 		// obtain filtered StrategyList
-		List<StrategyT> tempFilteredStrategyList = getAtdl4jConfig().getStrategiesFilteredStrategyList();
+// 9/27/2010 Scott Atwell		List<StrategyT> tempFilteredStrategyList = getAtdl4jConfig().getStrategiesFilteredStrategyList();
+		List<StrategyT> tempFilteredStrategyList = getStrategiesFilteredStrategyList();
 		
 		if ( tempFilteredStrategyList == null )
 		{
-			if ( getAtdl4jConfig().getStrategies() != null )
+			if ( getStrategies() != null )
 			{
 				// -- Only generate the error message if Strategies have been parsed -- 
-				getAtdl4jConfig().getAtdl4jUserMessageHandler().displayMessage( "Unexpected Error", "Unexpected Error: Atdl4jConfig.getStrategiesFilteredStrategyList() was null." );
+				getAtdl4jConfig().getAtdl4jUserMessageHandler().displayMessage( "Unexpected Error", "Unexpected Error: getStrategiesFilteredStrategyList() was null." );
 			}
 			return;
 		}
@@ -410,7 +414,7 @@ public abstract class AbstractAtdl4jCompositePanel
 
 		if ( tempFilteredStrategyList == null )
 		{
-			if ( getAtdl4jConfig().getStrategies() != null )
+			if ( getStrategies() != null )
 			{
 				// -- Only generate the error message if Strategies have been parsed -- 
 				getAtdl4jConfig().getAtdl4jUserMessageHandler().displayMessage( "Unexpected Error", "Unexpected Error: getStrategyListUsingInputStrategyNameListFilter() was null." );
@@ -431,7 +435,7 @@ public abstract class AbstractAtdl4jCompositePanel
 //				// remove all strategy panels
 //				getStrategiesPanel().removeAllStrategyPanels();
 //				
-//				List<StrategyT> tempUnfilteredStrategyList = getAtdl4jConfig().getStrategies().getStrategy();
+//				List<StrategyT> tempUnfilteredStrategyList = getStrategies().getStrategy();
 //				
 //				// -- Need to Pre-cached panels, load complete, unfiltered list --
 //				getStrategiesPanel().createStrategyPanels( tempUnfilteredStrategyList );
@@ -446,7 +450,7 @@ public abstract class AbstractAtdl4jCompositePanel
 			// -- Always build StrategyPanels anew (can be time intensive) --
 // TODO 9/26/2010 Scott Atwell			getStrategiesPanel().createStrategyPanels( tempFilteredStrategyList );
 // TODO 9/27/2010 Scott Atwell			getStrategiesUI().createStrategyPanels( tempFilteredStrategyList );
-			getStrategiesUI().createStrategyPanels( getAtdl4jConfig().getStrategies(), tempFilteredStrategyList );
+			getStrategiesUI().createStrategyPanels( getStrategies(), tempFilteredStrategyList );
 //		}
 		
 		getStrategySelectionPanel().loadStrategyList( tempFilteredStrategyList );
@@ -481,17 +485,17 @@ public abstract class AbstractAtdl4jCompositePanel
 			}
 			else  // Match getWireValue() and then use getUiRep() if avail, otherwise getName()
 			{
-				if ( ( getAtdl4jConfig().getStrategies() != null ) && ( getAtdl4jConfig().getStrategies().getStrategyIdentifierTag() != null ) )
+				if ( ( getStrategies() != null ) && ( getStrategies().getStrategyIdentifierTag() != null ) )
 				{
-					String strategyWireValue = FIXMessageParser.extractFieldValueFromFIXMessage( aFixMessage, getAtdl4jConfig().getStrategies().getStrategyIdentifierTag().intValue() );
+					String strategyWireValue = FIXMessageParser.extractFieldValueFromFIXMessage( aFixMessage, getStrategies().getStrategyIdentifierTag().intValue() );
 					
 					logger.info("strategyWireValue: " + strategyWireValue);			
 					if ( strategyWireValue != null )
 					{
 /** 4/16/2010 Scott Atwell									
-						if ( getAtdl4jConfig().getStrategies().getStrategy() != null )
+						if ( getStrategies().getStrategy() != null )
 						{
-							for ( StrategyT tempStrategy : getAtdl4jConfig().getStrategies().getStrategy() )
+							for ( StrategyT tempStrategy : getStrategies().getStrategy() )
 							{
 								if ( strategyWireValue.equals( tempStrategy.getWireValue() ) )
 								{
@@ -526,7 +530,7 @@ public abstract class AbstractAtdl4jCompositePanel
 // 6/23/2010 Scott Atwell			StrategyUI ui = getAtdl4jConfig().getStrategyUIMap().get(getAtdl4jConfig().getSelectedStrategy());
 			StrategyUI ui = getAtdl4jConfig().getStrategyUI(getAtdl4jConfig().getSelectedStrategy());
 			
-			// -- Note available getAtdl4jConfig().getStrategies() may be filtered due to SecurityTypes, Markets, or Region/Country rules --  
+			// -- Note available getStrategies() may be filtered due to SecurityTypes, Markets, or Region/Country rules --  
 			if ( ui != null )
 			{
 				logger.info( "Invoking ui.setFIXMessage() for: " + ui.getStrategy().getName() + " with FIX Message: " + aFixMessage );
@@ -624,5 +628,47 @@ public abstract class AbstractAtdl4jCompositePanel
 		{
 			tempListener.cancelButtonSelected();
 		}
+	}
+	/**
+	 * @return the strategies
+	 */
+	public StrategiesT getStrategies()
+	{
+		return this.strategies;
+	}
+	/**
+	 * @param aStrategies the strategies to set
+	 */
+	public void setStrategies(StrategiesT aStrategies)
+	{
+		this.strategies = aStrategies;
+	}
+	
+	public List<StrategyT> getStrategiesFilteredStrategyList()
+	{
+		if ( ( getStrategies() == null ) || ( getStrategies().getStrategy() == null ) )
+		{
+			return null;
+		}
+		
+		if ( ( getAtdl4jConfig() != null ) && ( getAtdl4jConfig().getInputAndFilterData() == null ) )
+		{
+			return getStrategies().getStrategy();
+		}
+		
+		List<StrategyT> tempFilteredList = new ArrayList<StrategyT>();
+		
+		for ( StrategyT strategy : getStrategies().getStrategy() ) 
+		{
+			if ( ! getAtdl4jConfig().getInputAndFilterData().isStrategySupported( strategy ) )
+			{
+				logger.info("Excluding strategy: " + strategy.getName() + " as inputAndFilterData.isStrategySupported() returned false." );
+				continue; // skip it 
+			}
+			
+			tempFilteredList.add( strategy );
+		}
+		
+		return tempFilteredList;
 	}	
 }

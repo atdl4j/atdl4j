@@ -160,7 +160,7 @@ public abstract class AbstractAtdl4jConfig
 	private int defaultDigitsForSpinnerControlForQty = 0;
 	private int defaultDigitsForSpinnerControl = 2;
 
-	private StrategiesT strategies;
+//TODO 9/27/2010 Scott Atwell removed	private StrategiesT strategies;
 // 6/23/2010 Scott Atwell	private Map<StrategyT, StrategyUI> strategyUIMap;
 	private StrategyT selectedStrategy;
 	
@@ -432,11 +432,13 @@ public abstract class AbstractAtdl4jConfig
 	 * Constructs a new instance every call.
 	 * 
 	 * @param strategy
+	 * @param aStrategies
 	 * @param strategiesRules
 	 * @param parentContainer (for SWT: should be swt.Composite)
 	 * @return
 	 */
-	public StrategyUI getStrategyUI(StrategyT strategy, Map<String, ValidationRule> strategiesRules, Object parentContainer)
+// 9/27/2010 Scott Atwell added StrategiesT	public StrategyUI getStrategyUI(StrategyT strategy, Map<String, ValidationRule> strategiesRules, Object parentContainer)
+	public StrategyUI getStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer)
 	{
 		// -- Constructs a new instance every call --
 		String tempClassName = getClassNameStrategyUI();
@@ -454,7 +456,8 @@ public abstract class AbstractAtdl4jConfig
 		
 		if ( strategyUI != null )
 		{
-			strategyUI.init( strategy, this, strategiesRules, parentContainer );
+// 9/27/2010 Scott Atwell			strategyUI.init( strategy, this, strategiesRules, parentContainer );
+			strategyUI.init( strategy, aStrategies, this, strategiesRules, parentContainer );
 		}
 		
 		return strategyUI;
@@ -1323,22 +1326,6 @@ public abstract class AbstractAtdl4jConfig
 	}
 
 	/**
-	 * @param strategies the strategies to set
-	 */
-	public void setStrategies(StrategiesT strategies)
-	{
-		this.strategies = strategies;
-	}
-
-	/**
-	 * @return the strategies
-	 */
-	public StrategiesT getStrategies()
-	{
-		return strategies;
-	}
-
-	/**
 	 * @param strategyUIMap the strategyUIMap to set
 	 */
 // 6/23/2010 Scott Atwell	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap)
@@ -1450,6 +1437,7 @@ public abstract class AbstractAtdl4jConfig
 		return showCompositePanelOkCancelButtonSection;
 	}
 
+/** TODO 9/27/2010 Scott Atwell removed/moved to AbstractAtdl4jCompositePanel	
 	public List<StrategyT> getStrategiesFilteredStrategyList()
 	{
 		if ( ( getStrategies() == null ) || ( getStrategies().getStrategy() == null ) )
@@ -1477,7 +1465,7 @@ public abstract class AbstractAtdl4jConfig
 		
 		return tempFilteredList;
 	}
-
+**/
 	/**
 	 * @param classNameStrategySelectionPanel the classNameStrategySelectionPanel to set
 	 */

@@ -1,10 +1,12 @@
 package org.atdl4j.ui.app;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
 import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
 
 /**
@@ -117,4 +119,10 @@ public interface Atdl4jCompositePanel
 	public void addListener(Atdl4jCompositePanelListener aAtdl4jCompositePanelListener);
 	
 	public void removeListener(Atdl4jCompositePanelListener aAtdl4jCompositePanelListener);
+	
+//TODO 9/27/2010 Scott Atwell added
+	public StrategiesT getStrategies();
+	public void setStrategies(StrategiesT strategies);
+	
+	public List<StrategyT> getStrategiesFilteredStrategyList();
 }

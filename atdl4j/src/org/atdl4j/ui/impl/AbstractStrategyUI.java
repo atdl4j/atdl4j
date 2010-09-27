@@ -62,6 +62,9 @@ public abstract class AbstractStrategyUI
 
 	protected StrategyT strategy;
 	
+//TODO 9/27/2010 Scott Atwell added	
+	private StrategiesT strategies;
+	
 	abstract	protected void buildControlMap( List<StrategyPanelT> aStrategyPanelList );
 	
 	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of ControlUI<?> --
@@ -93,13 +96,16 @@ public abstract class AbstractStrategyUI
 	
 	/**
 	 * @param strategy
+	 * @param aStrategies
 	 * @param aAtdl4jConfig (contains getStrategies())
 	 * @param strategiesRules
 	 * @param parentContainer (should be swt.Composite)
 	 */
-	public void init(StrategyT strategy, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer)
+// TODO 9/27/2010 Scott Atwell added StrategiesT	public void init(StrategyT strategy, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer)
+	public void init(StrategyT strategy, StrategiesT aStrategies, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer)
 	{
 		setStrategy( strategy );
+		setStrategies( aStrategies );
 		setAtdl4jConfig( aAtdl4jConfig );
 
 		initBegin( parentContainer );
@@ -551,6 +557,7 @@ public abstract class AbstractStrategyUI
 	}
 
 	// Scott Atwell added 1/16/2010
+/** 9/27/2010 Scott Atwell replaced with local instance var	
 	protected StrategiesT getStrategies()
 	{
 		if ( getAtdl4jConfig() != null )
@@ -562,7 +569,7 @@ public abstract class AbstractStrategyUI
 			return null;
 		}
 	}
-
+**/	
 
 	public String getFIXMessage()
 	{
@@ -746,6 +753,22 @@ public abstract class AbstractStrategyUI
 		
 		// -- If no RadioButtons within a radioGroup are selected, then first one in list will be selected --
 		applyRadioGroupRules();
+	}
+
+	/**
+	 * @return the strategies
+	 */
+	protected StrategiesT getStrategies()
+	{
+		return this.strategies;
+	}
+
+	/**
+	 * @param aStrategies the strategies to set
+	 */
+	protected void setStrategies(StrategiesT aStrategies)
+	{
+		this.strategies = aStrategies;
 	}
 
 }
