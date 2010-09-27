@@ -180,7 +180,8 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 			throw new IllegalStateException( "UNEXPECTED ERROR: strategiesDropDown.getItem(" + index + "): " + strategiesDropDown.getItem( index ) + " DID NOT MATCH tempStrategy: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
 		}
 		
-		getAtdl4jConfig().setSelectedStrategy( tempStrategy );
+// 9/27/2010 Scott Atwell moved to AbstractAtdl4jCompositePanel.strategySelected()		getAtdl4jConfig().setSelectedStrategy( tempStrategy );
+		
 // 4/16/2010 Scott Atwell		fireStrategySelectedEvent( tempStrategy, index );
 		fireStrategySelectedEvent( tempStrategy );
 	}

@@ -125,4 +125,11 @@ public interface Atdl4jCompositePanel
 	public void setStrategies(StrategiesT strategies);
 	
 	public List<StrategyT> getStrategiesFilteredStrategyList();
+	
+	public StrategyT getSelectedStrategy();
+	public void setSelectedStrategy(StrategyT selectedStrategy);
+	public boolean isSelectedStrategyValidated();
+	public void setSelectedStrategyValidated(boolean aSelectedStrategyValidated);
+
+	
 }

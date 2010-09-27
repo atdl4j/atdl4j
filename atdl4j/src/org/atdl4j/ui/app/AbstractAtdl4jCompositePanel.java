@@ -55,6 +55,8 @@ public abstract class AbstractAtdl4jCompositePanel
 	
 //TODO 9/27/2010 Scott Atwell added (moved from Atdl4jConfig)
 	private StrategiesT strategies; 
+	private StrategyT selectedStrategy;
+	private boolean selectedStrategyValidated = false;
 
 	abstract protected Object createValidateOutputSection();
 	abstract protected void setValidateOutputText(String aText);
@@ -189,7 +191,11 @@ public abstract class AbstractAtdl4jCompositePanel
 // 4/16/2010 Scott Atwell	public void strategySelected(StrategyT aStrategy, int aIndex)
 	public void strategySelected(StrategyT aStrategy)
 	{
-		getAtdl4jConfig().setSelectedStrategyValidated( false );
+// 9/27/2010 Scott Atwell - moved from SWTStrategySelectionPanel.selectDropDownStrategy()
+		setSelectedStrategy( aStrategy );
+		
+// 9/27/2010		getAtdl4jConfig().setSelectedStrategyValidated( false );
+		setSelectedStrategyValidated( false );
 		setValidateOutputText( "" );
 		getStrategyDescriptionPanel().loadStrategyDescriptionVisible( aStrategy );
 // 4/16/2010 Scott Atwell		getStrategiesPanel().adjustLayoutForSelectedStrategy( aIndex );
@@ -284,7 +290,8 @@ public abstract class AbstractAtdl4jCompositePanel
 	
 	public StrategyT validateStrategyWithoutCatchingAllExceptions() 
 	{
-		StrategyT tempSelectedStrategy = getAtdl4jConfig().getSelectedStrategy();
+// 9/27/2010 Scott Atwell		StrategyT tempSelectedStrategy = getAtdl4jConfig().getSelectedStrategy();
+		StrategyT tempSelectedStrategy = getSelectedStrategy();
 		
 		if (tempSelectedStrategy == null)
 		{
@@ -292,7 +299,8 @@ public abstract class AbstractAtdl4jCompositePanel
 			return null;
 		}
 		
-		getAtdl4jConfig().setSelectedStrategyValidated( false );
+// 9/27/2010 Scott Atwell		getAtdl4jConfig().setSelectedStrategyValidated( false );
+		setSelectedStrategyValidated( false );
 		
 		logger.info("Validating strategy " + tempSelectedStrategy.getName());
 		
@@ -303,7 +311,8 @@ public abstract class AbstractAtdl4jCompositePanel
 			ui.validate();
 			String tempUiFixMsg = ui.getFIXMessage();
 			setValidateOutputText( tempUiFixMsg );
-			getAtdl4jConfig().setSelectedStrategyValidated( true );
+// 9/27/2010			getAtdl4jConfig().setSelectedStrategyValidated( true );
+			setSelectedStrategyValidated( true );
 			logger.info("Successfully Validated strategy " + tempSelectedStrategy.getName() + " FIXMessage: " + tempUiFixMsg );
 			return tempSelectedStrategy;
 		} 
@@ -521,14 +530,16 @@ public abstract class AbstractAtdl4jCompositePanel
 				}
 			}
 
-			if (getAtdl4jConfig().getSelectedStrategy() == null)
+// 9/27/2010 Scott Atwell			if (getAtdl4jConfig().getSelectedStrategy() == null)
+			if (getSelectedStrategy() == null)
 			{
 				setValidateOutputText("Please select a strategy");
 				return false;
 			}
 			
 // 6/23/2010 Scott Atwell			StrategyUI ui = getAtdl4jConfig().getStrategyUIMap().get(getAtdl4jConfig().getSelectedStrategy());
-			StrategyUI ui = getAtdl4jConfig().getStrategyUI(getAtdl4jConfig().getSelectedStrategy());
+// 9/27/2010 Scott Atwell			StrategyUI ui = getAtdl4jConfig().getStrategyUI(getAtdl4jConfig().getSelectedStrategy());
+			StrategyUI ui = getAtdl4jConfig().getStrategyUI( getSelectedStrategy() );
 			
 			// -- Note available getStrategies() may be filtered due to SecurityTypes, Markets, or Region/Country rules --  
 			if ( ui != null )
@@ -541,7 +552,8 @@ public abstract class AbstractAtdl4jCompositePanel
 			}
 			else
 			{
-				setValidateOutputText( getAtdl4jConfig().getSelectedStrategy().getName() + " is not available.");
+// 9/27/2010 Scott Atwell				setValidateOutputText( getAtdl4jConfig().getSelectedStrategy().getName() + " is not available.");
+				setValidateOutputText( getSelectedStrategy().getName() + " is not available.");
 				return false;
 			}
 		} 
@@ -670,5 +682,33 @@ public abstract class AbstractAtdl4jCompositePanel
 		}
 		
 		return tempFilteredList;
+	}
+	/**
+	 * @param selectedStrategy the selectedStrategy to set
+	 */
+	public void setSelectedStrategy(StrategyT selectedStrategy)
+	{
+		this.selectedStrategy = selectedStrategy;
+	}
+	/**
+	 * @return the selectedStrategy
+	 */
+	public StrategyT getSelectedStrategy()
+	{
+		return selectedStrategy;
+	}
+	/**
+	 * @param selectedStrategyValidated the selectedStrategyValidated to set
+	 */
+	public void setSelectedStrategyValidated(boolean selectedStrategyValidated)
+	{
+		this.selectedStrategyValidated = selectedStrategyValidated;
+	}
+	/**
+	 * @return the selectedStrategyValidated
+	 */
+	public boolean isSelectedStrategyValidated()
+	{
+		return selectedStrategyValidated;
 	}	
 }

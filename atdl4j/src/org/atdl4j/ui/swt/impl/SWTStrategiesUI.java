@@ -9,24 +9,18 @@ import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.validation.ValidationRuleFactory;
-import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
-import org.atdl4j.fixatdl.layout.ControlT;
-import org.atdl4j.fixatdl.layout.StrategyPanelT;
 import org.atdl4j.fixatdl.validation.EditT;
-import org.atdl4j.ui.ControlUIFactory;
 import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.impl.AbstractStrategiesUI;
-import org.atdl4j.ui.swt.SWTWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.Label;
 
 // 9/13/2010 Scott Atwell public class SWTStrategiesUI implements StrategiesUI<Composite> {
@@ -389,17 +383,18 @@ public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
 /* (non-Javadoc)
  * @see org.atdl4j.ui.app.StrategiesPanel#reinitStrategyPanels()
  */
+/*** 9/27/2010 Scott Atwell removed -- unused (and had reference to getAtdl4jConfig().getSelectedStrategy())
 @Override
 public void reinitStrategyPanels()
 {
-/*** 6/23/2010 Scott Atwell
+*//*** 6/23/2010 Scott Atwell
 	for ( StrategyUI tempStrategyUI : getAtdl4jConfig().getStrategyUIMap().values() )
 	{
 		logger.info( "Invoking StrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
 
 		tempStrategyUI.reinitStrategyPanel();
 	}
-***/
+***//*
 	// -- Only re-init for the selected strategy --
 	if ( getAtdl4jConfig().getSelectedStrategy() != null )
 	{
@@ -411,6 +406,8 @@ public void reinitStrategyPanels()
 		}
 	}
 }
+***/
+
 
 /* 
  * Doesn't really work for SWT.

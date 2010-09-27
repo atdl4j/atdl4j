@@ -144,7 +144,7 @@ public abstract class AbstractAtdl4jConfig
 	private boolean showValidateOutputSection = true;
 	private boolean showCompositePanelOkCancelButtonSection = true;
 	private Integer strategyDropDownItemDepth = new Integer( 15 );  // ComboBox drop down 'depth' (aka VisibleItemCount)
-	private boolean selectedStrategyValidated = false;
+//TODO 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel 	private boolean selectedStrategyValidated = false;
 	
 // 6/23/2010 Scott Atwell	private boolean usePreCachedStrategyPanels = true;
 
@@ -162,7 +162,7 @@ public abstract class AbstractAtdl4jConfig
 
 //TODO 9/27/2010 Scott Atwell removed	private StrategiesT strategies;
 // 6/23/2010 Scott Atwell	private Map<StrategyT, StrategyUI> strategyUIMap;
-	private StrategyT selectedStrategy;
+// 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel 	private StrategyT selectedStrategy;
 	
 	private boolean catchAllStrategyLoadExceptions  = false;
 	private boolean catchAllValidationExceptions  = false;
@@ -1342,22 +1342,6 @@ public abstract class AbstractAtdl4jConfig
 //	}
 
 	/**
-	 * @param selectedStrategy the selectedStrategy to set
-	 */
-	public void setSelectedStrategy(StrategyT selectedStrategy)
-	{
-		this.selectedStrategy = selectedStrategy;
-	}
-
-	/**
-	 * @return the selectedStrategy
-	 */
-	public StrategyT getSelectedStrategy()
-	{
-		return selectedStrategy;
-	}
-
-	/**
 	 * @param showStrategyDescription the showStrategyDescription to set
 	 */
 	public void setShowStrategyDescription(boolean showStrategyDescription)
@@ -1981,22 +1965,6 @@ public abstract class AbstractAtdl4jConfig
 	public void setStrategyDropDownItemDepth(Integer aStrategyDropDownItemDepth)
 	{
 		this.strategyDropDownItemDepth = aStrategyDropDownItemDepth;
-	}
-
-	/**
-	 * @return the selectedStrategyValidated
-	 */
-	public boolean isSelectedStrategyValidated()
-	{
-		return this.selectedStrategyValidated;
-	}
-
-	/**
-	 * @param aSelectedStrategyValidated the selectedStrategyValidated to set
-	 */
-	public void setSelectedStrategyValidated(boolean aSelectedStrategyValidated)
-	{
-		this.selectedStrategyValidated = aSelectedStrategyValidated;
 	}
 
 	/**

@@ -135,8 +135,8 @@ public interface Atdl4jConfig
 // 6/23/2010 Scott Atwell	public Map<StrategyT, StrategyUI> getStrategyUIMap();
 // 6/23/2010 Scott Atwell	public void setStrategyUIMap(Map<StrategyT, StrategyUI> strategyUIMap);
 	public StrategyUI getStrategyUI( StrategyT aStrategy );
-	public StrategyT getSelectedStrategy();
-	public void setSelectedStrategy(StrategyT selectedStrategy);
+// 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel 	public StrategyT getSelectedStrategy();
+// 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel	public void setSelectedStrategy(StrategyT selectedStrategy);
 
 	public void setShowStrategyDescription(boolean showStrategyDescription);
 	public boolean isShowStrategyDescription();
@@ -172,8 +172,8 @@ public interface Atdl4jConfig
 	
 	public Integer getStrategyDropDownItemDepth();
 	
-	public boolean isSelectedStrategyValidated();
-	public void setSelectedStrategyValidated(boolean aSelectedStrategyValidated);
+// 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel	public boolean isSelectedStrategyValidated();
+// 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel	public void setSelectedStrategyValidated(boolean aSelectedStrategyValidated);
 	
 	public boolean isCatchAllStrategyLoadExceptions();
 	public boolean isCatchAllValidationExceptions();

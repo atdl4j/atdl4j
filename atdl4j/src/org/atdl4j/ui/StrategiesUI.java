@@ -37,7 +37,7 @@ public interface StrategiesUI {
 	
 	public void setPreCached( boolean aPreCached );
 	
-	public void reinitStrategyPanels();
+// 9/27/2010 Scott Atwell removed/unused	public void reinitStrategyPanels();
 	
 	public void addListener(StrategiesUIListener strategiesUIListener);
 	

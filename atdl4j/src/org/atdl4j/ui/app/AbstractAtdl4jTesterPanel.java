@@ -174,17 +174,18 @@ public abstract class AbstractAtdl4jTesterPanel
 	@Override
 	public void okButtonSelected()
 	{
-		if ( getAtdl4jConfig().getSelectedStrategy() != null )
+// 9/27/2010 Scott Atwell		if ( getAtdl4jConfig().getSelectedStrategy() != null )
+		if ( getAtdl4jCompositePanel().getSelectedStrategy() != null )
 		{
 			try
 			{
 // 6/23/2010 Scott Atwell				StrategyUI ui = getAtdl4jConfig().getStrategyUIMap().get( getAtdl4jConfig().getSelectedStrategy() );
-				StrategyUI ui = getAtdl4jConfig().getStrategyUI( getAtdl4jConfig().getSelectedStrategy() );
+				StrategyUI ui = getAtdl4jConfig().getStrategyUI( getAtdl4jCompositePanel().getSelectedStrategy() );
 				ui.validate();
 				String tempFixMsgFragment = ui.getFIXMessage();
 
 				getAtdl4jConfig().getAtdl4jUserMessageHandler().displayMessage( "Strategy Selected", 
-						"Strategy selected: " + Atdl4jHelper.getStrategyUiRepOrName( getAtdl4jConfig().getSelectedStrategy() ) 
+						"Strategy selected: " + Atdl4jHelper.getStrategyUiRepOrName( getAtdl4jCompositePanel().getSelectedStrategy() ) 
 						+ "\nFIX msg: " + tempFixMsgFragment );
 				
 				closePanel();
