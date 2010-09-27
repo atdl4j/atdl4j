@@ -68,7 +68,8 @@ public class SWTAtdl4jCompositePanel
 		getStrategyDescriptionPanel().setVisible( false );  // hide until there is data to populate it with
 		
 		// -- Build the SWT.Composite from StrategiesPanel (GUI display of each strategy's parameters) --
-		getStrategiesPanel().buildStrategiesPanel( getParentOrShell(), getAtdl4jConfig() );
+// TODO 9/26/2010 Scott Atwell		getStrategiesPanel().buildStrategiesPanel( getParentOrShell(), getAtdl4jConfig() );
+		getStrategiesUI().buildStrategiesPanel( getParentOrShell(), getAtdl4jConfig() );
 
 		// -- Build the SWT.Composite containing "Validate Output" button and outputFixMessageText --
 		createValidateOutputSection();

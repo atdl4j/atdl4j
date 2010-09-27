@@ -22,6 +22,7 @@ import org.atdl4j.data.FIXMessageParser;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
+import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategyUI;
 
 /**
@@ -49,7 +50,8 @@ public abstract class AbstractAtdl4jCompositePanel
 	private FixatdlFileSelectionPanel fixatdlFileSelectionPanel;
 	private StrategySelectionPanel strategySelectionPanel;
 	private StrategyDescriptionPanel strategyDescriptionPanel;
-	private StrategiesPanel strategiesPanel;
+// TODO 9/26/2010 Scott Atwell	private StrategiesPanel strategiesPanel;
+	private StrategiesUI strategiesUI;
 
 	abstract protected Object createValidateOutputSection();
 	abstract protected void setValidateOutputText(String aText);
@@ -93,7 +95,8 @@ public abstract class AbstractAtdl4jCompositePanel
 		setStrategyDescriptionPanel( getAtdl4jConfig().getStrategyDescriptionPanel() );
 
 		// -- StrategiesPanel (GUI display of each strategy's parameters) - build() method called via concrete class --
-		setStrategiesPanel( getAtdl4jConfig().getStrategiesPanel() );
+	// TODO 9/26/2010 Scott Atwell		setStrategiesPanel( getAtdl4jConfig().getStrategiesPanel() );
+		setStrategiesUI( getAtdl4jConfig().getStrategiesUI() );
 	}
 
 	/**
@@ -187,7 +190,8 @@ public abstract class AbstractAtdl4jCompositePanel
 		setValidateOutputText( "" );
 		getStrategyDescriptionPanel().loadStrategyDescriptionVisible( aStrategy );
 // 4/16/2010 Scott Atwell		getStrategiesPanel().adjustLayoutForSelectedStrategy( aIndex );
-		getStrategiesPanel().adjustLayoutForSelectedStrategy( aStrategy );
+// TODO 9/26/2010 Scott Atwell		getStrategiesPanel().adjustLayoutForSelectedStrategy( aStrategy );
+		getStrategiesUI().adjustLayoutForSelectedStrategy( aStrategy );
 
 		packLayout();
 		getStrategyDescriptionPanel().loadStrategyDescriptionText( aStrategy );
@@ -236,19 +240,21 @@ public abstract class AbstractAtdl4jCompositePanel
 
 
 	/**
-	 * @param strategiesPanel the strategiesPanel to set
+	 * @param strategiesUI the strategiesUI to set
 	 */
-	protected void setStrategiesPanel(StrategiesPanel strategiesPanel)
+// TODO 9/26/2010 Scott Atwell	protected void setStrategiesPanel(StrategiesPanel strategiesPanel)
+	protected void setStrategiesUI(StrategiesUI strategiesUI)
 	{
-		this.strategiesPanel = strategiesPanel;
+		this.strategiesUI = strategiesUI;
 	}
 
 	/**
-	 * @return the strategiesPanel
+	 * @return the strategiesUI
 	 */
-	public StrategiesPanel getStrategiesPanel()
+// TODO 9/26/2010 Scott Atwell	public StrategiesPanel getStrategiesPanel()
+	public StrategiesUI getStrategiesUI()
 	{
-		return strategiesPanel;
+		return strategiesUI;
 	}
 	
 	/* 
@@ -414,7 +420,8 @@ public abstract class AbstractAtdl4jCompositePanel
 		
 // 4/2/2010 Scott Atwell added
 		// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
-		getStrategiesPanel().setVisible( false );
+// TODO 9/26/2010 Scott Atwell		getStrategiesPanel().setVisible( false );
+		getStrategiesUI().setVisible( false );
 
 		
 // 6/23/2010 Scott Atwell		if ( getAtdl4jConfig().isUsePreCachedStrategyPanels() )
@@ -433,10 +440,13 @@ public abstract class AbstractAtdl4jCompositePanel
 //		else
 //		{
 			// remove all strategy panels
-			getStrategiesPanel().removeAllStrategyPanels();
+// TODO 9/26/2010 Scott Atwell			getStrategiesPanel().removeAllStrategyPanels();
+			getStrategiesUI().removeAllStrategyPanels();
 			
 			// -- Always build StrategyPanels anew (can be time intensive) --
-			getStrategiesPanel().createStrategyPanels( tempFilteredStrategyList );
+// TODO 9/26/2010 Scott Atwell			getStrategiesPanel().createStrategyPanels( tempFilteredStrategyList );
+// TODO 9/27/2010 Scott Atwell			getStrategiesUI().createStrategyPanels( tempFilteredStrategyList );
+			getStrategiesUI().createStrategyPanels( getAtdl4jConfig().getStrategies(), tempFilteredStrategyList );
 //		}
 		
 		getStrategySelectionPanel().loadStrategyList( tempFilteredStrategyList );
@@ -453,7 +463,8 @@ public abstract class AbstractAtdl4jCompositePanel
 		
 // 4/2/2010 Scott Atwell added
 		// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
-		getStrategiesPanel().setVisible( true );
+// 9/26/2010 Scott Atwell		getStrategiesPanel().setVisible( true );
+		getStrategiesUI().setVisible( true );
 	}
 	
 	public boolean loadFixMessage( String aFixMessage ) 

@@ -32,7 +32,6 @@ import org.atdl4j.fixatdl.layout.TextFieldT;
 import org.atdl4j.ui.ControlUI;
 import org.atdl4j.ui.ControlUIFactory;
 import org.atdl4j.ui.StrategiesUI;
-import org.atdl4j.ui.StrategiesUIFactory;
 import org.atdl4j.ui.StrategyPanelHelper;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jCompositePanel;
@@ -42,7 +41,6 @@ import org.atdl4j.ui.app.Atdl4jTesterPanel;
 import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 import org.atdl4j.ui.app.FixMsgLoadPanel;
 import org.atdl4j.ui.app.FixatdlFileSelectionPanel;
-import org.atdl4j.ui.app.StrategiesPanel;
 import org.atdl4j.ui.app.StrategyDescriptionPanel;
 import org.atdl4j.ui.app.StrategySelectionPanel;
 
@@ -64,13 +62,17 @@ public interface Atdl4jConfig
 	/**
 	 * @return the strategiesUIFactory
 	 */
-	public StrategiesUIFactory getStrategiesUIFactory();
+//TODO 9/26/2010 Scott Atwell	public StrategiesUIFactory getStrategiesUIFactory();
 
 	/**
 	 * @param strategies
 	 * @return
 	 */
-	public StrategiesUI getStrategiesUI(StrategiesT strategies);
+//TODO 9/27/2010 Scott Atwell	public StrategiesUI getStrategiesUI(StrategiesT strategies);
+	/**
+	 * @return
+	 */
+	public StrategiesUI getStrategiesUI();
 
 
 	/**
@@ -114,7 +116,7 @@ public interface Atdl4jConfig
 	public Atdl4jInputAndFilterDataSelectionPanel getAtdl4jInputAndFilterDataSelectionPanel();
 	public Atdl4jInputAndFilterDataPanel getAtdl4jInputAndFilterDataPanel();
 	public Atdl4jCompositePanel getAtdl4jCompositePanel();
-	public StrategiesPanel getStrategiesPanel();
+// TODO 9/26/2010 Scott Atwell	public StrategiesUI getStrategiesUI();
 	public void initAtdl4jUserMessageHandler( Object parentOrShell );
 	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler();
 	public FixatdlFileSelectionPanel getFixatdlFileSelectionPanel();

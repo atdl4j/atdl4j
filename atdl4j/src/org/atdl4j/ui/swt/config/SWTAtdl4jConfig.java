@@ -54,11 +54,6 @@ public class SWTAtdl4jConfig
 		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTStrategyDescriptionPanel";
 	}
 
-	protected String getDefaultClassNameStrategiesPanel()
-	{ 
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTStrategiesPanel";
-	}
-
 	protected String getDefaultClassNameAtdl4jTesterPanel()
 	{ 
 		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTAtdl4jTesterPanel";

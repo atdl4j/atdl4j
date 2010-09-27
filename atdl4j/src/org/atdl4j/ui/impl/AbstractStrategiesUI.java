@@ -2,14 +2,16 @@
  * Created on Feb 26, 2010
  *
  */
-package org.atdl4j.ui.app;
+package org.atdl4j.ui.impl;
 
 import java.util.List;
 import java.util.Vector;
 
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.fixatdl.core.StrategyT;
+import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategyUI;
+import org.atdl4j.ui.app.StrategiesUIListener;
 
 /**
  * Represents the base, non-GUI system-specific display panel of availabel FIXatdl strategies (StrategiesUI).
@@ -18,12 +20,13 @@ import org.atdl4j.ui.StrategyUI;
  * @author Scott Atwell
  * @version 1.0, Feb 26, 2010
  */
-public abstract class AbstractStrategiesPanel
-		implements StrategiesPanel
+public abstract class AbstractStrategiesUI
+// 9/13/2010 Scott Atwell		implements StrategiesPanel
+		implements StrategiesUI
 {
 	private Atdl4jConfig atdl4jConfig = null;
 
-	private List<StrategiesPanelListener> listenerList = new Vector<StrategiesPanelListener>();
+	private List<StrategiesUIListener> listenerList = new Vector<StrategiesUIListener>();
 
 	private boolean preCached = false;
 
@@ -44,19 +47,19 @@ public abstract class AbstractStrategiesPanel
 		return atdl4jConfig;
 	}
 	
-	public void addListener( StrategiesPanelListener aStrategiesPanelListener )
+	public void addListener( StrategiesUIListener aStrategiesUIListener )
 	{
-		listenerList.add( aStrategiesPanelListener );
+		listenerList.add( aStrategiesUIListener );
 	}
 
-	public void removeListener( StrategiesPanelListener aStrategiesPanelListener )
+	public void removeListener( StrategiesUIListener aStrategiesUIListener )
 	{
-		listenerList.remove( aStrategiesPanelListener );
+		listenerList.remove( aStrategiesUIListener );
 	}	
 	
 	protected void fireStrategySelectedEvent( StrategyT aStrategy, int index )
 	{
-		for ( StrategiesPanelListener tempListener : listenerList )
+		for ( StrategiesUIListener tempListener : listenerList )
 		{
 			tempListener.strategySelected( aStrategy, index );
 		}

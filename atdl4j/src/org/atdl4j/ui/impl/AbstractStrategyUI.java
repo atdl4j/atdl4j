@@ -124,6 +124,11 @@ public abstract class AbstractStrategyUI
 		addHiddenFieldsForParameterWithoutControl( getParameterMap() );
 
 		attachStateListenersToAllControls();
+		
+		
+		
+		// -- Last statement --
+		initEnd();
 	}
 
 

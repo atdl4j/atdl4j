@@ -36,7 +36,7 @@ import org.atdl4j.fixatdl.core.StrategyT;
  *		    - org.atdl4j.ui.app.AbstractFixatdlFileSelectionPanel
  *		    - org.atdl4j.ui.app.AbstractStrategySelectionPanel
  *		    - org.atdl4j.ui.app.AbstractStrategyDescriptionPanel
- *		    - org.atdl4j.ui.app.AbstractStrategiesPanel
+ *		    - org.atdl4j.ui.app.AbstractStrategiesUI
  *		
  *		SWT-specific implementation:
  *		----------------------------  
@@ -57,7 +57,7 @@ import org.atdl4j.fixatdl.core.StrategyT;
  *		- org.atdl4j.ui.app.FixMsgLoadPanelListener
  *		- org.atdl4j.ui.app.FixatdlFileSelectionPanelListener
  *		- org.atdl4j.ui.app.StrategySelectionPanelListener
- *		- org.atdl4j.ui.app.StrategiesPanelListener
+ *		- org.atdl4j.ui.app.StrategiesUIListener
  *		
  *		Pop-up message handler:
  *		-----------------------

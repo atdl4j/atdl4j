@@ -37,7 +37,6 @@ import org.atdl4j.fixatdl.layout.TextFieldT;
 import org.atdl4j.ui.ControlUI;
 import org.atdl4j.ui.ControlUIFactory;
 import org.atdl4j.ui.StrategiesUI;
-import org.atdl4j.ui.StrategiesUIFactory;
 import org.atdl4j.ui.StrategyPanelHelper;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jCompositePanel;
@@ -47,7 +46,6 @@ import org.atdl4j.ui.app.Atdl4jTesterPanel;
 import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 import org.atdl4j.ui.app.FixMsgLoadPanel;
 import org.atdl4j.ui.app.FixatdlFileSelectionPanel;
-import org.atdl4j.ui.app.StrategiesPanel;
 import org.atdl4j.ui.app.StrategyDescriptionPanel;
 import org.atdl4j.ui.app.StrategySelectionPanel;
 
@@ -77,20 +75,25 @@ public abstract class AbstractAtdl4jConfig
 	private final Logger logger = Logger.getLogger(AbstractAtdl4jConfig.class);
 
 	public static String ATDL4J_PACKAGE_NAME_PATH_FOR_DEBUG_LOGGING = "org.atdl4j";
-	public static String DEFAULT_CLASS_NAME_STRATEGIES_UI_FACTORY = "org.atdl4j.ui.impl.BaseStrategiesUIFactory";
+//TODO 9/26/2010 Scott Atwell	public static String DEFAULT_CLASS_NAME_STRATEGIES_UI_FACTORY = "org.atdl4j.ui.impl.BaseStrategiesUIFactory";
 	public static String DEFAULT_CLASS_NAME_CONTROL_UI_FACTORY = "org.atdl4j.ui.impl.BaseControlUIFactory";
 	public static String DEFAULT_CLASS_NAME_TYPE_CONVERTER_FACTORY = "org.atdl4j.data.TypeConverterFactory";
 	
 	
 	// -- UI Infrastructure --
-	private String classNameStrategiesUIFactory;
-	private StrategiesUIFactory strategiesUIFactory;
+//TODO 9/26/2010 Scott Atwell	private String classNameStrategiesUIFactory;
+//TODO 9/26/2010 Scott Atwell	private StrategiesUIFactory strategiesUIFactory;
 	private TypeConverterFactory typeConverterFactory;
 	private StrategyPanelHelper strategyPanelHelper;
 	
 	private String classNameStrategiesUI;
+	private StrategiesUI strategiesUI;
+
 	private String classNameStrategyUI;
+
 	private String classNameControlUIFactory;
+	private ControlUIFactory controlUIFactory;
+
 	private String classNameTypeConverterFactory;
 	private String classNameStrategyPanelHelper;
 
@@ -121,8 +124,6 @@ public abstract class AbstractAtdl4jConfig
 	private Atdl4jInputAndFilterDataPanel atdl4jInputAndFilterDataPanel;
 	private String classNameAtdl4jCompositePanel;
 	private Atdl4jCompositePanel atdl4jCompositePanel;
-	private String classNameStrategiesPanel;
-	private StrategiesPanel strategiesPanel;
 	private String classNameAtdl4jUserMessageHandler;
 	private Atdl4jUserMessageHandler atdl4jUserMessageHandler;
 	private String classNameFixatdlFileSelectionPanel;
@@ -168,10 +169,10 @@ public abstract class AbstractAtdl4jConfig
 	private boolean catchAllRuntimeExceptions  = false;
 	private boolean catchAllMainlineExceptions  = false;
 
-	protected String getDefaultClassNameStrategiesUIFactory()
-	{
-		return DEFAULT_CLASS_NAME_STRATEGIES_UI_FACTORY;
-	}
+//TODO 9/26/2010 Scott Atwell	protected String getDefaultClassNameStrategiesUIFactory()
+//	{
+//		return DEFAULT_CLASS_NAME_STRATEGIES_UI_FACTORY;
+//	}
 	
 	protected String getDefaultClassNameControlUIFactory()
 	{ 
@@ -224,7 +225,6 @@ public abstract class AbstractAtdl4jConfig
 	abstract protected String getDefaultClassNameAtdl4jInputAndFilterDataSelectionPanel();
 	abstract protected String getDefaultClassNameAtdl4jInputAndFilterDataPanel();
 	abstract protected String getDefaultClassNameAtdl4jCompositePanel();
-	abstract protected String getDefaultClassNameStrategiesPanel();
 	abstract protected String getDefaultClassNameAtdl4jUserMessageHandler();
 	abstract protected String getDefaultClassNameFixatdlFileSelectionPanel();
 	abstract protected String getDefaultClassNameFixMsgLoadPanel();
@@ -237,7 +237,7 @@ public abstract class AbstractAtdl4jConfig
 	public AbstractAtdl4jConfig()
 	{
 		// -- UI Infrastructure
-		setClassNameStrategiesUIFactory( getDefaultClassNameStrategiesUIFactory() );
+//TODO 9/26/2010 Scott Atwell		setClassNameStrategiesUIFactory( getDefaultClassNameStrategiesUIFactory() );
 		setClassNameStrategiesUI( getDefaultClassNameStrategiesUI() );
 		setClassNameStrategyUI( getDefaultClassNameStrategyUI() );
 		setClassNameControlUIFactory( getDefaultClassNameControlUIFactory() );
@@ -266,7 +266,6 @@ public abstract class AbstractAtdl4jConfig
 		setClassNameAtdl4jInputAndFilterDataSelectionPanel( getDefaultClassNameAtdl4jInputAndFilterDataSelectionPanel() );
 		setClassNameAtdl4jInputAndFilterDataPanel( getDefaultClassNameAtdl4jInputAndFilterDataPanel() );
 		setClassNameAtdl4jCompositePanel( getDefaultClassNameAtdl4jCompositePanel() );
-		setClassNameStrategiesPanel( getDefaultClassNameStrategiesPanel() );
 		setClassNameAtdl4jUserMessageHandler( getDefaultClassNameAtdl4jUserMessageHandler() );
 		setClassNameFixatdlFileSelectionPanel( getDefaultClassNameFixatdlFileSelectionPanel() );
 		setClassNameFixMsgLoadPanel( getDefaultClassNameFixMsgLoadPanel() );
@@ -278,33 +277,33 @@ public abstract class AbstractAtdl4jConfig
 	/**
 	 * @param classNameStrategiesUIFactory the classNameStrategiesUIFactory to set
 	 */
-	public void setClassNameStrategiesUIFactory(String classNameStrategiesUIFactory)
-	{
-		this.classNameStrategiesUIFactory = classNameStrategiesUIFactory;
-		setStrategiesUIFactory( null );
-	}
+//TODO 9/26/2010 Scott Atwell	public void setClassNameStrategiesUIFactory(String classNameStrategiesUIFactory)
+//	{
+//		this.classNameStrategiesUIFactory = classNameStrategiesUIFactory;
+//		setStrategiesUIFactory( null );
+//	}
 
 	/**
 	 * @return the classNameStrategiesUIFactory
 	 */
-	public String getClassNameStrategiesUIFactory()
-	{
-		return classNameStrategiesUIFactory;
-	}
+//TODO 9/26/2010 Scott Atwell	public String getClassNameStrategiesUIFactory()
+//	{
+//		return classNameStrategiesUIFactory;
+//	}
 	
 	/**
 	 * @param strategiesUIFactory the strategiesUIFactory to set
 	 */
-	public void setStrategiesUIFactory(StrategiesUIFactory strategiesUIFactory)
-	{
-		this.strategiesUIFactory = strategiesUIFactory;
-	}
+//TODO 9/26/2010 Scott Atwell	public void setStrategiesUIFactory(StrategiesUIFactory strategiesUIFactory)
+//	{
+//		this.strategiesUIFactory = strategiesUIFactory;
+//	}
 
 	/**
 	 * @return the strategiesUIFactory
 	 */
-	public StrategiesUIFactory getStrategiesUIFactory() 
-	{
+//TODO 9/26/2010 Scott Atwell	public StrategiesUIFactory getStrategiesUIFactory() 
+/**	{
 		if ( ( strategiesUIFactory == null ) && ( getClassNameStrategiesUIFactory() != null ) )
 		{
 			String tempClassName = getClassNameStrategiesUIFactory();
@@ -322,7 +321,8 @@ public abstract class AbstractAtdl4jConfig
 		
 		return strategiesUIFactory;
 	}
-
+**/
+	
 	/**
 	 * @param classNameStrategiesUI the classNameStrategiesUI to set
 	 */
@@ -345,7 +345,9 @@ public abstract class AbstractAtdl4jConfig
 	 */
 	public StrategyUI getStrategyUI(StrategyT aStrategy)
 	{
-		return getStrategiesPanel().getStrategyUI(aStrategy);
+// 9/26/2010 Scott Atwell		return getStrategiesPanel().getStrategyUI(aStrategy);
+// 9/27/2010 Scott Atwell		return getStrategiesUI( getStrategies() ).getStrategyUI(aStrategy);
+		return getStrategiesUI().getStrategyUI(aStrategy);
 	}
 
 	/**
@@ -354,6 +356,7 @@ public abstract class AbstractAtdl4jConfig
 	 * @param strategies
 	 * @return
 	 */
+/** TODO 9/27/2010 Scott Atwell	
 	public StrategiesUI getStrategiesUI(StrategiesT strategies)
 	{
 		// -- Constructs a new instance every call --
@@ -377,7 +380,38 @@ public abstract class AbstractAtdl4jConfig
 		
 		return strategiesUI;
 	}
-
+**/	
+	/**
+	 * @return
+	 */
+	public StrategiesUI getStrategiesUI()
+	{
+		if ( ( strategiesUI == null ) && ( getClassNameStrategiesUI() != null ) )
+		{
+			// -- Constructs a new instance every call --
+			String tempClassName = getClassNameStrategiesUI();
+			logger.debug( "getStrategiesUI() loading class named: " + tempClassName );
+			try
+			{
+				strategiesUI = ((Class<StrategiesUI>) Class.forName( tempClassName ) ).newInstance();
+			}
+			catch ( Exception e )
+			{
+				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+			}
+			
+			if ( strategiesUI != null )
+			{
+// TODO 9/27/2010 Scott Atwell				strategiesUI.init( strategies, this );
+				strategiesUI.init( this );
+			}
+		}
+		
+		return strategiesUI;
+	}
+	
+	
 	/**
 	 * @param classNameStrategyUI the classNameStrategyUI to set
 	 */
@@ -447,6 +481,7 @@ public abstract class AbstractAtdl4jConfig
 	 * 
 	 * @return
 	 */
+/** TODO 9/27/2010 Scott Atwell rewrote using local instance variable	
 	public ControlUIFactory getControlUIFactory() 
 	{
 		// -- Constructs a new instance every call --
@@ -470,7 +505,32 @@ public abstract class AbstractAtdl4jConfig
 		
 		return controlUIFactory;
 	}
-
+**/
+	public ControlUIFactory getControlUIFactory() 
+	{
+		if ( ( controlUIFactory == null ) && ( getClassNameControlUIFactory() != null ) ) 
+		{
+			// -- Constructs a new instance every call --
+			String tempClassName = getClassNameControlUIFactory();
+			logger.debug( "getControlUIFactory() loading class named: " + tempClassName );
+			try
+			{
+				controlUIFactory = ((Class<ControlUIFactory>) Class.forName( tempClassName ) ).newInstance();
+			}
+			catch ( Exception e )
+			{
+				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+			}
+			
+			if ( controlUIFactory != null )
+			{
+				controlUIFactory.init( this );
+			}
+		}
+		
+		return controlUIFactory;
+	}
 		
 	/**
 	 * @param classNameTypeConverterFactory the classNameTypeConverterFactory to set
@@ -1608,52 +1668,6 @@ public abstract class AbstractAtdl4jConfig
 		return fixMsgLoadPanel;
 	}
 	
-	/**
-	 * @param classNameStrategiesPanel the classNameStrategiesPanel to set
-	 */
-	public void setClassNameStrategiesPanel(String classNameStrategiesPanel)
-	{
-		this.classNameStrategiesPanel = classNameStrategiesPanel;
-	}
-
-	/**
-	 * @return the classNameStrategiesPanel
-	 */
-	public String getClassNameStrategiesPanel()
-	{
-		return classNameStrategiesPanel;
-	}
-
-	/**
-	 * @param strategiesPanel the strategiesPanel to set
-	 */
-	public void setStrategiesPanel(StrategiesPanel strategiesPanel)
-	{
-		this.strategiesPanel = strategiesPanel;
-	}
-
-	/**
-	 * @return the StrategiesPanel
-	 */
-	public StrategiesPanel getStrategiesPanel() 
-	{
-		if ( ( strategiesPanel == null ) && ( getClassNameStrategiesPanel() != null ) )
-		{
-			String tempClassName = getClassNameStrategiesPanel();
-			logger.debug( "getStrategiesPanel() loading class named: " + tempClassName );
-			try
-			{
-				strategiesPanel = ((Class<StrategiesPanel>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-		}
-		
-		return strategiesPanel;
-	}
 
 	/**
 	 * @param classNameAtdl4jUserMessageHandler the classNameAtdl4jUserMessageHandler to set
