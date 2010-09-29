@@ -1,6 +1,6 @@
 package org.atdl4j.ui.app;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 
 
 /**
@@ -11,9 +11,11 @@ import org.atdl4j.config.Atdl4jConfig;
  */
 public interface Atdl4jTesterPanel
 {
-	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jConfig aAtdl4jConfig);
+	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions);
 
-	public Atdl4jConfig getAtdl4jConfig();
+	public Atdl4jOptions getAtdl4jOptions();
 
 	public void closePanel();
+	
+	public Atdl4jCompositePanel getAtdl4jCompositePanel();
 }

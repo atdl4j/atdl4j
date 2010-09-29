@@ -131,7 +131,7 @@ public class SpinnerWidget
 			}
 			else
 			{
-				spinner.setDigits( ControlHelper.getDefaultDigitsForSpinnerControl( parameterConverter.getParameter(), getAtdl4jConfig() ) );
+				spinner.setDigits( ControlHelper.getDefaultDigitsForSpinnerControl( parameterConverter.getParameter(), getAtdl4jOptions() ) );
 			}
 
 // 3/17/2010 Scott Atwell moved these defaults above (avoid min value > 0 being ignored and set to 0)
@@ -207,10 +207,10 @@ public class SpinnerWidget
 
 		if ( control instanceof DoubleSpinnerT )
 		{
-// 4/18/2010 Scott Atwell			if ( ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() ) != null )
-//	4/18/2010 Scott Atwell				spinner.setIncrement( ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() ).intValue() );
-// 8/19/2010 Scott Atwell (avoid "1.0" vs. "1" on Int_t)			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig() );
-			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jConfig(), spinner.getDigits() );
+// 4/18/2010 Scott Atwell			if ( ControlHelper.getInnerIncrementValue( control, getAtdl4jOptions() ) != null )
+//	4/18/2010 Scott Atwell				spinner.setIncrement( ControlHelper.getInnerIncrementValue( control, getAtdl4jOptions() ).intValue() );
+// 8/19/2010 Scott Atwell (avoid "1.0" vs. "1" on Int_t)			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jOptions() );
+			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jOptions(), spinner.getDigits() );
 			if ( tempInnerIncrement != null )
 			{
 				// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
@@ -221,9 +221,9 @@ public class SpinnerWidget
 // 7/7/2010 Scott Atwell			int outerStepSize = 1 * (int) Math.pow( 10, spinner.getDigits() );
 			BigDecimal outerStepSize = new BigDecimal( "1" );
 			
-// 4/18/2010 Scott Atwell			if ( ControlHelper.getOuterIncrementValue( control, getAtdl4jConfig() ) != null )
-// 4/18/2010 Scott Atwell				outerStepSize = ControlHelper.getOuterIncrementValue( control, getAtdl4jConfig() ).intValue();
-			BigDecimal tempOuterIncrement = ControlHelper.getOuterIncrementValue( control, getAtdl4jConfig() );
+// 4/18/2010 Scott Atwell			if ( ControlHelper.getOuterIncrementValue( control, getAtdl4jOptions() ) != null )
+// 4/18/2010 Scott Atwell				outerStepSize = ControlHelper.getOuterIncrementValue( control, getAtdl4jOptions() ).intValue();
+			BigDecimal tempOuterIncrement = ControlHelper.getOuterIncrementValue( control, getAtdl4jOptions() );
 			if ( tempOuterIncrement != null )
 			{
 // TODO ?? verify				outerStepSize = (int) tempOuterIncrement.doubleValue();
@@ -237,10 +237,10 @@ public class SpinnerWidget
 		}
 		else if ( control instanceof SingleSpinnerT )
 		{
-// 4/18/2010 Scott Atwell			if ( ControlHelper.getIncrementValue( control, getAtdl4jConfig() ) != null )
-// 4/18/2010 Scott Atwell				spinner.setIncrement( ControlHelper.getIncrementValue( control, getAtdl4jConfig() ).intValue() );
-// 8/19/2010 Scott Atwell (avoid "1.0" vs. "1" on Int_t)			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jConfig() );
-			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jConfig(), spinner.getDigits() );
+// 4/18/2010 Scott Atwell			if ( ControlHelper.getIncrementValue( control, getAtdl4jOptions() ) != null )
+// 4/18/2010 Scott Atwell				spinner.setIncrement( ControlHelper.getIncrementValue( control, getAtdl4jOptions() ).intValue() );
+// 8/19/2010 Scott Atwell (avoid "1.0" vs. "1" on Int_t)			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jOptions() );
+			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jOptions(), spinner.getDigits() );
 			if ( tempIncrement != null )
 			{
 				// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
@@ -359,7 +359,7 @@ public class SpinnerWidget
 	 */
 	protected void applyInitialValue()
 	{
-		Double initValue = (Double) ControlHelper.getInitValue( control, getAtdl4jConfig() );
+		Double initValue = (Double) ControlHelper.getInitValue( control, getAtdl4jOptions() );
 		
 		if ( initValue != null )
 		{

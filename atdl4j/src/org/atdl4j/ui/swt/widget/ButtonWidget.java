@@ -54,7 +54,7 @@ public class ButtonWidget
 				button.setSelection( ( (CheckBoxT) control ).isInitValue() );
 		}
 ***/
-		Boolean tempInitValue = (Boolean) ControlHelper.getInitValue( control, getAtdl4jConfig() );
+		Boolean tempInitValue = (Boolean) ControlHelper.getInitValue( control, getAtdl4jOptions() );
 		if ( tempInitValue != null )
 		{
 			setValue( tempInitValue );

@@ -60,7 +60,7 @@ public class DropDownListWidget
 		dropDownList.select( 0 );
 
 		// select initValue if available
-		String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jConfig() );
+		String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jOptions() );
 		if ( initValue != null )
 			setValue( initValue, true );
 

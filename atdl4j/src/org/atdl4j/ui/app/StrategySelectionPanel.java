@@ -6,7 +6,7 @@ package org.atdl4j.ui.app;
 
 import java.util.List;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.fixatdl.core.StrategyT;
 
 /**
@@ -18,7 +18,7 @@ import org.atdl4j.fixatdl.core.StrategyT;
  */
 public interface StrategySelectionPanel
 {
-	public Object buildStrategySelectionPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig);
+	public Object buildStrategySelectionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions);
 	
 	public void loadStrategyList( List<StrategyT> aStrategyList );
 
@@ -29,7 +29,7 @@ public interface StrategySelectionPanel
 	
 	public void selectFirstDropDownStrategy();
 
-	public Atdl4jConfig getAtdl4jConfig();
+	public Atdl4jOptions getAtdl4jOptions();
 	
 	public void addListener(StrategySelectionPanelListener aStrategySelectionPanelListener);
 	

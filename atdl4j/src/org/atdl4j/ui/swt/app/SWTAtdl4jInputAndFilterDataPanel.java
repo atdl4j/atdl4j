@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.StrategyFilterInputData;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.ui.app.AbstractAtdl4jInputAndFilterDataPanel;
@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Represents the SWT-specific Atdl4jConfig and InputAndFilterData GUI component.
+ * Represents the SWT-specific Atdl4jOptions and InputAndFilterData GUI component.
  * 
  * @author Scott Atwell
  * @version 1.0, Mar 1, 2010
@@ -91,17 +91,17 @@ public class SWTAtdl4jInputAndFilterDataPanel
 	private Text textIncrementPolicyLotSize;
 	private Text textIncrementPolicyTick;
 
-	public Object buildAtdl4jInputAndFilterDataPanel(Object aParentOrShell, Atdl4jConfig aAtdl4jConfig)
+	public Object buildAtdl4jInputAndFilterDataPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
-		return buildAtdl4jInputAndFilterDataPanel( (Composite) aParentOrShell, aAtdl4jConfig );
+		return buildAtdl4jInputAndFilterDataPanel( (Composite) aParentOrShell, aAtdl4jOptions );
 	}
 	
-	public Composite buildAtdl4jInputAndFilterDataPanel(Composite aParentOrShell, Atdl4jConfig aAtdl4jConfig)
+	public Composite buildAtdl4jInputAndFilterDataPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
 		parentComposite = (Composite) aParentOrShell;
 
 		// -- Delegate back to AbstractAtdl4jInputAndFilterDataPanel -- 
-		init( aParentOrShell, aAtdl4jConfig );
+		init( aParentOrShell, aAtdl4jOptions );
 		
 		// -- Build the SWT.Composite from Atdl4jCompositePanel --
 		buildCoreAtdl4jSettingsPanel( aParentOrShell );
@@ -131,7 +131,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		GridLayout tempThirdColumnLayout = new GridLayout(1, false);
 		tempThirdColumn.setLayout(tempThirdColumnLayout);
 		tempThirdColumn.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		buildAtdl4jConfigSettingsPanel( tempThirdColumn );
+		buildAtdl4jOptionsSettingsPanel( tempThirdColumn );
 		buildIncrementPolicyPanel( tempThirdColumn );
 		
 		return tempCoreAtdl4jSettingsPanel;
@@ -307,45 +307,45 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		return tempStandardFixFieldsGroup;
 	}
 	
-	protected Composite buildAtdl4jConfigSettingsPanel( Composite aParent )
+	protected Composite buildAtdl4jOptionsSettingsPanel( Composite aParent )
 	{
-		Group tempAtdl4jConfigSettingsGroup = new Group( aParent, SWT.NONE );
-		tempAtdl4jConfigSettingsGroup.setText( "Atdl4j Settings" );
-		GridLayout tempAtdl4jConfigSettingsGroupLayout = new GridLayout( 1, true );
-		tempAtdl4jConfigSettingsGroup.setLayout(tempAtdl4jConfigSettingsGroupLayout);
-		tempAtdl4jConfigSettingsGroup.setLayoutData(new GridData(SWT.TOP, SWT.FILL, false, false));
+		Group tempAtdl4jOptionsSettingsGroup = new Group( aParent, SWT.NONE );
+		tempAtdl4jOptionsSettingsGroup.setText( "Atdl4j Settings" );
+		GridLayout tempAtdl4jOptionsSettingsGroupLayout = new GridLayout( 1, true );
+		tempAtdl4jOptionsSettingsGroup.setLayout(tempAtdl4jOptionsSettingsGroupLayout);
+		tempAtdl4jOptionsSettingsGroup.setLayoutData(new GridData(SWT.TOP, SWT.FILL, false, false));
 		
-// 6/23/2010 Scott Atwell		checkboxAtdl4jUsePreCachedStrategyPanels = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
+// 6/23/2010 Scott Atwell		checkboxAtdl4jUsePreCachedStrategyPanels = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 //		checkboxAtdl4jUsePreCachedStrategyPanels.setText( "Pre-Cache Strategy Panels" );
 //		checkboxAtdl4jUsePreCachedStrategyPanels.setToolTipText( "When checked, Strategy Panels are built once when FIXatdl XML file is loaded and then re-used/re-init'd upon subsequent 'load' operations (Improves performance)" );
-//		checkboxAtdl4jUsePreCachedStrategyPanels.setSelection( getAtdl4jConfig().isUsePreCachedStrategyPanels() );
+//		checkboxAtdl4jUsePreCachedStrategyPanels.setSelection( getAtdl4jOptions().isUsePreCachedStrategyPanels() );
 		
-		checkboxAtd4ljShowStrategyDescription = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
+		checkboxAtd4ljShowStrategyDescription = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljShowStrategyDescription.setText( "Show Strategy Description" );
 		checkboxAtd4ljShowStrategyDescription.setToolTipText( "When checked, Strategy Description panel will be shown when Strategy's Description has been specified." );
-		checkboxAtd4ljShowStrategyDescription.setSelection( getAtdl4jConfig().isShowStrategyDescription() );
+		checkboxAtd4ljShowStrategyDescription.setSelection( getAtdl4jOptions().isShowStrategyDescription() );
 		
-		checkboxAtd4ljShowFileSelectionSection = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
+		checkboxAtd4ljShowFileSelectionSection = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljShowFileSelectionSection.setText( "Show File Selection" );
 		checkboxAtd4ljShowFileSelectionSection.setToolTipText( "When checked, File Selection panel will be shown." );
-		checkboxAtd4ljShowFileSelectionSection.setSelection( getAtdl4jConfig().isShowFileSelectionSection() );
+		checkboxAtd4ljShowFileSelectionSection.setSelection( getAtdl4jOptions().isShowFileSelectionSection() );
 		
-		checkboxAtd4ljShowValidateOutputSection = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
+		checkboxAtd4ljShowValidateOutputSection = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljShowValidateOutputSection.setText( "Show Validation Section" );
 		checkboxAtd4ljShowValidateOutputSection.setToolTipText( "When checked, Validation panel will be shown providing \"Validate\" button and output text field." );
-		checkboxAtd4ljShowValidateOutputSection.setSelection( getAtdl4jConfig().isShowValidateOutputSection() );
+		checkboxAtd4ljShowValidateOutputSection.setSelection( getAtdl4jOptions().isShowValidateOutputSection() );
 		
-		checkboxAtd4ljShowCompositePanelOkCancelButtonSection = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
+		checkboxAtd4ljShowCompositePanelOkCancelButtonSection = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setText( "Show OK/Close" );
 		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setToolTipText( "When checked, \"OK\" and \"Close\" buttons will be displayed and available." );
-		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setSelection( getAtdl4jConfig().isShowCompositePanelOkCancelButtonSection() );
+		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setSelection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
 		
-		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls = new Button( tempAtdl4jConfigSettingsGroup, SWT.CHECK );
+		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls.setText( "Accommodate SP/Controls Mix" );
 		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls.setToolTipText( "Accommodates StrategyPanel containing a mix of StrategyPanel and Controls.\nFIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file." );
-		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls.setSelection( getAtdl4jConfig().isAccommodateMixOfStrategyPanelsAndControls() );
+		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls.setSelection( getAtdl4jOptions().isAccommodateMixOfStrategyPanelsAndControls() );
 		
-		return tempAtdl4jConfigSettingsGroup;
+		return tempAtdl4jOptionsSettingsGroup;
 	}
 	
 	protected Composite buildIncrementPolicyPanel( Composite aParent )
@@ -361,21 +361,21 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		textIncrementPolicyLotSize = new Text( tempIncrementPolicyGroup, SWT.NONE );
 		textIncrementPolicyLotSize.setToolTipText( "May be used in conjunction with Control/@incrementPolicy on spinner controls" );
 		textIncrementPolicyLotSize.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false ));
-		setTextValue( textIncrementPolicyLotSize, getAtdl4jConfig().getInputAndFilterData().getInputIncrementPolicy_LotSize() );
+		setTextValue( textIncrementPolicyLotSize, getAtdl4jOptions().getInputAndFilterData().getInputIncrementPolicy_LotSize() );
 			  
 		Label tempLabelIncrementPolicyTick = new Label( tempIncrementPolicyGroup, SWT.NONE );
 		tempLabelIncrementPolicyTick.setText( "Tick Size:" );
 		textIncrementPolicyTick = new Text( tempIncrementPolicyGroup, SWT.NONE );
 		textIncrementPolicyTick.setToolTipText( "May be used in conjunction with Control/@incrementPolicy on spinner controls" );
 		textIncrementPolicyTick.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false ));
-		setTextValue( textIncrementPolicyTick, getAtdl4jConfig().getInputAndFilterData().getInputIncrementPolicy_Tick() );
+		setTextValue( textIncrementPolicyTick, getAtdl4jOptions().getInputAndFilterData().getInputIncrementPolicy_Tick() );
 			  
 		return tempIncrementPolicyGroup;
 	}
 
 	/*
 	 */
-	public boolean extractAtdl4jConfigFromScreen()
+	public boolean extractAtdl4jOptionsFromScreen()
 	{
 		StrategyFilterInputData tempStrategyFilterInputData = new StrategyFilterInputData();
 		tempStrategyFilterInputData.setFixMsgType( getDropDownItemSelected( dropDownListStrategyFilterFixMsgType ) );
@@ -391,13 +391,13 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		tempStrategyFilterInputData.setSecurityType_name( getDropDownItemSelected( dropDownListStrategyFilterSecurityType ) );
 		
 		// -- Set the StrategyFilterInputData we just built --
-		getAtdl4jConfig().getInputAndFilterData().setStrategyFilterInputData( tempStrategyFilterInputData );
+		getAtdl4jOptions().getInputAndFilterData().setStrategyFilterInputData( tempStrategyFilterInputData );
 
-		getAtdl4jConfig().getInputAndFilterData().setInputCxlReplaceMode( getCheckboxValue( checkboxInputCxlReplaceMode, null ).booleanValue() );
+		getAtdl4jOptions().getInputAndFilterData().setInputCxlReplaceMode( getCheckboxValue( checkboxInputCxlReplaceMode, null ).booleanValue() );
 		
-		getAtdl4jConfig().getInputAndFilterData().setInputSelectStrategyName( getTextValue( textSelectStrategyName ) );
-		getAtdl4jConfig().getInputAndFilterData().setApplyInputStrategyNameListAsFilter( getCheckboxValue( checkboxInputStrategyListAsFilter, Boolean.FALSE ) );
-		getAtdl4jConfig().getInputAndFilterData().setInputStrategyNameList( getTextList( textAreaStrategyNameFilterList ) );
+		getAtdl4jOptions().getInputAndFilterData().setInputSelectStrategyName( getTextValue( textSelectStrategyName ) );
+		getAtdl4jOptions().getInputAndFilterData().setApplyInputStrategyNameListAsFilter( getCheckboxValue( checkboxInputStrategyListAsFilter, Boolean.FALSE ) );
+		getAtdl4jOptions().getInputAndFilterData().setInputStrategyNameList( getTextList( textAreaStrategyNameFilterList ) );
 		
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_ORD_TYPE, dropDownListFixFieldOrdType );
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_SIDE, dropDownListFixFieldSide );
@@ -408,32 +408,32 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_TIME_IN_FORCE, dropDownListFixFieldTimeInForce );
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_CL_ORD_LINK_ID, dropDownListFixFieldClOrdLinkID );
 	
-// 6/23/2010 Scott Atwell		getAtdl4jConfig().setUsePreCachedStrategyPanels( getCheckboxValue( checkboxAtdl4jUsePreCachedStrategyPanels, null ).booleanValue() );
-		getAtdl4jConfig().setShowStrategyDescription( getCheckboxValue( checkboxAtd4ljShowStrategyDescription, null ).booleanValue() );
-		getAtdl4jConfig().setShowFileSelectionSection( getCheckboxValue( checkboxAtd4ljShowFileSelectionSection, null ).booleanValue() );
-		getAtdl4jConfig().setShowValidateOutputSection( getCheckboxValue( checkboxAtd4ljShowValidateOutputSection, null ).booleanValue() );
-		getAtdl4jConfig().setShowCompositePanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowCompositePanelOkCancelButtonSection, null ).booleanValue() );
-		getAtdl4jConfig().setAccommodateMixOfStrategyPanelsAndControls( getCheckboxValue( checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls, null ).booleanValue() );
+// 6/23/2010 Scott Atwell		getAtdl4jOptions().setUsePreCachedStrategyPanels( getCheckboxValue( checkboxAtdl4jUsePreCachedStrategyPanels, null ).booleanValue() );
+		getAtdl4jOptions().setShowStrategyDescription( getCheckboxValue( checkboxAtd4ljShowStrategyDescription, null ).booleanValue() );
+		getAtdl4jOptions().setShowFileSelectionSection( getCheckboxValue( checkboxAtd4ljShowFileSelectionSection, null ).booleanValue() );
+		getAtdl4jOptions().setShowValidateOutputSection( getCheckboxValue( checkboxAtd4ljShowValidateOutputSection, null ).booleanValue() );
+		getAtdl4jOptions().setShowCompositePanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowCompositePanelOkCancelButtonSection, null ).booleanValue() );
+		getAtdl4jOptions().setAccommodateMixOfStrategyPanelsAndControls( getCheckboxValue( checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls, null ).booleanValue() );
 
-// 4/18/2010 Scott Atwell		getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigInteger( textIncrementPolicyLotSize ) );
-//	4/18/2010 Scott Atwell	getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigInteger( textIncrementPolicyTick ) );
-		getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigDecimal( textIncrementPolicyLotSize ) );
-		getAtdl4jConfig().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigDecimal( textIncrementPolicyTick ) );
+// 4/18/2010 Scott Atwell		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigInteger( textIncrementPolicyLotSize ) );
+//	4/18/2010 Scott Atwell	getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigInteger( textIncrementPolicyTick ) );
+		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigDecimal( textIncrementPolicyLotSize ) );
+		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigDecimal( textIncrementPolicyTick ) );
 		
 		return true;
 	}
 
 	/*
 	 */
-	public boolean loadScreenWithAtdl4jConfig()
+	public boolean loadScreenWithAtdl4jOptions()
 	{
-		if ( getAtdl4jConfig().getInputAndFilterData() != null )
+		if ( getAtdl4jOptions().getInputAndFilterData() != null )
 		{
 			StrategyFilterInputData tempStrategyFilterInputData = null;
-			if ( ( getAtdl4jConfig().getInputAndFilterData().getStrategyFilterInputDataList() != null ) &&
-				  ( getAtdl4jConfig().getInputAndFilterData().getStrategyFilterInputDataList().size() > 0 ) )
+			if ( ( getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList() != null ) &&
+				  ( getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList().size() > 0 ) )
 			{
-				tempStrategyFilterInputData = getAtdl4jConfig().getInputAndFilterData().getStrategyFilterInputDataList().get( 0 );
+				tempStrategyFilterInputData = getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList().get( 0 );
 			}
 
 			String tempFixMsgType = null;
@@ -458,20 +458,20 @@ public class SWTAtdl4jInputAndFilterDataPanel
 			selectDropDownItem( dropDownListStrategyFilterSecurityType, tempSecurityType_name );
 
 
-			setCheckboxValue( checkboxInputCxlReplaceMode, getAtdl4jConfig().getInputAndFilterData().getInputCxlReplaceMode(), Boolean.FALSE );
+			setCheckboxValue( checkboxInputCxlReplaceMode, getAtdl4jOptions().getInputAndFilterData().getInputCxlReplaceMode(), Boolean.FALSE );
 
-			setTextValue( textSelectStrategyName, getAtdl4jConfig().getInputAndFilterData().getInputSelectStrategyName() );
-			setCheckboxValue( checkboxInputStrategyListAsFilter, getAtdl4jConfig().getInputAndFilterData().getApplyInputStrategyNameListAsFilter(), Boolean.FALSE );
-			setTextList( textAreaStrategyNameFilterList, getAtdl4jConfig().getInputAndFilterData().getInputStrategyNameList() );
+			setTextValue( textSelectStrategyName, getAtdl4jOptions().getInputAndFilterData().getInputSelectStrategyName() );
+			setCheckboxValue( checkboxInputStrategyListAsFilter, getAtdl4jOptions().getInputAndFilterData().getApplyInputStrategyNameListAsFilter(), Boolean.FALSE );
+			setTextList( textAreaStrategyNameFilterList, getAtdl4jOptions().getInputAndFilterData().getInputStrategyNameList() );
 
-			selectDropDownItem( dropDownListFixFieldOrdType, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_ORD_TYPE ) );
-			selectDropDownItem( dropDownListFixFieldSide, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_SIDE ) );
-			selectDropDownItem( dropDownListFixFieldOrderQty, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_ORDER_QTY ) );
-			selectDropDownItem( dropDownListFixFieldPrice, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_PRICE ) );
-			selectDropDownItem( dropDownListFixFieldHandlInst, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_HANDL_INST ) );
-			selectDropDownItem( dropDownListFixFieldExecInst, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_EXEC_INST ) );
-			selectDropDownItem( dropDownListFixFieldTimeInForce, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_TIME_IN_FORCE ) );
-			selectDropDownItem( dropDownListFixFieldClOrdLinkID, getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_CL_ORD_LINK_ID ) );
+			selectDropDownItem( dropDownListFixFieldOrdType, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_ORD_TYPE ) );
+			selectDropDownItem( dropDownListFixFieldSide, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_SIDE ) );
+			selectDropDownItem( dropDownListFixFieldOrderQty, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_ORDER_QTY ) );
+			selectDropDownItem( dropDownListFixFieldPrice, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_PRICE ) );
+			selectDropDownItem( dropDownListFixFieldHandlInst, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_HANDL_INST ) );
+			selectDropDownItem( dropDownListFixFieldExecInst, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_EXEC_INST ) );
+			selectDropDownItem( dropDownListFixFieldTimeInForce, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_TIME_IN_FORCE ) );
+			selectDropDownItem( dropDownListFixFieldClOrdLinkID, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_CL_ORD_LINK_ID ) );
 			
 			return true;
 		}
@@ -656,16 +656,16 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		if ( tempFieldValue != null )
 		{
 			// -- Add/update it --
-			getAtdl4jConfig().getInputAndFilterData().setInputHiddenFieldNameValuePair( aFieldName, tempFieldValue );
+			getAtdl4jOptions().getInputAndFilterData().setInputHiddenFieldNameValuePair( aFieldName, tempFieldValue );
 		}
 		else
 		{
-			if ( ( getAtdl4jConfig() != null ) && 
-				  ( getAtdl4jConfig().getInputAndFilterData() != null ) &&
-				  ( getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldNameValueMap() != null ) )
+			if ( ( getAtdl4jOptions() != null ) && 
+				  ( getAtdl4jOptions().getInputAndFilterData() != null ) &&
+				  ( getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldNameValueMap() != null ) )
 			{
 				// -- Attempt to remove it if it exists --
-				getAtdl4jConfig().getInputAndFilterData().getInputHiddenFieldNameValueMap().remove( aFieldName );
+				getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldNameValueMap().remove( aFieldName );
 			}
 		}
 	}

@@ -11,7 +11,7 @@ public abstract class HiddenFieldUI
 
 	/**
 	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
-	 * ParameterT aParameter, Atdl4jConfig aAtdl4jConfig) throws JAXBException
+	 * ParameterT aParameter, Atdl4jOptions aAtdl4jOptions) throws JAXBException
 	 * public HiddenFieldUI(HiddenFieldT control, ParameterT parameter) throws
 	 * JAXBException { this.control = control; this.parameter = parameter;
 	 * this.setValue(getConstInitValue()); init(); }

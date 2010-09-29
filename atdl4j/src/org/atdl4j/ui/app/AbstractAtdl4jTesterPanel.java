@@ -1,6 +1,8 @@
 package org.atdl4j.ui.app;
 
+import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.ui.StrategyUI;
@@ -19,8 +21,9 @@ public abstract class AbstractAtdl4jTesterPanel
 			FixMsgLoadPanelListener,
 			Atdl4jInputAndFilterDataPanelListener
 { 
-
-	Atdl4jConfig atdl4jConfig;
+	private final Logger logger = Logger.getLogger(AbstractAtdl4jTesterPanel.class);
+	
+	Atdl4jOptions atdl4jOptions;
 	Object parentOrShell;  // SWT: Shell, Swing: JFrame, etc
 	
 	private Atdl4jInputAndFilterDataSelectionPanel atdl4jInputAndFilterDataSelectionPanel;
@@ -29,46 +32,50 @@ public abstract class AbstractAtdl4jTesterPanel
 	
 	private Atdl4jCompositePanel atdl4jCompositePanel;
 
-	protected void init( Object aParentOrShell, Atdl4jConfig aAtdl4jConfig )
+	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions )
 	{
-		setAtdl4jConfig( aAtdl4jConfig );
+		setAtdl4jOptions( aAtdl4jOptions );
 		setParentOrShell( aParentOrShell );
 		
 		// -- Init the Atdl4jUserMessageHandler --
-		if ( ( getAtdl4jConfig() != null ) && 
-			  ( getAtdl4jConfig().getAtdl4jUserMessageHandler() != null ) && 
-			  ( getAtdl4jConfig().getAtdl4jUserMessageHandler().isInitReqd() ) )
-		{
-			getAtdl4jConfig().initAtdl4jUserMessageHandler( aParentOrShell );
-		}
+// 9/29/2010 handled by AbstractAtdl4jCompositePanel		
+//		if ( ( getAtdl4jOptions() != null ) && 
+//			  ( getAtdl4jOptions().getAtdl4jUserMessageHandler() != null ) && 
+//			  ( getAtdl4jOptions().getAtdl4jUserMessageHandler().isInitReqd() ) )
+//		{
+//			getAtdl4jOptions().initAtdl4jUserMessageHandler( aParentOrShell );
+//		}
 
 		// -- Atdl4jInputAndFilterDataSelectionPanel (Input And Filter Data button/text field) - build() method called via concrete class --
-		setAtdl4jInputAndFilterDataSelectionPanel( getAtdl4jConfig().getAtdl4jInputAndFilterDataSelectionPanel() );
+//		setAtdl4jInputAndFilterDataSelectionPanel( getAtdl4jOptions().getAtdl4jInputAndFilterDataSelectionPanel() );
+		setAtdl4jInputAndFilterDataSelectionPanel( getAtdl4jInputAndFilterDataSelectionPanel() );
 		getAtdl4jInputAndFilterDataSelectionPanel().addListener( this );
 		
 		// -- FixMsgLoadPanel (Load Message button/text field) - build() method called via concrete class --
-		setFixMsgLoadPanel( getAtdl4jConfig().getFixMsgLoadPanel() );
+//		setFixMsgLoadPanel( getAtdl4jOptions().getFixMsgLoadPanel() );
+		setFixMsgLoadPanel( getFixMsgLoadPanel() );
 		getFixMsgLoadPanel().addListener( this );
 		
 		// -- Init the Atdl4jCompositePanel --
-		setAtdl4jCompositePanel( getAtdl4jConfig().getAtdl4jCompositePanel() );
+//		setAtdl4jCompositePanel( getAtdl4jOptions().getAtdl4jCompositePanel() );
+		setAtdl4jCompositePanel( getAtdl4jCompositePanel() );
 		getAtdl4jCompositePanel().addListener( this );
 	}
 
 	/**
-	 * @return the atdl4jConfig
+	 * @return the atdl4jOptions
 	 */
-	public Atdl4jConfig getAtdl4jConfig()
+	public Atdl4jOptions getAtdl4jOptions()
 	{
-		return this.atdl4jConfig;
+		return this.atdl4jOptions;
 	}
 
 	/**
-	 * @param aAtdl4jConfig the atdl4jConfig to set
+	 * @param aAtdl4jOptions the atdl4jOptions to set
 	 */
-	private void setAtdl4jConfig(Atdl4jConfig aAtdl4jConfig)
+	private void setAtdl4jOptions(Atdl4jOptions aAtdl4jOptions)
 	{
-		this.atdl4jConfig = aAtdl4jConfig;
+		this.atdl4jOptions = aAtdl4jOptions;
 	}
 
 	/**
@@ -90,10 +97,10 @@ public abstract class AbstractAtdl4jTesterPanel
 	/**
 	 * @return the atdl4jCompositePanel
 	 */
-	public Atdl4jCompositePanel getAtdl4jCompositePanel()
-	{
-		return this.atdl4jCompositePanel;
-	}
+//	public Atdl4jCompositePanel getAtdl4jCompositePanel()
+//	{
+//		return this.atdl4jCompositePanel;
+//	}
 
 	/**
 	 * @param aAtdl4jCompositePanel the atdl4jCompositePanel to set
@@ -106,10 +113,10 @@ public abstract class AbstractAtdl4jTesterPanel
 	/**
 	 * @return the atdl4jInputAndFilterDataSelectionPanel
 	 */
-	public Atdl4jInputAndFilterDataSelectionPanel getAtdl4jInputAndFilterDataSelectionPanel()
-	{
-		return this.atdl4jInputAndFilterDataSelectionPanel;
-	}
+//	public Atdl4jInputAndFilterDataSelectionPanel getAtdl4jInputAndFilterDataSelectionPanel()
+//	{
+//		return this.atdl4jInputAndFilterDataSelectionPanel;
+//	}
 
 	/**
 	 * @param atdl4jInputAndFilterDataSelectionPanel the atdl4jInputAndFilterDataSelectionPanel to set
@@ -129,7 +136,8 @@ public abstract class AbstractAtdl4jTesterPanel
 		{
 			if ( ( aFixMsg == null ) || ( "".equals( aFixMsg ) ) )
 			{
-				getAtdl4jConfig().getAtdl4jUserMessageHandler().displayMessage( "Error", "No Fix Message provided to load.");
+//				getAtdl4jOptions().getAtdl4jUserMessageHandler().displayMessage( "Error", "No Fix Message provided to load.");
+				getAtdl4jCompositePanel().getAtdl4jUserMessageHandler().displayMessage( "Error", "No Fix Message provided to load.");
 				return;
 			}
 			
@@ -145,16 +153,17 @@ public abstract class AbstractAtdl4jTesterPanel
 	{
 		try
 		{
-			getAtdl4jCompositePanel().setVisibleFileSelectionSection( getAtdl4jConfig().isShowFileSelectionSection() );
-			getAtdl4jCompositePanel().setVisibleValidateOutputSection( getAtdl4jConfig().isShowValidateOutputSection() );
-			getAtdl4jCompositePanel().setVisibleOkCancelButtonSection( getAtdl4jConfig().isShowCompositePanelOkCancelButtonSection() );
+			getAtdl4jCompositePanel().setVisibleFileSelectionSection( getAtdl4jOptions().isShowFileSelectionSection() );
+			getAtdl4jCompositePanel().setVisibleValidateOutputSection( getAtdl4jOptions().isShowValidateOutputSection() );
+			getAtdl4jCompositePanel().setVisibleOkCancelButtonSection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
 			
 			// -- Reloads the screen for the pre-loaded/cached FIXatdl file (if specified and cached) --
 			getAtdl4jCompositePanel().loadScreenWithFilteredStrategies();
 		}
 		catch (Throwable e)
 		{
-			getAtdl4jConfig().getAtdl4jUserMessageHandler().displayException( "Error", "ERROR during loadScreenWithFilteredStrategies()", e );
+//			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "Error", "ERROR during loadScreenWithFilteredStrategies()", e );
+			getAtdl4jCompositePanel().getAtdl4jUserMessageHandler().displayException( "Error", "ERROR during loadScreenWithFilteredStrategies()", e );
 			return;
 		}
 	}
@@ -174,17 +183,19 @@ public abstract class AbstractAtdl4jTesterPanel
 	@Override
 	public void okButtonSelected()
 	{
-// 9/27/2010 Scott Atwell		if ( getAtdl4jConfig().getSelectedStrategy() != null )
+// 9/27/2010 Scott Atwell		if ( getAtdl4jOptions().getSelectedStrategy() != null )
 		if ( getAtdl4jCompositePanel().getSelectedStrategy() != null )
 		{
 			try
 			{
-// 6/23/2010 Scott Atwell				StrategyUI ui = getAtdl4jConfig().getStrategyUIMap().get( getAtdl4jConfig().getSelectedStrategy() );
-				StrategyUI ui = getAtdl4jConfig().getStrategyUI( getAtdl4jCompositePanel().getSelectedStrategy() );
+// 6/23/2010 Scott Atwell				StrategyUI ui = getAtdl4jOptions().getStrategyUIMap().get( getAtdl4jOptions().getSelectedStrategy() );
+// 9/29/2010 Scott Atwell				StrategyUI ui = getAtdl4jOptions().getStrategyUI( getAtdl4jCompositePanel().getSelectedStrategy() );
+				StrategyUI ui = getAtdl4jCompositePanel().getStrategiesUI().getStrategyUI( getAtdl4jCompositePanel().getSelectedStrategy() );
 				ui.validate();
 				String tempFixMsgFragment = ui.getFIXMessage();
 
-				getAtdl4jConfig().getAtdl4jUserMessageHandler().displayMessage( "Strategy Selected", 
+//				getAtdl4jOptions().getAtdl4jUserMessageHandler().displayMessage( "Strategy Selected", 
+				getAtdl4jCompositePanel().getAtdl4jUserMessageHandler().displayMessage( "Strategy Selected", 
 						"Strategy selected: " + Atdl4jHelper.getStrategyUiRepOrName( getAtdl4jCompositePanel().getSelectedStrategy() ) 
 						+ "\nFIX msg: " + tempFixMsgFragment );
 				
@@ -192,13 +203,15 @@ public abstract class AbstractAtdl4jTesterPanel
 			}
 			catch ( Throwable e )
 			{
-				getAtdl4jConfig().getAtdl4jUserMessageHandler().displayException( "Validation/FIX Message Extraction Error", 
+//				getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "Validation/FIX Message Extraction Error", 
+				getAtdl4jCompositePanel().getAtdl4jUserMessageHandler().displayException( "Validation/FIX Message Extraction Error", 
 						"Error during Validation/FIX Message extraction.", e );
 			}
 		}
 		else
 		{
-			getAtdl4jConfig().getAtdl4jUserMessageHandler().displayMessage( "Select Strategy", "Please select a Strategy" );
+//			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayMessage( "Select Strategy", "Please select a Strategy" );
+			getAtdl4jCompositePanel().getAtdl4jUserMessageHandler().displayMessage( "Select Strategy", "Please select a Strategy" );
 		}
 	}
 
@@ -213,9 +226,80 @@ public abstract class AbstractAtdl4jTesterPanel
 	/**
 	 * @return the fixMsgLoadPanel
 	 */
-	public FixMsgLoadPanel getFixMsgLoadPanel()
+//	public FixMsgLoadPanel getFixMsgLoadPanel()
+//	{
+//		return fixMsgLoadPanel;
+//	}
+
+	
+	/**
+	 * @return the Atdl4jInputAndFilterDataSelectionPanel
+	 */
+	public Atdl4jInputAndFilterDataSelectionPanel getAtdl4jInputAndFilterDataSelectionPanel() 
 	{
-		return fixMsgLoadPanel;
+		if ( ( atdl4jInputAndFilterDataSelectionPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameAtdl4jInputAndFilterDataSelectionPanel() != null ) )
+		{
+			String tempClassName = Atdl4jConfig.getConfig().getClassNameAtdl4jInputAndFilterDataSelectionPanel();
+			logger.debug( "getAtdl4jInputAndFilterDataSelectionPanel() loading class named: " + tempClassName );
+			try
+			{
+				atdl4jInputAndFilterDataSelectionPanel = ((Class<Atdl4jInputAndFilterDataSelectionPanel>) Class.forName( tempClassName ) ).newInstance();
+			}
+			catch ( Exception e )
+			{
+				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+			}
+		}
+		
+		return atdl4jInputAndFilterDataSelectionPanel;
 	}
 	
+	public Atdl4jCompositePanel getAtdl4jCompositePanel() 
+	{
+//		if ( ( atdl4jCompositePanel == null ) && ( Atdl4jConfig.getConfig().getClassNameAtdl4jCompositePanel() != null ) )
+//		{
+//			String tempClassName = Atdl4jConfig.getConfig().getClassNameAtdl4jCompositePanel();
+//			logger.debug( "getAtdl4jCompositePanel() loading class named: " + tempClassName );
+//			try
+//			{
+//				atdl4jCompositePanel = ((Class<Atdl4jCompositePanel>) Class.forName( tempClassName ) ).newInstance();
+//			}
+//			catch ( Exception e )
+//			{
+//				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+//				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+//			}
+//		}
+		if ( atdl4jCompositePanel == null )
+		{
+			atdl4jCompositePanel = Atdl4jConfig.createAtdl4jCompositePanel();
+		}
+		
+		return atdl4jCompositePanel;
+	}
+	
+	/**
+	 * @return the FixMsgLoadPanel
+	 */
+	public FixMsgLoadPanel getFixMsgLoadPanel() 
+	{
+		if ( ( fixMsgLoadPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameFixMsgLoadPanel() != null ) )
+		{
+			String tempClassName = Atdl4jConfig.getConfig().getClassNameFixMsgLoadPanel();
+			logger.debug( "getFixMsgLoadPanel() loading class named: " + tempClassName );
+			try
+			{
+				fixMsgLoadPanel = ((Class<FixMsgLoadPanel>) Class.forName( tempClassName ) ).newInstance();
+			}
+			catch ( Exception e )
+			{
+				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+			}
+		}
+		
+		return fixMsgLoadPanel;
+	}
+
 }

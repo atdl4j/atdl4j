@@ -64,7 +64,7 @@ public class ListBoxWidget
 		if ( tooltip != null ) listBox.setToolTipText( tooltip );
 
 		// init value
-		String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jConfig() );
+		String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jOptions() );
 		if ( initValue != null )
 			setValue( initValue, true );
 

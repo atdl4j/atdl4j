@@ -4,9 +4,10 @@
  */
 package org.atdl4j.ui;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
+import org.atdl4j.fixatdl.layout.HiddenFieldT;
 
 /**
  * Factory that creates the appropriate ParameterUI depending on the parameter
@@ -21,9 +22,9 @@ import org.atdl4j.fixatdl.layout.ControlT;
 public interface ControlUIFactory
 {
 	// -- Call this after constructor --
-	public void init(Atdl4jConfig aAtdl4jConfig);
+	public void init(Atdl4jOptions aAtdl4jOptions);
 
-	public Atdl4jConfig getAtdl4jConfig();
+	public Atdl4jOptions getAtdl4jOptions();
 
  	/* 
  	 * @param control
@@ -32,4 +33,5 @@ public interface ControlUIFactory
  	 */
  	public ControlUI<?> create(ControlT control, ParameterT parameter);
 
+	public ControlUI createControlUIForHiddenFieldT(HiddenFieldT control, ParameterT parameter);
 }

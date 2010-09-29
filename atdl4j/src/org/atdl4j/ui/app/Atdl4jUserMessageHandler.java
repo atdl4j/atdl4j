@@ -4,7 +4,7 @@
  */
 package org.atdl4j.ui.app;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 
 
 /**
@@ -17,11 +17,11 @@ public interface Atdl4jUserMessageHandler
 {
 	public boolean isInitReqd();
 	
-	public void init(Object parentOrShell, Atdl4jConfig atdl4jConfig);
+	public void init(Object parentOrShell, Atdl4jOptions atdl4jOptions);
 
 	public void displayException( String aTitle, String aMsgText, Throwable e );
 	
 	public void displayMessage(String aTitle, String aMsgText);
 
-	public Atdl4jConfig getAtdl4jConfig();
+	public Atdl4jOptions getAtdl4jOptions();
 }

@@ -8,12 +8,15 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.data.ParameterTypeConverter;
 import org.atdl4j.data.StrategyRuleset;
+import org.atdl4j.data.TypeConverterFactory;
+import org.atdl4j.data.TypeConverterFactoryConfig;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.data.fix.PlainFIXMessageBuilder;
@@ -39,6 +42,8 @@ import org.atdl4j.fixatdl.validation.LogicOperatorT;
 import org.atdl4j.fixatdl.validation.OperatorT;
 import org.atdl4j.fixatdl.validation.StrategyEditT;
 import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.ControlUIFactory;
+import org.atdl4j.ui.StrategyPanelHelper;
 import org.atdl4j.ui.StrategyUI;
 
 /**
@@ -53,7 +58,7 @@ public abstract class AbstractStrategyUI
 	
 	protected Map<String, ParameterT> parameterMap;
 	
-	private Atdl4jConfig atdl4jConfig;
+	private Atdl4jOptions atdl4jOptions;
 	
 	// of StateListeners to attach to controlWidgets
 	private StrategyRuleset strategyRuleset;
@@ -64,6 +69,10 @@ public abstract class AbstractStrategyUI
 	
 //TODO 9/27/2010 Scott Atwell added	
 	private StrategiesT strategies;
+	
+//TODO 9/29/2010 Scott Atwell added/moved from Atdl4jConfig	
+	ControlUIFactory controlUIFactory;
+	StrategyPanelHelper strategyPanelHelper;
 	
 	abstract	protected void buildControlMap( List<StrategyPanelT> aStrategyPanelList );
 	
@@ -97,16 +106,16 @@ public abstract class AbstractStrategyUI
 	/**
 	 * @param strategy
 	 * @param aStrategies
-	 * @param aAtdl4jConfig (contains getStrategies())
+	 * @param aAtdl4jOptions (contains getStrategies())
 	 * @param strategiesRules
 	 * @param parentContainer (should be swt.Composite)
 	 */
-// TODO 9/27/2010 Scott Atwell added StrategiesT	public void init(StrategyT strategy, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer)
-	public void init(StrategyT strategy, StrategiesT aStrategies, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer)
+// TODO 9/27/2010 Scott Atwell added StrategiesT	public void init(StrategyT strategy, Atdl4jOptions aAtdl4jOptions, Map<String, ValidationRule> strategiesRules, Object parentContainer)
+	public void init(StrategyT strategy, StrategiesT aStrategies, Atdl4jOptions aAtdl4jOptions, Map<String, ValidationRule> strategiesRules, Object parentContainer)
 	{
 		setStrategy( strategy );
 		setStrategies( aStrategies );
-		setAtdl4jConfig( aAtdl4jConfig );
+		setAtdl4jOptions( aAtdl4jOptions );
 
 		initBegin( parentContainer );
 
@@ -122,7 +131,7 @@ public abstract class AbstractStrategyUI
 		checkForDuplicateControlIDs();
 		createRadioGroups();
 
-		addHiddenFieldsForInputAndFilterData( getAtdl4jConfig().getInputAndFilterData() );
+		addHiddenFieldsForInputAndFilterData( getAtdl4jOptions().getInputAndFilterData() );
 		
 		buildControlWithParameterMap();
 		attachGlobalStateRulesToControls();
@@ -140,20 +149,20 @@ public abstract class AbstractStrategyUI
 
 	
 	/**
-	 * @param atdl4jConfig
-	 *           the atdl4jConfig to set
+	 * @param atdl4jOptions
+	 *           the atdl4jOptions to set
 	 */
-	protected void setAtdl4jConfig(Atdl4jConfig atdl4jConfig)
+	protected void setAtdl4jOptions(Atdl4jOptions atdl4jOptions)
 	{
-		this.atdl4jConfig = atdl4jConfig;
+		this.atdl4jOptions = atdl4jOptions;
 	}
 
 	/**
-	 * @return the atdl4jConfig
+	 * @return the atdl4jOptions
 	 */
-	public Atdl4jConfig getAtdl4jConfig()
+	public Atdl4jOptions getAtdl4jOptions()
 	{
-		return atdl4jConfig;
+		return atdl4jOptions;
 	}
 
 
@@ -248,7 +257,8 @@ public abstract class AbstractStrategyUI
 				}
 			}
 			
-			ParameterTypeConverter tempTypeConverter = getAtdl4jConfig().getTypeConverterFactory().createParameterTypeConverter( parameter );
+			//	9/29/2010 Scott Atwell		ParameterTypeConverter tempTypeConverter = getAtdl4jOptions().getTypeConverterFactory().createParameterTypeConverter( parameter );
+			ParameterTypeConverter tempTypeConverter = TypeConverterFactoryConfig.getTypeConverterFactory().createParameterTypeConverter( parameter );
 			
 			if ( ParameterHelper.getConstValue( parameter ) != null )
 			{
@@ -484,7 +494,8 @@ public abstract class AbstractStrategyUI
 				hiddenField.setInitValue( tempValue.toString() );
 				hiddenField.setParameterRef( tempName );
 	
-				ControlUI hiddenFieldWidget = getAtdl4jConfig().getControlUIForHiddenFieldT( hiddenField, parameter );
+// 9/29/2010				ControlUI hiddenFieldWidget = getAtdl4jOptions().createControlUIForHiddenFieldT( hiddenField, parameter );
+				ControlUI hiddenFieldWidget = getControlUIFactory().createControlUIForHiddenFieldT( hiddenField, parameter );
 				hiddenFieldWidget.setHiddenFieldForInputAndFilterData( true );
 				
 				addToControlMap( tempName, hiddenFieldWidget );
@@ -531,7 +542,8 @@ public abstract class AbstractStrategyUI
 					HiddenFieldT tempHiddenField = new HiddenFieldT();
 					tempHiddenField.setParameterRef( tempName );
 		
-					ControlUI hiddenFieldWidget = getAtdl4jConfig().getControlUIForHiddenFieldT( tempHiddenField, tempParameter );
+// 9/29/2010					ControlUI hiddenFieldWidget = getAtdl4jOptions().createControlUIForHiddenFieldT( tempHiddenField, tempParameter );
+					ControlUI hiddenFieldWidget = getControlUIFactory().createControlUIForHiddenFieldT( tempHiddenField, tempParameter );
 					addToControlMap( tempName, hiddenFieldWidget );
 					addToControlWithParameterMap( tempName, hiddenFieldWidget );
 				}
@@ -560,9 +572,9 @@ public abstract class AbstractStrategyUI
 /** 9/27/2010 Scott Atwell replaced with local instance var	
 	protected StrategiesT getStrategies()
 	{
-		if ( getAtdl4jConfig() != null )
+		if ( getAtdl4jOptions() != null )
 		{
-			return getAtdl4jConfig().getStrategies();
+			return getAtdl4jOptions().getStrategies();
 		}
 		else
 		{
@@ -719,15 +731,19 @@ public abstract class AbstractStrategyUI
 		
 // 8/22/2010 Scott Atwell
 		// -- If the specified aWidget is part of a Collapsible StrategyPanel which is currently Collapsed, then expand it -- 
-		if ( ( getAtdl4jConfig() != null ) && ( getAtdl4jConfig().getStrategyPanelHelper() != null ) )
-		{
-			// -- (aCollapsed=false) --
-			return getAtdl4jConfig().getStrategyPanelHelper().expandControlParentStrategyPanel( aWidget );
-		}
-		else
-		{
-			return false;
-		}
+//		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().getStrategyPanelHelper() != null ) )
+//		{
+//			// -- (aCollapsed=false) --
+//			return getAtdl4jOptions().getStrategyPanelHelper().expandControlParentStrategyPanel( aWidget );
+//		}
+//		else
+//		{
+//			return false;
+//		}
+		
+		// -- If the specified aWidget is part of a Collapsible StrategyPanel which is currently Collapsed, then expand it -- 
+		// -- (aCollapsed=false) --
+		return getStrategyPanelHelper().expandControlParentStrategyPanel( aWidget );
 	}
 
 	/* (non-Javadoc)
@@ -736,7 +752,7 @@ public abstract class AbstractStrategyUI
 	@Override
 	public void reinitStrategyPanel()
 	{
-		reloadHiddenFieldsForInputAndFilterData( getAtdl4jConfig().getInputAndFilterData() );
+		reloadHiddenFieldsForInputAndFilterData( getAtdl4jOptions().getInputAndFilterData() );
 		
 		for ( ControlUI tempControlUI : getControlUIMap().values() )
 		{
@@ -746,7 +762,7 @@ public abstract class AbstractStrategyUI
 		}
 
 		// -- Set Strategy's CxlReplaceMode --
-		setCxlReplaceMode( getAtdl4jConfig().getInputAndFilterData().getInputCxlReplaceMode() );;
+		setCxlReplaceMode( getAtdl4jOptions().getInputAndFilterData().getInputCxlReplaceMode() );;
 		
 		// -- Execute StateRules --
 		fireStateListeners();
@@ -770,5 +786,52 @@ public abstract class AbstractStrategyUI
 	{
 		this.strategies = aStrategies;
 	}
-
+	
+	public ControlUIFactory getControlUIFactory() 
+	{
+		if ( ( controlUIFactory == null ) && ( Atdl4jConfig.getConfig().getClassNameControlUIFactory() != null ) ) 
+		{
+			String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIFactory();
+			logger.debug( "getControlUIFactory() loading class named: " + tempClassName );
+			try
+			{
+				controlUIFactory = ((Class<ControlUIFactory>) Class.forName( tempClassName ) ).newInstance();
+			}
+			catch ( Exception e )
+			{
+				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+			}
+			
+			if ( controlUIFactory != null )
+			{
+				controlUIFactory.init( getAtdl4jOptions() );
+			}
+		}
+		
+		return controlUIFactory;
+	}	
+	
+	/**
+	 * @return
+	 */
+	public StrategyPanelHelper getStrategyPanelHelper()
+	{
+		if ( ( strategyPanelHelper == null ) && ( Atdl4jConfig.getConfig().getClassNameStrategyPanelHelper() != null ) )
+		{
+			String tempClassName = Atdl4jConfig.getConfig().getClassNameStrategyPanelHelper();
+			logger.debug( "getStrategyPanelHelper() loading class named: " + tempClassName );
+			try
+			{
+				strategyPanelHelper = ((Class<StrategyPanelHelper>) Class.forName( tempClassName ) ).newInstance();
+			}
+			catch ( Exception e )
+			{
+				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+			}
+		}
+		
+		return strategyPanelHelper;
+	}	
 }

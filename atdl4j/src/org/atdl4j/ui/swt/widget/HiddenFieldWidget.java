@@ -13,7 +13,7 @@ public class HiddenFieldWidget
 		extends HiddenFieldUI
 		implements SWTWidget<String>
 {
-/** 2/9/2010 Scott Atwell	@see AbstractControlUI.init(ControlT aControl, ParameterT aParameter, Atdl4jConfig aAtdl4jConfig) throws JAXBException
+/** 2/9/2010 Scott Atwell	@see AbstractControlUI.init(ControlT aControl, ParameterT aParameter, Atdl4jOptions aAtdl4jOptions) throws JAXBException
 	public HiddenFieldWidget(HiddenFieldT control, ParameterT parameter) throws JAXBException {
 		super(control, parameter);
 	}

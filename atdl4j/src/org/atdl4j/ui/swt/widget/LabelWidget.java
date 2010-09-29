@@ -23,7 +23,7 @@ public class LabelWidget
 
 	/**
 	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
-	 * ParameterT aParameter, Atdl4jConfig aAtdl4jConfig) throws JAXBException
+	 * ParameterT aParameter, Atdl4jOptions aAtdl4jOptions) throws JAXBException
 	 * public LabelWidget(LabelT control) { super(control); }
 	 **/
 
@@ -37,9 +37,9 @@ public class LabelWidget
 		{
 			label.setText( control.getLabel() );
 		}
-		else if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
+		else if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
 		{
-			label.setText( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ) );
+			label.setText( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ) );
 		}
 		else
 		{

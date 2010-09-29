@@ -3,13 +3,14 @@ package org.atdl4j.ui.impl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.ControlTypeConverter;
 import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.data.ParameterTypeConverter;
+import org.atdl4j.data.TypeConverterFactoryConfig;
 import org.atdl4j.data.fix.PlainFIXMessageBuilder;
 import org.atdl4j.data.fix.Tag959Helper;
 import org.atdl4j.fixatdl.core.EnumPairT;
@@ -44,7 +45,7 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	protected ControlTypeConverter<E> controlConverter;
 	protected ParameterTypeConverter<?> parameterConverter;
 
-	private Atdl4jConfig atdl4jConfig;
+	private Atdl4jOptions atdl4jOptions;
 
 	Boolean nullValue = null; // undefined state
 
@@ -56,22 +57,24 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	private StrategyPanelT parentStrategyPanel;
 	private Object parent;
 
-	public void init(ControlT aControl, ParameterT aParameter, Atdl4jConfig aAtdl4jConfig)
+	public void init(ControlT aControl, ParameterT aParameter, Atdl4jOptions aAtdl4jOptions)
 	{
 		control = aControl;
 		parameter = aParameter;
-		setAtdl4jConfig( aAtdl4jConfig );
+		setAtdl4jOptions( aAtdl4jOptions );
 
 		// -- This method can be overridden/implemented --
 		initPreCheck();
 
 		if ( parameter != null )
 		{
-			parameterConverter = (ParameterTypeConverter<?>) getAtdl4jConfig().getTypeConverterFactory().createParameterTypeConverter( parameter );
+// 9/29/2010			parameterConverter = (ParameterTypeConverter<?>) getAtdl4jOptions().getTypeConverterFactory().createParameterTypeConverter( parameter );
+			parameterConverter = (ParameterTypeConverter<?>) TypeConverterFactoryConfig.getTypeConverterFactory().createParameterTypeConverter( parameter );
 		}
 
 		// -- Pass parameterConverter (which may be null if parameter is null) --
-		controlConverter = (ControlTypeConverter<E>) getAtdl4jConfig().getTypeConverterFactory().createControlTypeConverter( control, parameterConverter );
+// 9/29/2010 		controlConverter = (ControlTypeConverter<E>) getAtdl4jOptions().getTypeConverterFactory().createControlTypeConverter( control, parameterConverter );
+		controlConverter = (ControlTypeConverter<E>) TypeConverterFactoryConfig.getTypeConverterFactory().createControlTypeConverter( control, parameterConverter );
 
 		validateEnumPairs();
 		
@@ -103,7 +106,7 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		}
 		
 		// -- reset what is displayed to the user --
-		processReinit( ControlHelper.getReinitValue( getControl(), getAtdl4jConfig() ) );
+		processReinit( ControlHelper.getReinitValue( getControl(), getAtdl4jOptions() ) );
 	}
 	
 	protected abstract void processReinit( Object aControlInitValue );
@@ -462,26 +465,26 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 	}
 
 	/**
-	 * @return the atdl4jConfig
+	 * @return the atdl4jOptions
 	 */
-	public Atdl4jConfig getAtdl4jConfig()
+	public Atdl4jOptions getAtdl4jOptions()
 	{
-		return this.atdl4jConfig;
+		return this.atdl4jOptions;
 	}
 
 	/**
-	 * @param aAtdl4jConfig
-	 *           the atdl4jConfig to set
+	 * @param aAtdl4jOptions
+	 *           the atdl4jOptions to set
 	 */
-	protected void setAtdl4jConfig(Atdl4jConfig aAtdl4jConfig)
+	protected void setAtdl4jOptions(Atdl4jOptions aAtdl4jOptions)
 	{
-		this.atdl4jConfig = aAtdl4jConfig;
+		this.atdl4jOptions = aAtdl4jOptions;
 	}
 
 	/**
 	 * Note contains special logic to support returning false if: (
-	 * getAtdl4jConfig().isTreatControlVisibleFalseAsNull() ) && ( ! isVisible()
-	 * ) or ( ( getAtdl4jConfig().isTreatControlEnabledFalseAsNull() ) && ( !
+	 * getAtdl4jOptions().isTreatControlVisibleFalseAsNull() ) && ( ! isVisible()
+	 * ) or ( ( getAtdl4jOptions().isTreatControlEnabledFalseAsNull() ) && ( !
 	 * isEnabled() ) ) if those configs are set and nullValue is false.
 	 * 
 	 * @return the nullValue
@@ -498,15 +501,15 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		{
 			// -- Special logic to treat non-visible and/or non-enabled as "null"
 			// if nullValue is false --
-			if ( getAtdl4jConfig() != null )
+			if ( getAtdl4jOptions() != null )
 			{
-				if ( ( ( getAtdl4jConfig().isTreatControlVisibleFalseAsNull() ) && ( !isVisible() ) )
-						|| ( ( getAtdl4jConfig().isTreatControlEnabledFalseAsNull() ) && ( !isControlExcludingLabelEnabled() ) ) )
+				if ( ( ( getAtdl4jOptions().isTreatControlVisibleFalseAsNull() ) && ( !isVisible() ) )
+						|| ( ( getAtdl4jOptions().isTreatControlEnabledFalseAsNull() ) && ( !isControlExcludingLabelEnabled() ) ) )
 				{
 					return false;
 				}
-				else if ( ( ( getAtdl4jConfig().isTreatControlVisibleFalseAsNull() ) && ( isVisible() ) )
-						|| ( ( getAtdl4jConfig().isTreatControlEnabledFalseAsNull() ) && ( isControlExcludingLabelEnabled() ) ) )
+				else if ( ( ( getAtdl4jOptions().isTreatControlVisibleFalseAsNull() ) && ( isVisible() ) )
+						|| ( ( getAtdl4jOptions().isTreatControlEnabledFalseAsNull() ) && ( isControlExcludingLabelEnabled() ) ) )
 				{
 					return true;
 				}
@@ -567,7 +570,7 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 			// from aNullValue of true to non-null --
 			if ( ( Boolean.FALSE.equals( aNullValue ) ) && ( getLastNonNullStateControlValueRaw() != null ) )
 			{
-				if ( getAtdl4jConfig().isRestoreLastNonNullStateControlValueBehavior() )
+				if ( getAtdl4jOptions().isRestoreLastNonNullStateControlValueBehavior() )
 				{
 					logger
 							.debug( "setNullValue() control ID:" + getControl().getID() + " tempPreExistingNullValue: " + tempPreExistingNullValue

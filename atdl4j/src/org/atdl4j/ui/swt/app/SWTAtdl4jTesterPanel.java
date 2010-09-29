@@ -5,7 +5,7 @@
 package org.atdl4j.ui.swt.app;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.AbstractAtdl4jTesterPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -30,12 +30,12 @@ public class SWTAtdl4jTesterPanel
 	
 	private Composite inputAndFilterDataAndLoadMessageComposite;
 	
-	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jConfig aAtdl4jConfig)
+	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
-		return buildAtdl4jTesterPanel( (Composite) aParentOrShell, aAtdl4jConfig );
+		return buildAtdl4jTesterPanel( (Composite) aParentOrShell, aAtdl4jOptions );
 	}
 	
-	public Composite buildAtdl4jTesterPanel(Composite aParentOrShell, Atdl4jConfig aAtdl4jConfig)
+	public Composite buildAtdl4jTesterPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
 		parentComposite = (Composite) aParentOrShell;
 
@@ -46,12 +46,12 @@ public class SWTAtdl4jTesterPanel
 //		tempComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		// -- Delegate back to AbstractAtdl4jTesterPanel -- 
-		init( aParentOrShell, aAtdl4jConfig );
+		init( aParentOrShell, aAtdl4jOptions );
 		
 //TODO any "tester-specific stuff" to add???
 		
 //TODO		
-//		if (getAtdl4jConfig().isShowTimezoneSelector())
+//		if (getAtdl4jOptions().isShowTimezoneSelector())
 //		{
 //
 //		    Label tzLabel = new Label(headerComposite, SWT.NONE);
@@ -71,14 +71,15 @@ public class SWTAtdl4jTesterPanel
 		inputAndFilterDataAndLoadMessageComposite.setLayoutData( new GridData(SWT.FILL, SWT.FILL, true, false ) );
 		
 		// -- Build the SWT.Composite from Atdl4jInputAndFilterDataSelectionPanel ("Input Data/Filter Criteria" button) --
-		getAtdl4jInputAndFilterDataSelectionPanel().buildAtdl4jInputAndFilterDataSelectionPanel( inputAndFilterDataAndLoadMessageComposite, getAtdl4jConfig() );
+// 9/29/2010 Scott Atwell		getAtdl4jInputAndFilterDataSelectionPanel().buildAtdl4jInputAndFilterDataSelectionPanel( inputAndFilterDataAndLoadMessageComposite, getAtdl4jOptions() );
+		getAtdl4jInputAndFilterDataSelectionPanel().buildAtdl4jInputAndFilterDataSelectionPanel( inputAndFilterDataAndLoadMessageComposite, getAtdl4jOptions(), getAtdl4jCompositePanel().getAtdl4jUserMessageHandler() );
 		
 		// -- Build the SWT.Composite from FixMsgLoadPanel ("Load FIX Message" button) --
-		getFixMsgLoadPanel().buildFixMsgLoadPanel( inputAndFilterDataAndLoadMessageComposite, getAtdl4jConfig() );
+		getFixMsgLoadPanel().buildFixMsgLoadPanel( inputAndFilterDataAndLoadMessageComposite, getAtdl4jOptions() );
 		
 		
 		// -- Build the SWT.Composite from Atdl4jCompositePanel --
-		getAtdl4jCompositePanel().buildAtdl4jCompositePanel( aParentOrShell, aAtdl4jConfig );
+		getAtdl4jCompositePanel().buildAtdl4jCompositePanel( aParentOrShell, aAtdl4jOptions );
 
 		return parentComposite;
 	}

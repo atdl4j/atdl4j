@@ -4,7 +4,7 @@ package org.atdl4j.ui.swt.app;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.app.AbstractStrategySelectionPanel;
@@ -37,14 +37,14 @@ public class SWTStrategySelectionPanel
 	private Combo strategiesDropDown;
 	private List<StrategyT> strategiesList; // -- kept in sync index-for-index with strategiesDropDown --
 	
-	public Object buildStrategySelectionPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig)
+	public Object buildStrategySelectionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		return buildStrategySelectionPanel( (Composite) parentOrShell, atdl4jConfig );
+		return buildStrategySelectionPanel( (Composite) parentOrShell, atdl4jOptions );
 	}
 	
-	public Composite buildStrategySelectionPanel(Composite aParentComposite, Atdl4jConfig atdl4jConfig)
+	public Composite buildStrategySelectionPanel(Composite aParentComposite, Atdl4jOptions atdl4jOptions)
 	{
-		setAtdl4jConfig( atdl4jConfig );
+		setAtdl4jOptions( atdl4jOptions );
 		
 		// Strategy selector dropdown
 		dropdownComposite = new Composite(aParentComposite, SWT.NONE);
@@ -81,9 +81,9 @@ public class SWTStrategySelectionPanel
 		
 // TODO wish to avoid issue with changing the font causes the initial combo box display to be very narrow 
 		
-		if ( ( atdl4jConfig != null ) && ( atdl4jConfig.getStrategyDropDownItemDepth() != null ) )
+		if ( ( atdl4jOptions != null ) && ( atdl4jOptions.getStrategyDropDownItemDepth() != null ) )
 		{
-			strategiesDropDown.setVisibleItemCount( atdl4jConfig.getStrategyDropDownItemDepth().intValue() );
+			strategiesDropDown.setVisibleItemCount( atdl4jOptions.getStrategyDropDownItemDepth().intValue() );
 		}
 		// tooltip
 		strategiesDropDown.setToolTipText("Select a Strategy");
@@ -157,16 +157,16 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 		strategiesDropDown.select( index );
 		
 /*** 4/16/2010 Scott Atwell		
-		if ( (getAtdl4jConfig() != null ) && (getAtdl4jConfig().getStrategies() != null) )
+		if ( (getAtdl4jOptions() != null ) && (getAtdl4jOptions().getStrategies() != null) )
 		{
 			String tempSelectedDropDownName = strategiesDropDown.getItem( index );
-			getAtdl4jConfig().setSelectedStrategy( null ); 
-			for ( StrategyT tempStrategy : getAtdl4jConfig().getStrategies().getStrategy() )
+			getAtdl4jOptions().setSelectedStrategy( null ); 
+			for ( StrategyT tempStrategy : getAtdl4jOptions().getStrategies().getStrategy() )
 			{
 				if ( ( ( tempStrategy.getUiRep() != null ) && ( tempStrategy.getUiRep().equals( tempSelectedDropDownName ) ) ) ||
 					  ( ( tempStrategy.getUiRep() == null ) && ( tempStrategy.getName().equals( tempSelectedDropDownName ) ) ) )
 				{
-					getAtdl4jConfig().setSelectedStrategy( tempStrategy );
+					getAtdl4jOptions().setSelectedStrategy( tempStrategy );
 					fireStrategySelectedEvent( tempStrategy, index );
 					break;
 				}
@@ -180,7 +180,7 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 			throw new IllegalStateException( "UNEXPECTED ERROR: strategiesDropDown.getItem(" + index + "): " + strategiesDropDown.getItem( index ) + " DID NOT MATCH tempStrategy: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
 		}
 		
-// 9/27/2010 Scott Atwell moved to AbstractAtdl4jCompositePanel.strategySelected()		getAtdl4jConfig().setSelectedStrategy( tempStrategy );
+// 9/27/2010 Scott Atwell moved to AbstractAtdl4jCompositePanel.strategySelected()		getAtdl4jOptions().setSelectedStrategy( tempStrategy );
 		
 // 4/16/2010 Scott Atwell		fireStrategySelectedEvent( tempStrategy, index );
 		fireStrategySelectedEvent( tempStrategy );

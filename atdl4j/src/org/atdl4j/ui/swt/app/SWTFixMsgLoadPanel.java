@@ -2,7 +2,7 @@ package org.atdl4j.ui.swt.app;
 
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.AbstractFixMsgLoadPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -34,14 +34,14 @@ public class SWTFixMsgLoadPanel
 	Text fixMsgText;
 	Button loadFixMsgButton;
 	
-	public Object buildFixMsgLoadPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig)
+	public Object buildFixMsgLoadPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		return buildFixMsgLoadPanel( (Composite) parentOrShell, atdl4jConfig );
+		return buildFixMsgLoadPanel( (Composite) parentOrShell, atdl4jOptions );
 	}
 	
-	public Composite buildFixMsgLoadPanel(Composite aParentComposite, Atdl4jConfig atdl4jConfig)
+	public Composite buildFixMsgLoadPanel(Composite aParentComposite, Atdl4jOptions atdl4jOptions)
 	{
-		setAtdl4jConfig( atdl4jConfig );
+		setAtdl4jOptions( atdl4jOptions );
 		setParentComposite( aParentComposite );
 		
 		composite = new Group(aParentComposite, SWT.NONE);

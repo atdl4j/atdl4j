@@ -1,6 +1,8 @@
 package org.atdl4j.ui.impl;
 
+import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.fixatdl.core.IntT;
 import org.atdl4j.fixatdl.core.LengthT;
 import org.atdl4j.fixatdl.core.LocalMktDateT;
@@ -40,22 +42,24 @@ import org.atdl4j.ui.ControlUIFactory;
  * 
  * Note that all UI widgets in ATDL are strongly typed.
 
- * Note that this class does not need a SWT or Swing-specific implementation as it solely uses aAtdl4jConfig.get____().
+ * Note that this class does not need a SWT or Swing-specific implementation as it solely uses aAtdl4jOptions.get____().
  * @author Scott Atwell 
  */
 public class BaseControlUIFactory
 		implements ControlUIFactory
 {
-	private Atdl4jConfig atdl4jConfig;
+	private final Logger logger = Logger.getLogger(BaseControlUIFactory.class);
+	
+	private Atdl4jOptions atdl4jOptions;
 	
 	// Invoke init() following no-arg constructor
 	public BaseControlUIFactory() 
 	{
 	}
 
-	public void init(Atdl4jConfig aAtdl4jConfig)
+	public void init(Atdl4jOptions aAtdl4jOptions)
 	{
-		setAtdl4jConfig( aAtdl4jConfig );
+		setAtdl4jOptions( aAtdl4jOptions );
 	}
 	
  	/* 
@@ -67,34 +71,34 @@ public class BaseControlUIFactory
 	{
 		if ( control instanceof CheckBoxT )
 		{
-			return getAtdl4jConfig().getControlUIForCheckBoxT( (CheckBoxT) control, parameter );
+			return createControlUIForCheckBoxT( (CheckBoxT) control, parameter );
 		}
 		else if ( control instanceof DropDownListT )
 		{
-			return getAtdl4jConfig().getControlUIForDropDownListT( (DropDownListT) control, parameter );
+			return createControlUIForDropDownListT( (DropDownListT) control, parameter );
 		}
 		else if ( control instanceof EditableDropDownListT )
 		{
-			return getAtdl4jConfig().getControlUIForEditableDropDownListT( (EditableDropDownListT) control, parameter );
+			return createControlUIForEditableDropDownListT( (EditableDropDownListT) control, parameter );
 		}
 		else if ( control instanceof RadioButtonListT )
 		{
-			return getAtdl4jConfig().getControlUIForRadioButtonListT( (RadioButtonListT) control, parameter );
+			return createControlUIForRadioButtonListT( (RadioButtonListT) control, parameter );
 		}
 		else if ( control instanceof TextFieldT )
 		{
-			return getAtdl4jConfig().getControlUIForTextFieldT( (TextFieldT) control, parameter );
+			return createControlUIForTextFieldT( (TextFieldT) control, parameter );
 		}
 		else if ( control instanceof SliderT )
 		{
-			return getAtdl4jConfig().getControlUIForSliderT( (SliderT) control, parameter );
+			return createControlUIForSliderT( (SliderT) control, parameter );
 		}
 		else if ( control instanceof CheckBoxListT )
 		{
 			// CheckBoxList must use a multiple value parameter
 			if ( parameter == null || parameter instanceof MultipleStringValueT || parameter instanceof MultipleCharValueT )
 			{
-				return getAtdl4jConfig().getControlUIForCheckBoxListT( (CheckBoxListT) control, parameter );
+				return createControlUIForCheckBoxListT( (CheckBoxListT) control, parameter );
 			}
 		}
 		else if ( control instanceof ClockT )
@@ -102,7 +106,7 @@ public class BaseControlUIFactory
 			if ( parameter == null || parameter instanceof LocalMktDateT || parameter instanceof MonthYearT || parameter instanceof UTCDateOnlyT
 					|| parameter instanceof UTCTimeOnlyT || parameter instanceof UTCTimestampT )
 			{ 
-				return getAtdl4jConfig().getControlUIForClockT( (ClockT) control, parameter );
+				return createControlUIForClockT( (ClockT) control, parameter );
 			}
 		}
 		else if ( control instanceof SingleSpinnerT )
@@ -111,7 +115,7 @@ public class BaseControlUIFactory
 			if ( parameter == null || parameter instanceof IntT || parameter instanceof TagNumT || parameter instanceof LengthT
 					|| parameter instanceof SeqNumT || parameter instanceof NumInGroupT || parameter instanceof NumericT )
 			{
-				return getAtdl4jConfig().getControlUIForSingleSpinnerT( (SingleSpinnerT) control, parameter );
+				return createControlUIForSingleSpinnerT( (SingleSpinnerT) control, parameter );
 			}
 		}
 		else if ( control instanceof DoubleSpinnerT )
@@ -120,32 +124,32 @@ public class BaseControlUIFactory
 			if ( parameter == null || parameter instanceof IntT || parameter instanceof TagNumT || parameter instanceof LengthT
 					|| parameter instanceof SeqNumT || parameter instanceof NumInGroupT || parameter instanceof NumericT )
 			{
-				return getAtdl4jConfig().getControlUIForDoubleSpinnerT( (DoubleSpinnerT) control, parameter );
+				return createControlUIForDoubleSpinnerT( (DoubleSpinnerT) control, parameter );
 			}
 		}
 		else if ( control instanceof SingleSelectListT )
 		{
-			return getAtdl4jConfig().getControlUIForSingleSelectListT( (SingleSelectListT) control, parameter );
+			return createControlUIForSingleSelectListT( (SingleSelectListT) control, parameter );
 		}
 		else if ( control instanceof MultiSelectListT )
 		{
 			// MultiSelectList must use a multiple value parameter
 			if ( parameter == null || parameter instanceof MultipleStringValueT || parameter instanceof MultipleCharValueT )
 			{
-				return getAtdl4jConfig().getControlUIForMultiSelectListT( (MultiSelectListT) control, parameter );
+				return createControlUIForMultiSelectListT( (MultiSelectListT) control, parameter );
 			}
 		}
 		else if ( control instanceof HiddenFieldT )
 		{
-			return getAtdl4jConfig().getControlUIForHiddenFieldT( (HiddenFieldT) control, parameter );
+			return createControlUIForHiddenFieldT( (HiddenFieldT) control, parameter );
 		}
 		else if ( control instanceof LabelT )
 		{
-			return getAtdl4jConfig().getControlUIForLabelT( (LabelT) control, parameter );
+			return createControlUIForLabelT( (LabelT) control, parameter );
 		}
 		else if ( control instanceof RadioButtonT )
 		{
-			return getAtdl4jConfig().getControlUIForRadioButtonT( (RadioButtonT) control, parameter );
+			return createControlUIForRadioButtonT( (RadioButtonT) control, parameter );
 		}
 
 		throw new IllegalStateException( "Control ID: \"" + control.getID() + "\" has unsupported Control type \"" + control.getClass().getSimpleName() + "\""
@@ -154,19 +158,484 @@ public class BaseControlUIFactory
 	}
 
 	/**
-	 * @param atdl4jConfig the atdl4jConfig to set
+	 * @param atdl4jOptions the atdl4jOptions to set
 	 */
-	protected void setAtdl4jConfig(Atdl4jConfig atdl4jConfig)
+	protected void setAtdl4jOptions(Atdl4jOptions atdl4jOptions)
 	{
-		this.atdl4jConfig = atdl4jConfig;
+		this.atdl4jOptions = atdl4jOptions;
 	}
 
 	/**
-	 * @return the atdl4jConfig
+	 * @return the atdl4jOptions
 	 */
-	public Atdl4jConfig getAtdl4jConfig()
+	public Atdl4jOptions getAtdl4jOptions()
 	{
-		return atdl4jConfig;
+		return atdl4jOptions;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForCheckBoxListT(CheckBoxListT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForCheckBoxListT();
+		logger.debug( "createControlUIForCheckBoxListT() loading class named: " + tempClassName );
+		ControlUI controlUIForCheckBoxListT;
+		try
+		{
+			controlUIForCheckBoxListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForCheckBoxListT != null )
+		{
+			controlUIForCheckBoxListT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForCheckBoxListT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForCheckBoxT(CheckBoxT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForCheckBoxT();
+		logger.debug( "createControlUIForCheckBoxT() loading class named: " + tempClassName );
+		ControlUI controlUIForCheckBoxT;
+		try
+		{
+			controlUIForCheckBoxT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForCheckBoxT != null )
+		{
+			controlUIForCheckBoxT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForCheckBoxT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForClockT(ClockT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForClockT();
+		logger.debug( "createControlUIForClockT() loading class named: " + tempClassName );
+		ControlUI controlUIForClockT;
+		try
+		{
+			controlUIForClockT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForClockT != null )
+		{
+			controlUIForClockT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForClockT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForDoubleSpinnerT(DoubleSpinnerT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForDoubleSpinnerT();
+		logger.debug( "createControlUIForDoubleSpinnerT() loading class named: " + tempClassName );
+		ControlUI controlUIForDoubleSpinnerT;
+		try
+		{
+			controlUIForDoubleSpinnerT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForDoubleSpinnerT != null )
+		{
+			controlUIForDoubleSpinnerT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForDoubleSpinnerT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForDropDownListT(DropDownListT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForDropDownListT();
+		logger.debug( "createControlUIForDropDownListT() loading class named: " + tempClassName );
+		ControlUI controlUIForDropDownListT;
+		try
+		{
+			controlUIForDropDownListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForDropDownListT != null )
+		{
+			controlUIForDropDownListT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForDropDownListT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForEditableDropDownListT(EditableDropDownListT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForEditableDropDownListT();
+		logger.debug( "createControlUIForEditableDropDownListT() loading class named: " + tempClassName );
+		ControlUI controlUIForEditableDropDownListT;
+		try
+		{
+			controlUIForEditableDropDownListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForEditableDropDownListT != null )
+		{
+			controlUIForEditableDropDownListT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForEditableDropDownListT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForHiddenFieldT(HiddenFieldT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForHiddenFieldT();
+		logger.debug( "createControlUIForHiddenFieldT() loading class named: " + tempClassName );
+		ControlUI controlUIForHiddenFieldT;
+		try
+		{
+			controlUIForHiddenFieldT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForHiddenFieldT != null )
+		{
+			controlUIForHiddenFieldT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForHiddenFieldT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForLabelT(LabelT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForLabelT();
+		logger.debug( "createControlUIForLabelT() loading class named: " + tempClassName );
+		ControlUI controlUIForLabelT;
+		try
+		{
+			controlUIForLabelT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForLabelT != null )
+		{
+			controlUIForLabelT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForLabelT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForMultiSelectListT(MultiSelectListT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForMultiSelectListT();
+		logger.debug( "createControlUIForMultiSelectListT() loading class named: " + tempClassName );
+		ControlUI controlUIForMultiSelectListT;
+		try
+		{
+			controlUIForMultiSelectListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForMultiSelectListT != null )
+		{
+			controlUIForMultiSelectListT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForMultiSelectListT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForRadioButtonListT(RadioButtonListT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForRadioButtonListT();
+		logger.debug( "createControlUIForRadioButtonListT() loading class named: " + tempClassName );
+		ControlUI controlUIForRadioButtonListT;
+		try
+		{
+			controlUIForRadioButtonListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForRadioButtonListT != null )
+		{
+			controlUIForRadioButtonListT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForRadioButtonListT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForRadioButtonT(RadioButtonT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForRadioButtonT();
+		logger.debug( "createControlUIForRadioButtonT() loading class named: " + tempClassName );
+		ControlUI controlUIForRadioButtonT;
+		try
+		{
+			controlUIForRadioButtonT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForRadioButtonT != null )
+		{
+			controlUIForRadioButtonT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForRadioButtonT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForSingleSelectListT(SingleSelectListT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForSingleSelectListT();
+		logger.debug( "createControlUIForSingleSelectListT() loading class named: " + tempClassName );
+		ControlUI controlUIForSingleSelectListT;
+		try
+		{
+			controlUIForSingleSelectListT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForSingleSelectListT != null )
+		{
+			controlUIForSingleSelectListT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForSingleSelectListT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForSingleSpinnerT(SingleSpinnerT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForSingleSpinnerT();
+		logger.debug( "createControlUIForSingleSpinnerT() loading class named: " + tempClassName );
+		ControlUI controlUIForSingleSpinnerT;
+		try
+		{
+			controlUIForSingleSpinnerT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForSingleSpinnerT != null )
+		{
+			controlUIForSingleSpinnerT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForSingleSpinnerT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForSliderT(SliderT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForSliderT();
+		logger.debug( "createControlUIForSliderT() loading class named: " + tempClassName );
+		ControlUI controlUIForSliderT;
+		try
+		{
+			controlUIForSliderT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForSliderT != null )
+		{
+			controlUIForSliderT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForSliderT;
+	}
+
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param control
+	 * @param parameter
+	 * @return
+	 */
+	public ControlUI createControlUIForTextFieldT(TextFieldT control, ParameterT parameter)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIForTextFieldT();
+		logger.debug( "createControlUIForTextFieldT() loading class named: " + tempClassName );
+		ControlUI controlUIForTextFieldT;
+		try
+		{
+			controlUIForTextFieldT = ((Class<ControlUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( controlUIForTextFieldT != null )
+		{
+			controlUIForTextFieldT.init( control, parameter, getAtdl4jOptions() );
+		}
+		
+		return controlUIForTextFieldT;
 	}
 
 }

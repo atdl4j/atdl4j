@@ -7,7 +7,7 @@ package org.atdl4j.ui;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.CheckBoxListT;
@@ -39,19 +39,19 @@ public class ControlHelper
 {
 	/**
 	 * @param aControl
-	 * @param aAtdl4jConfig
+	 * @param aAtdl4jOptions
 	 * @param aDigits
 	 * @return
 	 */
-// 4/18/2010 Scott Atwell	public static BigInteger getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
-// 8/17/2010 Scott Atwell	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
-	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig, int aDigits )
+// 4/18/2010 Scott Atwell	public static BigInteger getIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
+// 8/17/2010 Scott Atwell	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
+	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions, int aDigits )
 	{
       if ( aControl instanceof SingleSpinnerT )
 		{
 			return determineIncrementValue( ((SingleSpinnerT) aControl).getIncrement(), 
 													  ((SingleSpinnerT) aControl).getIncrementPolicy(),
-													  aAtdl4jConfig,
+													  aAtdl4jOptions,
 													  aDigits );
 		}
 		
@@ -60,19 +60,19 @@ public class ControlHelper
 	
 	/**
 	 * @param aControl
-	 * @param aAtdl4jConfig
+	 * @param aAtdl4jOptions
 	 * @param aDigits
 	 * @return
 	 */
-// 4/18/2010 Scott Atwell	public static BigInteger getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
-// 8/17/2010 Scott Atwell	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig, int aDigits  )
-	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig, int aDigits  )
+// 4/18/2010 Scott Atwell	public static BigInteger getInnerIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
+// 8/17/2010 Scott Atwell	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions, int aDigits  )
+	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions, int aDigits  )
 	{
 		if ( aControl instanceof DoubleSpinnerT )
 		{
 			return determineIncrementValue( ((DoubleSpinnerT) aControl).getInnerIncrement(), 
 													  ((DoubleSpinnerT) aControl).getInnerIncrementPolicy(),
-													  aAtdl4jConfig,
+													  aAtdl4jOptions,
 													  aDigits );
 		}
 		
@@ -81,17 +81,17 @@ public class ControlHelper
 	
 	/**
 	 * @param aControl
-	 * @param aAtdl4jConfig
+	 * @param aAtdl4jOptions
 	 * @return
 	 */
-// 4/18/2010 Scott Atwell	public static BigInteger getOuterIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
-	public static BigDecimal getOuterIncrementValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+// 4/18/2010 Scott Atwell	public static BigInteger getOuterIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
+	public static BigDecimal getOuterIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
 	{
 		if ( aControl instanceof DoubleSpinnerT )
 		{
 			return determineIncrementValue( ((DoubleSpinnerT) aControl).getOuterIncrement(), 
 													  ((DoubleSpinnerT) aControl).getOuterIncrementPolicy(),
-													  aAtdl4jConfig );
+													  aAtdl4jOptions );
 		}
 		
 		return null;
@@ -101,17 +101,17 @@ public class ControlHelper
 	/**
 	 * @param aIncrement
 	 * @param aIncrementPolicy
-	 * @param aAtdl4jConfig
+	 * @param aAtdl4jOptions
 	 * @param aDigits
 	 * @return
 	 */
-	public static BigDecimal determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jConfig aAtdl4jConfig, int aDigits )
+	public static BigDecimal determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jOptions aAtdl4jOptions, int aDigits )
 	{ 
-		BigDecimal tempBigDecimal = determineIncrementValue( aIncrement, aIncrementPolicy, aAtdl4jConfig );
+		BigDecimal tempBigDecimal = determineIncrementValue( aIncrement, aIncrementPolicy, aAtdl4jOptions );
 		
 		if ( tempBigDecimal != null )
 		{
-// 8/23/2010  (handle "Tick" digits 2 - Atdl4jConfig default to .0001 and java.lang.ArithmeticException: Rounding necessary
+// 8/23/2010  (handle "Tick" digits 2 - Atdl4jOptions default to .0001 and java.lang.ArithmeticException: Rounding necessary
 // 8/23/2010			return tempBigDecimal.setScale( aDigits );
 			BigDecimal tempBigDecimal2 = tempBigDecimal.setScale( aDigits, RoundingMode.HALF_UP );
 			if ( tempBigDecimal2.doubleValue() == 0.0d )
@@ -134,11 +134,11 @@ public class ControlHelper
 	/**
 	 * @param aIncrement
 	 * @param aIncrementPolicy
-	 * @param aAtdl4jConfig
+	 * @param aAtdl4jOptions
 	 * @return
 	 */
-// 4/18/2010 Scott Atwell	public static BigInteger determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jConfig aAtdl4jConfig )
-	public static BigDecimal determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jConfig aAtdl4jConfig )
+// 4/18/2010 Scott Atwell	public static BigInteger determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jOptions aAtdl4jOptions )
+	public static BigDecimal determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jOptions aAtdl4jOptions )
 	{ 
 		// -- FIXatdl 1.1 Schema documentation: --
 		//		<xs:documentation>
@@ -151,11 +151,11 @@ public class ControlHelper
 
 		if ( Atdl4jConstants.INCREMENT_POLICY_LOT_SIZE.equals( aIncrementPolicy ) ) 
 		{
-			if ( ( aAtdl4jConfig != null ) &&
-				  ( aAtdl4jConfig.getInputAndFilterData() != null ) &&
-				  ( aAtdl4jConfig.getInputAndFilterData().getInputIncrementPolicy_LotSize() != null ) )
+			if ( ( aAtdl4jOptions != null ) &&
+				  ( aAtdl4jOptions.getInputAndFilterData() != null ) &&
+				  ( aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicy_LotSize() != null ) )
 			{
-				return aAtdl4jConfig.getInputAndFilterData().getInputIncrementPolicy_LotSize();
+				return aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicy_LotSize();
 			}
 //	4/18/2010 Scott Atwell removed
 //			else
@@ -169,16 +169,16 @@ public class ControlHelper
 			}
 			else
 			{
-				return aAtdl4jConfig.getDefaultLotSizeIncrementValue();
+				return aAtdl4jOptions.getDefaultLotSizeIncrementValue();
 			}
 		}
 		else if ( Atdl4jConstants.INCREMENT_POLICY_TICK.equals( aIncrementPolicy ) ) 
 		{
-			if ( ( aAtdl4jConfig != null ) &&
-				  ( aAtdl4jConfig.getInputAndFilterData() != null ) &&
-				  ( aAtdl4jConfig.getInputAndFilterData().getInputIncrementPolicy_Tick() != null ) )
+			if ( ( aAtdl4jOptions != null ) &&
+				  ( aAtdl4jOptions.getInputAndFilterData() != null ) &&
+				  ( aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicy_Tick() != null ) )
 			{
-				return aAtdl4jConfig.getInputAndFilterData().getInputIncrementPolicy_Tick();
+				return aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicy_Tick();
 			}
 //	4/18/2010 Scott Atwell removed
 //			else
@@ -192,7 +192,7 @@ public class ControlHelper
 			}
 			else
 			{
-				return aAtdl4jConfig.getDefaultTickIncrementValue();
+				return aAtdl4jOptions.getDefaultTickIncrementValue();
 			}
 		} 
 		else  // -- Use aIncrement value when aIncrementPolicy null or Atdl4jConstants.INCREMENT_POLICY_STATIC --
@@ -206,7 +206,7 @@ public class ControlHelper
 			else
 			{
 // 4/18/2010 Scott Atwell replaced				return null;
-				return aAtdl4jConfig.getDefaultIncrementValue();
+				return aAtdl4jOptions.getDefaultIncrementValue();
 			}
 		}
 	}
@@ -215,10 +215,10 @@ public class ControlHelper
 	 * Handles ControlT/@initPolicy ("UseValue" or "UseFixField") logic in conjunction with ControlT/@initValue and ControlT/@initFixField
 	 * Returns null if ControlT/@initValue is the special null indicator: VALUE_NULL_INDICATOR
 	 * @param aControl
-	 * @param aAtdl4jConfig
+	 * @param aAtdl4jOptions
 	 * @return 
 	 */
-	public static Object getInitValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+	public static Object getInitValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
 	{
 		// INIT_POLICY_USE_VALUE = "UseValue";  // -- use value from ControlT/@initValue --
 		// INIT_POLICY_USE_FIX_FIELD = "UseFixField";  // -- use value from ControlT/@initFixField if available, else ControlT/@initValue --		
@@ -230,12 +230,12 @@ public class ControlHelper
 				throw new IllegalArgumentException( "ERROR: Control: " + aControl.getID() + " has initPolicy=\"" + aControl.getInitPolicy() + "\" but does not have initFixField set." );
 			}
 			
-			if ( ( aAtdl4jConfig == null ) || ( aAtdl4jConfig.getInputAndFilterData() == null ) )
+			if ( ( aAtdl4jOptions == null ) || ( aAtdl4jOptions.getInputAndFilterData() == null ) )
 			{
-				throw new IllegalArgumentException( "ERROR: Control: " + aControl.getID() + " has initPolicy=\"" + aControl.getInitPolicy() + "\" but Atdl4jConfig is null." );
+				throw new IllegalArgumentException( "ERROR: Control: " + aControl.getID() + " has initPolicy=\"" + aControl.getInitPolicy() + "\" but Atdl4jOptions is null." );
 			}
 			
-			String tempFixFieldValue = aAtdl4jConfig.getInputAndFilterData().getInputHiddenFieldValue( aControl.getInitFixField().toString() );
+			String tempFixFieldValue = aAtdl4jOptions.getInputAndFilterData().getInputHiddenFieldValue( aControl.getInitFixField().toString() );
 			
 			if ( tempFixFieldValue != null )
 			{
@@ -341,12 +341,12 @@ public class ControlHelper
 	 * Returns null if ControlT/@initValue is the special null indicator: VALUE_NULL_INDICATOR
 	 * Also has special handling for LabelT which may simply use "label=" vs. "initValue=" for its value.
 	 * @param aControl
-	 * @param aAtdl4jConfig
+	 * @param aAtdl4jOptions
 	 * @return 
 	 */
-	public static Object getReinitValue( ControlT aControl, Atdl4jConfig aAtdl4jConfig )
+	public static Object getReinitValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
 	{
-		Object tempInitValue = getInitValue( aControl, aAtdl4jConfig );
+		Object tempInitValue = getInitValue( aControl, aAtdl4jOptions );
 		
 		if ( ( tempInitValue == null ) && ( aControl instanceof LabelT ) )
 		{
@@ -362,15 +362,15 @@ public class ControlHelper
 	/**
 	 * Returns the default number of Spinner control "digits" for the specified aParameter 
 	 * @param aParameter
-	 * @param aAtdl4jConfig
+	 * @param aAtdl4jOptions
 	 * @return
 	 */
-	public static int getDefaultDigitsForSpinnerControl( ParameterT aParameter, Atdl4jConfig aAtdl4jConfig )
+	public static int getDefaultDigitsForSpinnerControl( ParameterT aParameter, Atdl4jOptions aAtdl4jOptions )
 	{
-		// -- not specified via rule above, use default if we have one within Atdl4jConfig --
-		if ( aAtdl4jConfig != null )
+		// -- not specified via rule above, use default if we have one within Atdl4jOptions --
+		if ( aAtdl4jOptions != null )
 		{
-			return aAtdl4jConfig.getDefaultDigitsForSpinnerControl( aParameter );
+			return aAtdl4jOptions.getDefaultDigitsForSpinnerControl( aParameter );
 		}
 		else
 		{

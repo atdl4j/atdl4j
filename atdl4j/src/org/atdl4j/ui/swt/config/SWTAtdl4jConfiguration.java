@@ -1,25 +1,20 @@
-/*
- * Created on Feb 7, 2010
- *
- */
 package org.atdl4j.ui.swt.config;
 
-import org.atdl4j.config.AbstractAtdl4jConfig;
+import org.atdl4j.config.AbstractAtdl4jConfiguration;
 
 /**
  * 
- * This class contains the data associated with the <code>SWTAtdl4jConfig</code>.
+ * This class contains the data associated with the <code>SWTAtdl4jConfiguration</code>.
  * 
- * Creation date: (Feb 7, 2010 6:39:07 PM)
+ * Creation date: (Sep 28, 2010 6:29:30 PM)
  * @author Scott Atwell
- * @version 1.0, Feb 7, 2010
  */
-public class SWTAtdl4jConfig
-		extends AbstractAtdl4jConfig
+public class SWTAtdl4jConfiguration
+		extends AbstractAtdl4jConfiguration
 {
 	private static String PACKAGE_PATH_ORG_ATDL4J_UI_SWT = "org.atdl4j.ui.swt.";
 	
-	public SWTAtdl4jConfig()
+	public SWTAtdl4jConfiguration()
 	{
 		super();
 	}
@@ -158,5 +153,4 @@ public class SWTAtdl4jConfig
 	{
 		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "impl.SWTStrategyPanelHelper";
 	}
-	
 }

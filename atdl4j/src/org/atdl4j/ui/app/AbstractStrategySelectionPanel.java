@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.fixatdl.core.StrategyT;
 
@@ -25,25 +25,25 @@ public abstract class AbstractStrategySelectionPanel
 {
 	public final Logger logger = Logger.getLogger(AbstractStrategySelectionPanel.class);
 
-	private Atdl4jConfig atdl4jConfig = null;
+	private Atdl4jOptions atdl4jOptions = null;
 	
 	private List<StrategySelectionPanelListener> listenerList = new Vector<StrategySelectionPanelListener>();
 
 	/**
-	 * @param atdl4jConfig the atdl4jConfig to set
+	 * @param atdl4jOptions the atdl4jOptions to set
 	 */
-	protected void setAtdl4jConfig(Atdl4jConfig atdl4jConfig)
+	protected void setAtdl4jOptions(Atdl4jOptions atdl4jOptions)
 	{
-		this.atdl4jConfig = atdl4jConfig;
+		this.atdl4jOptions = atdl4jOptions;
 	}
 
 
 	/**
-	 * @return the atdl4jConfig
+	 * @return the atdl4jOptions
 	 */
-	public Atdl4jConfig getAtdl4jConfig()
+	public Atdl4jOptions getAtdl4jOptions()
 	{
-		return atdl4jConfig;
+		return atdl4jOptions;
 	}
 	
 

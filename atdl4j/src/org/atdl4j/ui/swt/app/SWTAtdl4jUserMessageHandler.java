@@ -2,7 +2,7 @@ package org.atdl4j.ui.swt.app;
 
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.AbstractAtdl4jUserMessageHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -23,14 +23,14 @@ public class SWTAtdl4jUserMessageHandler
 	
 	private Composite parentComposite;
 	
-	public void init(Object parentOrShell, Atdl4jConfig atdl4jConfig)
+	public void init(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		init( ((Composite) parentOrShell).getShell(), atdl4jConfig );
+		init( ((Composite) parentOrShell).getShell(), atdl4jOptions );
 	}
 	
-	public void init(Composite aParentComposite, Atdl4jConfig atdl4jConfig)
+	public void init(Composite aParentComposite, Atdl4jOptions atdl4jOptions)
 	{
-		setAtdl4jConfig( atdl4jConfig );
+		setAtdl4jOptions( atdl4jOptions );
 		setParentComposite( aParentComposite );
 	}
 

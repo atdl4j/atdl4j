@@ -2,7 +2,7 @@ package org.atdl4j.ui.swt.app;
 
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.AbstractStrategyDescriptionPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -29,14 +29,14 @@ public class SWTStrategyDescriptionPanel
 	private int DEFAULT_COMPOSITE_HEIGHT_HINT = 45;
 	private int DEFAULT_STRATEGY_DESCRIPTION_HEIGHT_HINT = 35;
 
-	public Object buildStrategyDescriptionPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig)
+	public Object buildStrategyDescriptionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		return buildStrategyDescriptionPanel( (Composite) parentOrShell, atdl4jConfig );
+		return buildStrategyDescriptionPanel( (Composite) parentOrShell, atdl4jOptions );
 	}
 	
-	public Composite buildStrategyDescriptionPanel(Composite aParentComposite, Atdl4jConfig atdl4jConfig)
+	public Composite buildStrategyDescriptionPanel(Composite aParentComposite, Atdl4jOptions atdl4jOptions)
 	{
-		setAtdl4jConfig( atdl4jConfig );
+		setAtdl4jOptions( atdl4jOptions );
 	
 		composite = new SWTVisibleGroup(aParentComposite, SWT.NONE);
 		((Group) composite).setText("Strategy Description");

@@ -2,7 +2,7 @@ package org.atdl4j.ui;
 
 import java.util.Map;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.StrategyRuleset;
 import org.atdl4j.data.ValidationRule;
@@ -16,12 +16,12 @@ public interface StrategyUI
 	/**
 	 * @param strategy
 	 * @param aStrategies
-	 * @param aAtdl4jConfig (contains getStrategies())
+	 * @param aAtdl4jOptions (contains getStrategies())
 	 * @param strategiesRules
 	 * @param parentContainer (should be swt.Composite)
 	 */
-// TODO 9/27/2010 Scott Atwell added StrategiesT	public void init(StrategyT strategy, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer);
-	public void init(StrategyT strategy, StrategiesT aStrategies, Atdl4jConfig aAtdl4jConfig, Map<String, ValidationRule> strategiesRules, Object parentContainer);
+// TODO 9/27/2010 Scott Atwell added StrategiesT	public void init(StrategyT strategy, Atdl4jOptions aAtdl4jOptions, Map<String, ValidationRule> strategiesRules, Object parentContainer);
+	public void init(StrategyT strategy, StrategiesT aStrategies, Atdl4jOptions aAtdl4jOptions, Map<String, ValidationRule> strategiesRules, Object parentContainer);
    
 	public void validate() throws ValidationException;
 
@@ -42,7 +42,7 @@ public interface StrategyUI
    public void setCxlReplaceMode(boolean cxlReplaceMode);
 
    
-   public Atdl4jConfig getAtdl4jConfig();
+   public Atdl4jOptions getAtdl4jOptions();
 	public Map<String, ParameterT> getParameterMap();
 	public StrategyRuleset getStrategyRuleset();
 	public Map<String, ValidationRule> getCompleteValidationRuleMap();

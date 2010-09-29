@@ -98,8 +98,8 @@ public class CheckBoxListWidget
 		}
 
 		// set initValue
-		if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
-			setValue( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ), true );
+		if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
+			setValue( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ), true );
 
 		return parent;
 	}

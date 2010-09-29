@@ -5,12 +5,18 @@
 package org.atdl4j.ui.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.ValidationRule;
+import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategyUI;
+import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 import org.atdl4j.ui.app.StrategiesUIListener;
 
 /**
@@ -24,27 +30,31 @@ public abstract class AbstractStrategiesUI
 // 9/13/2010 Scott Atwell		implements StrategiesPanel
 		implements StrategiesUI
 {
-	private Atdl4jConfig atdl4jConfig = null;
+	protected static final Logger logger = Logger.getLogger( AbstractStrategiesUI.class );
+	
+	private Atdl4jOptions atdl4jOptions = null;
 
 	private List<StrategiesUIListener> listenerList = new Vector<StrategiesUIListener>();
 
 	private boolean preCached = false;
+	
+	private Atdl4jUserMessageHandler atdl4jUserMessageHandler = null;
 
 	/**
-	 * @param atdl4jConfig the atdl4jConfig to set
+	 * @param atdl4jOptions the atdl4jOptions to set
 	 */
-	protected void setAtdl4jConfig(Atdl4jConfig atdl4jConfig)
+	protected void setAtdl4jOptions(Atdl4jOptions atdl4jOptions)
 	{
-		this.atdl4jConfig = atdl4jConfig;
+		this.atdl4jOptions = atdl4jOptions;
 	}
 
 
 	/**
-	 * @return the atdl4jConfig
+	 * @return the atdl4jOptions
 	 */
-	public Atdl4jConfig getAtdl4jConfig()
+	public Atdl4jOptions getAtdl4jOptions()
 	{
-		return atdl4jConfig;
+		return atdl4jOptions;
 	}
 	
 	public void addListener( StrategiesUIListener aStrategiesUIListener )
@@ -97,4 +107,59 @@ public abstract class AbstractStrategiesUI
 		}
 	}
 
+	
+	/**
+	 * Constructs a new instance every call.
+	 * 
+	 * @param strategy
+	 * @param aStrategies
+	 * @param strategiesRules
+	 * @param parentContainer (for SWT: should be swt.Composite)
+	 * @return
+	 */
+// 9/27/2010 Scott Atwell added StrategiesT	public StrategyUI getStrategyUI(StrategyT strategy, Map<String, ValidationRule> strategiesRules, Object parentContainer)
+// 9/29/2010 Scott Atwell moved from Atdl4jConfig	public StrategyUI getStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer)
+	public StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer)
+	{
+		// -- Constructs a new instance every call --
+		String tempClassName = Atdl4jConfig.getConfig().getClassNameStrategyUI();
+		logger.debug( "getStrategyUI() loading class named: " + tempClassName );
+		StrategyUI strategyUI;
+		try
+		{
+			strategyUI = ((Class<StrategyUI>) Class.forName( tempClassName ) ).newInstance();
+		}
+		catch ( Exception e )
+		{
+			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+		}
+		
+		if ( strategyUI != null )
+		{
+// 9/27/2010 Scott Atwell			strategyUI.init( strategy, this, strategiesRules, parentContainer );
+			strategyUI.init( strategy, aStrategies, getAtdl4jOptions(), strategiesRules, parentContainer );
+		}
+		
+		return strategyUI;
+	}
+
+
+	/**
+	 * @param atdl4jUserMessageHandler the atdl4jUserMessageHandler to set
+	 */
+	public void setAtdl4jUserMessageHandler(Atdl4jUserMessageHandler atdl4jUserMessageHandler)
+	{
+		this.atdl4jUserMessageHandler = atdl4jUserMessageHandler;
+	}
+
+
+	/**
+	 * @return the atdl4jUserMessageHandler
+	 */
+	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler()
+	{
+		return atdl4jUserMessageHandler;
+	}
+	
 }

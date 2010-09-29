@@ -10,7 +10,7 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.validation.Field2OperatorValidationRule;
 import org.atdl4j.data.validation.LogicalOperatorValidationRule;
@@ -565,7 +565,8 @@ public SWTWidget<?> createWidget(Composite parent, ControlT control, ParameterT 
 			+ " control: " + control + " parameter: " + parameter + " style: " + style );
 
 // TODO 9/27/2010 Scott Atwell	parameterWidget = (SWTWidget<?>) controlWidgetFactory.create( control, parameter );
-	parameterWidget = (SWTWidget<?>) getAtdl4jConfig().getControlUIFactory().create( control, parameter );
+// TODO 9/29/2010 Scott Atwell	parameterWidget = (SWTWidget<?>) getAtdl4jOptions().getControlUIFactory().create( control, parameter );
+	parameterWidget = (SWTWidget<?>) getControlUIFactory().create( control, parameter );
 
 	logger.debug( "createWidget() returned parameterWidget: " + parameterWidget );
 
@@ -596,11 +597,11 @@ public Map<String, SWTWidget<?>> createStrategyPanelAndWidgets(Composite parent,
 	if ( panel.getStrategyPanel().size() > 0 && panel.getControl().size() > 0 )
 	{
 		// -- Wrap each Control with an auto-built StrategyPanel if setting is true --
-		if ( getAtdl4jConfig().isAccommodateMixOfStrategyPanelsAndControls() )
+		if ( getAtdl4jOptions().isAccommodateMixOfStrategyPanelsAndControls() )
 		{
 //7/20/2010 Scott Atwell			throw new IllegalStateException( "StrategyPanel may not contain both StrategyPanel and Control elements." );
 			// -- FIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file. --
-			logger.warn( "StrategyPanel contains both StrategyPanel (" + panel.getStrategyPanel().size() +") and Control ( " + panel.getControl().size() + " elements.\nSee Atdl4jConfig.setAccommodateMixOfStrategyPanelsAndControls() as potential work-around, though Controls will appear after StrategyPanels." );
+			logger.warn( "StrategyPanel contains both StrategyPanel (" + panel.getStrategyPanel().size() +") and Control ( " + panel.getControl().size() + " elements.\nSee Atdl4jOptions.setAccommodateMixOfStrategyPanelsAndControls() as potential work-around, though Controls will appear after StrategyPanels." );
 			
 			StrategyPanelT tempPanel = new StrategyPanelT();
 			tempPanel.setCollapsible( Boolean.FALSE );

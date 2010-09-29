@@ -1,7 +1,7 @@
 
 package org.atdl4j.ui;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
@@ -13,7 +13,7 @@ import org.atdl4j.fixatdl.layout.StrategyPanelT;
  */
 public interface ControlUI<E extends Comparable<?>> 
 {
-	public void init(ControlT control, ParameterT parameter, Atdl4jConfig aAtdl4jConfig);
+	public void init(ControlT control, ParameterT parameter, Atdl4jOptions aAtdl4jOptions);
 
 	public void reinit();
 

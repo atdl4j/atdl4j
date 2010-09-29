@@ -1,7 +1,7 @@
 package org.atdl4j.ui.swt.app;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.AbstractAtdl4jCompositePanel;
 import org.atdl4j.ui.swt.util.SWTMenuHelper;
 import org.eclipse.swt.SWT;
@@ -38,12 +38,12 @@ public class SWTAtdl4jCompositePanel
 	private MenuItem showFileSelectionMenuItem;
 	private MenuItem showValidateOutputMenuItem;
 	
-	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jConfig aAtdl4jConfig)
+	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
-		return buildAtdl4jCompositePanel( (Composite) aParentOrShell, aAtdl4jConfig );
+		return buildAtdl4jCompositePanel( (Composite) aParentOrShell, aAtdl4jOptions );
 	}
 	
-	public Composite buildAtdl4jCompositePanel(Composite aParentComposite, Atdl4jConfig aAtdl4jConfig)
+	public Composite buildAtdl4jCompositePanel(Composite aParentComposite, Atdl4jOptions aAtdl4jOptions)
 	{
 		setParentComposite( aParentComposite );
 		
@@ -54,21 +54,22 @@ public class SWTAtdl4jCompositePanel
 //		tempComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		// -- Delegate back to AbstractAtdl4jCompositePanel -- 
-		init( aParentComposite, aAtdl4jConfig );
+		init( aParentComposite, aAtdl4jOptions );
 
 		// -- Build the SWT.Composite from FixatdlFileSelectionPanel (filename / file dialog) --
-		getFixatdlFileSelectionPanel().buildFixatdlFileSelectionPanel( getParentOrShell(), getAtdl4jConfig() );
+		getFixatdlFileSelectionPanel().buildFixatdlFileSelectionPanel( getParentOrShell(), getAtdl4jOptions() );
 
 		// -- Build the SWT.Composite from StrategySelectionPanel (drop down with list of strategies to choose from) --
-		getStrategySelectionPanel().buildStrategySelectionPanel( getParentOrShell(), getAtdl4jConfig() );
+		getStrategySelectionPanel().buildStrategySelectionPanel( getParentOrShell(), getAtdl4jOptions() );
 
 		// -- Build the SWT.Composite from StrategyDescriptionPanel (text box with description for selected strategy) --
-		getStrategyDescriptionPanel().buildStrategyDescriptionPanel( getParentOrShell(), getAtdl4jConfig() );
+		getStrategyDescriptionPanel().buildStrategyDescriptionPanel( getParentOrShell(), getAtdl4jOptions() );
 		getStrategyDescriptionPanel().setVisible( false );  // hide until there is data to populate it with
 		
 		// -- Build the SWT.Composite from StrategiesPanel (GUI display of each strategy's parameters) --
-// TODO 9/26/2010 Scott Atwell		getStrategiesPanel().buildStrategiesPanel( getParentOrShell(), getAtdl4jConfig() );
-		getStrategiesUI().buildStrategiesPanel( getParentOrShell(), getAtdl4jConfig() );
+// TODO 9/26/2010 Scott Atwell		getStrategiesPanel().buildStrategiesPanel( getParentOrShell(), getAtdl4jOptions() );
+// 9/29/2010 		getStrategiesUI().buildStrategiesPanel( getParentOrShell(), getAtdl4jOptions() );
+		getStrategiesUI().buildStrategiesPanel( getParentOrShell(), getAtdl4jOptions(), getAtdl4jUserMessageHandler() );
 
 		// -- Build the SWT.Composite containing "Validate Output" button and outputFixMessageText --
 		createValidateOutputSection();
@@ -85,10 +86,10 @@ public class SWTAtdl4jCompositePanel
 	protected void createMenuItems()
 	{
 		// -- "Show File Selection" --
-		setVisibleFileSelectionSection( getAtdl4jConfig().isShowFileSelectionSection() );
+		setVisibleFileSelectionSection( getAtdl4jOptions().isShowFileSelectionSection() );
 //		final MenuItem tempShowFileSelectionMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show File Selection" );
 		showFileSelectionMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show File Selection" );
-		showFileSelectionMenuItem.setSelection( getAtdl4jConfig().isShowFileSelectionSection() );
+		showFileSelectionMenuItem.setSelection( getAtdl4jOptions().isShowFileSelectionSection() );
 		showFileSelectionMenuItem.addListener( SWT.Selection, new Listener()
 		{
 			@Override
@@ -100,10 +101,10 @@ public class SWTAtdl4jCompositePanel
 		
 		
 		// -- "Show Validate Output" --
-		setVisibleValidateOutputSection( getAtdl4jConfig().isShowValidateOutputSection() );
+		setVisibleValidateOutputSection( getAtdl4jOptions().isShowValidateOutputSection() );
 //		final MenuItem tempShowValidateOutputMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show Validate Output" );
 		showValidateOutputMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show Validate Output" );
-		showValidateOutputMenuItem.setSelection( getAtdl4jConfig().isShowValidateOutputSection() );
+		showValidateOutputMenuItem.setSelection( getAtdl4jOptions().isShowValidateOutputSection() );
 		showValidateOutputMenuItem.addListener( SWT.Selection, new Listener()
 		{
 			@Override
@@ -160,7 +161,7 @@ public class SWTAtdl4jCompositePanel
 	
 	protected void setValidateOutputText(String aText)
 	{
-		if ( ( getAtdl4jConfig() != null ) && ( getAtdl4jConfig().isShowValidateOutputSection() ) )
+		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowValidateOutputSection() ) )
 		{
 			if ( aText != null )
 			{
@@ -227,7 +228,7 @@ public class SWTAtdl4jCompositePanel
 			}
 		});
 		
-		setVisibleOkCancelButtonSection( getAtdl4jConfig().isShowCompositePanelOkCancelButtonSection() );
+		setVisibleOkCancelButtonSection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
 		
 		return okCancelButtonSection;
 	}

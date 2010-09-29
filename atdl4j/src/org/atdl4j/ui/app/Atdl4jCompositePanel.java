@@ -5,9 +5,10 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
+import org.atdl4j.ui.StrategiesUI;
 
 /**
  * Represents the core strategy selection and display GUI component.
@@ -69,9 +70,9 @@ import org.atdl4j.fixatdl.core.StrategyT;
  *		
  *		Config:
  *		-------
- *		- org.atdl4j.config.Atdl4jConfig
- *		- org.atdl4j.config.AbstractAtdl4jConfig
- *		- org.atdl4j.ui.swt.config.SWTAtdl4jConfig
+ *		- org.atdl4j.config.Atdl4jOptions
+ *		- org.atdl4j.config.AbstractAtdl4jOptions
+ *		- org.atdl4j.ui.swt.config.SWTAtdl4jOptions
  *		- org.atdl4j.config.InputAndFilterData 
  *
  *
@@ -80,19 +81,19 @@ import org.atdl4j.fixatdl.core.StrategyT;
  */
 public interface Atdl4jCompositePanel
 {
-	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jConfig aAtdl4jConfig);
+	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions);
 
-	public Atdl4jConfig getAtdl4jConfig();
+	public Atdl4jOptions getAtdl4jOptions();
 	
 	/* 
-	 * Parses the FIXatdl file aFilename into StrategiesT storing the result via Atdl4jConfig().setStrategies().
+	 * Parses the FIXatdl file aFilename into StrategiesT storing the result via Atdl4jOptions().setStrategies().
 	 */
 	public void parseFixatdlFile( String aFilename ) 
 		throws JAXBException, IOException, NumberFormatException; 
 
 	/**
 	 * Can be invoked/re-invoked at anytime provided that parseFixatdlFile() has successfully parsed the
-	 * FIXatdl file contents into Atdl4jConfig().setStrategies().  Re-generates the display.
+	 * FIXatdl file contents into Atdl4jOptions().setStrategies().  Re-generates the display.
 	 */
 	public void loadScreenWithFilteredStrategies();
 	
@@ -131,5 +132,10 @@ public interface Atdl4jCompositePanel
 	public boolean isSelectedStrategyValidated();
 	public void setSelectedStrategyValidated(boolean aSelectedStrategyValidated);
 
-	
+	public StrategiesUI getStrategiesUI();
+
+	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler();
+
+	// TODO 9/26/2010 Scott Atwell	public StrategiesUI getStrategiesUI();
+	public void initAtdl4jUserMessageHandler( Object parentOrShell );
 }

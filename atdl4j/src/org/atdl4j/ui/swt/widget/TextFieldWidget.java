@@ -42,8 +42,8 @@ public class TextFieldWidget
 
 
 		// init value
-		if ( ControlHelper.getInitValue( control, getAtdl4jConfig() ) != null )
-			textField.setText( (String) ControlHelper.getInitValue( control, getAtdl4jConfig() ) );
+		if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
+			textField.setText( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ) );
 
 		// tooltip
 		if ( tooltip != null ) textField.setToolTipText( tooltip );

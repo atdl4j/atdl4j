@@ -1,6 +1,6 @@
 package org.atdl4j.ui.app;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 
 /**
  * Represents the tester's "Load Message" button and text field GUI component. 
@@ -10,11 +10,11 @@ import org.atdl4j.config.Atdl4jConfig;
  */
 public interface FixMsgLoadPanel
 {
-	public Object buildFixMsgLoadPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig);
+	public Object buildFixMsgLoadPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions);
 	
 	public void setFixMsg(String aFixMsg);
 
-	public Atdl4jConfig getAtdl4jConfig();
+	public Atdl4jOptions getAtdl4jOptions();
 	
 	public void addListener(FixMsgLoadPanelListener aFixMsgLoadPanelListener);
 	

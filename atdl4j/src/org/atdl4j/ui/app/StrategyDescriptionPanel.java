@@ -1,6 +1,6 @@
 package org.atdl4j.ui.app;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.fixatdl.core.StrategyT;
 
 /**
@@ -11,7 +11,7 @@ import org.atdl4j.fixatdl.core.StrategyT;
  */
 public interface StrategyDescriptionPanel
 {
-	public Object buildStrategyDescriptionPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig);
+	public Object buildStrategyDescriptionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions);
 	
 	public void loadStrategyDescriptionVisible( StrategyT aStrategy );
 	
@@ -19,6 +19,6 @@ public interface StrategyDescriptionPanel
 	
 	public void setVisible( boolean aVisible );
 	
-	public Atdl4jConfig getAtdl4jConfig();
+	public Atdl4jOptions getAtdl4jOptions();
 	
 }

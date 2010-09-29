@@ -7,7 +7,7 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.converter.DateTimeConverter;
 import org.atdl4j.fixatdl.core.LocalMktDateT;
@@ -97,8 +97,8 @@ public class ClockWidget
 		
 		boolean hasLabelOrCheckbox = false;
 		
-		if ( ( getAtdl4jConfig() != null ) &&
-			  ( getAtdl4jConfig().isShowEnabledCheckboxOnOptionalClockControl() ) && 
+		if ( ( getAtdl4jOptions() != null ) &&
+			  ( getAtdl4jOptions().isShowEnabledCheckboxOnOptionalClockControl() ) && 
 			  ( parameter != null ) && 
 			  ( UseT.OPTIONAL.equals( parameter.getUse() ) ) )
 		{
@@ -173,7 +173,7 @@ public class ClockWidget
 		}
 
 		// init value, if applicable
-		setAndRenderInitValue( (XMLGregorianCalendar ) ControlHelper.getInitValue( control, getAtdl4jConfig() ), ((ClockT) control).getInitValueMode() );
+		setAndRenderInitValue( (XMLGregorianCalendar ) ControlHelper.getInitValue( control, getAtdl4jOptions() ), ((ClockT) control).getInitValueMode() );
 
 		
 		if ( enabledButton != null )
@@ -428,22 +428,22 @@ public class ClockWidget
 		{
 			logger.debug( "setFIXValue(" + aFIXValue + ") resulted in time < present (" + tempFIXValueTime + " < " + tempCurrentTime + ")" );
 			
-			Integer tempClockPastTimeSetFIXValueRule = getAtdl4jConfig().getClockPastTimeSetFIXValueRule( getControl() );
+			Integer tempClockPastTimeSetFIXValueRule = getAtdl4jOptions().getClockPastTimeSetFIXValueRule( getControl() );
 			logger.debug( "Control: " + getControl().getID() + " tempClockPastTimeSetFIXValueRule: " + tempClockPastTimeSetFIXValueRule );
 			
-			if ( Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS.equals( tempClockPastTimeSetFIXValueRule ) )
+			if ( Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS.equals( tempClockPastTimeSetFIXValueRule ) )
 			{
 				// -- keep as-is --
-				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS rule -- Retaining: " + tempFIXValueTime );
+				logger.debug("Per Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS rule -- Retaining: " + tempFIXValueTime );
 			}
-			else if ( Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT.equals( tempClockPastTimeSetFIXValueRule ) )
+			else if ( Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT.equals( tempClockPastTimeSetFIXValueRule ) )
 			{
-				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT rule -- Setting: " + tempCurrentTime + " ( vs. " + tempFIXValueTime + ")" );
+				logger.debug("Per Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT rule -- Setting: " + tempCurrentTime + " ( vs. " + tempFIXValueTime + ")" );
 				setValue( tempCurrentTime );
 			} 
-			else if ( Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL.equals( tempClockPastTimeSetFIXValueRule ) )
+			else if ( Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL.equals( tempClockPastTimeSetFIXValueRule ) )
 			{
-				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL rule -- Setting control to 'null value' ( vs. " + tempFIXValueTime + ")" );
+				logger.debug("Per Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL rule -- Setting control to 'null value' ( vs. " + tempFIXValueTime + ")" );
 				setValueAsString( Atdl4jConstants.VALUE_NULL_INDICATOR );
 			} 
 		}

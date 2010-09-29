@@ -2,7 +2,7 @@ package org.atdl4j.ui.swt.app;
 
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.AbstractFixatdlFileSelectionPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -35,14 +35,14 @@ public class SWTFixatdlFileSelectionPanel
 	Text filepathText;
 	Button browseButton;
 	
-	public Object buildFixatdlFileSelectionPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig)
+	public Object buildFixatdlFileSelectionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		return buildFixatdlFileSelectionPanel( (Composite) parentOrShell, atdl4jConfig );
+		return buildFixatdlFileSelectionPanel( (Composite) parentOrShell, atdl4jOptions );
 	}
 	
-	public Composite buildFixatdlFileSelectionPanel(Composite aParentComposite, Atdl4jConfig atdl4jConfig)
+	public Composite buildFixatdlFileSelectionPanel(Composite aParentComposite, Atdl4jOptions atdl4jOptions)
 	{
-		setAtdl4jConfig( atdl4jConfig );
+		setAtdl4jOptions( atdl4jOptions );
 		setParentComposite( aParentComposite );
 		
 		// -- SWTVisibleGroup avoids consuming vertical space when hidden via setVisible(false) --

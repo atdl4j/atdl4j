@@ -6,7 +6,7 @@ package org.atdl4j.ui.app;
 
 import javax.xml.bind.JAXBException;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.exception.ValidationException;
 
 /**
@@ -19,14 +19,14 @@ import org.atdl4j.data.exception.ValidationException;
 public abstract class AbstractAtdl4jUserMessageHandler
 		implements Atdl4jUserMessageHandler
 {
-	private Atdl4jConfig atdl4jConfig = null;
+	private Atdl4jOptions atdl4jOptions = null;
 
 	/* (non-Javadoc)
 	 * @see org.atdl4j.ui.app.Atdl4jUserMessageHandler#isInitReqd()
 	 */
 	public boolean isInitReqd()
 	{
-		if ( atdl4jConfig != null )
+		if ( atdl4jOptions != null )
 		{
 			return false;
 		}
@@ -37,20 +37,20 @@ public abstract class AbstractAtdl4jUserMessageHandler
 	}
 
 	/**
-	 * @param atdl4jConfig the atdl4jConfig to set
+	 * @param atdl4jOptions the atdl4jOptions to set
 	 */
-	protected void setAtdl4jConfig(Atdl4jConfig atdl4jConfig)
+	protected void setAtdl4jOptions(Atdl4jOptions atdl4jOptions)
 	{
-		this.atdl4jConfig = atdl4jConfig;
+		this.atdl4jOptions = atdl4jOptions;
 	}
 
 
 	/**
-	 * @return the atdl4jConfig
+	 * @return the atdl4jOptions
 	 */
-	public Atdl4jConfig getAtdl4jConfig()
+	public Atdl4jOptions getAtdl4jOptions()
 	{
-		return atdl4jConfig;
+		return atdl4jOptions;
 	}
 
 	/**

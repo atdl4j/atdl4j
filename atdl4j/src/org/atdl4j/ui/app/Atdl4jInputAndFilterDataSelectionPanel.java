@@ -1,6 +1,6 @@
 package org.atdl4j.ui.app;
 
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 
 
 /**
@@ -11,9 +11,10 @@ import org.atdl4j.config.Atdl4jConfig;
  */
 public interface Atdl4jInputAndFilterDataSelectionPanel
 {
-	public Object buildAtdl4jInputAndFilterDataSelectionPanel(Object aParentOrShell, Atdl4jConfig aAtdl4jConfig);
+// 9/29/2010 Scott Atwell	public Object buildAtdl4jInputAndFilterDataSelectionPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions);
+	public Object buildAtdl4jInputAndFilterDataSelectionPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler);
 
-	public Atdl4jConfig getAtdl4jConfig();
+	public Atdl4jOptions getAtdl4jOptions();
 	
 	public void addListener( Atdl4jInputAndFilterDataPanelListener aAtdl4jInputAndFilterCriteriaPanelListener );
 

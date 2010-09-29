@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.validation.ValidationRuleFactory;
@@ -14,6 +14,7 @@ import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.fixatdl.validation.EditT;
 import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategyUI;
+import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 import org.atdl4j.ui.impl.AbstractStrategiesUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -37,7 +38,7 @@ public class SWTStrategiesUI
 	
 	private Map<String, ValidationRule> strategiesRules;
 	private StrategiesT strategies;
-	private Atdl4jConfig atdl4jConfig;
+	private Atdl4jOptions atdl4jOptions;
 
 	
 	/*
@@ -48,21 +49,21 @@ public class SWTStrategiesUI
 	}
 
 /** TODO 9/27/2010 Scott Atwell	
-	public SWTStrategiesUI(StrategiesT strategies, Atdl4jConfig aAtdl4jConfig)
+	public SWTStrategiesUI(StrategiesT strategies, Atdl4jOptions aAtdl4jOptions)
 	{
-		init(strategies, aAtdl4jConfig);
+		init(strategies, aAtdl4jOptions);
 	}
 **/	
-	public SWTStrategiesUI(Atdl4jConfig aAtdl4jConfig)
+	public SWTStrategiesUI(Atdl4jOptions aAtdl4jOptions)
 	{
-		init(aAtdl4jConfig);
+		init(aAtdl4jOptions);
 	}
 
 /** TODO 9/27/2010 Scott Atwell	
-	public void init(StrategiesT strategies, Atdl4jConfig aAtdl4jConfig)
+	public void init(StrategiesT strategies, Atdl4jOptions aAtdl4jOptions)
 	{
 		this.strategies = strategies;
-		setAtdl4jConfig( aAtdl4jConfig );
+		setAtdl4jOptions( aAtdl4jOptions );
 
 		strategiesRules = new HashMap<String, ValidationRule>();
 		for (EditT edit : strategies.getEdit()) {
@@ -77,15 +78,16 @@ public class SWTStrategiesUI
 		}
 	}
 **/
-public void init(Atdl4jConfig aAtdl4jConfig)
+public void init(Atdl4jOptions aAtdl4jOptions)
 {
-	setAtdl4jConfig( aAtdl4jConfig );
+	setAtdl4jOptions( aAtdl4jOptions );
 }
 	
 public StrategyUI createUI(StrategyT strategy, Composite parent)
 {
-//TODO 9/27/2010 Scott Atwell	return getAtdl4jConfig().getStrategyUI( strategy, strategiesRules, parent );
-	return getAtdl4jConfig().getStrategyUI( strategy, strategies, strategiesRules, parent );
+//TODO 9/27/2010 Scott Atwell	return getStrategyUI( strategy, strategiesRules, parent );
+// 9/29/2010 Scott Atwell	return getStrategyUI( strategy, strategies, strategiesRules, parent );
+	return createStrategyUI( strategy, strategies, strategiesRules, parent );
 }
 
 public StrategyUI createUI(StrategyT strategy, Object parent)
@@ -94,37 +96,41 @@ public StrategyUI createUI(StrategyT strategy, Object parent)
 }
 
 /**
- * @param atdl4jConfig the atdl4jConfig to set
+ * @param atdl4jOptions the atdl4jOptions to set
  */
-protected void setAtdl4jConfig(Atdl4jConfig atdl4jConfig)
+protected void setAtdl4jOptions(Atdl4jOptions atdl4jOptions)
 {
-	this.atdl4jConfig = atdl4jConfig;
+	this.atdl4jOptions = atdl4jOptions;
 }
 
 /**
- * @return the atdl4jConfig
+ * @return the atdl4jOptions
  */
-public Atdl4jConfig getAtdl4jConfig()
+public Atdl4jOptions getAtdl4jOptions()
 {
-	return atdl4jConfig;
+	return atdl4jOptions;
 }
 
 
 
-public Object buildStrategiesPanel(Object parentOrShell, Atdl4jConfig atdl4jConfig)
+// 9/29/2010 Scott Atwell public Object buildStrategiesPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
+public Object buildStrategiesPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
 {
-	return buildStrategiesPanel( (Composite) parentOrShell, atdl4jConfig );
+//	return buildStrategiesPanel( (Composite) parentOrShell, atdl4jOptions );
+	return buildStrategiesPanel( (Composite) parentOrShell, atdl4jOptions, aAtdl4jUserMessageHandler );
 }
 
-public Composite buildStrategiesPanel(Composite aParentComposite, Atdl4jConfig atdl4jConfig)
+// 9/29/2010 Scott Atwell public Composite buildStrategiesPanel(Composite aParentComposite, Atdl4jOptions atdl4jOptions)
+public Composite buildStrategiesPanel(Composite aParentComposite, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
 {
-	setAtdl4jConfig( atdl4jConfig );
+	setAtdl4jOptions( atdl4jOptions );
 
-	if ( ( atdl4jConfig != null ) && ( atdl4jConfig.getAtdl4jUserMessageHandler() != null )
-			&& ( atdl4jConfig.getAtdl4jUserMessageHandler().isInitReqd() ) )
-	{
-		atdl4jConfig.initAtdl4jUserMessageHandler( aParentComposite );
-	}
+//	if ( ( atdl4jOptions != null ) && ( atdl4jOptions.getAtdl4jUserMessageHandler() != null )
+//			&& ( atdl4jOptions.getAtdl4jUserMessageHandler().isInitReqd() ) )
+//	{
+//		atdl4jOptions.initAtdl4jUserMessageHandler( aParentComposite );
+//	}
+	setAtdl4jUserMessageHandler( aAtdl4jUserMessageHandler );
 
 	// Main strategies panel
 	strategiesPanel = new Composite( aParentComposite, SWT.NONE );
@@ -180,7 +186,7 @@ public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStr
 		} 
 		catch (Throwable e) 
 		{
-			getAtdl4jConfig().getAtdl4jUserMessageHandler().displayException( "Strategy Load Error",
+			getAtdl4jUserMessageHandler().displayException( "Strategy Load Error",
 					"Error in Strategy: " + Atdl4jHelper.getStrategyUiRepOrName( aStrategy ), e );
 
 			// rollback changes
@@ -192,9 +198,9 @@ public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStr
 		} 
 
 			
-//TODO 6/23/2010 Scott Atwell		getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
+//TODO 6/23/2010 Scott Atwell		getAtdl4jOptions().getStrategyUIMap().put( strategy, ui );
 
-	ui.setCxlReplaceMode( getAtdl4jConfig().getInputAndFilterData().getInputCxlReplaceMode() );
+	ui.setCxlReplaceMode( getAtdl4jOptions().getInputAndFilterData().getInputCxlReplaceMode() );
 
 //6/23/2010 Scott Atwell added		
 	currentlyDisplayedStrategyUI = ui;
@@ -212,18 +218,18 @@ public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStr
 *//** TODO 9/26/2010 Scott Atwell	
 	try
 	{
-		StrategiesUIFactory factory = getAtdl4jConfig().getStrategiesUIFactory();
-		strategiesUI = factory.create( getAtdl4jConfig().getStrategies(), getAtdl4jConfig() );
+		StrategiesUIFactory factory = getAtdl4jOptions().getStrategiesUIFactory();
+		strategiesUI = factory.create( getAtdl4jOptions().getStrategies(), getAtdl4jOptions() );
 	}
 	catch (Exception e)
 	{
-		getAtdl4jConfig().getAtdl4jUserMessageHandler().displayException( "Strategy Load Error",
+		getAtdl4jUserMessageHandler().displayException( "Strategy Load Error",
 				"Error creating StrategiesUIFactory and StrategiesUI", e );
 		return;
 	}
 **//*
 	
-//6/23/2010 Scott Atwell		getAtdl4jConfig().setStrategyUIMap( new HashMap<StrategyT, StrategyUI>() );
+//6/23/2010 Scott Atwell		getAtdl4jOptions().setStrategyUIMap( new HashMap<StrategyT, StrategyUI>() );
 
 	for ( StrategyT strategy : aFilteredStrategyList )
 	{
@@ -258,7 +264,7 @@ public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStr
 			} 
 			catch (Throwable e) 
 			{
-				getAtdl4jConfig().getAtdl4jUserMessageHandler().displayException( "Strategy Load Error",
+				getAtdl4jUserMessageHandler().displayException( "Strategy Load Error",
 						"Error in Strategy: " + Atdl4jHelper.getStrategyUiRepOrName( strategy ), e );
 
 				// rollback changes
@@ -268,11 +274,11 @@ public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStr
 				continue;
 			} 
 
-		getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
+		getAtdl4jOptions().getStrategyUIMap().put( strategy, ui );
 //4/2/2010 Scott Atwell added
 		strategyUIList.add( ui );
 
-		ui.setCxlReplaceMode( getAtdl4jConfig().getInputAndFilterData().getInputCxlReplaceMode() );
+		ui.setCxlReplaceMode( getAtdl4jOptions().getInputAndFilterData().getInputCxlReplaceMode() );
 ***  6/23/2010 Scott Atwell ****//*
 		*//********************************************************************************************
 		 * 6/23/2010 Scott Atwell
@@ -290,7 +296,7 @@ public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStr
 			// skip to next strategy
 			continue;
 		}
-//TODO 6/23/2010			getAtdl4jConfig().getStrategyUIMap().put( strategy, ui );
+//TODO 6/23/2010			getAtdl4jOptions().getStrategyUIMap().put( strategy, ui );
 		
 	}
 	setPreCached( true );
@@ -358,8 +364,8 @@ public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
 {
 	if ( strategiesPanel != null )
 	{
-//6/23/2010 Scott Atwell			StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUIMap().get( aStrategy );
-		StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUI( aStrategy );
+//6/23/2010 Scott Atwell			StrategyUI tempStrategyUI = getAtdl4jOptions().getStrategyUIMap().get( aStrategy );
+		StrategyUI tempStrategyUI = getStrategyUI( aStrategy );
 		
 		if ( tempStrategyUI == null  )
 		{
@@ -383,12 +389,12 @@ public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
 /* (non-Javadoc)
  * @see org.atdl4j.ui.app.StrategiesPanel#reinitStrategyPanels()
  */
-/*** 9/27/2010 Scott Atwell removed -- unused (and had reference to getAtdl4jConfig().getSelectedStrategy())
+/*** 9/27/2010 Scott Atwell removed -- unused (and had reference to getAtdl4jOptions().getSelectedStrategy())
 @Override
 public void reinitStrategyPanels()
 {
 *//*** 6/23/2010 Scott Atwell
-	for ( StrategyUI tempStrategyUI : getAtdl4jConfig().getStrategyUIMap().values() )
+	for ( StrategyUI tempStrategyUI : getAtdl4jOptions().getStrategyUIMap().values() )
 	{
 		logger.info( "Invoking StrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
 
@@ -396,9 +402,9 @@ public void reinitStrategyPanels()
 	}
 ***//*
 	// -- Only re-init for the selected strategy --
-	if ( getAtdl4jConfig().getSelectedStrategy() != null )
+	if ( getAtdl4jOptions().getSelectedStrategy() != null )
 	{
-		StrategyUI tempStrategyUI = getAtdl4jConfig().getStrategyUI( getAtdl4jConfig().getSelectedStrategy() );
+		StrategyUI tempStrategyUI = getStrategyUI( getAtdl4jOptions().getSelectedStrategy() );
 		if ( tempStrategyUI != null )
 		{
 			logger.info( "Invoking StrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );

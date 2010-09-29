@@ -1,6 +1,9 @@
 package org.atdl4j.ui.app;
 
+import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jConfiguration;
+import org.atdl4j.config.Atdl4jOptions;
 
 /**
  * Represents the base, non-GUI system-specific "TesterApp" with a main() line.
@@ -12,8 +15,9 @@ import org.atdl4j.config.Atdl4jConfig;
  */
 public abstract class AbstractAtdl4jTesterApp
 {
+	private final Logger logger = Logger.getLogger(AbstractAtdl4jTesterApp.class);
 
-	static Atdl4jConfig atdl4jConfig;
+	static Atdl4jOptions atdl4jOptions;
 	Object parentOrShell;  // SWT: Shell, Swing: JFrame, etc
 	
 	Atdl4jTesterPanel atdl4jTesterPanel;
@@ -26,13 +30,13 @@ public abstract class AbstractAtdl4jTesterApp
 		if (args.length > 0) {
 			try {
 //TODO 1/18/2010 Scott Atwell added BELOW
-//				getAtdl4jConfig().getInputAndFilterData().init();
+//				getAtdl4jOptions().getInputAndFilterData().init();
 				
 				if (args.length >= 2)
 				{
 					// -- InputCxlReplaceMode = args[1] (eg "true" or "false")
 					logger.info("args[1]: " + args[1] + " Boolean.parseBoolean() as inputCxlReplaceMode");
-					getAtdl4jConfig().getInputAndFilterData().setInputCxlReplaceMode( Boolean.parseBoolean( args[1] ) );
+					getAtdl4jOptions().getInputAndFilterData().setInputCxlReplaceMode( Boolean.parseBoolean( args[1] ) );
 				}
 				
 				if ( args.length >= 3)
@@ -54,7 +58,7 @@ public abstract class AbstractAtdl4jTesterApp
 						}
 						
 						logger.info("InputHiddenFieldNameValueMap: " + tempInputHiddenFieldNameValueMap);
-						getAtdl4jConfig().getInputAndFilterData().addMapToInputHiddenFieldNameValueMap( tempInputHiddenFieldNameValueMap );
+						getAtdl4jOptions().getInputAndFilterData().addMapToInputHiddenFieldNameValueMap( tempInputHiddenFieldNameValueMap );
 					}
 				}
 //TODO 1/18/2010 Scott Atwell added ABOVE
@@ -63,39 +67,45 @@ public abstract class AbstractAtdl4jTesterApp
 	}
 	
 
-	protected void init( String[] args, Atdl4jConfig aAtdl4jConfig, Object aParentOrShell )
+// 9/29/2010 Scott Atwell	protected void init( String[] args, Atdl4jOptions aAtdl4jOptions, Object aParentOrShell )
+	protected void init( String[] args, Atdl4jConfiguration aAtdl4jConfiguration, Atdl4jOptions aAtdl4jOptions, Object aParentOrShell )
 	{
-		setAtdl4jConfig( aAtdl4jConfig );
+// 9/29/2010 Scott Atwell added		
+		Atdl4jConfig.setConfig( aAtdl4jConfiguration );
+		
+		setAtdl4jOptions( aAtdl4jOptions );
 		setParentOrShell( aParentOrShell );
 		
 		parseMainLineArgs( args );
 		
 		// -- Init the Atdl4jUserMessageHandler --
-		if ( ( getAtdl4jConfig() != null ) && 
-			  ( getAtdl4jConfig().getAtdl4jUserMessageHandler() != null ) && 
-			  ( getAtdl4jConfig().getAtdl4jUserMessageHandler().isInitReqd() ) )
-		{
-			getAtdl4jConfig().initAtdl4jUserMessageHandler( aParentOrShell );
-		}
+// 9/29/2010 handled by AbstractAtdl4jCompositePanel		
+//		if ( ( getAtdl4jOptions() != null ) && 
+//			  ( getAtdl4jOptions().getAtdl4jUserMessageHandler() != null ) && 
+//			  ( getAtdl4jOptions().getAtdl4jUserMessageHandler().isInitReqd() ) )
+//		{
+//			getAtdl4jOptions().initAtdl4jUserMessageHandler( aParentOrShell );
+//		}
 
 		// -- ** Construct the core GUI component ** --
-		setAtdl4jTesterPanel( getAtdl4jConfig().getAtdl4jTesterPanel() );
+//		setAtdl4jTesterPanel( getAtdl4jOptions().getAtdl4jTesterPanel() );
+		setAtdl4jTesterPanel( getAtdl4jTesterPanel() );
 	}
 
 	/**
-	 * @return the atdl4jConfig
+	 * @return the atdl4jOptions
 	 */
-	public static Atdl4jConfig getAtdl4jConfig()
+	public static Atdl4jOptions getAtdl4jOptions()
 	{
-		return atdl4jConfig;
+		return atdl4jOptions;
 	}
 
 	/**
-	 * @param aAtdl4jConfig the atdl4jConfig to set
+	 * @param aAtdl4jOptions the atdl4jOptions to set
 	 */
-	private void setAtdl4jConfig(Atdl4jConfig aAtdl4jConfig)
+	private void setAtdl4jOptions(Atdl4jOptions aAtdl4jOptions)
 	{
-		atdl4jConfig = aAtdl4jConfig;
+		atdl4jOptions = aAtdl4jOptions;
 	}
 
 	/**
@@ -118,10 +128,10 @@ public abstract class AbstractAtdl4jTesterApp
 	/**
 	 * @return the atdl4jTesterPanel
 	 */
-	public Atdl4jTesterPanel getAtdl4jTesterPanel()
-	{
-		return this.atdl4jTesterPanel;
-	}
+//	public Atdl4jTesterPanel getAtdl4jTesterPanel()
+//	{
+//		return this.atdl4jTesterPanel;
+//	}
 
 
 	/**
@@ -131,5 +141,27 @@ public abstract class AbstractAtdl4jTesterApp
 	{
 		this.atdl4jTesterPanel = aAtdl4jTesterPanel;
 	}
-	
+
+	/**
+	 * @return the Atdl4jTesterPanel
+	 */
+	public Atdl4jTesterPanel getAtdl4jTesterPanel() 
+	{
+		if ( ( atdl4jTesterPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameAtdl4jTesterPanel() != null ) )
+		{
+			String tempClassName = Atdl4jConfig.getConfig().getClassNameAtdl4jTesterPanel();
+			logger.debug( "getAtdl4jTesterPanel() loading class named: " + tempClassName );
+			try
+			{
+				atdl4jTesterPanel = ((Class<Atdl4jTesterPanel>) Class.forName( tempClassName ) ).newInstance();
+			}
+			catch ( Exception e )
+			{
+				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+			}
+		}
+		
+		return atdl4jTesterPanel;
+	}	
 }
