@@ -3,16 +3,16 @@ package org.atdl4j.ui.impl;
 import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.fixatdl.layout.HiddenFieldT;
 
-public abstract class HiddenFieldUI
-		extends AbstractControlUI<String>
+public abstract class AbstractHiddenFieldWidget
+		extends AbstractAtdl4jWidget<String>
 {
 
 	protected String value;
 
 	/**
-	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
+	 * 2/9/2010 Scott Atwell @see AbstractAtdl4jWidget.init(ControlT aControl,
 	 * ParameterT aParameter, Atdl4jOptions aAtdl4jOptions) throws JAXBException
-	 * public HiddenFieldUI(HiddenFieldT control, ParameterT parameter) throws
+	 * public AbstractHiddenFieldWidget(HiddenFieldT control, ParameterT parameter) throws
 	 * JAXBException { this.control = control; this.parameter = parameter;
 	 * this.setValue(getConstInitValue()); init(); }
 	 **/

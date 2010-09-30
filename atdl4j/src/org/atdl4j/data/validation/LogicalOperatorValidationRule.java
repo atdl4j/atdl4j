@@ -7,7 +7,7 @@ import java.util.Map;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.validation.LogicOperatorT;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 
 /**
  * ValidationRule that behaves as a composite, using on of the following
@@ -43,7 +43,7 @@ public class LogicalOperatorValidationRule
 		this.rules.add( rule );
 	}
 
-	public void validate(Map<String, ValidationRule> rules, Map<String, ControlUI<?>> targets) 
+	public void validate(Map<String, ValidationRule> rules, Map<String, Atdl4jWidget<?>> targets) 
 		throws ValidationException
 	{
 
@@ -105,7 +105,7 @@ public class LogicalOperatorValidationRule
 						if ( state )
 						{
 							valid = false;
-							ControlUI<?> parameter = getParameterFromRule( rule );
+							Atdl4jWidget<?> parameter = getParameterFromRule( rule );
 							throw new ValidationException( parameter );
 						}
 						state = true;
@@ -135,7 +135,7 @@ public class LogicalOperatorValidationRule
 					{
 						rule.validate( rules, targets );
 						// if above does not trigger an exception
-						ControlUI<?> parameter = getParameterFromRule( rule );
+						Atdl4jWidget<?> parameter = getParameterFromRule( rule );
 						throw new ValidationException( parameter );
 
 					}
@@ -151,9 +151,9 @@ public class LogicalOperatorValidationRule
 
 	}
 
-	private ControlUI<?> getParameterFromRule(ValidationRule rule)
+	private Atdl4jWidget<?> getParameterFromRule(ValidationRule rule)
 	{
-		ControlUI<?> parameter = null;
+		Atdl4jWidget<?> parameter = null;
 		if ( rule instanceof ParameterValidationRule )
 		{
 			parameter = ( (ParameterValidationRule) rule ).getParameter();

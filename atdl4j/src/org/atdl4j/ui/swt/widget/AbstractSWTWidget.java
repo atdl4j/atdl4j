@@ -1,6 +1,6 @@
 package org.atdl4j.ui.swt.widget;
 
-import org.atdl4j.ui.impl.AbstractControlUI;
+import org.atdl4j.ui.impl.AbstractAtdl4jWidget;
 import org.atdl4j.ui.swt.SWTWidget;
 import org.eclipse.swt.widgets.Control;
 
@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Control;
  * value getters's methods.
  */
 public abstract class AbstractSWTWidget<E extends Comparable<?>>
-		extends AbstractControlUI<E>
+		extends AbstractAtdl4jWidget<E>
 		implements SWTWidget<E>
 {
 	public void setVisible(boolean visible)

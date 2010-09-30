@@ -22,21 +22,21 @@ public interface Atdl4jConfiguration
 	public void setDebugLoggingLevel( boolean aDebugLevelFlag );
 	public boolean isDebugLoggingLevel();
 	
-	public String getClassNameControlUIForCheckBoxListT();
-	public String getClassNameControlUIForCheckBoxT();
-	public String getClassNameControlUIForClockT();
-	public String getClassNameControlUIForDoubleSpinnerT();
-	public String getClassNameControlUIForDropDownListT();
-	public String getClassNameControlUIForEditableDropDownListT();
-	public String getClassNameControlUIForHiddenFieldT();
-	public String getClassNameControlUIForLabelT();
-	public String getClassNameControlUIForMultiSelectListT();
-	public String getClassNameControlUIForRadioButtonListT();
-	public String getClassNameControlUIForRadioButtonT();
-	public String getClassNameControlUIForSingleSelectListT();
-	public String getClassNameControlUIForSingleSpinnerT();
-	public String getClassNameControlUIForSliderT();
-	public String getClassNameControlUIForTextFieldT();
+	public String getClassNameAtdl4jWidgetForCheckBoxListT();
+	public String getClassNameAtdl4jWidgetForCheckBoxT();
+	public String getClassNameAtdl4jWidgetForClockT();
+	public String getClassNameAtdl4jWidgetForDoubleSpinnerT();
+	public String getClassNameAtdl4jWidgetForDropDownListT();
+	public String getClassNameAtdl4jWidgetForEditableDropDownListT();
+	public String getClassNameAtdl4jWidgetForHiddenFieldT();
+	public String getClassNameAtdl4jWidgetForLabelT();
+	public String getClassNameAtdl4jWidgetForMultiSelectListT();
+	public String getClassNameAtdl4jWidgetForRadioButtonListT();
+	public String getClassNameAtdl4jWidgetForRadioButtonT();
+	public String getClassNameAtdl4jWidgetForSingleSelectListT();
+	public String getClassNameAtdl4jWidgetForSingleSpinnerT();
+	public String getClassNameAtdl4jWidgetForSliderT();
+	public String getClassNameAtdl4jWidgetForTextFieldT();
 
 
 	public String getClassNameAtdl4jCompositePanel();
@@ -44,7 +44,7 @@ public interface Atdl4jConfiguration
 	public String getClassNameAtdl4jInputAndFilterDataSelectionPanel();
 	public String getClassNameAtdl4jTesterPanel();
 	public String getClassNameAtdl4jUserMessageHandler();
-	public String getClassNameControlUIFactory();
+	public String getClassNameAtdl4jWidgetFactory();
 	public String getClassNameFixatdlFileSelectionPanel();
 	public String getClassNameFixMsgLoadPanel();
 	public String getClassNameStrategiesUI();

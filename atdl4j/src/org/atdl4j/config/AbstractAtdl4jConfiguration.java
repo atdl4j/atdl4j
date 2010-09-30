@@ -30,34 +30,34 @@ public abstract class AbstractAtdl4jConfiguration
 
 	public static String ATDL4J_PACKAGE_NAME_PATH_FOR_DEBUG_LOGGING = "org.atdl4j";
 //TODO 9/26/2010 Scott Atwell	public static String DEFAULT_CLASS_NAME_STRATEGIES_UI_FACTORY = "org.atdl4j.ui.impl.BaseStrategiesUIFactory";
-	public static String DEFAULT_CLASS_NAME_CONTROL_UI_FACTORY = "org.atdl4j.ui.impl.BaseControlUIFactory";
+	public static String DEFAULT_CLASS_NAME_ATDL4j_WIDGET_FACTORY = "org.atdl4j.ui.impl.BaseAtdl4jWidgetFactory";
 	public static String DEFAULT_CLASS_NAME_TYPE_CONVERTER_FACTORY = "org.atdl4j.data.TypeConverterFactory";
 	
 	
 	private String classNameStrategiesUI;
 	private String classNameStrategyUI;
 
-	private String classNameControlUIFactory;
+	private String classNameAtdl4jWidgetFactory;
 	private String classNameTypeConverterFactory;
 	private String classNameStrategyPanelHelper;
 
 	
 	// -- Controls/Widgets -- 
-	private String classNameControlUIForCheckBoxT;
-	private String classNameControlUIForDropDownListT;
-	private String classNameControlUIForEditableDropDownListT;
-	private String classNameControlUIForRadioButtonListT;
-	private String classNameControlUIForTextFieldT;
-	private String classNameControlUIForSliderT;
-	private String classNameControlUIForCheckBoxListT;
-	private String classNameControlUIForClockT;
-	private String classNameControlUIForSingleSpinnerT;
-	private String classNameControlUIForDoubleSpinnerT;
-	private String classNameControlUIForSingleSelectListT;
-	private String classNameControlUIForMultiSelectListT;
-	private String classNameControlUIForHiddenFieldT;
-	private String classNameControlUIForLabelT;
-	private String classNameControlUIForRadioButtonT;
+	private String classNameAtdl4jWidgetForCheckBoxT;
+	private String classNameAtdl4jWidgetForDropDownListT;
+	private String classNameAtdl4jWidgetForEditableDropDownListT;
+	private String classNameAtdl4jWidgetForRadioButtonListT;
+	private String classNameAtdl4jWidgetForTextFieldT;
+	private String classNameAtdl4jWidgetForSliderT;
+	private String classNameAtdl4jWidgetForCheckBoxListT;
+	private String classNameAtdl4jWidgetForClockT;
+	private String classNameAtdl4jWidgetForSingleSpinnerT;
+	private String classNameAtdl4jWidgetForDoubleSpinnerT;
+	private String classNameAtdl4jWidgetForSingleSelectListT;
+	private String classNameAtdl4jWidgetForMultiSelectListT;
+	private String classNameAtdl4jWidgetForHiddenFieldT;
+	private String classNameAtdl4jWidgetForLabelT;
+	private String classNameAtdl4jWidgetForRadioButtonT;
 	
 	// -- App Components --
 	private String classNameAtdl4jTesterPanel;
@@ -69,9 +69,9 @@ public abstract class AbstractAtdl4jConfiguration
 	private String classNameFixMsgLoadPanel;
 	private String classNameStrategySelectionPanel;
 	private String classNameStrategyDescriptionPanel;
-	protected String getDefaultClassNameControlUIFactory()
+	protected String getDefaultClassNameAtdl4jWidgetFactory()
 	{ 
-		return DEFAULT_CLASS_NAME_CONTROL_UI_FACTORY;
+		return DEFAULT_CLASS_NAME_ATDL4j_WIDGET_FACTORY;
 	}
 	
 	protected String getDefaultClassNameTypeConverterFactory()
@@ -85,21 +85,21 @@ public abstract class AbstractAtdl4jConfiguration
 	abstract protected String getDefaultClassNameStrategyPanelHelper();
 	
 	// -- Controls/Widgets -- 
-	abstract protected String getDefaultClassNameControlUIForCheckBoxT();
-	abstract protected String getDefaultClassNameControlUIForDropDownListT();
-	abstract protected String getDefaultClassNameControlUIForEditableDropDownListT();
-	abstract protected String getDefaultClassNameControlUIForRadioButtonListT();
-	abstract protected String getDefaultClassNameControlUIForTextFieldT();
-	abstract protected String getDefaultClassNameControlUIForSliderT();
-	abstract protected String getDefaultClassNameControlUIForCheckBoxListT();
-	abstract protected String getDefaultClassNameControlUIForClockT();
-	abstract protected String getDefaultClassNameControlUIForSingleSpinnerT();
-	abstract protected String getDefaultClassNameControlUIForDoubleSpinnerT();
-	abstract protected String getDefaultClassNameControlUIForSingleSelectListT();
-	abstract protected String getDefaultClassNameControlUIForMultiSelectListT();
-	abstract protected String getDefaultClassNameControlUIForHiddenFieldT();
-	abstract protected String getDefaultClassNameControlUIForLabelT();
-	abstract protected String getDefaultClassNameControlUIForRadioButtonT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForCheckBoxT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForDropDownListT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForEditableDropDownListT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForRadioButtonListT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForTextFieldT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForSliderT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForCheckBoxListT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForClockT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForSingleSpinnerT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForDoubleSpinnerT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForSingleSelectListT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForMultiSelectListT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForHiddenFieldT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForLabelT();
+	abstract protected String getDefaultClassNameAtdl4jWidgetForRadioButtonT();
 
 	// -- App Components --
 	abstract protected String getDefaultClassNameAtdl4jTesterPanel();
@@ -121,26 +121,26 @@ public abstract class AbstractAtdl4jConfiguration
 //TODO 9/26/2010 Scott Atwell		setClassNameStrategiesUIFactory( getDefaultClassNameStrategiesUIFactory() );
 		setClassNameStrategiesUI( getDefaultClassNameStrategiesUI() );
 		setClassNameStrategyUI( getDefaultClassNameStrategyUI() );
-		setClassNameControlUIFactory( getDefaultClassNameControlUIFactory() );
+		setClassNameAtdl4jWidgetFactory( getDefaultClassNameAtdl4jWidgetFactory() );
 		setClassNameTypeConverterFactory( getDefaultClassNameTypeConverterFactory() );
 		setClassNameStrategyPanelHelper( getDefaultClassNameStrategyPanelHelper() );
 
 		// -- Controls/Widgets -- 
-		setClassNameControlUIForCheckBoxT( getDefaultClassNameControlUIForCheckBoxT() );
-		setClassNameControlUIForDropDownListT( getDefaultClassNameControlUIForDropDownListT() );
-		setClassNameControlUIForEditableDropDownListT( getDefaultClassNameControlUIForEditableDropDownListT() );
-		setClassNameControlUIForRadioButtonListT( getDefaultClassNameControlUIForRadioButtonListT() );
-		setClassNameControlUIForTextFieldT( getDefaultClassNameControlUIForTextFieldT() );
-		setClassNameControlUIForSliderT( getDefaultClassNameControlUIForSliderT() );
-		setClassNameControlUIForCheckBoxListT( getDefaultClassNameControlUIForCheckBoxListT() );
-		setClassNameControlUIForClockT( getDefaultClassNameControlUIForClockT() );
-		setClassNameControlUIForSingleSpinnerT( getDefaultClassNameControlUIForSingleSpinnerT() );
-		setClassNameControlUIForDoubleSpinnerT( getDefaultClassNameControlUIForDoubleSpinnerT() );
-		setClassNameControlUIForSingleSelectListT( getDefaultClassNameControlUIForSingleSelectListT() );
-		setClassNameControlUIForMultiSelectListT( getDefaultClassNameControlUIForMultiSelectListT() );
-		setClassNameControlUIForHiddenFieldT( getDefaultClassNameControlUIForHiddenFieldT() );
-		setClassNameControlUIForLabelT( getDefaultClassNameControlUIForLabelT() );
-		setClassNameControlUIForRadioButtonT( getDefaultClassNameControlUIForRadioButtonT() );
+		setClassNameAtdl4jWidgetForCheckBoxT( getDefaultClassNameAtdl4jWidgetForCheckBoxT() );
+		setClassNameAtdl4jWidgetForDropDownListT( getDefaultClassNameAtdl4jWidgetForDropDownListT() );
+		setClassNameAtdl4jWidgetForEditableDropDownListT( getDefaultClassNameAtdl4jWidgetForEditableDropDownListT() );
+		setClassNameAtdl4jWidgetForRadioButtonListT( getDefaultClassNameAtdl4jWidgetForRadioButtonListT() );
+		setClassNameAtdl4jWidgetForTextFieldT( getDefaultClassNameAtdl4jWidgetForTextFieldT() );
+		setClassNameAtdl4jWidgetForSliderT( getDefaultClassNameAtdl4jWidgetForSliderT() );
+		setClassNameAtdl4jWidgetForCheckBoxListT( getDefaultClassNameAtdl4jWidgetForCheckBoxListT() );
+		setClassNameAtdl4jWidgetForClockT( getDefaultClassNameAtdl4jWidgetForClockT() );
+		setClassNameAtdl4jWidgetForSingleSpinnerT( getDefaultClassNameAtdl4jWidgetForSingleSpinnerT() );
+		setClassNameAtdl4jWidgetForDoubleSpinnerT( getDefaultClassNameAtdl4jWidgetForDoubleSpinnerT() );
+		setClassNameAtdl4jWidgetForSingleSelectListT( getDefaultClassNameAtdl4jWidgetForSingleSelectListT() );
+		setClassNameAtdl4jWidgetForMultiSelectListT( getDefaultClassNameAtdl4jWidgetForMultiSelectListT() );
+		setClassNameAtdl4jWidgetForHiddenFieldT( getDefaultClassNameAtdl4jWidgetForHiddenFieldT() );
+		setClassNameAtdl4jWidgetForLabelT( getDefaultClassNameAtdl4jWidgetForLabelT() );
+		setClassNameAtdl4jWidgetForRadioButtonT( getDefaultClassNameAtdl4jWidgetForRadioButtonT() );
 
 		// -- App Components --
 		setClassNameAtdl4jTesterPanel( getDefaultClassNameAtdl4jTesterPanel() );
@@ -238,19 +238,19 @@ public abstract class AbstractAtdl4jConfiguration
 	
 
 	/**
-	 * @param classNameControlUIFactory the classNameControlUIFactory to set
+	 * @param classNameAtdl4jWidgetFactory the classNameAtdl4jWidgetFactory to set
 	 */
-	public void setClassNameControlUIFactory(String classNameControlUIFactory)
+	public void setClassNameAtdl4jWidgetFactory(String classNameAtdl4jWidgetFactory)
 	{
-		this.classNameControlUIFactory = classNameControlUIFactory;
+		this.classNameAtdl4jWidgetFactory = classNameAtdl4jWidgetFactory;
 	}
 
 	/**
-	 * @return the classNameControlUIFactory
+	 * @return the classNameAtdl4jWidgetFactory
 	 */
-	public String getClassNameControlUIFactory()
+	public String getClassNameAtdl4jWidgetFactory()
 	{
-		return classNameControlUIFactory;
+		return classNameAtdl4jWidgetFactory;
 	}
 	
 	/**
@@ -270,243 +270,243 @@ public abstract class AbstractAtdl4jConfiguration
 	}
 	
 	/**
-	 * @param classNameControlUIForCheckBoxT the classNameControlUIForCheckBoxT to set
+	 * @param classNameAtdl4jWidgetForCheckBoxT the classNameAtdl4jWidgetForCheckBoxT to set
 	 */
-	public void setClassNameControlUIForCheckBoxT(String classNameControlUIForCheckBoxT)
+	public void setClassNameAtdl4jWidgetForCheckBoxT(String classNameAtdl4jWidgetForCheckBoxT)
 	{
-		this.classNameControlUIForCheckBoxT = classNameControlUIForCheckBoxT;
+		this.classNameAtdl4jWidgetForCheckBoxT = classNameAtdl4jWidgetForCheckBoxT;
 	}
 
 	/**
-	 * @return the classNameControlUIForCheckBoxT
+	 * @return the classNameAtdl4jWidgetForCheckBoxT
 	 */
-	public String getClassNameControlUIForCheckBoxT()
+	public String getClassNameAtdl4jWidgetForCheckBoxT()
 	{
-		return classNameControlUIForCheckBoxT;
+		return classNameAtdl4jWidgetForCheckBoxT;
 	}
 	
 	/**
-	 * @param classNameControlUIForDropDownListT the classNameControlUIForDropDownListT to set
+	 * @param classNameAtdl4jWidgetForDropDownListT the classNameAtdl4jWidgetForDropDownListT to set
 	 */
-	public void setClassNameControlUIForDropDownListT(String classNameControlUIForDropDownListT)
+	public void setClassNameAtdl4jWidgetForDropDownListT(String classNameAtdl4jWidgetForDropDownListT)
 	{
-		this.classNameControlUIForDropDownListT = classNameControlUIForDropDownListT;
+		this.classNameAtdl4jWidgetForDropDownListT = classNameAtdl4jWidgetForDropDownListT;
 	}
 
 	/**
-	 * @return the classNameControlUIForDropDownListT
+	 * @return the classNameAtdl4jWidgetForDropDownListT
 	 */
-	public String getClassNameControlUIForDropDownListT()
+	public String getClassNameAtdl4jWidgetForDropDownListT()
 	{
-		return classNameControlUIForDropDownListT;
+		return classNameAtdl4jWidgetForDropDownListT;
 	}
 	
 	/**
-	 * @param classNameControlUIForEditableDropDownListT the classNameControlUIForEditableDropDownListT to set
+	 * @param classNameAtdl4jWidgetForEditableDropDownListT the classNameAtdl4jWidgetForEditableDropDownListT to set
 	 */
-	public void setClassNameControlUIForEditableDropDownListT(String classNameControlUIForEditableDropDownListT)
+	public void setClassNameAtdl4jWidgetForEditableDropDownListT(String classNameAtdl4jWidgetForEditableDropDownListT)
 	{
-		this.classNameControlUIForEditableDropDownListT = classNameControlUIForEditableDropDownListT;
+		this.classNameAtdl4jWidgetForEditableDropDownListT = classNameAtdl4jWidgetForEditableDropDownListT;
 	}
 
 	/**
-	 * @return the classNameControlUIForEditableDropDownListT
+	 * @return the classNameAtdl4jWidgetForEditableDropDownListT
 	 */
-	public String getClassNameControlUIForEditableDropDownListT()
+	public String getClassNameAtdl4jWidgetForEditableDropDownListT()
 	{
-		return classNameControlUIForEditableDropDownListT;
+		return classNameAtdl4jWidgetForEditableDropDownListT;
 	}
 	
 	/**
-	 * @param classNameControlUIForRadioButtonListT the classNameControlUIForRadioButtonListT to set
+	 * @param classNameAtdl4jWidgetForRadioButtonListT the classNameAtdl4jWidgetForRadioButtonListT to set
 	 */
-	public void setClassNameControlUIForRadioButtonListT(String classNameControlUIForRadioButtonListT)
+	public void setClassNameAtdl4jWidgetForRadioButtonListT(String classNameAtdl4jWidgetForRadioButtonListT)
 	{
-		this.classNameControlUIForRadioButtonListT = classNameControlUIForRadioButtonListT;
+		this.classNameAtdl4jWidgetForRadioButtonListT = classNameAtdl4jWidgetForRadioButtonListT;
 	}
 
 	/**
-	 * @return the classNameControlUIForRadioButtonListT
+	 * @return the classNameAtdl4jWidgetForRadioButtonListT
 	 */
-	public String getClassNameControlUIForRadioButtonListT()
+	public String getClassNameAtdl4jWidgetForRadioButtonListT()
 	{
-		return classNameControlUIForRadioButtonListT;
+		return classNameAtdl4jWidgetForRadioButtonListT;
 	}
 	
 	/**
-	 * @param classNameControlUIForTextFieldT the classNameControlUIForTextFieldT to set
+	 * @param classNameAtdl4jWidgetForTextFieldT the classNameAtdl4jWidgetForTextFieldT to set
 	 */
-	public void setClassNameControlUIForTextFieldT(String classNameControlUIForTextFieldT)
+	public void setClassNameAtdl4jWidgetForTextFieldT(String classNameAtdl4jWidgetForTextFieldT)
 	{
-		this.classNameControlUIForTextFieldT = classNameControlUIForTextFieldT;
+		this.classNameAtdl4jWidgetForTextFieldT = classNameAtdl4jWidgetForTextFieldT;
 	}
 
 	/**
-	 * @return the classNameControlUIForTextFieldT
+	 * @return the classNameAtdl4jWidgetForTextFieldT
 	 */
-	public String getClassNameControlUIForTextFieldT()
+	public String getClassNameAtdl4jWidgetForTextFieldT()
 	{
-		return classNameControlUIForTextFieldT;
+		return classNameAtdl4jWidgetForTextFieldT;
 	}
 	
 	/**
-	 * @param classNameControlUIForSliderT the classNameControlUIForSliderT to set
+	 * @param classNameAtdl4jWidgetForSliderT the classNameAtdl4jWidgetForSliderT to set
 	 */
-	public void setClassNameControlUIForSliderT(String classNameControlUIForSliderT)
+	public void setClassNameAtdl4jWidgetForSliderT(String classNameAtdl4jWidgetForSliderT)
 	{
-		this.classNameControlUIForSliderT = classNameControlUIForSliderT;
+		this.classNameAtdl4jWidgetForSliderT = classNameAtdl4jWidgetForSliderT;
 	}
 
 	/**
-	 * @return the classNameControlUIForSliderT
+	 * @return the classNameAtdl4jWidgetForSliderT
 	 */
-	public String getClassNameControlUIForSliderT()
+	public String getClassNameAtdl4jWidgetForSliderT()
 	{
-		return classNameControlUIForSliderT;
+		return classNameAtdl4jWidgetForSliderT;
 	}
 	
 	/**
-	 * @param classNameControlUIForCheckBoxListT the classNameControlUIForCheckBoxListT to set
+	 * @param classNameAtdl4jWidgetForCheckBoxListT the classNameAtdl4jWidgetForCheckBoxListT to set
 	 */
-	public void setClassNameControlUIForCheckBoxListT(String classNameControlUIForCheckBoxListT)
+	public void setClassNameAtdl4jWidgetForCheckBoxListT(String classNameAtdl4jWidgetForCheckBoxListT)
 	{
-		this.classNameControlUIForCheckBoxListT = classNameControlUIForCheckBoxListT;
+		this.classNameAtdl4jWidgetForCheckBoxListT = classNameAtdl4jWidgetForCheckBoxListT;
 	}
 
 	/**
-	 * @return the classNameControlUIForCheckBoxListT
+	 * @return the classNameAtdl4jWidgetForCheckBoxListT
 	 */
-	public String getClassNameControlUIForCheckBoxListT()
+	public String getClassNameAtdl4jWidgetForCheckBoxListT()
 	{
-		return classNameControlUIForCheckBoxListT;
+		return classNameAtdl4jWidgetForCheckBoxListT;
 	}
 	
 	/**
-	 * @param classNameControlUIForClockT the classNameControlUIForClockT to set
+	 * @param classNameAtdl4jWidgetForClockT the classNameAtdl4jWidgetForClockT to set
 	 */
-	public void setClassNameControlUIForClockT(String classNameControlUIForClockT)
+	public void setClassNameAtdl4jWidgetForClockT(String classNameAtdl4jWidgetForClockT)
 	{
-		this.classNameControlUIForClockT = classNameControlUIForClockT;
+		this.classNameAtdl4jWidgetForClockT = classNameAtdl4jWidgetForClockT;
 	}
 
 	/**
-	 * @return the classNameControlUIForClockT
+	 * @return the classNameAtdl4jWidgetForClockT
 	 */
-	public String getClassNameControlUIForClockT()
+	public String getClassNameAtdl4jWidgetForClockT()
 	{
-		return classNameControlUIForClockT;
+		return classNameAtdl4jWidgetForClockT;
 	}
 	
 	/**
-	 * @param classNameControlUIForSingleSpinnerT the classNameControlUIForSingleSpinnerT to set
+	 * @param classNameAtdl4jWidgetForSingleSpinnerT the classNameAtdl4jWidgetForSingleSpinnerT to set
 	 */
-	public void setClassNameControlUIForSingleSpinnerT(String classNameControlUIForSingleSpinnerT)
+	public void setClassNameAtdl4jWidgetForSingleSpinnerT(String classNameAtdl4jWidgetForSingleSpinnerT)
 	{
-		this.classNameControlUIForSingleSpinnerT = classNameControlUIForSingleSpinnerT;
+		this.classNameAtdl4jWidgetForSingleSpinnerT = classNameAtdl4jWidgetForSingleSpinnerT;
 	}
 
 	/**
-	 * @return the classNameControlUIForSingleSpinnerT
+	 * @return the classNameAtdl4jWidgetForSingleSpinnerT
 	 */
-	public String getClassNameControlUIForSingleSpinnerT()
+	public String getClassNameAtdl4jWidgetForSingleSpinnerT()
 	{
-		return classNameControlUIForSingleSpinnerT;
+		return classNameAtdl4jWidgetForSingleSpinnerT;
 	}
 	
 	/**
-	 * @param classNameControlUIForDoubleSpinnerT the classNameControlUIForDoubleSpinnerT to set
+	 * @param classNameAtdl4jWidgetForDoubleSpinnerT the classNameAtdl4jWidgetForDoubleSpinnerT to set
 	 */
-	public void setClassNameControlUIForDoubleSpinnerT(String classNameControlUIForDoubleSpinnerT)
+	public void setClassNameAtdl4jWidgetForDoubleSpinnerT(String classNameAtdl4jWidgetForDoubleSpinnerT)
 	{
-		this.classNameControlUIForDoubleSpinnerT = classNameControlUIForDoubleSpinnerT;
+		this.classNameAtdl4jWidgetForDoubleSpinnerT = classNameAtdl4jWidgetForDoubleSpinnerT;
 	}
 
 	/**
-	 * @return the classNameControlUIForDoubleSpinnerT
+	 * @return the classNameAtdl4jWidgetForDoubleSpinnerT
 	 */
-	public String getClassNameControlUIForDoubleSpinnerT()
+	public String getClassNameAtdl4jWidgetForDoubleSpinnerT()
 	{
-		return classNameControlUIForDoubleSpinnerT;
+		return classNameAtdl4jWidgetForDoubleSpinnerT;
 	}
 	
 	/**
-	 * @param classNameControlUIForSingleSelectListT the classNameControlUIForSingleSelectListT to set
+	 * @param classNameAtdl4jWidgetForSingleSelectListT the classNameAtdl4jWidgetForSingleSelectListT to set
 	 */
-	public void setClassNameControlUIForSingleSelectListT(String classNameControlUIForSingleSelectListT)
+	public void setClassNameAtdl4jWidgetForSingleSelectListT(String classNameAtdl4jWidgetForSingleSelectListT)
 	{
-		this.classNameControlUIForSingleSelectListT = classNameControlUIForSingleSelectListT;
+		this.classNameAtdl4jWidgetForSingleSelectListT = classNameAtdl4jWidgetForSingleSelectListT;
 	}
 
 	/**
-	 * @return the classNameControlUIForSingleSelectListT
+	 * @return the classNameAtdl4jWidgetForSingleSelectListT
 	 */
-	public String getClassNameControlUIForSingleSelectListT()
+	public String getClassNameAtdl4jWidgetForSingleSelectListT()
 	{
-		return classNameControlUIForSingleSelectListT;
+		return classNameAtdl4jWidgetForSingleSelectListT;
 	}
 	
 	/**
-	 * @param classNameControlUIForMultiSelectListT the classNameControlUIForMultiSelectListT to set
+	 * @param classNameAtdl4jWidgetForMultiSelectListT the classNameAtdl4jWidgetForMultiSelectListT to set
 	 */
-	public void setClassNameControlUIForMultiSelectListT(String classNameControlUIForMultiSelectListT)
+	public void setClassNameAtdl4jWidgetForMultiSelectListT(String classNameAtdl4jWidgetForMultiSelectListT)
 	{
-		this.classNameControlUIForMultiSelectListT = classNameControlUIForMultiSelectListT;
+		this.classNameAtdl4jWidgetForMultiSelectListT = classNameAtdl4jWidgetForMultiSelectListT;
 	}
 
 	/**
-	 * @return the classNameControlUIForMultiSelectListT
+	 * @return the classNameAtdl4jWidgetForMultiSelectListT
 	 */
-	public String getClassNameControlUIForMultiSelectListT()
+	public String getClassNameAtdl4jWidgetForMultiSelectListT()
 	{
-		return classNameControlUIForMultiSelectListT;
+		return classNameAtdl4jWidgetForMultiSelectListT;
 	}
 	
 	/**
-	 * @param classNameControlUIForHiddenFieldT the classNameControlUIForHiddenFieldT to set
+	 * @param classNameAtdl4jWidgetForHiddenFieldT the classNameAtdl4jWidgetForHiddenFieldT to set
 	 */
-	public void setClassNameControlUIForHiddenFieldT(String classNameControlUIForHiddenFieldT)
+	public void setClassNameAtdl4jWidgetForHiddenFieldT(String classNameAtdl4jWidgetForHiddenFieldT)
 	{
-		this.classNameControlUIForHiddenFieldT = classNameControlUIForHiddenFieldT;
+		this.classNameAtdl4jWidgetForHiddenFieldT = classNameAtdl4jWidgetForHiddenFieldT;
 	}
 
 	/**
-	 * @return the classNameControlUIForHiddenFieldT
+	 * @return the classNameAtdl4jWidgetForHiddenFieldT
 	 */
-	public String getClassNameControlUIForHiddenFieldT()
+	public String getClassNameAtdl4jWidgetForHiddenFieldT()
 	{
-		return classNameControlUIForHiddenFieldT;
+		return classNameAtdl4jWidgetForHiddenFieldT;
 	}
 	
 	/**
-	 * @param classNameControlUIForLabelT the classNameControlUIForLabelT to set
+	 * @param classNameAtdl4jWidgetForLabelT the classNameAtdl4jWidgetForLabelT to set
 	 */
-	public void setClassNameControlUIForLabelT(String classNameControlUIForLabelT)
+	public void setClassNameAtdl4jWidgetForLabelT(String classNameAtdl4jWidgetForLabelT)
 	{
-		this.classNameControlUIForLabelT = classNameControlUIForLabelT;
+		this.classNameAtdl4jWidgetForLabelT = classNameAtdl4jWidgetForLabelT;
 	}
 
 	/**
-	 * @return the classNameControlUIForLabelT
+	 * @return the classNameAtdl4jWidgetForLabelT
 	 */
-	public String getClassNameControlUIForLabelT()
+	public String getClassNameAtdl4jWidgetForLabelT()
 	{
-		return classNameControlUIForLabelT;
+		return classNameAtdl4jWidgetForLabelT;
 	}
 	
 	/**
-	 * @param classNameControlUIForRadioButtonT the classNameControlUIForRadioButtonT to set
+	 * @param classNameAtdl4jWidgetForRadioButtonT the classNameAtdl4jWidgetForRadioButtonT to set
 	 */
-	public void setClassNameControlUIForRadioButtonT(String classNameControlUIForRadioButtonT)
+	public void setClassNameAtdl4jWidgetForRadioButtonT(String classNameAtdl4jWidgetForRadioButtonT)
 	{
-		this.classNameControlUIForRadioButtonT = classNameControlUIForRadioButtonT;
+		this.classNameAtdl4jWidgetForRadioButtonT = classNameAtdl4jWidgetForRadioButtonT;
 	}
 
 	/**
-	 * @return the classNameControlUIForRadioButtonT
+	 * @return the classNameAtdl4jWidgetForRadioButtonT
 	 */
-	public String getClassNameControlUIForRadioButtonT()
+	public String getClassNameAtdl4jWidgetForRadioButtonT()
 	{
-		return classNameControlUIForRadioButtonT;
+		return classNameAtdl4jWidgetForRadioButtonT;
 	}
 	
 	/** TODO 9/27/2010 Scott Atwell removed/moved to AbstractAtdl4jCompositePanel	

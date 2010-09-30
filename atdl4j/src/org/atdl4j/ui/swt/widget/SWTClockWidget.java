@@ -50,12 +50,12 @@ import org.joda.time.DateTimeZone;
  * 
  * @author john.shields
  */
-public class ClockWidget
+public class SWTClockWidget
 //3/18/2010 Scott Atwell avoid compile error "type parameter org.joda.time.DateTime is not within its bound"		extends AbstractSWTWidget<DateTime>
 	extends AbstractSWTWidget<Comparable<DateTime>>
 {
 
-	private static final Logger logger = Logger.getLogger( ClockWidget.class );
+	private static final Logger logger = Logger.getLogger( SWTClockWidget.class );
 
 	private org.eclipse.swt.widgets.DateTime dateClock;
 	private org.eclipse.swt.widgets.DateTime timeClock;
@@ -387,7 +387,7 @@ public class ClockWidget
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.ControlUI#reinit()
+	 * @see org.atdl4j.ui.Atdl4jWidget#reinit()
 	 */
 	@Override
 	public void processReinit( Object aControlInitValue )
@@ -413,7 +413,7 @@ public class ClockWidget
 	}
 
 	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.impl.AbstractControlUI#setFIXValue(java.lang.String)
+	 * @see org.atdl4j.ui.impl.AbstractAtdl4jWidget#setFIXValue(java.lang.String)
 	 */
 	@Override
 	public void setFIXValue(String aFIXValue)

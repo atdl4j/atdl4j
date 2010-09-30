@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.validation.OperatorT;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -21,7 +21,7 @@ public abstract class AbstractOperatorValidationRule
 	private static final Logger logger = Logger.getLogger( AbstractOperatorValidationRule.class );
 
 	@SuppressWarnings("unchecked")
-	protected void validateValues(ControlUI<?> target, Object value1, OperatorT operator, Object value2)
+	protected void validateValues(Atdl4jWidget<?> target, Object value1, OperatorT operator, Object value2)
 	{
 		// 3/11/2010 Scott Atwell added to normalize DateTime comparisons 
 		// -- Work-around to 'handle' joda's DateTime.equals() failing if timezones are expressed differently 

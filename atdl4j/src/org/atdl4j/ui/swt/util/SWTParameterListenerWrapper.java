@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Listener;
 
 
 
-public class ParameterListenerWrapper implements Listener {
+public class SWTParameterListenerWrapper implements Listener {
 
 	private SWTWidget<?> parameter;
 
@@ -17,7 +17,7 @@ public class ParameterListenerWrapper implements Listener {
 
 	private Listener delegate;
 
-	public ParameterListenerWrapper(SWTWidget<?> parameter, Listener delegate) {
+	public SWTParameterListenerWrapper(SWTWidget<?> parameter, Listener delegate) {
 		this.parameter = parameter;
 		this.delegate = delegate;
 	}

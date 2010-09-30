@@ -74,79 +74,79 @@ public class SWTAtdl4jConfiguration
 		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTAtdl4jUserMessageHandler";
 	}
 
-	protected String getDefaultClassNameControlUIForCheckBoxListT()
+	protected String getDefaultClassNameAtdl4jWidgetForCheckBoxListT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.CheckBoxListWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTCheckBoxListWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForCheckBoxT()
+	protected String getDefaultClassNameAtdl4jWidgetForCheckBoxT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.ButtonWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTButtonWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForClockT()
+	protected String getDefaultClassNameAtdl4jWidgetForClockT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.ClockWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTClockWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForDoubleSpinnerT()
+	protected String getDefaultClassNameAtdl4jWidgetForDoubleSpinnerT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SpinnerWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTSpinnerWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForDropDownListT()
+	protected String getDefaultClassNameAtdl4jWidgetForDropDownListT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.DropDownListWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTDropDownListWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForEditableDropDownListT()
+	protected String getDefaultClassNameAtdl4jWidgetForEditableDropDownListT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.DropDownListWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTDropDownListWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForHiddenFieldT()
+	protected String getDefaultClassNameAtdl4jWidgetForHiddenFieldT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.HiddenFieldWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTHiddenFieldWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForLabelT()
+	protected String getDefaultClassNameAtdl4jWidgetForLabelT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.LabelWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTLabelWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForMultiSelectListT()
+	protected String getDefaultClassNameAtdl4jWidgetForMultiSelectListT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.ListBoxWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTListBoxWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForRadioButtonListT()
+	protected String getDefaultClassNameAtdl4jWidgetForRadioButtonListT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.RadioButtonListWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTRadioButtonListWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForRadioButtonT()
+	protected String getDefaultClassNameAtdl4jWidgetForRadioButtonT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.ButtonWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTButtonWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForSingleSelectListT()
+	protected String getDefaultClassNameAtdl4jWidgetForSingleSelectListT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.ListBoxWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTListBoxWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForSingleSpinnerT()
+	protected String getDefaultClassNameAtdl4jWidgetForSingleSpinnerT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SpinnerWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTSpinnerWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForSliderT()
+	protected String getDefaultClassNameAtdl4jWidgetForSliderT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SliderWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTSliderWidget";
 	}
 
-	protected String getDefaultClassNameControlUIForTextFieldT()
+	protected String getDefaultClassNameAtdl4jWidgetForTextFieldT()
 	{
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.TextFieldWidget";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "widget.SWTTextFieldWidget";
 	}
 
 	protected String getDefaultClassNameStrategyPanelHelper()

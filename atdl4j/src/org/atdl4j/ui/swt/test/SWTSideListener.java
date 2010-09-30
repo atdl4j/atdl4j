@@ -7,13 +7,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-public class SideListener implements Listener {
+public class SWTSideListener implements Listener {
 
 	private Composite composite;
 	private Color buyColor;
 	private Color sellColor;
 
-	public SideListener(Composite composite, Color buyColor, Color sellColor) {
+	public SWTSideListener(Composite composite, Color buyColor, Color sellColor) {
 		this.composite = composite;
 		this.buyColor = buyColor;
 		this.sellColor = sellColor;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.atdl4j.ui.ControlHelper;
-import org.atdl4j.ui.impl.LabelUI;
+import org.atdl4j.ui.impl.AbstractLabelWidget;
 import org.atdl4j.ui.swt.SWTWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -14,17 +14,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class LabelWidget
-		extends LabelUI
+public class SWTLabelWidget
+		extends AbstractLabelWidget
 		implements SWTWidget<String>
 {
 
 	private Label label;
 
 	/**
-	 * 2/9/2010 Scott Atwell @see AbstractControlUI.init(ControlT aControl,
+	 * 2/9/2010 Scott Atwell @see AbstractAtdl4jWidget.init(ControlT aControl,
 	 * ParameterT aParameter, Atdl4jOptions aAtdl4jOptions) throws JAXBException
-	 * public LabelWidget(LabelT control) { super(control); }
+	 * public SWTLabelWidget(LabelT control) { super(control); }
 	 **/
 
 	public Widget createWidget(Composite parent, int style)
@@ -127,7 +127,7 @@ public class LabelWidget
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.ControlUI#reinit()
+	 * @see org.atdl4j.ui.Atdl4jWidget#reinit()
 	 */
 	@Override
 	public void processReinit( Object aControlInitValue )

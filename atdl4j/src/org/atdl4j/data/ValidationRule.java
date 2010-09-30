@@ -3,7 +3,7 @@ package org.atdl4j.data;
 import java.util.Map;
 
 import org.atdl4j.data.exception.ValidationException;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 
 
 /**
@@ -20,6 +20,6 @@ public interface ValidationRule {
 	 * @param rules
 	 * @throws ValidationException
 	 */
-	public void validate(Map<String, ValidationRule> refRules, Map<String, ControlUI<?>> targets) 
+	public void validate(Map<String, ValidationRule> refRules, Map<String, Atdl4jWidget<?>> targets) 
 		throws ValidationException;
 }

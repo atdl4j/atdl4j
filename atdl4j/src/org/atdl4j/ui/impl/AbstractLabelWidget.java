@@ -8,7 +8,7 @@ package org.atdl4j.ui.impl;
  * Use HiddenField if you'd like to have control associated with a parameter. 
  */
 
-public abstract class LabelUI extends AbstractControlUI<String> 
+public abstract class AbstractLabelWidget extends AbstractAtdl4jWidget<String> 
 {
 	// -- Overriden --
 	protected void initPreCheck()

@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.atdl4j.fixatdl.layout.BorderT;
 import org.atdl4j.fixatdl.layout.PanelOrientationT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 import org.atdl4j.ui.StrategyPanelHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -324,7 +324,7 @@ public class SWTStrategyPanelHelper
 	 * @param aWidget
 	 * @return boolean indicating whether any ExpandBar ExpandItems were adjusted
 	 */
-	public boolean expandControlParentStrategyPanel( ControlUI<?> aWidget )
+	public boolean expandControlParentStrategyPanel( Atdl4jWidget<?> aWidget )
 	{
 		boolean tempAdjustedFlag = false;
 		if ( ( aWidget.getParent() != null ) && ( aWidget.getParent() instanceof Composite ) )

@@ -1,5 +1,5 @@
 /*
- * $Id: NumberFormatVerifyListener.java,v 1.1 2010/01/14 21:26:41 swl Exp $
+ * $Id: SWTNumberFormatVerifyListener.java,v 1.1 2010/09/30 17:46:24 swl Exp $
  *
  * Copyright 2006 Investtools Tecnologia em Informatica LTDA.
  * Todos os direitos reservados.
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
  * @author tuler
  * 
  */
-public class NumberFormatVerifyListener implements VerifyListener {
+public class SWTNumberFormatVerifyListener implements VerifyListener {
 
 	protected NumberFormat format;
 
@@ -37,7 +37,7 @@ public class NumberFormatVerifyListener implements VerifyListener {
 	 * @param allowEmpty
 	 *            Flag which indicates whether an empty field is valid.
 	 */
-	public NumberFormatVerifyListener(NumberFormat format, boolean allowEmpty) {
+	public SWTNumberFormatVerifyListener(NumberFormat format, boolean allowEmpty) {
 		this.format = format;
 		this.allowEmpty = allowEmpty;
 	}

@@ -20,12 +20,12 @@ import org.atdl4j.fixatdl.flow.StateRuleT;
 import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.fixatdl.layout.RadioButtonT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
-import org.atdl4j.ui.ControlUI;
-import org.atdl4j.ui.ControlUIFactory;
+import org.atdl4j.ui.Atdl4jWidget;
+import org.atdl4j.ui.Atdl4jWidgetFactory;
 import org.atdl4j.ui.impl.AbstractStrategyUI;
 import org.atdl4j.ui.swt.SWTWidget;
-import org.atdl4j.ui.swt.widget.ButtonWidget;
-import org.atdl4j.ui.swt.widget.RadioButtonListener;
+import org.atdl4j.ui.swt.widget.SWTButtonWidget;
+import org.atdl4j.ui.swt.widget.SWTRadioButtonListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -45,7 +45,7 @@ public class SWTStrategyUI
 	
 	Map<String, SWTWidget<?>> controlWithParameterMap;	// formerly:  controlWithParameter
 	
-	protected Map<String, RadioButtonListener> radioGroupMap;	// formerly:  radioGroups
+	protected Map<String, SWTRadioButtonListener> radioGroupMap;	// formerly:  radioGroups
 	
 	protected List<SWTStateListener> stateListenerList;	// formerly:  stateListeners
 	
@@ -55,7 +55,7 @@ public class SWTStrategyUI
 
 // TODO 9/26/2010 Scott Atwell	private SWTFactory controlFactory;  // note this is lazy-init'd (adjust getControlFactory() if you wish to override/substitute concrete class)
 // TODO 9/26/2010 Scott Atwell moved from SWTFactory
-// TODO 9/27/2010 Scott Atwell adjusted createWidget() 	private ControlUIFactory controlWidgetFactory;
+// TODO 9/27/2010 Scott Atwell adjusted createWidget() 	private Atdl4jWidgetFactory controlWidgetFactory;
 
 	private List<ExpandBar> expandBarList;  // 8/27/2010 Scott Atwell added
 
@@ -190,15 +190,15 @@ public class SWTStrategyUI
 
 	/**
 	 * Note invoking this method results in object construction as a result of down-casting 
-	 * our own map of a specific templatized instance (SWTWidget<?>) of ControlUI<?> --
+	 * our own map of a specific templatized instance (SWTWidget<?>) of Atdl4jWidget<?> --
 	 * @return
 	 */
-	public Map<String, ControlUI<?>> getControlUIWithParameterMap()
+	public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetWithParameterMap()
 	{
-		// return new HashMap<String,ControlUI<?>>(getControlMap());
+		// return new HashMap<String,Atdl4jWidget<?>>(getControlMap());
 		if ( getControlWithParameterMap() != null )
 		{
-			return new HashMap<String, ControlUI<?>>( getControlWithParameterMap()  );
+			return new HashMap<String, Atdl4jWidget<?>>( getControlWithParameterMap()  );
 		}
 		else
 		{
@@ -208,15 +208,15 @@ public class SWTStrategyUI
 
 	/**
 	 * Note invoking this method results in object construction as a result of down-casting 
-	 * our own map of a specific templatized instance (SWTWidget<?>) of ControlUI<?> --
+	 * our own map of a specific templatized instance (SWTWidget<?>) of Atdl4jWidget<?> --
 	 * @return
 	 */
-	public Map<String, ControlUI<?>> getControlUIMap()
+	public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetMap()
 	{
-		// return new HashMap<String,ControlUI<?>>(getControlMap());
+		// return new HashMap<String,Atdl4jWidget<?>>(getControlMap());
 		if ( getControlMap() != null )
 		{
-			return new HashMap<String, ControlUI<?>>( getControlMap()  );
+			return new HashMap<String, Atdl4jWidget<?>>( getControlMap()  );
 		}
 		else
 		{
@@ -291,7 +291,7 @@ public class SWTStrategyUI
 
 	protected void createRadioGroups()
 	{
-		Map<String, RadioButtonListener> tempRadioGroupMap = new HashMap<String, RadioButtonListener>();
+		Map<String, SWTRadioButtonListener> tempRadioGroupMap = new HashMap<String, SWTRadioButtonListener>();
 		
 		for ( SWTWidget<?> widget : getControlMap().values() )
 		{
@@ -300,12 +300,12 @@ public class SWTStrategyUI
 			{
 				String rg = ( (RadioButtonT) widget.getControl() ).getRadioGroup();
 				if ( !tempRadioGroupMap.containsKey( rg ) )
-					tempRadioGroupMap.put( rg, new RadioButtonListener() );
+					tempRadioGroupMap.put( rg, new SWTRadioButtonListener() );
 				
-				if ( widget instanceof ButtonWidget )
+				if ( widget instanceof SWTButtonWidget )
 				{
-					tempRadioGroupMap.get( rg ).addButton( (ButtonWidget) widget );
-					((ButtonWidget) widget).setRadioButtonListener( tempRadioGroupMap.get( rg ) );
+					tempRadioGroupMap.get( rg ).addButton( (SWTButtonWidget) widget );
+					((SWTButtonWidget) widget).setRadioButtonListener( tempRadioGroupMap.get( rg ) );
 				}
 
 			}
@@ -317,7 +317,7 @@ public class SWTStrategyUI
 	/**
 	 * @return the radioGroupMap
 	 */
-	public Map<String, RadioButtonListener> getRadioGroupMap()
+	public Map<String, SWTRadioButtonListener> getRadioGroupMap()
 	{
 		return this.radioGroupMap;
 	}
@@ -325,19 +325,19 @@ public class SWTStrategyUI
 	/**
 	 * @param aRadioGroupMap the radioGroupMap to set
 	 */
-	protected void setRadioGroupMap(Map<String, RadioButtonListener> aRadioGroupMap)
+	protected void setRadioGroupMap(Map<String, SWTRadioButtonListener> aRadioGroupMap)
 	{
 		this.radioGroupMap = aRadioGroupMap;
 	}
 
-	protected void addToControlMap( String aName, ControlUI aControlUI )
+	protected void addToControlMap( String aName, Atdl4jWidget aAtdl4jWidget )
 	{
-		getControlMap().put( aName, (SWTWidget<?>) aControlUI );
+		getControlMap().put( aName, (SWTWidget<?>) aAtdl4jWidget );
 	}
 
-	protected void addToControlWithParameterMap( String aName, ControlUI aControlUI )
+	protected void addToControlWithParameterMap( String aName, Atdl4jWidget aAtdl4jWidget )
 	{
-		getControlWithParameterMap().put( aName, (SWTWidget<?>) aControlUI );
+		getControlWithParameterMap().put( aName, (SWTWidget<?>) aAtdl4jWidget );
 	}
 
 	protected void removeFromControlMap( String aName )
@@ -498,7 +498,7 @@ public class SWTStrategyUI
 			stateListener.handleEvent( null );
 	}
 
-	protected void fireStateListenersForControl( ControlUI aControl )
+	protected void fireStateListenersForControl( Atdl4jWidget aControl )
 	{
 		for ( SWTStateListener stateListener : getStateListenerList() )
 		{
@@ -513,7 +513,7 @@ public class SWTStrategyUI
 	 * Invokes SWTStateListener.handleLoadFixMessageEvent() for aControl
 	 * @param aControl
 	 */
-	protected void fireLoadFixMessageStateListenersForControl( ControlUI aControl )
+	protected void fireLoadFixMessageStateListenersForControl( Atdl4jWidget aControl )
 	{
 		for ( SWTStateListener stateListener : getStateListenerList() )
 		{
@@ -528,10 +528,10 @@ public class SWTStrategyUI
 	{
 		if ( getRadioGroupMap() != null )
 		{
-			for ( RadioButtonListener tempRadioButtonListener : getRadioGroupMap().values() )
+			for ( SWTRadioButtonListener tempSWTRadioButtonListener : getRadioGroupMap().values() )
 			{
 				// -- If no RadioButtons within the radioGroup are selected, then first one in list will be selected --
-				tempRadioButtonListener.processReinit();
+				tempSWTRadioButtonListener.processReinit();
 			}
 		}
 	}
@@ -565,8 +565,8 @@ public SWTWidget<?> createWidget(Composite parent, ControlT control, ParameterT 
 			+ " control: " + control + " parameter: " + parameter + " style: " + style );
 
 // TODO 9/27/2010 Scott Atwell	parameterWidget = (SWTWidget<?>) controlWidgetFactory.create( control, parameter );
-// TODO 9/29/2010 Scott Atwell	parameterWidget = (SWTWidget<?>) getAtdl4jOptions().getControlUIFactory().create( control, parameter );
-	parameterWidget = (SWTWidget<?>) getControlUIFactory().create( control, parameter );
+// TODO 9/29/2010 Scott Atwell	parameterWidget = (SWTWidget<?>) getAtdl4jOptions().getAtdl4jWidgetFactory().create( control, parameter );
+	parameterWidget = (SWTWidget<?>) getAtdl4jWidgetFactory().create( control, parameter );
 
 	logger.debug( "createWidget() returned parameterWidget: " + parameterWidget );
 

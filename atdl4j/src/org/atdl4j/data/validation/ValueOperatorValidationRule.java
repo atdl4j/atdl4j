@@ -8,7 +8,7 @@ import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.flow.StateRuleT;
 import org.atdl4j.fixatdl.validation.OperatorT;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 
 /**
  * Validator that validates input against a constant value.
@@ -42,12 +42,12 @@ public class ValueOperatorValidationRule
 		logger.trace( tempMsg, new Exception( "Stack trace" ) );
 	}
 
-	public void validate(Map<String, ValidationRule> refRules, Map<String, ControlUI<?>> targets) 
+	public void validate(Map<String, ValidationRule> refRules, Map<String, Atdl4jWidget<?>> targets) 
 		throws ValidationException
 	{
 
 		// get the widget from context using field name
-		ControlUI<?> target = targets.get( field );
+		Atdl4jWidget<?> target = targets.get( field );
 		if ( target == null )
 		{
 // 7/18/2010 Scott Atwell Added to handle "FIX_fieldname" of "NX"
@@ -75,7 +75,7 @@ public class ValueOperatorValidationRule
 		 * (handle StateRule specifying "0" vs. displayed "0.00") Object v = value
 		 * != null ? target.convertStringToComparable(value) : null;
 		 * 
-		 * AbstractControlUI had (thus returning Parameter value even when we are
+		 * AbstractAtdl4jWidget had (thus returning Parameter value even when we are
 		 * comparing against Control's value for StateRuleT (divided it into two
 		 * methods): public Comparable<?> convertStringToComparable(String string)
 		 * throws JAXBException { if (parameterConverter != null) return

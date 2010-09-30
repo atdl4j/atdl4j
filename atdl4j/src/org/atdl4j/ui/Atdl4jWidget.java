@@ -11,7 +11,7 @@ import org.atdl4j.fixatdl.layout.StrategyPanelT;
  * An interface for an UI widget which will be 
  * stores its underlying value in a parameter field.
  */
-public interface ControlUI<E extends Comparable<?>> 
+public interface Atdl4jWidget<E extends Comparable<?>> 
 {
 	public void init(ControlT control, ParameterT parameter, Atdl4jOptions aAtdl4jOptions);
 

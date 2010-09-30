@@ -17,14 +17,14 @@ import org.eclipse.swt.widgets.Listener;
  * @author johnnyshields
  */
 
-public class RadioButtonListener
+public class SWTRadioButtonListener
 		implements Listener
 {
-	private static final Logger logger = Logger.getLogger( RadioButtonListener.class );
+	private static final Logger logger = Logger.getLogger( SWTRadioButtonListener.class );
 
 	private List<Button> buttons;
 
-	public RadioButtonListener()
+	public SWTRadioButtonListener()
 	{
 		buttons = new Vector<Button>();
 	}
@@ -35,9 +35,9 @@ public class RadioButtonListener
 		button.addListener( SWT.Selection, this );
 	}
 
-	public void addButton(ButtonWidget buttonWidget)
+	public void addButton(SWTButtonWidget sWTButtonWidget)
 	{
-		addButton( buttonWidget.getButton() );
+		addButton( sWTButtonWidget.getButton() );
 	}
 
 	public void handleEvent(Event p_event)
@@ -80,7 +80,7 @@ public class RadioButtonListener
 		// -- Select first in list if no buttons are selected --
 		if ( tempSelectedButton == null )
 		{
-			logger.info("Warning: no buttons were selected for RadioButtonListener.  Selecting first button in list: " + buttons.get(0) );
+			logger.info("Warning: no buttons were selected for SWTRadioButtonListener.  Selecting first button in list: " + buttons.get(0) );
 			buttons.get( 0 ).setSelection( true );
 		}
 	}

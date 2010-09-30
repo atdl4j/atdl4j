@@ -7,7 +7,7 @@ import org.atdl4j.fixatdl.layout.ControlT;
 /**
  * An interface for an algorithmic parameter container class. Classes which implement
  * this interface hold parameter descriptor data but do not store a value (see the 
- * ControlUI class which stores the underlying FIX value.)
+ * Atdl4jWidget class which stores the underlying FIX value.)
  */
 public interface ControlTypeConverter<E extends Comparable<?>> 
 {
@@ -15,10 +15,10 @@ public interface ControlTypeConverter<E extends Comparable<?>>
 	 * Converts Control's value to Parameter value.
 	 * 
 Used by: 
-	- ClockWidget.getParameterValue()
-	- HiddenFieldUI.getParameterValue()
-	- SpinnerWidget.getParameterValue()
-	- TextFieldWidget.getParameterValue()
+	- SWTClockWidget.getParameterValue()
+	- AbstractHiddenFieldWidget.getParameterValue()
+	- SWTSpinnerWidget.getParameterValue()
+	- SWTTextFieldWidget.getParameterValue()
 	
 	 * @param value
 	 * @return
@@ -30,8 +30,8 @@ Used by:
 	 * Converts Parameter value to Control value
 	 * 
 Used by: 
-	- AbstractControlUI.applyConstValue()
-	- AbstractControlUI.setFIXValue()
+	- AbstractAtdl4jWidget.applyConstValue()
+	- AbstractAtdl4jWidget.setFIXValue()
 		- AbstractStrategyUI.setFIXMessage()
 	
 	 * @param value
@@ -46,9 +46,9 @@ Used by:
 	 * Converts Control's value to Comparable for Control
 	 * 
 Used by:
-	- AbstractControlUI.convertStringToControlComparable()
+	- AbstractAtdl4jWidget.convertStringToControlComparable()
 		- ValueOperatorValidationRule.validate()
-	- AbstractControlUI.getControlValueAsComparable()
+	- AbstractAtdl4jWidget.getControlValueAsComparable()
 		- ValueOperatorValidationRule.validate()
 
 	 * @param value
@@ -61,9 +61,9 @@ Used by:
 	 * Converts aString (eg Control/@initValue or StateRule/@value) to Control value
 	 * 
 Used by:
-	- AbstractControlUI.convertStringToControlComparable()
+	- AbstractAtdl4jWidget.convertStringToControlComparable()
 		- ValueOperatorValidationRule.validate()
-	- AbstractControlUI.setValueAsString(String)
+	- AbstractAtdl4jWidget.setValueAsString(String)
 		- SWTStateListener.setBehaviorAsStateRule()
 		
 	 * @param aString

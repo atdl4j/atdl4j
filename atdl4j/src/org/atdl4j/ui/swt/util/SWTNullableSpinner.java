@@ -19,9 +19,9 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TypedListener;
 
-public class NullableSpinner extends Composite 
+public class SWTNullableSpinner extends Composite 
 {
-	private static final Logger logger = Logger.getLogger( NullableSpinner.class );
+	private static final Logger logger = Logger.getLogger( SWTNullableSpinner.class );
 	
 	static final int BUTTON_WIDTH = 20;
 	Text text;
@@ -33,7 +33,7 @@ public class NullableSpinner extends Composite
 	public static BigDecimal MIN_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( -Integer.MAX_VALUE );
 	public static BigDecimal MAX_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( Integer.MAX_VALUE );
 	
-	public NullableSpinner(Composite parent, int style) {
+	public SWTNullableSpinner(Composite parent, int style) {
 		super(parent, style);
 		
 		/*
@@ -270,7 +270,7 @@ public class NullableSpinner extends Composite
 		}
 		else
 		{
-// note this is what we had to use in SpinnerWidget when getSelection() returned equiv of BigDecimal.unscaledValue()
+// note this is what we had to use in SWTSpinnerWidget when getSelection() returned equiv of BigDecimal.unscaledValue()
 //	return BigDecimal.valueOf( spinner.getSelection(), spinner.getDigits() );
 			BigDecimal tempValue = new BigDecimal( text.getText() );
 			BigDecimal tempValueScaled = tempValue.setScale( getDigits(), RoundingMode.HALF_UP );			
@@ -333,7 +333,7 @@ public class NullableSpinner extends Composite
 
 	public void increment( BigDecimal aIncrement )
 	{
-		// 7/7/2010 Scott Atwell Moved logic from SpinnerWidget.DoubleSpinnerSelection.widgetSelected()
+		// 7/7/2010 Scott Atwell Moved logic from SWTSpinnerWidget.DoubleSpinnerSelection.widgetSelected()
 		if ( getValue() != null )
 		{
 			setValue( getValue().add( aIncrement ) );

@@ -29,16 +29,16 @@ import org.atdl4j.fixatdl.layout.SingleSelectListT;
 import org.atdl4j.fixatdl.layout.SliderT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
 import org.atdl4j.ui.ControlHelper;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 
 /**
  * Abstract class that represents a Parameter SWT Widget. Implements the FIX
  * value getters's methods.
  */
-public abstract class AbstractControlUI<E extends Comparable<?>>
-		implements ControlUI<E>
+public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
+		implements Atdl4jWidget<E>
 {
-	private final Logger logger = Logger.getLogger( AbstractControlUI.class );
+	private final Logger logger = Logger.getLogger( AbstractAtdl4jWidget.class );
 
 	protected ParameterT parameter;
 	protected ControlT control;
@@ -668,16 +668,16 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		this.hiddenFieldForInputAndFilterData = aHiddenFieldForInputAndFilterData;
 	}
 
-	/* Overriden to delegate to ControlUI's ControlT data member.  (note ControlUI map may be shallow copied resulting in new identity for ControlUI objects)
+	/* Overriden to delegate to Atdl4jWidget's ControlT data member.  (note Atdl4jWidget map may be shallow copied resulting in new identity for Atdl4jWidget objects)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object aObj)
 	{
 		if ( ( getControl() != null ) &&
-			  ( aObj instanceof ControlUI<?> ) )
+			  ( aObj instanceof Atdl4jWidget<?> ) )
 		{
-			return getControl().equals( ((ControlUI<?>) aObj).getControl() );
+			return getControl().equals( ((Atdl4jWidget<?>) aObj).getControl() );
 		}
 		else
 		{
@@ -685,7 +685,7 @@ public abstract class AbstractControlUI<E extends Comparable<?>>
 		}
 	}
 
-	/* Overriden to delegate to ControlUI's ControlT data member.  (note ControlUI map may be shallow copied resulting in new identity for ControlUI objects)
+	/* Overriden to delegate to Atdl4jWidget's ControlT data member.  (note Atdl4jWidget map may be shallow copied resulting in new identity for Atdl4jWidget objects)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override

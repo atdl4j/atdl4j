@@ -10,8 +10,8 @@ import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.flow.StateRuleT;
 import org.atdl4j.fixatdl.validation.OperatorT;
-import org.atdl4j.ui.ControlUI;
-import org.atdl4j.ui.impl.HiddenFieldUI;
+import org.atdl4j.ui.Atdl4jWidget;
+import org.atdl4j.ui.impl.AbstractHiddenFieldWidget;
 
 /**
  * Validator that validates input against another existing field.
@@ -45,11 +45,11 @@ public class Field2OperatorValidationRule extends
 	}
 
 	public void validate(Map<String, ValidationRule> rules,
-			Map<String, ControlUI<?>> targets) 
+			Map<String, Atdl4jWidget<?>> targets) 
 		throws ValidationException
 	{
 		// get the widget from context using field name
-		ControlUI<?> target = targets.get(field);
+		Atdl4jWidget<?> target = targets.get(field);
 		if (target == null) {
 			String tempMsg = "No parameter defined for field \"" + field + "\" in this context (Field2OperatorValidationRule) field: " + field + " operator: " + operator + " field2: " + field2 + " parent: " + parent;
 			String tempMsg2 = tempMsg + " targets: " + targets;
@@ -61,7 +61,7 @@ public class Field2OperatorValidationRule extends
 		Object fieldValue = parent instanceof StateRuleT ? target.getControlValue() : target.getParameterValue();
 
 		// get the widget from context using field2 name
-		ControlUI<?> target2 = targets.get(field2);
+		Atdl4jWidget<?> target2 = targets.get(field2);
 		if (target2 == null) {
 			String tempMsg = "No parameter defined for field \"" + field2 + "\" in this context (Field2OperatorValidationRule) field: " + field + " operator: " + operator + " field2: " + field2 + " parent: " + parent;
 			String tempMsg2 = tempMsg + " targets: " + targets;
@@ -85,11 +85,11 @@ public class Field2OperatorValidationRule extends
 			{
 				fieldValue2 = convertFieldValueToDesiredType( fieldValue, fieldValue2 );
 			}
-			else if ( ( target != null ) && ( target instanceof HiddenFieldUI ) )
+			else if ( ( target != null ) && ( target instanceof AbstractHiddenFieldWidget ) )
 			{
 				fieldValue = convertFieldValueToDesiredType( fieldValue2, fieldValue );
 			}
-			else if ( ( target2 != null ) && ( target2 instanceof HiddenFieldUI ) )
+			else if ( ( target2 != null ) && ( target2 instanceof AbstractHiddenFieldWidget ) )
 			{
 				fieldValue2 = convertFieldValueToDesiredType( fieldValue, fieldValue2 );
 			}

@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 
 /**
  * Validator that validates input against a regular expression.
@@ -33,12 +33,12 @@ public class PatternValidationRule
 		logger.trace( tempMsg, new Exception( "Stack trace" ) );
 	}
 
-	public void validate(Map<String, ValidationRule> refRules, Map<String, ControlUI<?>> targets) 
+	public void validate(Map<String, ValidationRule> refRules, Map<String, Atdl4jWidget<?>> targets) 
 		throws ValidationException
 	{
 
 		// get the widget from context using field name
-		ControlUI<?> target = targets.get( field );
+		Atdl4jWidget<?> target = targets.get( field );
 		if ( target == null )
 		{
 			String tempMsg = "No parameter defined for field \"" + field + "\" in this context (PatternValidationRule) field: " + field + " pattern: "

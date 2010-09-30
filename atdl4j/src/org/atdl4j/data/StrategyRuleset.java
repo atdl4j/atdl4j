@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.validation.StrategyEditT;
 import org.atdl4j.ui.ControlHelper;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 
 public class StrategyRuleset
 {
@@ -63,7 +63,7 @@ public class StrategyRuleset
 		this.refRules.put( strategyEdit, rule );
 	}
 
-	public void validate(Map<String, ValidationRule> refRules, Map<String, ControlUI<?>> parameters) 
+	public void validate(Map<String, ValidationRule> refRules, Map<String, Atdl4jWidget<?>> parameters) 
 		throws ValidationException
 	{
 
@@ -123,7 +123,7 @@ public class StrategyRuleset
 			}
 			catch (ValidationException e)
 			{
-				ControlUI<?> target = e.getTarget();
+				Atdl4jWidget<?> target = e.getTarget();
 				String type = target.getClass().toString();
 				throw buildValidationException( e, " of type " + type + " does not follow the required pattern." );
 			}
@@ -152,17 +152,17 @@ public class StrategyRuleset
 	
 	protected ValidationException buildValidationException( ValidationException aOriginalValidationException, String aMsgText )
 	{
-		ControlUI<?> tempControlUI = aOriginalValidationException.getTarget();
+		Atdl4jWidget<?> tempAtdl4jWidget = aOriginalValidationException.getTarget();
 		
-		return new ValidationException( tempControlUI, buildValidationExceptionText( aOriginalValidationException, aMsgText, tempControlUI ) );
+		return new ValidationException( tempAtdl4jWidget, buildValidationExceptionText( aOriginalValidationException, aMsgText, tempAtdl4jWidget ) );
 	}
 
-	protected String buildValidationExceptionText( ValidationException aOriginalValidationException, String aMsgText, ControlUI<?> aControlUI )
+	protected String buildValidationExceptionText( ValidationException aOriginalValidationException, String aMsgText, Atdl4jWidget<?> aAtdl4jWidget )
 	{
 		StringBuffer tempStringBuffer = new StringBuffer();
 		
-		tempStringBuffer.append( "Parameter \"" + aControlUI.getParameter().getName() + "\"" );
-		tempStringBuffer.append( " (\"" + ControlHelper.getLabelOrID( aControlUI.getControl() ) + "\") " );
+		tempStringBuffer.append( "Parameter \"" + aAtdl4jWidget.getParameter().getName() + "\"" );
+		tempStringBuffer.append( " (\"" + ControlHelper.getLabelOrID( aAtdl4jWidget.getControl() ) + "\") " );
 		tempStringBuffer.append(  aMsgText );
 		if ( aOriginalValidationException.getMessage() != null )
 		{ 

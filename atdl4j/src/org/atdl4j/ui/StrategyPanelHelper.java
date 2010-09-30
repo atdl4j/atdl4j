@@ -13,5 +13,5 @@ public interface StrategyPanelHelper
 	 * @param aWidget
 	 * @return boolean indicating whether any StrategyPanel containers were expanded
 	 */
-	public boolean expandControlParentStrategyPanel( ControlUI<?> aWidget );
+	public boolean expandControlParentStrategyPanel( Atdl4jWidget<?> aWidget );
 }

@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Widget;
 
-public class SliderWidget
+public class SWTSliderWidget
 		extends AbstractSWTWidget<String>
 {
 	private Scale slider;
@@ -163,7 +163,7 @@ public class SliderWidget
 	}
 
 	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.ControlUI#reinit()
+	 * @see org.atdl4j.ui.Atdl4jWidget#reinit()
 	 */
 	@Override
 	public void processReinit( Object aControlInitValue )

@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class DropDownListWidget
+public class SWTDropDownListWidget
 		extends AbstractSWTWidget<String>
 {
 
@@ -176,7 +176,7 @@ public class DropDownListWidget
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.ControlUI#reinit()
+	 * @see org.atdl4j.ui.Atdl4jWidget#reinit()
 	 */
 	@Override
 	public void processReinit( Object aControlInitValue )

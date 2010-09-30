@@ -5,7 +5,7 @@ import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
 
-public class DebugMouseTrackListener implements MouseTrackListener {
+public class SWTDebugMouseTrackListener implements MouseTrackListener {
 
 	private Color defaultColor;
 
@@ -13,7 +13,7 @@ public class DebugMouseTrackListener implements MouseTrackListener {
 
 	private Control control;
 
-	public DebugMouseTrackListener(Control control) {
+	public SWTDebugMouseTrackListener(Control control) {
 		this.control = control;
 		defaultColor = control.getParent().getBackground();
 		remarkColor = new Color(control.getDisplay(), 255, 0, 0);

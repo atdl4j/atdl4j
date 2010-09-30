@@ -11,7 +11,7 @@ import org.atdl4j.data.converter.IntegerConverter;
 import org.atdl4j.fixatdl.layout.DoubleSpinnerT;
 import org.atdl4j.fixatdl.layout.SingleSpinnerT;
 import org.atdl4j.ui.ControlHelper;
-import org.atdl4j.ui.swt.util.NullableSpinner;
+import org.atdl4j.ui.swt.util.SWTNullableSpinner;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -24,10 +24,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class SpinnerWidget
+public class SWTSpinnerWidget
 		extends AbstractSWTWidget<BigDecimal>
 {
-	private NullableSpinner spinner;
+	private SWTNullableSpinner spinner;
 	private Label label;
 	private Button buttonUp;
 	private Button buttonDown;
@@ -39,13 +39,13 @@ public class SpinnerWidget
 	public class DoubleSpinnerSelection
 			implements SelectionListener
 	{
-		private NullableSpinner spinner;
+		private SWTNullableSpinner spinner;
 
 // 7/7/2010 Scott Atwell use BigDecimal		private int increment;
 		private BigDecimal increment;
 
-// 7/7/2010 Scott Atwell use BigDecimal		public DoubleSpinnerSelection(NullableSpinner spinner2, int increment)
-		public DoubleSpinnerSelection(NullableSpinner spinner2, BigDecimal increment)
+// 7/7/2010 Scott Atwell use BigDecimal		public DoubleSpinnerSelection(SWTNullableSpinner spinner2, int increment)
+		public DoubleSpinnerSelection(SWTNullableSpinner spinner2, BigDecimal increment)
 		{
 			this.spinner = spinner2;
 			this.increment = increment;
@@ -57,7 +57,7 @@ public class SpinnerWidget
 
 		public void widgetSelected(SelectionEvent event)
 		{
-/*** 7/7/2010 Scott Atwell moved logic to NullableSpinner			
+/*** 7/7/2010 Scott Atwell moved logic to SWTNullableSpinner			
 			if ( spinner.getSelection() != null )
 			{
 				spinner.setSelection( spinner.getSelection() + increment );
@@ -89,7 +89,7 @@ public class SpinnerWidget
 		if ( control instanceof SingleSpinnerT )
 		{
 			// spinner
-			spinner = new NullableSpinner( parent, style | SWT.BORDER );
+			spinner = new SWTNullableSpinner( parent, style | SWT.BORDER );
 			spinner.setLayoutData( controlGD );
 		}
 		else if ( control instanceof DoubleSpinnerT )
@@ -104,7 +104,7 @@ public class SpinnerWidget
 			c.setLayoutData( controlGD );
 
 			// doubleSpinner
-			spinner = new NullableSpinner( c, style | SWT.BORDER );
+			spinner = new SWTNullableSpinner( c, style | SWT.BORDER );
 			GridData spinnerData = new GridData( SWT.FILL, SWT.CENTER, false, false );
 			spinnerData.verticalSpan = 2;
 			spinner.setLayoutData( spinnerData );
@@ -180,7 +180,7 @@ public class SpinnerWidget
 			else
 			{
 // 				spinner.setMinimum( -Integer.MAX_VALUE );
-				spinner.setMinimum( NullableSpinner.MIN_INTEGER_VALUE_AS_BIG_DECIMAL );
+				spinner.setMinimum( SWTNullableSpinner.MIN_INTEGER_VALUE_AS_BIG_DECIMAL );
 			}
 			
 			if ( tempIntegerConverter.getMaxValue() != null )
@@ -193,7 +193,7 @@ public class SpinnerWidget
 			else
 			{
 //				spinner.setMaximum( Integer.MAX_VALUE );
-				spinner.setMaximum( NullableSpinner.MAX_INTEGER_VALUE_AS_BIG_DECIMAL );
+				spinner.setMaximum( SWTNullableSpinner.MAX_INTEGER_VALUE_AS_BIG_DECIMAL );
 			}
 		}
 // 7/7/2010 Scott Atwell - removed this as we're already defaulting  		else
@@ -319,7 +319,7 @@ public class SpinnerWidget
 
 	public void addListener(Listener listener)
 	{
-// 8/15/2010 Scott Atwell (use NullableSpinner's implementation vs. default Control's)		spinner.addListener( SWT.Modify, listener );
+// 8/15/2010 Scott Atwell (use SWTNullableSpinner's implementation vs. default Control's)		spinner.addListener( SWT.Modify, listener );
 		spinner.addListener( listener );
 		if ( control instanceof DoubleSpinnerT )
 		{
@@ -330,7 +330,7 @@ public class SpinnerWidget
 
 	public void removeListener(Listener listener)
 	{
-// 8/15/2010 Scott Atwell (use NullableSpinner's implementation vs. default Control's)		spinner.removeListener( SWT.Modify, listener );
+// 8/15/2010 Scott Atwell (use SWTNullableSpinner's implementation vs. default Control's)		spinner.removeListener( SWT.Modify, listener );
 		spinner.removeListener( listener );
 		if ( control instanceof DoubleSpinnerT )
 		{
@@ -340,7 +340,7 @@ public class SpinnerWidget
 	}
 
 	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.ControlUI#reinit()
+	 * @see org.atdl4j.ui.Atdl4jWidget#reinit()
 	 */
 	@Override
 	public void processReinit( Object aControlInitValue )

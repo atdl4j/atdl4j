@@ -41,8 +41,8 @@ import org.atdl4j.fixatdl.validation.EditT;
 import org.atdl4j.fixatdl.validation.LogicOperatorT;
 import org.atdl4j.fixatdl.validation.OperatorT;
 import org.atdl4j.fixatdl.validation.StrategyEditT;
-import org.atdl4j.ui.ControlUI;
-import org.atdl4j.ui.ControlUIFactory;
+import org.atdl4j.ui.Atdl4jWidget;
+import org.atdl4j.ui.Atdl4jWidgetFactory;
 import org.atdl4j.ui.StrategyPanelHelper;
 import org.atdl4j.ui.StrategyUI;
 
@@ -71,16 +71,16 @@ public abstract class AbstractStrategyUI
 	private StrategiesT strategies;
 	
 //TODO 9/29/2010 Scott Atwell added/moved from Atdl4jConfig	
-	ControlUIFactory controlUIFactory;
+	Atdl4jWidgetFactory atdl4jWidgetFactory;
 	StrategyPanelHelper strategyPanelHelper;
 	
 	abstract	protected void buildControlMap( List<StrategyPanelT> aStrategyPanelList );
 	
-	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of ControlUI<?> --
-	abstract public Map<String, ControlUI<?>> getControlUIMap();
+	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of Atdl4jWidget<?> --
+	abstract public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetMap();
 	
-	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of ControlUI<?> --
-	abstract public Map<String, ControlUI<?>> getControlUIWithParameterMap();
+	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of Atdl4jWidget<?> --
+	abstract public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetWithParameterMap();
 
 	// -- Used by init() --
 	abstract protected void initBegin(Object parentContainer);
@@ -91,14 +91,14 @@ public abstract class AbstractStrategyUI
 	abstract protected void attachStateListenersToAllControls();
 	abstract protected void initEnd();
 
-	abstract protected void addToControlMap( String aName, ControlUI aControlUI );
-	abstract protected void addToControlWithParameterMap( String aName, ControlUI aControlUI );
+	abstract protected void addToControlMap( String aName, Atdl4jWidget aAtdl4jWidget );
+	abstract protected void addToControlWithParameterMap( String aName, Atdl4jWidget aAtdl4jWidget );
 	abstract protected void removeFromControlMap( String aName );
 	abstract protected void removeFromControlWithParameterMap( String aName );
 	abstract public void setCxlReplaceMode(boolean cxlReplaceMode);
 	abstract protected void fireStateListeners();
-	abstract protected void fireStateListenersForControl( ControlUI aControl );
-	abstract protected void fireLoadFixMessageStateListenersForControl( ControlUI aControl );
+	abstract protected void fireStateListenersForControl( Atdl4jWidget aControl );
+	abstract protected void fireLoadFixMessageStateListenersForControl( Atdl4jWidget aControl );
 
 
 	abstract protected void applyRadioGroupRules();
@@ -440,12 +440,12 @@ public abstract class AbstractStrategyUI
 	
 	protected void checkForDuplicateControlIDs()
 	{
-		// -- Note getControlUIMap() constructs a new Map --
-		Collection<ControlUI<?>> tempControlMapValues = (Collection<ControlUI<?>>) getControlUIMap().values();
+		// -- Note getAtdl4jWidgetMap() constructs a new Map --
+		Collection<Atdl4jWidget<?>> tempControlMapValues = (Collection<Atdl4jWidget<?>>) getAtdl4jWidgetMap().values();
 		
-		for ( ControlUI<?> widget : tempControlMapValues )
+		for ( Atdl4jWidget<?> widget : tempControlMapValues )
 		{
-			for ( ControlUI<?> widget2 : tempControlMapValues )
+			for ( Atdl4jWidget<?> widget2 : tempControlMapValues )
 			{
 				if ( widget != widget2 && widget.getControl().getID().equals( widget2.getControl().getID() ) )
 					throw new IllegalStateException( "Duplicate Control ID: \"" + widget.getControl().getID() + "\"" );
@@ -453,13 +453,13 @@ public abstract class AbstractStrategyUI
 		}
 	}
 
-	public ControlUI getControlForParameter( ParameterT aParameterRef )
+	public Atdl4jWidget getControlForParameter( ParameterT aParameterRef )
 	{
-		if ( ( aParameterRef != null ) && ( getControlUIWithParameterMap() != null ) )
+		if ( ( aParameterRef != null ) && ( getAtdl4jWidgetWithParameterMap() != null ) )
 		{
-			Collection<ControlUI<?>> tempControlWithParameterMapValues = (Collection<ControlUI<?>>) getControlUIWithParameterMap().values();
+			Collection<Atdl4jWidget<?>> tempControlWithParameterMapValues = (Collection<Atdl4jWidget<?>>) getAtdl4jWidgetWithParameterMap().values();
 			
-			for ( ControlUI<?> widget : tempControlWithParameterMapValues )
+			for ( Atdl4jWidget<?> widget : tempControlWithParameterMapValues )
 			{
 				if ( aParameterRef.equals( widget.getParameter() ) )
 				{
@@ -494,8 +494,8 @@ public abstract class AbstractStrategyUI
 				hiddenField.setInitValue( tempValue.toString() );
 				hiddenField.setParameterRef( tempName );
 	
-// 9/29/2010				ControlUI hiddenFieldWidget = getAtdl4jOptions().createControlUIForHiddenFieldT( hiddenField, parameter );
-				ControlUI hiddenFieldWidget = getControlUIFactory().createControlUIForHiddenFieldT( hiddenField, parameter );
+// 9/29/2010				Atdl4jWidget hiddenFieldWidget = getAtdl4jOptions().createHiddenFieldT( hiddenField, parameter );
+				Atdl4jWidget hiddenFieldWidget = getAtdl4jWidgetFactory().createHiddenFieldT( hiddenField, parameter );
 				hiddenFieldWidget.setHiddenFieldForInputAndFilterData( true );
 				
 				addToControlMap( tempName, hiddenFieldWidget );
@@ -507,7 +507,7 @@ public abstract class AbstractStrategyUI
 
 	protected void clearHiddenFieldsForInputAndFilterData()
 	{
-		for ( Map.Entry<String,ControlUI<?>> tempEntry : getControlUIMap().entrySet() )
+		for ( Map.Entry<String,Atdl4jWidget<?>> tempEntry : getAtdl4jWidgetMap().entrySet() )
 		{
 			if ( tempEntry.getValue().isHiddenFieldForInputAndFilterData() )
 			{
@@ -542,8 +542,8 @@ public abstract class AbstractStrategyUI
 					HiddenFieldT tempHiddenField = new HiddenFieldT();
 					tempHiddenField.setParameterRef( tempName );
 		
-// 9/29/2010					ControlUI hiddenFieldWidget = getAtdl4jOptions().createControlUIForHiddenFieldT( tempHiddenField, tempParameter );
-					ControlUI hiddenFieldWidget = getControlUIFactory().createControlUIForHiddenFieldT( tempHiddenField, tempParameter );
+// 9/29/2010					Atdl4jWidget hiddenFieldWidget = getAtdl4jOptions().createHiddenFieldT( tempHiddenField, tempParameter );
+					Atdl4jWidget hiddenFieldWidget = getAtdl4jWidgetFactory().createHiddenFieldT( tempHiddenField, tempParameter );
 					addToControlMap( tempName, hiddenFieldWidget );
 					addToControlWithParameterMap( tempName, hiddenFieldWidget );
 				}
@@ -559,8 +559,8 @@ public abstract class AbstractStrategyUI
 		{
 			// delegate validation, passing all global and local rules as
 			// context information, and all my parameters
-			// -- Note that getControlUIWithParameterMap() constructs a new Map --
-			getStrategyRuleset().validate( getCompleteValidationRuleMap(), getControlUIWithParameterMap() );
+			// -- Note that getAtdl4jWidgetWithParameterMap() constructs a new Map --
+			getStrategyRuleset().validate( getCompleteValidationRuleMap(), getAtdl4jWidgetWithParameterMap() );
 		}
 		else
 		{
@@ -634,8 +634,8 @@ public abstract class AbstractStrategyUI
 		 * } }
 		 */
 
-		// -- Note that getControlUIMap() constructs a new Map --
-		for ( ControlUI<?> control : getControlUIMap().values() )
+		// -- Note that getAtdl4jWidgetMap() constructs a new Map --
+		for ( Atdl4jWidget<?> control : getAtdl4jWidgetMap().values() )
 		{
 			if ( control.getParameter() != null )
 				control.getFIXValue( builder );
@@ -664,8 +664,8 @@ public abstract class AbstractStrategyUI
 			// not repeating group
 			if ( tag < Atdl4jConstants.TAG_NO_STRATEGY_PARAMETERS || tag > Atdl4jConstants.TAG_STRATEGY_PARAMETER_VALUE )
 			{
-				// -- Note that getControlUIWithParameterMap() constructs a new Map --
-				for ( ControlUI<?> widget : getControlUIWithParameterMap().values() )
+				// -- Note that getAtdl4jWidgetWithParameterMap() constructs a new Map --
+				for ( Atdl4jWidget<?> widget : getAtdl4jWidgetWithParameterMap().values() )
 				{
 					if ( widget.getParameter().getFixTag() != null && widget.getParameter().getFixTag().equals( BigInteger.valueOf( tag ) ) )
 					{
@@ -690,8 +690,8 @@ public abstract class AbstractStrategyUI
 					String name = fixParams[ i ].split( "=" )[ 1 ];
 					String value2 = fixParams[ i + 2 ].split( "=" )[ 1 ];
 
-					// -- Note that getControlUIWithParameterMap() constructs a new Map --
-					for ( ControlUI<?> widget : getControlUIWithParameterMap().values() )
+					// -- Note that getAtdl4jWidgetWithParameterMap() constructs a new Map --
+					for ( Atdl4jWidget<?> widget : getAtdl4jWidgetWithParameterMap().values() )
 					{
 						if ( widget.getParameter().getName() != null && widget.getParameter().getName().equals( name ) )
 						{
@@ -720,7 +720,7 @@ public abstract class AbstractStrategyUI
 	 * @param aValue
 	 * @return boolean indicating whether any Collapsible panels were adjusted;
 	 */
-	protected boolean loadControlWithFIXValue( ControlUI<?> aWidget, String aValue )
+	protected boolean loadControlWithFIXValue( Atdl4jWidget<?> aWidget, String aValue )
 	{
 		aWidget.setFIXValue( aValue );
 		
@@ -754,11 +754,11 @@ public abstract class AbstractStrategyUI
 	{
 		reloadHiddenFieldsForInputAndFilterData( getAtdl4jOptions().getInputAndFilterData() );
 		
-		for ( ControlUI tempControlUI : getControlUIMap().values() )
+		for ( Atdl4jWidget tempAtdl4jWidget : getAtdl4jWidgetMap().values() )
 		{
-			logger.debug( "Invoking ControlUI.reinit() for: " + tempControlUI.getControl().getID() );
+			logger.debug( "Invoking Atdl4jWidget.reinit() for: " + tempAtdl4jWidget.getControl().getID() );
 
-			tempControlUI.reinit();
+			tempAtdl4jWidget.reinit();
 		}
 
 		// -- Set Strategy's CxlReplaceMode --
@@ -787,15 +787,15 @@ public abstract class AbstractStrategyUI
 		this.strategies = aStrategies;
 	}
 	
-	public ControlUIFactory getControlUIFactory() 
+	public Atdl4jWidgetFactory getAtdl4jWidgetFactory() 
 	{
-		if ( ( controlUIFactory == null ) && ( Atdl4jConfig.getConfig().getClassNameControlUIFactory() != null ) ) 
+		if ( ( atdl4jWidgetFactory == null ) && ( Atdl4jConfig.getConfig().getClassNameAtdl4jWidgetFactory() != null ) ) 
 		{
-			String tempClassName = Atdl4jConfig.getConfig().getClassNameControlUIFactory();
-			logger.debug( "getControlUIFactory() loading class named: " + tempClassName );
+			String tempClassName = Atdl4jConfig.getConfig().getClassNameAtdl4jWidgetFactory();
+			logger.debug( "getAtdl4jWidgetFactory() loading class named: " + tempClassName );
 			try
 			{
-				controlUIFactory = ((Class<ControlUIFactory>) Class.forName( tempClassName ) ).newInstance();
+				atdl4jWidgetFactory = ((Class<Atdl4jWidgetFactory>) Class.forName( tempClassName ) ).newInstance();
 			}
 			catch ( Exception e )
 			{
@@ -803,13 +803,13 @@ public abstract class AbstractStrategyUI
 				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
 			}
 			
-			if ( controlUIFactory != null )
+			if ( atdl4jWidgetFactory != null )
 			{
-				controlUIFactory.init( getAtdl4jOptions() );
+				atdl4jWidgetFactory.init( getAtdl4jOptions() );
 			}
 		}
 		
-		return controlUIFactory;
+		return atdl4jWidgetFactory;
 	}	
 	
 	/**

@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class ListBoxWidget
+public class SWTListBoxWidget
 		extends AbstractSWTWidget<String>
 {
 
@@ -90,7 +90,7 @@ public class ListBoxWidget
 
 	public String getParameterValue()
 	{
-		// Helper method from AbstractControlUI
+		// Helper method from AbstractAtdl4jWidget
 		return getParameterValueAsMultipleValueString();
 	}
 
@@ -153,7 +153,7 @@ public class ListBoxWidget
 	}
 
 	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.ControlUI#reinit()
+	 * @see org.atdl4j.ui.Atdl4jWidget#reinit()
 	 */
 	@Override
 	public void processReinit( Object aControlInitValue )

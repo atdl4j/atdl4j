@@ -1,24 +1,24 @@
 package org.atdl4j.data.exception;
 
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 
 public class ValidationException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	private ControlUI<?> target;
+	private Atdl4jWidget<?> target;
 
-	public ValidationException(ControlUI<?> target) {
+	public ValidationException(Atdl4jWidget<?> target) {
 		super();
 		this.target = target;
 	}
 
-	public ValidationException(ControlUI<?> target, String message) {
+	public ValidationException(Atdl4jWidget<?> target, String message) {
 		super(message);
 		this.target = target;
 	}
 
-	public ControlUI<?> getTarget() {
+	public Atdl4jWidget<?> getTarget() {
 		return target;
 	}
 

@@ -19,7 +19,7 @@ import org.atdl4j.fixatdl.layout.HiddenFieldT;
  * @author Scott Atwell
  * @version 1.0, Feb 9, 2010
  */
-public interface ControlUIFactory
+public interface Atdl4jWidgetFactory
 {
 	// -- Call this after constructor --
 	public void init(Atdl4jOptions aAtdl4jOptions);
@@ -31,7 +31,7 @@ public interface ControlUIFactory
  	 * @param parameter
  	 * @return (for SWT returns SWTWidget<?>)
  	 */
- 	public ControlUI<?> create(ControlT control, ParameterT parameter);
+ 	public Atdl4jWidget<?> create(ControlT control, ParameterT parameter);
 
-	public ControlUI createControlUIForHiddenFieldT(HiddenFieldT control, ParameterT parameter);
+	public Atdl4jWidget createHiddenFieldT(HiddenFieldT control, ParameterT parameter);
 }

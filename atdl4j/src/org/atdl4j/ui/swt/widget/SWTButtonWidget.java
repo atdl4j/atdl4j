@@ -20,12 +20,12 @@ import org.eclipse.swt.widgets.Widget;
 /*
  * Implements either a CheckBox or a RadioButton
  */
-public class ButtonWidget
+public class SWTButtonWidget
 		extends AbstractSWTWidget<Boolean>
 {
 	private Button button;
 	private Label label;
-	private RadioButtonListener radioButtonListener;
+	private SWTRadioButtonListener sWTRadioButtonListener;
 
 	public Widget createWidget(Composite parent, int style)
 	{
@@ -163,7 +163,7 @@ public class ButtonWidget
 	}
 
 	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.ControlUI#reinit()
+	 * @see org.atdl4j.ui.Atdl4jWidget#reinit()
 	 */
 	@Override
 	public void processReinit( Object aControlInitValue )
@@ -175,19 +175,19 @@ public class ButtonWidget
 	}
 
 	/**
-	 * @return the radioButtonListener
+	 * @return the sWTRadioButtonListener
 	 */
-	public RadioButtonListener getRadioButtonListener()
+	public SWTRadioButtonListener getRadioButtonListener()
 	{
-		return this.radioButtonListener;
+		return this.sWTRadioButtonListener;
 	}
 
 	/**
-	 * @param aRadioButtonListener the radioButtonListener to set
+	 * @param aSWTRadioButtonListener the sWTRadioButtonListener to set
 	 */
-	public void setRadioButtonListener(RadioButtonListener aRadioButtonListener)
+	public void setRadioButtonListener(SWTRadioButtonListener aSWTRadioButtonListener)
 	{
-		this.radioButtonListener = aRadioButtonListener;
+		this.sWTRadioButtonListener = aSWTRadioButtonListener;
 	}
 	
 }

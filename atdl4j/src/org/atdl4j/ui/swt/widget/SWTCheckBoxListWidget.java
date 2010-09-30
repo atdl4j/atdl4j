@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class CheckBoxListWidget
+public class SWTCheckBoxListWidget
 		extends AbstractSWTWidget<String>
 {
 
@@ -127,7 +127,7 @@ public class CheckBoxListWidget
 
 	public String getParameterValue()
 	{
-		// Helper method from AbstractControlUI
+		// Helper method from AbstractAtdl4jWidget
 		return getParameterValueAsMultipleValueString();
 	}
 
@@ -188,7 +188,7 @@ public class CheckBoxListWidget
 	}
 
 	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.ControlUI#reinit()
+	 * @see org.atdl4j.ui.Atdl4jWidget#reinit()
 	 */
 	@Override
 	public void processReinit( Object aControlInitValue )

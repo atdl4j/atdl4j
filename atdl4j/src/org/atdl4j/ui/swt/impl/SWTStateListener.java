@@ -11,7 +11,7 @@ import org.atdl4j.data.validation.ValueOperatorValidationRule;
 import org.atdl4j.fixatdl.flow.StateRuleT;
 import org.atdl4j.fixatdl.validation.OperatorT;
 import org.atdl4j.ui.ControlHelper;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 import org.atdl4j.ui.swt.SWTWidget;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -47,7 +47,7 @@ public class SWTStateListener
 	{
 
 		// Create a casted map so that Validatable<?> can be used
-		Map<String, ControlUI<?>> targets = new HashMap<String, ControlUI<?>>( controls );
+		Map<String, Atdl4jWidget<?>> targets = new HashMap<String, Atdl4jWidget<?>>( controls );
 
 		try
 		{
@@ -155,7 +155,7 @@ public class SWTStateListener
 			{
 				ValueOperatorValidationRule tempValueOperatorValidationRule = (ValueOperatorValidationRule) getRule();
 				
-				ControlUI<?> tempAssociatedControl = controls.get( tempValueOperatorValidationRule.getField() );
+				Atdl4jWidget<?> tempAssociatedControl = controls.get( tempValueOperatorValidationRule.getField() );
 				
 				if ( ( tempAssociatedControl != null ) &&
 					  ( ControlHelper.isControlToggleable( tempAssociatedControl.getControl() ) ) ) 

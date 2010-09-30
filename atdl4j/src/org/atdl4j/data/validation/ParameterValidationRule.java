@@ -2,7 +2,7 @@ package org.atdl4j.data.validation;
 
 
 import org.atdl4j.data.ValidationRule;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 
 /**
  * Validation rule based on a single Parameter.
@@ -11,6 +11,6 @@ import org.atdl4j.ui.ControlUI;
  */
 public interface ParameterValidationRule extends ValidationRule {
 
-	public ControlUI<?> getParameter();
+	public Atdl4jWidget<?> getParameter();
 
 }

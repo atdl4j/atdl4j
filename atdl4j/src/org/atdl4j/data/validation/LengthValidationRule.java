@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.validation.OperatorT;
-import org.atdl4j.ui.ControlUI;
+import org.atdl4j.ui.Atdl4jWidget;
 
 /**
  * Validator that validates input against a min/max length value.
@@ -40,11 +40,11 @@ public class LengthValidationRule
 		logger.trace( tempMsg, new Exception( "Stack trace" ) );
 	}
 
-	public void validate(Map<String, ValidationRule> refRules, Map<String, ControlUI<?>> targets) 
+	public void validate(Map<String, ValidationRule> refRules, Map<String, Atdl4jWidget<?>> targets) 
 		throws ValidationException
 	{
 		// get the widget from context using field name
-		ControlUI<?> target = targets.get( field );
+		Atdl4jWidget<?> target = targets.get( field );
 		if ( target == null )
 		{
 			String tempMsg = "No parameter defined for field \"" + field + "\" in this context (ValueOperatorValidationRule) field: " + field
@@ -68,7 +68,7 @@ public class LengthValidationRule
 		return field;
 	}
 
-	protected void validateLength(ControlUI<?> aTarget, String aValue, OperatorT aOperator)
+	protected void validateLength(Atdl4jWidget<?> aTarget, String aValue, OperatorT aOperator)
 	{
 		switch ( aOperator )
 		{

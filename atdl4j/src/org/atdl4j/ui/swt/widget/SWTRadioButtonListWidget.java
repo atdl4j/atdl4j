@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
-public class RadioButtonListWidget
+public class SWTRadioButtonListWidget
 		extends AbstractSWTWidget<String>
 {
-	private static final Logger logger = Logger.getLogger( RadioButtonListWidget.class );
+	private static final Logger logger = Logger.getLogger( SWTRadioButtonListWidget.class );
 
 	private List<Button> buttons = new ArrayList<Button>();
 	private Label label;
@@ -159,7 +159,7 @@ public class RadioButtonListWidget
 	}
 
 	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.ControlUI#reinit()
+	 * @see org.atdl4j.ui.Atdl4jWidget#reinit()
 	 */
 	@Override
 	public void processReinit( Object aControlInitValue )

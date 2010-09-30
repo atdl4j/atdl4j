@@ -33,11 +33,11 @@ public interface StrategyUI
 
 	public void setFIXMessage(String text);
 	
-	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of ControlUI<?> --
-	public Map<String, ControlUI<?>> getControlUIMap();
+	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of Atdl4jWidget<?> --
+	public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetMap();
 
-	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of ControlUI<?> --
-	public Map<String, ControlUI<?>> getControlUIWithParameterMap();
+	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of Atdl4jWidget<?> --
+	public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetWithParameterMap();
 
    public void setCxlReplaceMode(boolean cxlReplaceMode);
 

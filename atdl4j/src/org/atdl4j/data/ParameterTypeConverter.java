@@ -6,7 +6,7 @@ import org.atdl4j.fixatdl.core.ParameterT;
 /**
  * An interface for an algorithmic parameter container class. Classes which implement
  * this interface hold parameter descriptor data but do not store a value (see the 
- * ControlUI class which stores the underlying FIX value.)
+ * Atdl4jWidget class which stores the underlying FIX value.)
  */
 public interface ParameterTypeConverter<E extends Comparable<?>> 
 {
@@ -14,7 +14,7 @@ public interface ParameterTypeConverter<E extends Comparable<?>>
 	 * Convert a String value associated with the Parameter (eg Parameter/@minValue, Parameter/@maxValue, Parameter/@constValue, etc)
 	 * to a raw Parameter value.
 	 * 
-Used by: AbstractControlUI.convertParameterStringToParameterComparable()
+Used by: AbstractAtdl4jWidget.convertParameterStringToParameterComparable()
 	- ValueOperatorValidationRule.validate()
 
 	 * @param aParameterString
@@ -25,7 +25,7 @@ Used by: AbstractControlUI.convertParameterStringToParameterComparable()
 	/**
 	 * Convert the FIX field wire value (from FIX message) to a raw Parameter value.
 	 * 
-Used by: AbstractControlUI.setFIXValue()
+Used by: AbstractAtdl4jWidget.setFIXValue()
 
 	 * @param aFixValue
 	 * @return
@@ -35,8 +35,8 @@ Used by: AbstractControlUI.setFIXValue()
 	/**
 	 * Convert the raw Parameter value to FIX field's wire value (for a FIX message).
 	 * 
-Used by: AbstractControlUI.getParameterFixWireValue()
-	- AbstractControlUI.getFIXValue()
+Used by: AbstractAtdl4jWidget.getParameterFixWireValue()
+	- AbstractAtdl4jWidget.getFIXValue()
 	- LengthValidationRule.validate()
 	- PatternValidationRule.validate()
 	
@@ -48,9 +48,9 @@ Used by: AbstractControlUI.getParameterFixWireValue()
 	/**
 	 * Convert the raw Parameter value to a Comparable (eg for StrategyEdit rule check)
 	 * 
-Used by: AbstractControlUI.getParameterValueAsComparable()
+Used by: AbstractAtdl4jWidget.getParameterValueAsComparable()
 	- ValueOperatorValidationRule.validate()
-Used by: AbstractControlUI.convertParameterStringToParameterComparable()
+Used by: AbstractAtdl4jWidget.convertParameterStringToParameterComparable()
 	- ValueOperatorValidationRule.validate()
 	 
 	 * @param aParameterValue
