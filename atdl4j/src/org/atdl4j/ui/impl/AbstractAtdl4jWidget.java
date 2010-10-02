@@ -32,7 +32,7 @@ import org.atdl4j.ui.ControlHelper;
 import org.atdl4j.ui.Atdl4jWidget;
 
 /**
- * Abstract class that represents a Parameter SWT Widget. Implements the FIX
+ * Abstract class that represents a Parameter Widget. Implements the FIX
  * value getters's methods.
  */
 public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>

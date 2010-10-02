@@ -37,6 +37,11 @@ import org.atdl4j.fixatdl.layout.TextFieldT;
  */
 public class ControlHelper
 {
+	// 9/11/2010 John Shields adding back previous interface for Swing usage
+        public static BigDecimal getIncrementValue(ControlT aControl, Atdl4jOptions aAtdl4jOptions) {
+	   return getIncrementValue(aControl, aAtdl4jOptions, 0);
+	}
+    
 	/**
 	 * @param aControl
 	 * @param aAtdl4jOptions
@@ -56,6 +61,11 @@ public class ControlHelper
 		}
 		
 		return null;
+	}
+	
+	// 9/11/2010 John Shields adding back previous interface for Swing usage
+        public static BigDecimal getInnerIncrementValue(ControlT aControl, Atdl4jOptions aAtdl4jOptions) {
+	   return getInnerIncrementValue(aControl, aAtdl4jOptions, 0);
 	}
 	
 	/**
