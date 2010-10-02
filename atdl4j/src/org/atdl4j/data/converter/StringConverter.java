@@ -172,7 +172,7 @@ public class StringConverter
 		else
 		{
 			// -- aDatatypeIfNull=DatatypeConverter.DATATYPE_STRING --
-			return DatatypeConverter.convertValueToDatatype( aValue, getParameterDatatype( DatatypeConverter.DATATYPE_STRING ) );
+			return DatatypeConverter.convertValueToDatatype( aValue, getParameterDatatype( String.class ) );
 		}
 	}
 

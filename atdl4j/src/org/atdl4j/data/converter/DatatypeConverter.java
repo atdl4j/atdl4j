@@ -23,35 +23,37 @@ public class DatatypeConverter
 {
 	// -- Object that is an instanceof the Parameter's base data type (eg String, BigDecimal, DateTime, etc) --
 	// -- @see ParameterTypeConverter.getParameterDatatype() and DatatypeConverter
-	public static String DATATYPE_STRING = new String();
-	public static Boolean DATATYPE_BOOLEAN = new Boolean( false );
-	public static DateTime DATATYPE_DATE_TIME = new DateTime();
-	public static XMLGregorianCalendar DATATYPE_XML_GREGORIAN_CALENDAR = DateTimeConverter.constructNewXmlGregorianCalendar();
-	public static BigDecimal DATATYPE_BIG_DECIMAL = new BigDecimal( "0" );
-	public static BigInteger DATATYPE_BIG_INTEGER = new BigInteger( "0" );
+//	public static String DATATYPE_STRING = new String();
+//	public static Boolean DATATYPE_BOOLEAN = new Boolean( false );
+//	public static DateTime DATATYPE_DATE_TIME = new DateTime();
+//	public static XMLGregorianCalendar DATATYPE_XML_GREGORIAN_CALENDAR = DateTimeConverter.constructNewXmlGregorianCalendar();
+//	public static BigDecimal DATATYPE_BIG_DECIMAL = new BigDecimal( "0" );
+//	public static BigInteger DATATYPE_BIG_INTEGER = new BigInteger( "0" );
 
 	/**
 	 * Convert from one datatype to another (eg ParameterConverter's type to ControlConverter's type and vice-versa)
 	 * @param aValue
-	 * @param aToDatatypeObject
+	 * 		The value to convert
+	 * @param klass
+	 * 		The target class to which the datatype should be converted
 	 * @return
 	 */
-	public static Object convertValueToDatatype( Object aValue, Object aToDatatypeObject )
+	public static Object convertValueToDatatype( Object aValue, Class<?> klass )
 	{
-		if ( aToDatatypeObject == null )
+		if ( klass == null )
 		{
 			throw new IllegalArgumentException( "aToDatatypeObject provided was null" );
 		}
 		
-		if ( aToDatatypeObject instanceof String )
+		if ( klass == String.class )
 		{
 			return convertValueToStringDatatype( aValue );
 		}
-		else if ( aToDatatypeObject instanceof Boolean )
+		else if ( klass == Boolean.class )
 		{
 			return convertValueToBooleanDatatype( aValue );
 		}
-		else if ( aToDatatypeObject instanceof DateTime )
+		else if ( klass == DateTime.class )
 		{
 			if ( aValue == null )
 			{
@@ -62,7 +64,7 @@ public class DatatypeConverter
 				throw new IllegalArgumentException( "DateTime datatype conversion is not supported (due to timezone offests).  [aValue: " + aValue + "]" );
 			}
 		}
-		else if ( aToDatatypeObject instanceof XMLGregorianCalendar )
+		else if ( klass == XMLGregorianCalendar.class )
 		{
 			if ( aValue == null )
 			{
@@ -73,17 +75,17 @@ public class DatatypeConverter
 				throw new IllegalArgumentException( "XMLGregorianCalendar datatype conversion is not supported (due to timezone offests).  [aValue: " + aValue + "]" );
 			}
 		}
-		else if ( aToDatatypeObject instanceof BigDecimal )
+		else if ( klass == BigDecimal.class )
 		{
 			return convertValueToBigDecimalDatatype( aValue );
 		}
-		else if ( aToDatatypeObject instanceof BigInteger )
+		else if ( klass == BigInteger.class )
 		{
 			return convertValueToBigIntegerDatatype( aValue );
 		}
 		else
 		{
-			throw new IllegalArgumentException( "Unsupported aToDatatypeObject type: " + aToDatatypeObject.getClass() + " [aValue: " + aValue + "]" );
+			throw new IllegalArgumentException( "Unsupported aToDatatypeObject type: " + klass.getClass() + " [aValue: " + aValue + "]" );
 		}
 	}
 

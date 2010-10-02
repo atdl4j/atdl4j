@@ -83,7 +83,7 @@ public class BooleanConverter
 	public Object convertControlValueToParameterValue(Object aValue)
 	{
 		// -- aDatatypeIfNull=DATATYPE_BOOLEAN --
-		return DatatypeConverter.convertValueToDatatype( aValue, getParameterDatatype( DatatypeConverter.DATATYPE_BOOLEAN ) );
+		return DatatypeConverter.convertValueToDatatype( aValue, getParameterDatatype( Boolean.class ) );
 	}
 
 	/* No conversion applicable for this type.  Returns aValue.

@@ -1,5 +1,10 @@
 package org.atdl4j.data;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.atdl4j.data.converter.BooleanConverter;
 import org.atdl4j.data.converter.DatatypeConverter;
 import org.atdl4j.data.converter.DateTimeConverter;
@@ -149,45 +154,39 @@ public class TypeConverterFactory
 	}
 	
 
-
-	/*
-	 * Returns an Object that is an instanceof the Parameter's base data type (eg String, BigDecimal, DateTime, etc)
-	 */
-// 3/12/2010 Scott Atwell added	
-	public static Object getParameterDatatype(ParameterT aParameter)
-	{
-		if ( aParameter instanceof StringT || aParameter instanceof CharT || aParameter instanceof MultipleCharValueT
-				|| aParameter instanceof MultipleStringValueT || aParameter instanceof CurrencyT || aParameter instanceof ExchangeT
-				|| aParameter instanceof DataT )
-		{
-			return DatatypeConverter.DATATYPE_STRING;
-		}
-		else if ( aParameter instanceof NumericT )
-		{
-			return DatatypeConverter.DATATYPE_BIG_DECIMAL; // Float field
-		}
-		else if ( aParameter instanceof IntT || aParameter instanceof NumInGroupT || aParameter instanceof SeqNumT || aParameter instanceof TagNumT
-				|| aParameter instanceof LengthT )
-		{
-			return DatatypeConverter.DATATYPE_BIG_INTEGER; // Integer field
-		}
-		else if ( aParameter instanceof BooleanT )
-		{
-			return DatatypeConverter.DATATYPE_BOOLEAN; 
-		}
-		else if ( aParameter instanceof MonthYearT )
-		{
-			return DatatypeConverter.DATATYPE_STRING;
-		}
-		else if ( aParameter instanceof UTCTimestampT || aParameter instanceof UTCTimeOnlyT
-				|| aParameter instanceof LocalMktDateT || aParameter instanceof UTCDateOnlyT )
-		{
-			return DatatypeConverter.DATATYPE_XML_GREGORIAN_CALENDAR;
-		}
-		else
-		{
-			throw new IllegalArgumentException( "Unsupported ParameterT type: " + aParameter.getClass().getName() );
-		}
+    /*
+     * Returns an Object that is an instanceof the Parameter's base data type
+     * (eg String, BigDecimal, DateTime, etc)
+     */
+    // 3/12/2010 Scott Atwell added
+    public static Class<?> getParameterDatatype(ParameterT aParameter) {
+	if (aParameter instanceof StringT || aParameter instanceof CharT
+		|| aParameter instanceof MultipleCharValueT
+		|| aParameter instanceof MultipleStringValueT
+		|| aParameter instanceof CurrencyT
+		|| aParameter instanceof ExchangeT
+		|| aParameter instanceof DataT) {
+	    return String.class;
+	} else if (aParameter instanceof NumericT) {
+	    return BigDecimal.class; // Float field
+	} else if (aParameter instanceof IntT
+		|| aParameter instanceof NumInGroupT
+		|| aParameter instanceof SeqNumT
+		|| aParameter instanceof TagNumT
+		|| aParameter instanceof LengthT) {
+	    return BigInteger.class; // Integer field
+	} else if (aParameter instanceof BooleanT) {
+	    return Boolean.class;
+	} else if (aParameter instanceof MonthYearT) {
+	    return String.class;
+	} else if (aParameter instanceof UTCTimestampT
+		|| aParameter instanceof UTCTimeOnlyT
+		|| aParameter instanceof LocalMktDateT
+		|| aParameter instanceof UTCDateOnlyT) {
+	    return XMLGregorianCalendar.class;
+	} else {
+	    throw new IllegalArgumentException("Unsupported ParameterT type: "
+		    + aParameter.getClass().getName());
 	}
-
+    }
 }

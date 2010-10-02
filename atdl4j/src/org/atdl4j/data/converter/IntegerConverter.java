@@ -295,7 +295,7 @@ public class IntegerConverter
 	public Object convertControlValueToParameterValue(Object aValue)
 	{
 		// -- aDatatypeIfNull=DATATYPE_BIG_INTEGER --
-		return DatatypeConverter.convertValueToDatatype( aValue, getParameterDatatype( DatatypeConverter.DATATYPE_BIG_INTEGER ) );
+		return DatatypeConverter.convertValueToDatatype( aValue, getParameterDatatype( BigInteger.class ) );
 	}
 
 	/* No conversion applicable for this type.  Returns aValue.

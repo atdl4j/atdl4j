@@ -154,10 +154,10 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 	 * Part of ControlTypeConverter (if using ParameterTypeConverter use no-arg method).
 	 * Returns an Object that is an instanceof the Parameter's base data type (eg String, BigDecimal, DateTime, etc)
 	 * Returns aDatatypeIfNull if Parameter is null
-	 * @param aDatatypeIfNull
+	 * @param classIfNull
 	 * @return
 	 */
-	public Object getParameterDatatype( Object aDatatypeIfNull )
+	public Class<?> getParameterDatatype( Class<?> classIfNull )
 	{
 		if ( getParameterTypeConverter() != null )
 		{
@@ -165,7 +165,7 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 		}
 		else
 		{
-			return aDatatypeIfNull;
+			return classIfNull;
 		}
 	}
 
@@ -173,7 +173,7 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 	 * Part of ParameterTypeConverter, also supported by ControlTypeConverter.
 	 * Returns an Object that is an instanceof the Parameter's base data type (eg String, BigDecimal, DateTime, etc)
 	 */
-	public Object getParameterDatatype()
+	public Class<?> getParameterDatatype()
 	{
 		ParameterT tempParameter = getParameter();
 		
@@ -184,8 +184,7 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 		
 		if ( tempParameter != null )
 		{
-// 9/29/2010 Scott Atwell			return TypeConverterFactory.getParameterDatatype( tempParameter );
-			return TypeConverterFactoryConfig.getTypeConverterFactory().getParameterDatatype( tempParameter );
+			return TypeConverterFactory.getParameterDatatype( tempParameter );
 		}
 		else
 		{

@@ -358,7 +358,7 @@ public class DecimalConverter
 		else
 		{
 			// -- aDatatypeIfNull=DATATYPE_BIG_DECIMAL --
-			return DatatypeConverter.convertValueToDatatype( tempBigDecimal, getParameterDatatype( DatatypeConverter.DATATYPE_BIG_DECIMAL ) );
+			return DatatypeConverter.convertValueToDatatype( tempBigDecimal, getParameterDatatype( BigDecimal.class ) );
 		}
 	}
 

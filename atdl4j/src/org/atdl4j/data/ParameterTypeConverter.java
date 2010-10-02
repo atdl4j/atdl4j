@@ -78,6 +78,6 @@ Used by:  AbstractStrategyUI.buildParameters() for const/min/max value rule setu
 	/**
 	 * @returns an Object that is an instanceof the Parameter's base data type (eg String, BigDecimal, DateTime, etc)
 	 */
-	public Object getParameterDatatype();
+	public Class<?> getParameterDatatype();
 	
 }

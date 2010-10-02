@@ -82,6 +82,6 @@ Used by:
 	 * @param aDatatypeIfNull
 	 * @return
 	 */
-	public Object getParameterDatatype( Object aDatatypeIfNull );
+	public Class<?> getParameterDatatype( Class<?> aClassIfNull );
 
 }
