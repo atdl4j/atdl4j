@@ -2,11 +2,12 @@
  * Created on Feb 28, 2010
  *
  */
-package org.atdl4j.ui.swt.app;
+package org.atdl4j.ui.swt.app.impl;
 
 import org.apache.log4j.Logger;
+import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.ui.app.AbstractAtdl4jTesterApp;
+import org.atdl4j.ui.app.impl.AbstractAtdl4jTesterApp;
 import org.atdl4j.ui.swt.config.SWTAtdl4jConfiguration;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
@@ -42,7 +43,8 @@ public class SWTAtdl4jTesterApp
 		}
 		catch (Exception e)
 		{
-			if ( getAtdl4jOptions() != null && getAtdl4jOptions().isCatchAllMainlineExceptions() )
+//			if ( getAtdl4jOptions() != null && getAtdl4jOptions().isCatchAllMainlineExceptions() )
+			if ( Atdl4jConfig.getConfig() != null && Atdl4jConfig.getConfig().isCatchAllMainlineExceptions() )
 			{
 				tempSWTAtdl4jTesterApp.logger.warn( "Fatal Exception in mainLine", e );
 			}
@@ -97,7 +99,8 @@ public class SWTAtdl4jTesterApp
 			}
 			catch (Exception e)
 			{
-				if ( getAtdl4jOptions() != null && getAtdl4jOptions().isCatchAllRuntimeExceptions() )
+//				if ( getAtdl4jOptions() != null && getAtdl4jOptions().isCatchAllRuntimeExceptions() )
+				if ( Atdl4jConfig.getConfig() != null && Atdl4jConfig.getConfig().isCatchAllRuntimeExceptions() )
 				{
 					logger.warn( "Fatal Exception encountered", e );
 					// 9/29/2010 Scott Atwell

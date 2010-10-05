@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import org.atdl4j.fixatdl.layout.DropDownListT;
 import org.atdl4j.fixatdl.layout.EditableDropDownListT;
 import org.atdl4j.fixatdl.layout.ListItemT;
-import org.atdl4j.ui.ControlHelper;
+import org.atdl4j.ui.impl.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
 
 public class SwingDropDownListWidget

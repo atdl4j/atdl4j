@@ -16,7 +16,7 @@ import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.fixatdl.core.BooleanT;
 import org.atdl4j.fixatdl.layout.CheckBoxT;
 import org.atdl4j.fixatdl.layout.RadioButtonT;
-import org.atdl4j.ui.ControlHelper;
+import org.atdl4j.ui.impl.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
 
 /*

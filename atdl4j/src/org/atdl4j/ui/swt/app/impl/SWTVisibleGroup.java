@@ -2,7 +2,7 @@
  * Created on Mar 7, 2010
  *
  */
-package org.atdl4j.ui.swt.app;
+package org.atdl4j.ui.swt.app.impl;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;

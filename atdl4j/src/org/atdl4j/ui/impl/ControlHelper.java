@@ -2,7 +2,7 @@
  * Created on Feb 21, 2010
  *
  */
-package org.atdl4j.ui;
+package org.atdl4j.ui.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

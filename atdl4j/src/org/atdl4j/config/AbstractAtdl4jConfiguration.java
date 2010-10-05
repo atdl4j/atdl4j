@@ -69,6 +69,25 @@ public abstract class AbstractAtdl4jConfiguration
 	private String classNameFixMsgLoadPanel;
 	private String classNameStrategySelectionPanel;
 	private String classNameStrategyDescriptionPanel;
+
+
+//TODO 9/27/2010 Scott Atwell removed	private StrategiesT strategies;
+// 6/23/2010 Scott Atwell	private Map<StrategyT, StrategyUI> strategyUIMap;
+// 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel 	private StrategyT selectedStrategy;
+
+	private boolean catchAllMainlineExceptions  = false;
+	private boolean catchAllRuntimeExceptions  = false;
+	private boolean catchAllStrategyLoadExceptions  = false;
+	private boolean catchAllValidationExceptions  = false;
+	
+	private boolean showStrategyDescription = true;
+	private boolean showTimezoneSelector = false;
+	private boolean showFileSelectionSection = true;
+	private boolean showValidateOutputSection = true;
+	private boolean showCompositePanelOkCancelButtonSection = true;
+	private Integer strategyDropDownItemDepth = new Integer( 15 );  // ComboBox drop down 'depth' (aka VisibleItemCount)
+
+	
 	protected String getDefaultClassNameAtdl4jWidgetFactory()
 	{ 
 		return DEFAULT_CLASS_NAME_ATDL4j_WIDGET_FACTORY;
@@ -732,6 +751,166 @@ public abstract class AbstractAtdl4jConfiguration
 	public void setClassNameStrategyPanelHelper(String aClassNameStrategyPanelHelper)
 	{
 		this.classNameStrategyPanelHelper = aClassNameStrategyPanelHelper;
+	}
+
+	/**
+	 * @return the catchAllMainlineExceptions
+	 */
+	public boolean isCatchAllMainlineExceptions()
+	{
+		return this.catchAllMainlineExceptions;
+	}
+
+	/**
+	 * @return the catchAllRuntimeExceptions
+	 */
+	public boolean isCatchAllRuntimeExceptions()
+	{
+		return this.catchAllRuntimeExceptions;
+	}
+
+	/**
+	 * @return the catchAllStrategyLoadExceptions
+	 */
+	public boolean isCatchAllStrategyLoadExceptions()
+	{
+		return this.catchAllStrategyLoadExceptions;
+	}
+
+	/**
+	 * @return the catchAllStrategyLoadExceptions
+	 */
+	public boolean isCatchAllValidationExceptions()
+	{
+		return this.catchAllValidationExceptions;
+	}
+
+	/**
+	 * @param aCatchAllMainlineExceptions the catchAllMainlineExceptions to set
+	 */
+	public void setCatchAllMainlineExceptions(boolean aCatchAllMainlineExceptions)
+	{
+		this.catchAllMainlineExceptions = aCatchAllMainlineExceptions;
+	}
+
+	/**
+	 * @param aCatchAllRuntimeExceptions the catchAllRuntimeExceptions to set
+	 */
+	public void setCatchAllRuntimeExceptions(boolean aCatchAllRuntimeExceptions)
+	{
+		this.catchAllRuntimeExceptions = aCatchAllRuntimeExceptions;
+	}
+
+	/**
+	 * @param aCatchAllStrategyLoadExceptions the catchAllStrategyLoadExceptions to set
+	 */
+	public void setCatchAllStrategyLoadExceptions(boolean aCatchAllStrategyLoadExceptions)
+	{
+		this.catchAllStrategyLoadExceptions = aCatchAllStrategyLoadExceptions;
+	}
+
+	/**
+	 * @param aCatchAllStrategyLoadExceptions the catchAllStrategyLoadExceptions to set
+	 */
+	public void setCatchAllValidationExceptions(boolean aCatchAllValidationExceptions)
+	{
+		this.catchAllValidationExceptions = aCatchAllValidationExceptions;
+	}
+
+	/**
+	 * @return the showCompositePanelOkCancelButtonSection
+	 */
+	public boolean isShowCompositePanelOkCancelButtonSection()
+	{
+		return showCompositePanelOkCancelButtonSection;
+	}
+
+	/**
+	 * @return the showFileSelectionSection
+	 */
+	public boolean isShowFileSelectionSection()
+	{
+		return showFileSelectionSection;
+	}
+
+	/**
+	 * @return the showStrategyDescription
+	 */
+	public boolean isShowStrategyDescription()
+	{
+		return showStrategyDescription;
+	}
+
+	/**
+	 * @return the showTimezoneSelector
+	 */
+	public boolean isShowTimezoneSelector()
+	{
+		return showTimezoneSelector;
+	}
+
+	/**
+	 * @return the showValidateOutputSection
+	 */
+	public boolean isShowValidateOutputSection()
+	{
+		return showValidateOutputSection;
+	}
+
+	/**
+	 * @param showCompositePanelOkCancelButtonSection the showCompositePanelOkCancelButtonSection to set
+	 */
+	public void setShowCompositePanelOkCancelButtonSection(boolean showCompositePanelOkCancelButtonSection)
+	{
+		this.showCompositePanelOkCancelButtonSection = showCompositePanelOkCancelButtonSection;
+	}
+
+	/**
+	 * @param showFileSelectionSection the showFileSelectionSection to set
+	 */
+	public void setShowFileSelectionSection(boolean showFileSelectionSection)
+	{
+		this.showFileSelectionSection = showFileSelectionSection;
+	}
+
+	/**
+	 * @param showStrategyDescription the showStrategyDescription to set
+	 */
+	public void setShowStrategyDescription(boolean showStrategyDescription)
+	{
+		this.showStrategyDescription = showStrategyDescription;
+	}
+
+	/**
+	 * @param showTimezoneSelector the showTimezoneSelector to set
+	 */
+	public void setShowTimezoneSelector(boolean showTimezoneSelector)
+	{
+		this.showTimezoneSelector = showTimezoneSelector;
+	}
+
+	/**
+	 * @param showValidateOutputSection the showValidateOutputSection to set
+	 */
+	public void setShowValidateOutputSection(boolean showValidateOutputSection)
+	{
+		this.showValidateOutputSection = showValidateOutputSection;
+	}
+
+	/**
+	 * @param aStrategyDropDownItemDepth the strategyDropDownItemDepth to set
+	 */
+	public void setStrategyDropDownItemDepth(Integer aStrategyDropDownItemDepth)
+	{
+		this.strategyDropDownItemDepth = aStrategyDropDownItemDepth;
+	}
+
+	/**
+	 * @return the strategyDropDownItemDepth
+	 */
+	public Integer getStrategyDropDownItemDepth()
+	{
+		return this.strategyDropDownItemDepth;
 	}
 
 }

@@ -7,10 +7,10 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import org.atdl4j.ui.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
 import org.atdl4j.ui.swing.SwingWidget;
 import org.atdl4j.ui.impl.AbstractLabelWidget;
+import org.atdl4j.ui.impl.ControlHelper;
 import org.eclipse.swt.widgets.Listener;
 
 public class SwingLabelWidget

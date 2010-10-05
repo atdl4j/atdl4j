@@ -1,9 +1,11 @@
-package org.atdl4j.ui.app;
+package org.atdl4j.ui.app.impl;
 
 import java.util.List;
 import java.util.Vector;
 
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.ui.app.FixMsgLoadPanel;
+import org.atdl4j.ui.app.FixMsgLoadPanelListener;
 
 /**
  * Represents the base, non-GUI system-specific tester's "Load Message" button and text field GUI component. 

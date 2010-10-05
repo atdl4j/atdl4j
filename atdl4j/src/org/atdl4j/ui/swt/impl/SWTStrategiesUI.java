@@ -2,7 +2,6 @@ package org.atdl4j.ui.swt.impl;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
@@ -12,17 +11,13 @@ import org.atdl4j.data.validation.ValidationRuleFactory;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.fixatdl.validation.EditT;
-import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 import org.atdl4j.ui.impl.AbstractStrategiesUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 
 // 9/13/2010 Scott Atwell public class SWTStrategiesUI implements StrategiesUI<Composite> {
 public class SWTStrategiesUI
@@ -33,13 +28,14 @@ public class SWTStrategiesUI
 // -- 9/13/2010 Scott Atwell below from SWTStrategiesPanel	
 	private Composite strategiesPanel;
 //TODO	StrategiesUI<?> strategiesUI = null;
+/** 10/5/2010 Scott Atwell moved to AbstractStrategiesUI	
 	StrategyUI currentlyDisplayedStrategyUI = null;
 
 	
 	private Map<String, ValidationRule> strategiesRules;
 	private StrategiesT strategies;
 	private Atdl4jOptions atdl4jOptions;
-
+**/
 	
 	/*
 	 * Call init() after invoking the no arg constructor
@@ -83,6 +79,7 @@ public void init(Atdl4jOptions aAtdl4jOptions)
 	setAtdl4jOptions( aAtdl4jOptions );
 }
 	
+/*** 10/5/2010 Scott Atwell
 public StrategyUI createUI(StrategyT strategy, Composite parent)
 {
 //TODO 9/27/2010 Scott Atwell	return getStrategyUI( strategy, strategiesRules, parent );
@@ -94,23 +91,7 @@ public StrategyUI createUI(StrategyT strategy, Object parent)
 {
 	return createUI( strategy, (Composite) parent);
 }
-
-/**
- * @param atdl4jOptions the atdl4jOptions to set
- */
-protected void setAtdl4jOptions(Atdl4jOptions atdl4jOptions)
-{
-	this.atdl4jOptions = atdl4jOptions;
-}
-
-/**
- * @return the atdl4jOptions
- */
-public Atdl4jOptions getAtdl4jOptions()
-{
-	return atdl4jOptions;
-}
-
+***/
 
 
 // 9/29/2010 Scott Atwell public Object buildStrategiesPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
@@ -153,6 +134,7 @@ public void removeAllStrategyPanels()
 		control.dispose();
 }
 
+/*** 10/5/2010 Scott Atwell moved to SWTStrategyUIFactory
 //6/23/2010 Scott Atwell added, moving logic from createStrategiesPanels() loop	
 public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStrategy)
 {
@@ -207,6 +189,7 @@ public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStr
 	
 	return ui;
 }
+***/
 
 /** TODO 9/27/2010 Scott Atwell rewrote
  * public void createStrategyPanels(List<StrategyT> aFilteredStrategyList)
@@ -307,17 +290,17 @@ public StrategyUI createStrategyPanel(StrategiesUI aStrategiesUI, StrategyT aStr
 public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilteredStrategyList)
 {
 	// -- Check to see if StrategiesT has changed (eg new file loaded) --
-	if ( ( strategies == null ) || ( ! strategies.equals( aStrategies ) ) )
+	if ( ( getStrategies() == null ) || ( ! getStrategies().equals( aStrategies ) ) )
 	{
-		this.strategies = aStrategies;
+		setStrategies( aStrategies );
 		
-		strategiesRules = new HashMap<String, ValidationRule>();
-		for (EditT edit : strategies.getEdit()) {
+		setStrategiesRules( new HashMap<String, ValidationRule>() );
+		for (EditT edit : getStrategies().getEdit()) {
 			String id = edit.getId();
 			if (id != null) {
 				ValidationRule rule = ValidationRuleFactory.createRule(edit,
-						strategiesRules, strategies);
-				strategiesRules.put(id, rule);
+						getStrategiesRules(), getStrategies());
+				getStrategiesRules().put(id, rule);
 			} else {
 				throw new IllegalArgumentException("Strategies-scoped edit without id");
 			}
@@ -325,7 +308,7 @@ public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilte
 	}
 			
 	setPreCached( false );
-	currentlyDisplayedStrategyUI = null;
+	setCurrentlyDisplayedStrategyUI( null );
 
 	for ( StrategyT strategy : aFilteredStrategyList )
 	{
@@ -339,7 +322,10 @@ public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilte
 		 *********************************************************************************************/
 		removeAllStrategyPanels();
 //TODO		StrategyUI ui = createStrategyPanel( strategiesUI, strategy );
-		StrategyUI ui = createStrategyPanel( this, strategy );
+//TODO 10/5/2010 Scott Atwell moved to SWTStrategyUIFactory	and renamed	StrategyUI ui = createStrategyPanel( this, strategy );
+		StrategyUI ui = SWTStrategyUIFactory.createStrategyUIAndContainer( this, strategy );
+		setCurrentlyDisplayedStrategyUI( ui );
+
 		if ( ui == null )
 		{
 			// skip to next strategy
@@ -348,14 +334,6 @@ public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilte
 	}
 	setPreCached( true );
 }  
-
-
-
-//6/23/2010 Scott Atwell added
-public StrategyUI getCurrentlyDisplayedStrategyUI()
-{
-	return currentlyDisplayedStrategyUI;
-}
 
 
 //4/16/2010 Scott Atwell - added to use with StackLayout	
@@ -445,7 +423,9 @@ public StrategyUI getStrategyUI( StrategyT aStrategy )
 
 //8/27/2010 Scott Atwell			return createStrategyPanel( strategiesUI, aStrategy );
 // TODO		StrategyUI tempStrategyUI = createStrategyPanel( strategiesUI, aStrategy );
-		StrategyUI tempStrategyUI = createStrategyPanel( this, aStrategy );
+//TODO 10/5/2010 Scott Atwell moved to SWTStrategyUIFactory	and renamed		StrategyUI tempStrategyUI = createStrategyPanel( this, aStrategy );
+		StrategyUI tempStrategyUI = SWTStrategyUIFactory.createStrategyUIAndContainer( this, aStrategy );
+		setCurrentlyDisplayedStrategyUI( tempStrategyUI );
 		
 //8/27/2010 Scott Atwell added
 		logger.debug("Invoking relayoutCollapsibleStrategyPanels() for: " + aStrategy.getName() );
@@ -453,6 +433,22 @@ public StrategyUI getStrategyUI( StrategyT aStrategy )
 		
 		return tempStrategyUI;
 	}
+}
+
+/**
+ * @return the strategiesPanel
+ */
+protected Composite getStrategiesPanel()
+{
+	return this.strategiesPanel;
+}
+
+/**
+ * @param aStrategiesPanel the strategiesPanel to set
+ */
+protected void setStrategiesPanel(Composite aStrategiesPanel)
+{
+	this.strategiesPanel = aStrategiesPanel;
 }
 
 

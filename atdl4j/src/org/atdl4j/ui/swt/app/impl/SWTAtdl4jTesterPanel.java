@@ -2,11 +2,11 @@
  * Created on Feb 28, 2010
  *
  */
-package org.atdl4j.ui.swt.app;
+package org.atdl4j.ui.swt.app.impl;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.ui.app.AbstractAtdl4jTesterPanel;
+import org.atdl4j.ui.app.impl.AbstractAtdl4jTesterPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;

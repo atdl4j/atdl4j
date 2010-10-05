@@ -1,7 +1,9 @@
-package org.atdl4j.ui.app;
+package org.atdl4j.ui.app.impl;
 
+import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.fixatdl.core.StrategyT;
+import org.atdl4j.ui.app.StrategyDescriptionPanel;
 
 /**
  * Represents the base, non-GUI system-specific Strategy Description GUI component.
@@ -26,7 +28,8 @@ public abstract class AbstractStrategyDescriptionPanel
 	public void loadStrategyDescriptionVisible( StrategyT aStrategy )
 	{
 		setStrategyDescriptionText( "" );
-		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowStrategyDescription() )
+//		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowStrategyDescription() )
+		if ( ( Atdl4jConfig.getConfig().isShowStrategyDescription() )
 			&& ( aStrategy != null ) && ( aStrategy.getDescription() != null )  )
 		{
 			setVisible( true );
@@ -39,7 +42,8 @@ public abstract class AbstractStrategyDescriptionPanel
 	
 	public void loadStrategyDescriptionText( StrategyT aStrategy )
 	{
-		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowStrategyDescription() ) )
+//		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowStrategyDescription() ) )
+		if ( ( Atdl4jConfig.getConfig().isShowStrategyDescription() ) )
 		{
 			if ( ( aStrategy != null ) && ( aStrategy.getDescription() != null ) )
 			{

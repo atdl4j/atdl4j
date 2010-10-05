@@ -10,7 +10,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.atdl4j.ui.ControlHelper;
+import org.atdl4j.ui.impl.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
 /*
 import org.atdl4j.fixatdl.core.IntT;

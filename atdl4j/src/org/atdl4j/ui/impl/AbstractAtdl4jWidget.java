@@ -28,7 +28,6 @@ import org.atdl4j.fixatdl.layout.RadioButtonT;
 import org.atdl4j.fixatdl.layout.SingleSelectListT;
 import org.atdl4j.fixatdl.layout.SliderT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
-import org.atdl4j.ui.ControlHelper;
 import org.atdl4j.ui.Atdl4jWidget;
 
 /**

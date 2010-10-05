@@ -2,12 +2,13 @@
  * Created on Feb 26, 2010
  *
  */
-package org.atdl4j.ui.app;
+package org.atdl4j.ui.app.impl;
 
 import javax.xml.bind.JAXBException;
 
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.exception.ValidationException;
+import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 
 /**
  * Represents the base, non-GUI system-specific GUI pop-up message screen support.

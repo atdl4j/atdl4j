@@ -23,10 +23,10 @@ import org.atdl4j.fixatdl.core.UTCTimeOnlyT;
 import org.atdl4j.fixatdl.core.UTCTimestampT;
 import org.atdl4j.fixatdl.core.UseT;
 import org.atdl4j.fixatdl.layout.ClockT;
-import org.atdl4j.ui.ControlHelper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import org.atdl4j.ui.impl.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
 
 import com.jidesoft.spinner.DateSpinner;

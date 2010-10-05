@@ -12,7 +12,7 @@ import javax.swing.JSlider;
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.layout.ListItemT;
 import org.atdl4j.fixatdl.layout.SliderT;
-import org.atdl4j.ui.ControlHelper;
+import org.atdl4j.ui.impl.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
 
 public class SwingSliderWidget

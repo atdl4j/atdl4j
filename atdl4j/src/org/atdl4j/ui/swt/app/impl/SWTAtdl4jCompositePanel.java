@@ -1,8 +1,9 @@
-package org.atdl4j.ui.swt.app;
+package org.atdl4j.ui.swt.app.impl;
 
 import org.apache.log4j.Logger;
+import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.ui.app.AbstractAtdl4jCompositePanel;
+import org.atdl4j.ui.app.impl.AbstractAtdl4jCompositePanel;
 import org.atdl4j.ui.swt.util.SWTMenuHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -86,10 +87,12 @@ public class SWTAtdl4jCompositePanel
 	protected void createMenuItems()
 	{
 		// -- "Show File Selection" --
-		setVisibleFileSelectionSection( getAtdl4jOptions().isShowFileSelectionSection() );
+//		setVisibleFileSelectionSection( getAtdl4jOptions().isShowFileSelectionSection() );
+		setVisibleFileSelectionSection( Atdl4jConfig.getConfig().isShowFileSelectionSection() );
 //		final MenuItem tempShowFileSelectionMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show File Selection" );
 		showFileSelectionMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show File Selection" );
-		showFileSelectionMenuItem.setSelection( getAtdl4jOptions().isShowFileSelectionSection() );
+//		showFileSelectionMenuItem.setSelection( getAtdl4jOptions().isShowFileSelectionSection() );
+		showFileSelectionMenuItem.setSelection( Atdl4jConfig.getConfig().isShowFileSelectionSection() );
 		showFileSelectionMenuItem.addListener( SWT.Selection, new Listener()
 		{
 			@Override
@@ -101,10 +104,12 @@ public class SWTAtdl4jCompositePanel
 		
 		
 		// -- "Show Validate Output" --
-		setVisibleValidateOutputSection( getAtdl4jOptions().isShowValidateOutputSection() );
+//		setVisibleValidateOutputSection( getAtdl4jOptions().isShowValidateOutputSection() );
+		setVisibleValidateOutputSection( Atdl4jConfig.getConfig().isShowValidateOutputSection() );
 //		final MenuItem tempShowValidateOutputMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show Validate Output" );
 		showValidateOutputMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show Validate Output" );
-		showValidateOutputMenuItem.setSelection( getAtdl4jOptions().isShowValidateOutputSection() );
+//		showValidateOutputMenuItem.setSelection( getAtdl4jOptions().isShowValidateOutputSection() );
+		showValidateOutputMenuItem.setSelection( Atdl4jConfig.getConfig().isShowValidateOutputSection() );
 		showValidateOutputMenuItem.addListener( SWT.Selection, new Listener()
 		{
 			@Override
@@ -161,7 +166,8 @@ public class SWTAtdl4jCompositePanel
 	
 	protected void setValidateOutputText(String aText)
 	{
-		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowValidateOutputSection() ) )
+//		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowValidateOutputSection() ) )
+		if ( ( Atdl4jConfig.getConfig().isShowValidateOutputSection() ) )
 		{
 			if ( aText != null )
 			{
@@ -228,7 +234,8 @@ public class SWTAtdl4jCompositePanel
 			}
 		});
 		
-		setVisibleOkCancelButtonSection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
+//		setVisibleOkCancelButtonSection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
+		setVisibleOkCancelButtonSection( Atdl4jConfig.getConfig().isShowCompositePanelOkCancelButtonSection() );
 		
 		return okCancelButtonSection;
 	}

@@ -2,13 +2,15 @@
  * Created on Feb 28, 2010
  *
  */
-package org.atdl4j.ui.app;
+package org.atdl4j.ui.app.impl;
 
 import java.util.List;
 import java.util.Vector;
 
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
+import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel;
+import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanelListener;
 
 /**
  * Represents the base, non-GUI system-specific Atdl4jOptions and InputAndFilterData GUI component.

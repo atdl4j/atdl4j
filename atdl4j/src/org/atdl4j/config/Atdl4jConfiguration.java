@@ -53,4 +53,27 @@ public interface Atdl4jConfiguration
 	public String getClassNameStrategySelectionPanel();
 	public String getClassNameStrategyUI();
 	public String getClassNameTypeConverterFactory();
+	
+	public boolean isCatchAllMainlineExceptions();
+	public boolean isCatchAllRuntimeExceptions();;
+	public boolean isCatchAllStrategyLoadExceptions();
+	public boolean isCatchAllValidationExceptions();
+	public void setCatchAllMainlineExceptions(boolean aCatchAllMainlineExceptions);
+	public void setCatchAllRuntimeExceptions(boolean aCatchAllRuntimeExceptions);
+	public void setCatchAllStrategyLoadExceptions(boolean aCatchAllStrategyLoadExceptions);
+	public void setCatchAllValidationExceptions(boolean aCatchAllValidationExceptions);
+
+	public boolean isShowCompositePanelOkCancelButtonSection();
+	public boolean isShowFileSelectionSection();
+	public boolean isShowStrategyDescription();
+	public boolean isShowTimezoneSelector();
+	public boolean isShowValidateOutputSection();
+	public Integer getStrategyDropDownItemDepth();
+	public void setShowCompositePanelOkCancelButtonSection(boolean showCompositePanelOkCancelButtonSection);
+	public void setShowFileSelectionSection(boolean showFileSelectionSection);
+	public void setShowStrategyDescription(boolean showStrategyDescription);
+	public void setShowTimezoneSelector(boolean showTimezoneSelector);
+	public void setShowValidateOutputSection(boolean showValidateOutputSection);
+	public void setStrategyDropDownItemDepth(Integer aStrategyDropDownItemDepth);
+
 }

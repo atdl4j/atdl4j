@@ -10,18 +10,15 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.validation.Field2OperatorValidationRule;
 import org.atdl4j.data.validation.LogicalOperatorValidationRule;
 import org.atdl4j.data.validation.ValueOperatorValidationRule;
-import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.flow.StateRuleT;
 import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.fixatdl.layout.RadioButtonT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
 import org.atdl4j.ui.Atdl4jWidget;
-import org.atdl4j.ui.Atdl4jWidgetFactory;
 import org.atdl4j.ui.impl.AbstractStrategyUI;
 import org.atdl4j.ui.swt.SWTWidget;
 import org.atdl4j.ui.swt.widget.SWTButtonWidget;
@@ -259,7 +256,8 @@ public class SWTStrategyUI
 		{
 //	8/24/2010 Scott Atwell		tempControlMap.putAll( getControlFactory().createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE ) );
 // 9/26/2010 Scott Atwell			tempControlMap.putAll( getControlFactory().createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE, getExpandBarList()	) );
-			tempControlMap.putAll( createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE, getExpandBarList()	) );
+// 10/5/2010 Scott Atwell			tempControlMap.putAll( createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE, getExpandBarList()	) );
+			tempControlMap.putAll( SWTStrategyPanelFactory.createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE, getExpandBarList(), getAtdl4jWidgetFactory() ) );
 		}
 	
 		// 3/13/2010 John Shields HACK: make the first panel take the full width of the window
@@ -557,6 +555,7 @@ public class SWTStrategyUI
 	
 // TODO 9/26/2010 Scott Atwell moved from SWTFactory
 // Used to create a single parameter widget
+/*** 10/05/2010 Scott Atwell moved to new SWTWidgetFactory	
 public SWTWidget<?> createWidget(Composite parent, ControlT control, ParameterT parameter, int style)
 {
 	SWTWidget<?> parameterWidget = null;
@@ -577,8 +576,9 @@ public SWTWidget<?> createWidget(Composite parent, ControlT control, ParameterT 
 
 	return parameterWidget;
 }
-
+***/
 	
+/*** 10/5/2010 Scott Atwell moved to new SWTStrategyPanelFactory	
 //TODO 9/26/2010 Scott Atwell moved from SWTFactory
 // Given a panel, recursively populates a map of Panels and Parameter widgets
 // Can also process options for a group frame instead of a single panel
@@ -675,12 +675,12 @@ public Map<String, SWTWidget<?>> createStrategyPanelAndWidgets(Composite parent,
 	
 	// -- Force re-sizing (to support non-collapsed, collapsible ExpandBar components) --
 //8/24/2010 Scott Atwell		if (c.getParent() instanceof ExpandBar) SWTStrategyPanelHelper.relayoutExpandBar( (ExpandBar)c.getParent(), false );
-/** 8/24/2010 
+/ ** 8/24/2010 
 		if ( (c.getParent() instanceof ExpandBar) && ( ! panel.isCollapsed() ) )
 		{
 		SWTStrategyPanelHelper.relayoutExpandBar( (ExpandBar)c.getParent(), false );
 	}
-**/
+** /
 	if ( c.getParent() instanceof ExpandBar )
 	{
 		aExpandBarList.add( (ExpandBar)c.getParent() );
@@ -688,5 +688,6 @@ public Map<String, SWTWidget<?>> createStrategyPanelAndWidgets(Composite parent,
 	
 	return controlWidgets;
 }
-	
+***/
+
 }

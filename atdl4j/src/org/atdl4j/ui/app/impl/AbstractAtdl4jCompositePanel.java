@@ -1,4 +1,4 @@
-package org.atdl4j.ui.app;
+package org.atdl4j.ui.app.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,14 @@ import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategyUI;
+import org.atdl4j.ui.app.Atdl4jCompositePanel;
+import org.atdl4j.ui.app.Atdl4jCompositePanelListener;
+import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
+import org.atdl4j.ui.app.FixatdlFileSelectionPanel;
+import org.atdl4j.ui.app.FixatdlFileSelectionPanelListener;
+import org.atdl4j.ui.app.StrategyDescriptionPanel;
+import org.atdl4j.ui.app.StrategySelectionPanel;
+import org.atdl4j.ui.app.StrategySelectionPanelListener;
 
 /**
  * Represents the base, non-GUI system-specific CORE strategy selection and display GUI component.
@@ -222,8 +230,10 @@ public abstract class AbstractAtdl4jCompositePanel
 	@Override
 	public void fixatdlFileSelected(String aFilename)
 	{
-		if (getAtdl4jOptions() != null && 
-			getAtdl4jOptions().isCatchAllStrategyLoadExceptions())
+//		if (getAtdl4jOptions() != null && 
+//			getAtdl4jOptions().isCatchAllStrategyLoadExceptions())
+		if (Atdl4jConfig.getConfig() != null && 
+				Atdl4jConfig.getConfig().isCatchAllStrategyLoadExceptions())
 		{
 			try {
 				fixatdlFileSelectedNotCatchAllExceptions(aFilename);
@@ -284,8 +294,11 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @return StrategyT (non-null only if passes all validation)
 	 */
 	public StrategyT validateStrategy() {
-		if (getAtdl4jOptions() != null
-				&& getAtdl4jOptions().isCatchAllValidationExceptions()) {
+				
+//		if (getAtdl4jOptions() != null
+//				&& getAtdl4jOptions().isCatchAllValidationExceptions()) {
+		if (Atdl4jConfig.getConfig() != null
+				&& Atdl4jConfig.getConfig().isCatchAllValidationExceptions()) {
 			try {
 				return validateStrategyWithoutCatchingAllExceptions();
 			} catch (Exception ex) {

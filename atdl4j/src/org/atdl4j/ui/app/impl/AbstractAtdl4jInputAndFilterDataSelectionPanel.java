@@ -2,7 +2,7 @@
  * Created on Feb 28, 2010
  *
  */
-package org.atdl4j.ui.app;
+package org.atdl4j.ui.app.impl;
 
 import java.util.List;
 import java.util.Vector;
@@ -11,6 +11,10 @@ import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
+import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel;
+import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanelListener;
+import org.atdl4j.ui.app.Atdl4jInputAndFilterDataSelectionPanel;
+import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 
 /**
  * Represents the base, non-GUI specific component used to invoke Atdl4jInputAndFilterDataPanel pop-up.

@@ -1,4 +1,4 @@
-package org.atdl4j.ui.app;
+package org.atdl4j.ui.app.impl;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
@@ -6,6 +6,13 @@ import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.ui.StrategyUI;
+import org.atdl4j.ui.app.Atdl4jCompositePanel;
+import org.atdl4j.ui.app.Atdl4jCompositePanelListener;
+import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanelListener;
+import org.atdl4j.ui.app.Atdl4jInputAndFilterDataSelectionPanel;
+import org.atdl4j.ui.app.Atdl4jTesterPanel;
+import org.atdl4j.ui.app.FixMsgLoadPanel;
+import org.atdl4j.ui.app.FixMsgLoadPanelListener;
 
 /**
  * Represents the base, non-GUI system-specific "TesterApp" core GUI component (without a main() line).
@@ -153,9 +160,12 @@ public abstract class AbstractAtdl4jTesterPanel
 	{
 		try
 		{
-			getAtdl4jCompositePanel().setVisibleFileSelectionSection( getAtdl4jOptions().isShowFileSelectionSection() );
-			getAtdl4jCompositePanel().setVisibleValidateOutputSection( getAtdl4jOptions().isShowValidateOutputSection() );
-			getAtdl4jCompositePanel().setVisibleOkCancelButtonSection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
+//			getAtdl4jCompositePanel().setVisibleFileSelectionSection( getAtdl4jOptions().isShowFileSelectionSection() );
+//			getAtdl4jCompositePanel().setVisibleValidateOutputSection( getAtdl4jOptions().isShowValidateOutputSection() );
+//			getAtdl4jCompositePanel().setVisibleOkCancelButtonSection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
+			getAtdl4jCompositePanel().setVisibleFileSelectionSection( Atdl4jConfig.getConfig().isShowFileSelectionSection() );
+			getAtdl4jCompositePanel().setVisibleValidateOutputSection( Atdl4jConfig.getConfig().isShowValidateOutputSection() );
+			getAtdl4jCompositePanel().setVisibleOkCancelButtonSection( Atdl4jConfig.getConfig().isShowCompositePanelOkCancelButtonSection() );
 			
 			// -- Reloads the screen for the pre-loaded/cached FIXatdl file (if specified and cached) --
 			getAtdl4jCompositePanel().loadScreenWithFilteredStrategies();

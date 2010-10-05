@@ -19,7 +19,7 @@ import org.atdl4j.data.converter.DecimalConverter;
 import org.atdl4j.data.converter.IntegerConverter;
 import org.atdl4j.fixatdl.layout.DoubleSpinnerT;
 import org.atdl4j.fixatdl.layout.SingleSpinnerT;
-import org.atdl4j.ui.ControlHelper;
+import org.atdl4j.ui.impl.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
 
 public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {

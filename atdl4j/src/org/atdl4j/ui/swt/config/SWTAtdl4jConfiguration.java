@@ -31,47 +31,47 @@ public class SWTAtdl4jConfiguration
 	
 	protected String getDefaultClassNameFixatdlFileSelectionPanel()
 	{ 
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTFixatdlFileSelectionPanel";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.impl.SWTFixatdlFileSelectionPanel";
 	}
 
 	protected String getDefaultClassNameFixMsgLoadPanel()
 	{ 
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTFixMsgLoadPanel";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.impl.SWTFixMsgLoadPanel";
 	}
 
 	protected String getDefaultClassNameStrategySelectionPanel()
 	{ 
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTStrategySelectionPanel";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.impl.SWTStrategySelectionPanel";
 	}
 
 	protected String getDefaultClassNameStrategyDescriptionPanel()
 	{ 
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTStrategyDescriptionPanel";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.impl.SWTStrategyDescriptionPanel";
 	}
 
 	protected String getDefaultClassNameAtdl4jTesterPanel()
 	{ 
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTAtdl4jTesterPanel";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.impl.SWTAtdl4jTesterPanel";
 	}
 
 	protected String getDefaultClassNameAtdl4jInputAndFilterDataSelectionPanel()
 	{ 
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTAtdl4jInputAndFilterDataSelectionPanel";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.impl.SWTAtdl4jInputAndFilterDataSelectionPanel";
 	}
 
 	protected String getDefaultClassNameAtdl4jInputAndFilterDataPanel()
 	{ 
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTAtdl4jInputAndFilterDataPanel";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.impl.SWTAtdl4jInputAndFilterDataPanel";
 	}
 
 	protected String getDefaultClassNameAtdl4jCompositePanel()
 	{ 
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTAtdl4jCompositePanel";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.impl.SWTAtdl4jCompositePanel";
 	}
 
 	protected String getDefaultClassNameAtdl4jUserMessageHandler()
 	{ 
-		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.SWTAtdl4jUserMessageHandler";
+		return PACKAGE_PATH_ORG_ATDL4J_UI_SWT + "app.impl.SWTAtdl4jUserMessageHandler";
 	}
 
 	protected String getDefaultClassNameAtdl4jWidgetForCheckBoxListT()

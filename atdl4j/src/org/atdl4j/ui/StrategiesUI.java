@@ -19,7 +19,7 @@ public interface StrategiesUI {
 
 	public Atdl4jOptions getAtdl4jOptions();
 	
-	public StrategyUI createUI(StrategyT strategy, Object parent);
+// 10/5/2010 Scott Atwell removed	public StrategyUI createUI(StrategyT strategy, Object parent);
 
 
 // -- 9/13/2010 Scott Atwell - moved the below from StrategiesPanel --	
@@ -54,5 +54,5 @@ public interface StrategiesUI {
 	public StrategyUI getCurrentlyDisplayedStrategyUI();
 	public StrategyT getCurrentlyDisplayedStrategy();
 
-	public StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer);	
+// 10/5/2010 Scott Atwell	public StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer);	
 }

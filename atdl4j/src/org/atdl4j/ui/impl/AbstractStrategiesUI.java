@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.fixatdl.core.StrategiesT;
@@ -39,6 +38,10 @@ public abstract class AbstractStrategiesUI
 	private boolean preCached = false;
 	
 	private Atdl4jUserMessageHandler atdl4jUserMessageHandler = null;
+
+	private StrategyUI currentlyDisplayedStrategyUI = null;
+	private Map<String, ValidationRule> strategiesRules;
+	private StrategiesT strategies;
 
 	/**
 	 * @param atdl4jOptions the atdl4jOptions to set
@@ -119,6 +122,7 @@ public abstract class AbstractStrategiesUI
 	 */
 // 9/27/2010 Scott Atwell added StrategiesT	public StrategyUI getStrategyUI(StrategyT strategy, Map<String, ValidationRule> strategiesRules, Object parentContainer)
 // 9/29/2010 Scott Atwell moved from Atdl4jConfig	public StrategyUI getStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer)
+/*** 10/5/2010 Scott Atwell moved to BaseStrategyUIFactory	
 	public StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer)
 	{
 		// -- Constructs a new instance every call --
@@ -143,7 +147,7 @@ public abstract class AbstractStrategiesUI
 		
 		return strategyUI;
 	}
-
+***/
 
 	/**
 	 * @param atdl4jUserMessageHandler the atdl4jUserMessageHandler to set
@@ -160,6 +164,60 @@ public abstract class AbstractStrategiesUI
 	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler()
 	{
 		return atdl4jUserMessageHandler;
+	}
+
+
+	/**
+	 * @return the currentlyDisplayedStrategyUI
+	 */
+	public StrategyUI getCurrentlyDisplayedStrategyUI()
+	{
+		return this.currentlyDisplayedStrategyUI;
+	}
+
+
+	/**
+	 * @param aCurrentlyDisplayedStrategyUI the currentlyDisplayedStrategyUI to set
+	 */
+	protected void setCurrentlyDisplayedStrategyUI(StrategyUI aCurrentlyDisplayedStrategyUI)
+	{
+		this.currentlyDisplayedStrategyUI = aCurrentlyDisplayedStrategyUI;
+	}
+
+
+	/**
+	 * @return the strategiesRules
+	 */
+	public Map<String, ValidationRule> getStrategiesRules()
+	{
+		return this.strategiesRules;
+	}
+
+
+	/**
+	 * @param aStrategiesRules the strategiesRules to set
+	 */
+	protected void setStrategiesRules(Map<String, ValidationRule> aStrategiesRules)
+	{
+		this.strategiesRules = aStrategiesRules;
+	}
+
+
+	/**
+	 * @return the strategies
+	 */
+	public StrategiesT getStrategies()
+	{
+		return this.strategies;
+	}
+
+
+	/**
+	 * @param aStrategies the strategies to set
+	 */
+	protected void setStrategies(StrategiesT aStrategies)
+	{
+		this.strategies = aStrategies;
 	}
 	
 }

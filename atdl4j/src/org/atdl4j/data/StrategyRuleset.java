@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.validation.StrategyEditT;
-import org.atdl4j.ui.ControlHelper;
 import org.atdl4j.ui.Atdl4jWidget;
+import org.atdl4j.ui.impl.ControlHelper;
 
 public class StrategyRuleset
 {

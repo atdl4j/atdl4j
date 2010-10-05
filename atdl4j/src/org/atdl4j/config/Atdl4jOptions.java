@@ -29,12 +29,6 @@ public class Atdl4jOptions
 
 	private InputAndFilterData inputAndFilterData;
 	
-	private boolean showStrategyDescription = true;
-	private boolean showTimezoneSelector = false;
-	private boolean showFileSelectionSection = true;
-	private boolean showValidateOutputSection = true;
-	private boolean showCompositePanelOkCancelButtonSection = true;
-	private Integer strategyDropDownItemDepth = new Integer( 15 );  // ComboBox drop down 'depth' (aka VisibleItemCount)
 //TODO 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel 	private boolean selectedStrategyValidated = false;
 	
 // 6/23/2010 Scott Atwell	private boolean usePreCachedStrategyPanels = true;
@@ -71,19 +65,6 @@ public class Atdl4jOptions
 	private String[] clockControlStartTimeIDValueFragmentList = new String[]{ "Start", "Effective", "Begin" };
 	private String[] clockControlEndTimeIDValueFragmentList = new String[]{ "End", "Expire", "Stop" };
 
-	private boolean catchAllMainlineExceptions  = false;
-
-	private boolean catchAllRuntimeExceptions  = false;
-
-	//TODO 9/27/2010 Scott Atwell removed	private StrategiesT strategies;
-	// 6/23/2010 Scott Atwell	private Map<StrategyT, StrategyUI> strategyUIMap;
-	// 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel 	private StrategyT selectedStrategy;
-		
-		private boolean catchAllStrategyLoadExceptions  = false;
-
-	private boolean catchAllValidationExceptions  = false;
-	
-	
 	/**
 	 * 
 	 */
@@ -105,86 +86,6 @@ public class Atdl4jOptions
 	public InputAndFilterData getInputAndFilterData()
 	{
 		return inputAndFilterData;
-	}
-
-	/**
-	 * @param showStrategyDescription the showStrategyDescription to set
-	 */
-	public void setShowStrategyDescription(boolean showStrategyDescription)
-	{
-		this.showStrategyDescription = showStrategyDescription;
-	}
-
-	/**
-	 * @return the showStrategyDescription
-	 */
-	public boolean isShowStrategyDescription()
-	{
-		return showStrategyDescription;
-	}
-
-	/**
-	 * @param showTimezoneSelector the showTimezoneSelector to set
-	 */
-	public void setShowTimezoneSelector(boolean showTimezoneSelector)
-	{
-		this.showTimezoneSelector = showTimezoneSelector;
-	}
-
-	/**
-	 * @return the showTimezoneSelector
-	 */
-	public boolean isShowTimezoneSelector()
-	{
-		return showTimezoneSelector;
-	}
-
-	/**
-	 * @param showFileSelectionSection the showFileSelectionSection to set
-	 */
-	public void setShowFileSelectionSection(boolean showFileSelectionSection)
-	{
-		this.showFileSelectionSection = showFileSelectionSection;
-	}
-
-	/**
-	 * @return the showFileSelectionSection
-	 */
-	public boolean isShowFileSelectionSection()
-	{
-		return showFileSelectionSection;
-	}
-
-	/**
-	 * @param showValidateOutputSection the showValidateOutputSection to set
-	 */
-	public void setShowValidateOutputSection(boolean showValidateOutputSection)
-	{
-		this.showValidateOutputSection = showValidateOutputSection;
-	}
-
-	/**
-	 * @return the showValidateOutputSection
-	 */
-	public boolean isShowValidateOutputSection()
-	{
-		return showValidateOutputSection;
-	}
-
-	/**
-	 * @param showCompositePanelOkCancelButtonSection the showCompositePanelOkCancelButtonSection to set
-	 */
-	public void setShowCompositePanelOkCancelButtonSection(boolean showCompositePanelOkCancelButtonSection)
-	{
-		this.showCompositePanelOkCancelButtonSection = showCompositePanelOkCancelButtonSection;
-	}
-
-	/**
-	 * @return the showCompositePanelOkCancelButtonSection
-	 */
-	public boolean isShowCompositePanelOkCancelButtonSection()
-	{
-		return showCompositePanelOkCancelButtonSection;
 	}
 
 	/**
@@ -249,22 +150,6 @@ public class Atdl4jOptions
 	public void setRestoreLastNonNullStateControlValueBehavior(boolean aRestoreLastNonNullStateControlValueBehavior)
 	{
 		this.restoreLastNonNullStateControlValueBehavior = aRestoreLastNonNullStateControlValueBehavior;
-	}
-
-	/**
-	 * @return the strategyDropDownItemDepth
-	 */
-	public Integer getStrategyDropDownItemDepth()
-	{
-		return this.strategyDropDownItemDepth;
-	}
-
-	/**
-	 * @param aStrategyDropDownItemDepth the strategyDropDownItemDepth to set
-	 */
-	public void setStrategyDropDownItemDepth(Integer aStrategyDropDownItemDepth)
-	{
-		this.strategyDropDownItemDepth = aStrategyDropDownItemDepth;
 	}
 
 	/**
@@ -648,70 +533,6 @@ public class Atdl4jOptions
 	public boolean isAccommodateMixOfStrategyPanelsAndControls()
 	{
 		return accommodateMixOfStrategyPanelsAndControls;
-	}
-
-	/**
-	 * @return the catchAllMainlineExceptions
-	 */
-	public boolean isCatchAllMainlineExceptions()
-	{
-		return this.catchAllMainlineExceptions;
-	}
-
-	/**
-	 * @return the catchAllRuntimeExceptions
-	 */
-	public boolean isCatchAllRuntimeExceptions()
-	{
-		return this.catchAllRuntimeExceptions;
-	}
-
-	/**
-	 * @return the catchAllStrategyLoadExceptions
-	 */
-	public boolean isCatchAllStrategyLoadExceptions()
-	{
-		return this.catchAllStrategyLoadExceptions;
-	}
-
-	/**
-	 * @return the catchAllStrategyLoadExceptions
-	 */
-	public boolean isCatchAllValidationExceptions()
-	{
-		return this.catchAllValidationExceptions;
-	}
-
-	/**
-	 * @param aCatchAllMainlineExceptions the catchAllMainlineExceptions to set
-	 */
-	public void setCatchAllMainlineExceptions(boolean aCatchAllMainlineExceptions)
-	{
-		this.catchAllMainlineExceptions = aCatchAllMainlineExceptions;
-	}
-
-	/**
-	 * @param aCatchAllRuntimeExceptions the catchAllRuntimeExceptions to set
-	 */
-	public void setCatchAllRuntimeExceptions(boolean aCatchAllRuntimeExceptions)
-	{
-		this.catchAllRuntimeExceptions = aCatchAllRuntimeExceptions;
-	}
-
-	/**
-	 * @param aCatchAllStrategyLoadExceptions the catchAllStrategyLoadExceptions to set
-	 */
-	public void setCatchAllStrategyLoadExceptions(boolean aCatchAllStrategyLoadExceptions)
-	{
-		this.catchAllStrategyLoadExceptions = aCatchAllStrategyLoadExceptions;
-	}
-
-	/**
-	 * @param aCatchAllStrategyLoadExceptions the catchAllStrategyLoadExceptions to set
-	 */
-	public void setCatchAllValidationExceptions(boolean aCatchAllValidationExceptions)
-	{
-		this.catchAllValidationExceptions = aCatchAllValidationExceptions;
 	}
 
 }

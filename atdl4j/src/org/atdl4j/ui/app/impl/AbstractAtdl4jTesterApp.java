@@ -1,9 +1,11 @@
-package org.atdl4j.ui.app;
+package org.atdl4j.ui.app.impl;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jConfiguration;
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.ui.app.Atdl4jCompositePanel;
+import org.atdl4j.ui.app.Atdl4jTesterPanel;
 
 /**
  * Represents the base, non-GUI system-specific "TesterApp" with a main() line.

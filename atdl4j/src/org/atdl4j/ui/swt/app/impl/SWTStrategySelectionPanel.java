@@ -1,13 +1,14 @@
-package org.atdl4j.ui.swt.app;
+package org.atdl4j.ui.swt.app.impl;
 
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.fixatdl.core.StrategyT;
-import org.atdl4j.ui.app.AbstractStrategySelectionPanel;
+import org.atdl4j.ui.app.impl.AbstractStrategySelectionPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -35,8 +36,6 @@ public class SWTStrategySelectionPanel
 	
 	private Composite dropdownComposite;
 	private Combo strategiesDropDown;
-	private List<StrategyT> strategiesList; // -- kept in sync index-for-index with strategiesDropDown --
-	
 	public Object buildStrategySelectionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
 		return buildStrategySelectionPanel( (Composite) parentOrShell, atdl4jOptions );
@@ -80,10 +79,12 @@ public class SWTStrategySelectionPanel
 		}); 
 		
 // TODO wish to avoid issue with changing the font causes the initial combo box display to be very narrow 
-		
-		if ( ( atdl4jOptions != null ) && ( atdl4jOptions.getStrategyDropDownItemDepth() != null ) )
+	
+//		if ( ( atdl4jOptions != null ) && ( atdl4jOptions.getStrategyDropDownItemDepth() != null ) )
+		if ( Atdl4jConfig.getConfig().getStrategyDropDownItemDepth() != null )
 		{
-			strategiesDropDown.setVisibleItemCount( atdl4jOptions.getStrategyDropDownItemDepth().intValue() );
+//			strategiesDropDown.setVisibleItemCount( atdl4jOptions.getStrategyDropDownItemDepth().intValue() );
+			strategiesDropDown.setVisibleItemCount( Atdl4jConfig.getConfig().getStrategyDropDownItemDepth().intValue() );
 		}
 		// tooltip
 		strategiesDropDown.setToolTipText("Select a Strategy");
@@ -250,21 +251,5 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 			logger.debug( "selectFirstDropDownStrategy() invoking selectDropDownStrategy( 0 )" );
 			selectDropDownStrategy( 0 );
 		}
-	}
-
-	/**
-	 * @param strategiesList the strategiesList to set
-	 */
-	protected void setStrategiesList(List<StrategyT> strategiesList)
-	{
-		this.strategiesList = strategiesList;
-	}
-
-	/**
-	 * @return the strategiesList
-	 */
-	protected List<StrategyT> getStrategiesList()
-	{
-		return strategiesList;
 	}
 }
