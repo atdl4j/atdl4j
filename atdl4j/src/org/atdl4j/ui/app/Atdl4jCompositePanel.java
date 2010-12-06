@@ -6,9 +6,11 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.StrategiesUI;
+import org.atdl4j.ui.impl.SelectedStrategyDetails;
 
 /**
  * Represents the core strategy selection and display GUI component.
@@ -99,21 +101,27 @@ public interface Atdl4jCompositePanel
 	
 	public boolean loadFixMessage( String aFixMessage );
 
+	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage( String aFixMessage );
+	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage( String aFixMessage, String aInputSelectStrategyName );
+
 	/* 
 	 * @return StrategyT (non-null only if passes all validation)
 	 */
 	public StrategyT validateStrategy() throws Exception;
 	
 
-	/* 
-	 * Invokes fixatdlFileSelected() with getLastFixatdlFilename() if non-null.  
-	 * Re-reads the FIXatdl XML file and then re-loads the screen for StrategiesT.
-	 */
-	public void reloadFixatdlFile() throws Exception;
+// 11/25/2010 Scott Atwell	
+//	/* 
+//	 * Invokes fixatdlFileSelected() with getLastFixatdlFilename() if non-null.  
+//	 * Re-reads the FIXatdl XML file and then re-loads the screen for StrategiesT.
+//	 */
+//	public void reloadFixatdlFile() throws Exception;
 	
+/** 10/7/2010 Scott Atwell moved to 	AbstractAtdl4jTesterPanel
 	public void setVisibleFileSelectionSection( boolean aVisible );
 	
 	public void setVisibleValidateOutputSection( boolean aVisible );
+**/
 	
 	public void setVisibleOkCancelButtonSection( boolean aVisible );
 	
@@ -138,4 +146,10 @@ public interface Atdl4jCompositePanel
 
 	// TODO 9/26/2010 Scott Atwell	public StrategiesUI getStrategiesUI();
 	public void initAtdl4jUserMessageHandler( Object parentOrShell );
+	
+	public void setStrategyEventListener(StrategyEventListener aStrategyEventListener);
+	
+	public SelectedStrategyDetails getSelectedStrategyDetails( boolean aPerformValidationFlag ) 
+	   throws ValidationException;
+
 }

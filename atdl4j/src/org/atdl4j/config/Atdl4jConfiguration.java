@@ -64,12 +64,14 @@ public interface Atdl4jConfiguration
 	public void setCatchAllValidationExceptions(boolean aCatchAllValidationExceptions);
 
 	public boolean isShowCompositePanelOkCancelButtonSection();
+	public boolean isShowTesterPanelOkCancelButtonSection();
 	public boolean isShowFileSelectionSection();
 	public boolean isShowStrategyDescription();
 	public boolean isShowTimezoneSelector();
 	public boolean isShowValidateOutputSection();
 	public Integer getStrategyDropDownItemDepth();
 	public void setShowCompositePanelOkCancelButtonSection(boolean showCompositePanelOkCancelButtonSection);
+	public void setShowTesterPanelOkCancelButtonSection(boolean showTesterPanelOkCancelButtonSection);
 	public void setShowFileSelectionSection(boolean showFileSelectionSection);
 	public void setShowStrategyDescription(boolean showStrategyDescription);
 	public void setShowTimezoneSelector(boolean showTimezoneSelector);

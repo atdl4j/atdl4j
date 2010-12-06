@@ -28,11 +28,11 @@ import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jCompositePanel;
 import org.atdl4j.ui.app.Atdl4jCompositePanelListener;
 import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
-import org.atdl4j.ui.app.FixatdlFileSelectionPanel;
-import org.atdl4j.ui.app.FixatdlFileSelectionPanelListener;
 import org.atdl4j.ui.app.StrategyDescriptionPanel;
+import org.atdl4j.ui.app.StrategyEventListener;
 import org.atdl4j.ui.app.StrategySelectionPanel;
 import org.atdl4j.ui.app.StrategySelectionPanelListener;
+import org.atdl4j.ui.impl.SelectedStrategyDetails;
 
 /**
  * Represents the base, non-GUI system-specific CORE strategy selection and display GUI component.
@@ -44,7 +44,7 @@ import org.atdl4j.ui.app.StrategySelectionPanelListener;
  */
 public abstract class AbstractAtdl4jCompositePanel
 	implements Atdl4jCompositePanel, 
-	FixatdlFileSelectionPanelListener,
+// 10/7/2010 Scott Atwell moved to AbstractAtdl4jTesterPanel	FixatdlFileSelectionPanelListener,
 	StrategySelectionPanelListener
 {
 	public final Logger logger = Logger.getLogger(AbstractAtdl4jCompositePanel.class);
@@ -56,7 +56,7 @@ public abstract class AbstractAtdl4jCompositePanel
 
 	private String lastFixatdlFilename;
 	
-	private FixatdlFileSelectionPanel fixatdlFileSelectionPanel;
+// 10/7/2010 Scott Atwell moved to AbstractAtdl4jTesterPanel	private FixatdlFileSelectionPanel fixatdlFileSelectionPanel;
 	private StrategySelectionPanel strategySelectionPanel;
 	private StrategyDescriptionPanel strategyDescriptionPanel;
 // TODO 9/26/2010 Scott Atwell	private StrategiesPanel strategiesPanel;
@@ -68,11 +68,14 @@ public abstract class AbstractAtdl4jCompositePanel
 	private boolean selectedStrategyValidated = false;
 
 	private Atdl4jUserMessageHandler atdl4jUserMessageHandler;
+	
+// 11/25/2010 Scott Atwell added
+	private StrategyEventListener strategyEventListener;
 
-	abstract protected Object createValidateOutputSection();
-	abstract protected void setValidateOutputText(String aText);
-	abstract public void setVisibleValidateOutputSection( boolean aVisible );
-	abstract public void setVisibleFileSelectionSection( boolean aVisible );
+// 10/26/2010 Scott Atwell moved to AbstractAtdl4jTesterPanel	abstract protected Object createValidateOutputSection();
+// 10/26/2010 Scott Atwell moved to AbstractAtdl4jTesterPanel	abstract protected void setValidateOutputText(String aText);
+// 10/7/2010 Scott Atwell moved to AbstractAtdl4jTesterPanel	abstract public void setVisibleValidateOutputSection( boolean aVisible );
+// 10/7/2010 Scott Atwell moved to AbstractAtdl4jTesterPanel	abstract public void setVisibleFileSelectionSection( boolean aVisible );
 	abstract public void setVisibleOkCancelButtonSection( boolean aVisible );
 	abstract protected void packLayout();
 
@@ -102,11 +105,12 @@ public abstract class AbstractAtdl4jCompositePanel
 	
 		// ----- Setup internal components (the GUI-specific versions will be instantiated, and add listeners, but defer to concrete classes: "build____Panel()" ----
 		
+/** 10/7/2010 Scott Atwell moved to AbstractAtdl4jTesterPanel		
 		// -- FixatdlFileSelectionPanel (filename / file dialog) - build() method called via concrete class --
 //		setFixatdlFileSelectionPanel( getAtdl4jOptions().getFixatdlFileSelectionPanel() );
 		setFixatdlFileSelectionPanel( getFixatdlFileSelectionPanel() );
 		getFixatdlFileSelectionPanel().addListener( this );
-
+***/
 		// -- StrategySelectionPanel (drop down with list of strategies to choose from) - build() method called via concrete class --
 //		setStrategySelectionPanel( getAtdl4jOptions().getStrategySelectionPanel() );
 		setStrategySelectionPanel( getStrategySelectionPanel() );
@@ -189,10 +193,10 @@ public abstract class AbstractAtdl4jCompositePanel
 	/**
 	 * @param fixatdlFileSelectionPanel the fixatdlFileSelectionPanel to set
 	 */
-	protected void setFixatdlFileSelectionPanel(FixatdlFileSelectionPanel fixatdlFileSelectionPanel)
-	{
-		this.fixatdlFileSelectionPanel = fixatdlFileSelectionPanel;
-	}
+//	protected void setFixatdlFileSelectionPanel(FixatdlFileSelectionPanel fixatdlFileSelectionPanel)
+//	{
+//		this.fixatdlFileSelectionPanel = fixatdlFileSelectionPanel;
+//	}
 
 	/**
 	 * @return the fixatdlFileSelectionPanel
@@ -214,7 +218,7 @@ public abstract class AbstractAtdl4jCompositePanel
 		
 // 9/27/2010		getAtdl4jOptions().setSelectedStrategyValidated( false );
 		setSelectedStrategyValidated( false );
-		setValidateOutputText( "" );
+// 11/25/2010 moved to StrategyEventListener in Atdl4jTesterPanel 		setValidateOutputText( "" );
 		getStrategyDescriptionPanel().loadStrategyDescriptionVisible( aStrategy );
 // 4/16/2010 Scott Atwell		getStrategiesPanel().adjustLayoutForSelectedStrategy( aIndex );
 // TODO 9/26/2010 Scott Atwell		getStrategiesPanel().adjustLayoutForSelectedStrategy( aStrategy );
@@ -222,54 +226,58 @@ public abstract class AbstractAtdl4jCompositePanel
 
 		packLayout();
 		getStrategyDescriptionPanel().loadStrategyDescriptionText( aStrategy );
+	
+		
+		// -- Notify StrategyEventListener (eg Atdl4jTesterPanel), aSelectedViaLoadFixMsg=false --
+		fireStrategyEventListenerStrategySelected( aStrategy, false );
 	}
 
-	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.app.FixatdlFileSelectionPanelListener#fixatdlFileSelected(java.lang.String)
-	 */
-	@Override
-	public void fixatdlFileSelected(String aFilename)
-	{
-//		if (getAtdl4jOptions() != null && 
-//			getAtdl4jOptions().isCatchAllStrategyLoadExceptions())
-		if (Atdl4jConfig.getConfig() != null && 
-				Atdl4jConfig.getConfig().isCatchAllStrategyLoadExceptions())
-		{
-			try {
-				fixatdlFileSelectedNotCatchAllExceptions(aFilename);
-			}
-			catch (Exception e) {
-						logger.warn( "parseFixatdlFile/loadScreenWithFilteredStrategies exception", e );
-//						getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "FIXatdl Unknown Exception", "", e );
-						getAtdl4jUserMessageHandler().displayException( "FIXatdl Unknown Exception", "", e );
-			}
-		} else {
-			fixatdlFileSelectedNotCatchAllExceptions(aFilename);
-		}
-	}
+//	/* (non-Javadoc)
+//	 * @see org.atdl4j.ui.app.FixatdlFileSelectionPanelListener#fixatdlFileSelected(java.lang.String)
+//	 */
+//	@Override
+//	public void fixatdlFileSelected(String aFilename)
+//	{
+////		if (getAtdl4jOptions() != null && 
+////			getAtdl4jOptions().isCatchAllStrategyLoadExceptions())
+//		if (Atdl4jConfig.getConfig() != null && 
+//				Atdl4jConfig.getConfig().isCatchAllStrategyLoadExceptions())
+//		{
+//			try {
+//				fixatdlFileSelectedNotCatchAllExceptions(aFilename);
+//			}
+//			catch (Exception e) {
+//						logger.warn( "parseFixatdlFile/loadScreenWithFilteredStrategies exception", e );
+////						getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "FIXatdl Unknown Exception", "", e );
+//						getAtdl4jUserMessageHandler().displayException( "FIXatdl Unknown Exception", "", e );
+//			}
+//		} else {
+//			fixatdlFileSelectedNotCatchAllExceptions(aFilename);
+//		}
+//	}
 	
-	/* (non-Javadoc)
-	 * @see org.atdl4j.ui.app.FixatdlFileSelectionPanelListener#fixatdlFileSelected(java.lang.String)
-	 */
-	protected void fixatdlFileSelectedNotCatchAllExceptions(String aFilename)
-	{
-		try {
-			parseFixatdlFile( aFilename );
-			loadScreenWithFilteredStrategies();
-		} catch (JAXBException e) {
-			logger.warn( "parseFixatdlFile/loadScreenWithFilteredStrategies exception", e );
-//			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "FIXatdl File Parse Exception", "", e );
-			getAtdl4jUserMessageHandler().displayException( "FIXatdl File Parse Exception", "", e );
-		} catch (NumberFormatException e) {
-			logger.warn( "parseFixatdlFile/loadScreenWithFilteredStrategies exception", e );
-//			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "FIXatdl Number Format Exception", "", e );
-			getAtdl4jUserMessageHandler().displayException( "FIXatdl Number Format Exception", "", e );
-		} catch (IOException e) {
-			logger.warn( "parseFixatdlFile/loadScreenWithFilteredStrategies exception", e );
-//			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "FIXatdl IO Exception", "", e );
-			getAtdl4jUserMessageHandler().displayException( "FIXatdl IO Exception", "", e );
-		}
-	}
+//	/* (non-Javadoc)
+//	 * @see org.atdl4j.ui.app.FixatdlFileSelectionPanelListener#fixatdlFileSelected(java.lang.String)
+//	 */
+//	protected void fixatdlFileSelectedNotCatchAllExceptions(String aFilename)
+//	{
+//		try {
+//			parseFixatdlFile( aFilename );
+//			loadScreenWithFilteredStrategies();
+//		} catch (JAXBException e) {
+//			logger.warn( "parseFixatdlFile/loadScreenWithFilteredStrategies exception", e );
+////			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "FIXatdl File Parse Exception", "", e );
+//			getAtdl4jUserMessageHandler().displayException( "FIXatdl File Parse Exception", "", e );
+//		} catch (NumberFormatException e) {
+//			logger.warn( "parseFixatdlFile/loadScreenWithFilteredStrategies exception", e );
+////			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "FIXatdl Number Format Exception", "", e );
+//			getAtdl4jUserMessageHandler().displayException( "FIXatdl Number Format Exception", "", e );
+//		} catch (IOException e) {
+//			logger.warn( "parseFixatdlFile/loadScreenWithFilteredStrategies exception", e );
+////			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "FIXatdl IO Exception", "", e );
+//			getAtdl4jUserMessageHandler().displayException( "FIXatdl IO Exception", "", e );
+//		}
+//	}
 
 
 	/**
@@ -293,25 +301,32 @@ public abstract class AbstractAtdl4jCompositePanel
 	/* 
 	 * @return StrategyT (non-null only if passes all validation)
 	 */
-	public StrategyT validateStrategy() {
+	public StrategyT validateStrategy() 
+	{
 				
 //		if (getAtdl4jOptions() != null
 //				&& getAtdl4jOptions().isCatchAllValidationExceptions()) {
-		if (Atdl4jConfig.getConfig() != null
-				&& Atdl4jConfig.getConfig().isCatchAllValidationExceptions()) {
-			try {
+		if ( (Atdl4jConfig.getConfig() != null) && 
+			  (Atdl4jConfig.getConfig().isCatchAllValidationExceptions()) )
+		{
+			try 
+			{
 				return validateStrategyWithoutCatchingAllExceptions();
-			} catch (Exception ex) {
-
-				setValidateOutputText("");
+			} 
+			catch (Exception ex) 
+			{
+// 11/25/2010 moved to StrategyEventListener in Atdl4jTesterPanel				setValidateOutputText("");
+				fireStrategyEventListenerStrategyNotValidated( null, "" );
+				
 //				getAtdl4jOptions().getAtdl4jUserMessageHandler()
 //						.displayException("Exception", "", ex);
 				getAtdl4jUserMessageHandler().displayException("Exception", "", ex);
 				logger.warn("Generic Exception", ex);
 				return null;
 			}
-
-		} else {
+		} 
+		else 
+		{
 			return validateStrategyWithoutCatchingAllExceptions();
 		}
 	}	
@@ -323,7 +338,9 @@ public abstract class AbstractAtdl4jCompositePanel
 		
 		if (tempSelectedStrategy == null)
 		{
-			setValidateOutputText("Please select a strategy");
+// 11/25/2010 moved to StrategyEventListener in Atdl4jTesterPanel			setValidateOutputText("Please select a strategy");
+			// -- Notify StrategyEventListener (eg Atdl4jTesterPanel) --
+			fireStrategyEventListenerStrategyNotValidated( null, "Please select a strategy" );
 			return null;
 		}
 		
@@ -334,28 +351,64 @@ public abstract class AbstractAtdl4jCompositePanel
 		
 		try 
 		{
+/*** 12/4/2010 Scott Atwell changed to use SelectedStrategyDetails			
 // 6/23/2010 Scott Atwell			StrategyUI ui = getAtdl4jOptions().getStrategyUIMap().get(tempSelectedStrategy);
 // 9/29/2010 Scott Atwell			StrategyUI ui = getAtdl4jOptions().getStrategyUI(tempSelectedStrategy);
 			StrategyUI ui = getStrategiesUI().getStrategyUI(tempSelectedStrategy);
 			ui.validate();
 			String tempUiFixMsg = ui.getFIXMessage();
-			setValidateOutputText( tempUiFixMsg );
+// 11/25/2010 moved to StrategyEventListener in Atdl4jTesterPanel			setValidateOutputText( tempUiFixMsg );
 // 9/27/2010			getAtdl4jOptions().setSelectedStrategyValidated( true );
 			setSelectedStrategyValidated( true );
 			logger.info("Successfully Validated strategy " + tempSelectedStrategy.getName() + " FIXMessage: " + tempUiFixMsg );
+***/
+			// -- (aPerformValidationFlag = true) --
+			SelectedStrategyDetails tempSelectedStrategyDetails = getSelectedStrategyDetails( true );
+			String tempUiFixMsg = tempSelectedStrategyDetails.getFixMsgFragment();
+			setSelectedStrategyValidated( true );
+			logger.info("Successfully Validated strategy " + tempSelectedStrategy.getName() + " FIXMessage: " + tempUiFixMsg );
+					
+			// -- Notify StrategyEventListener (eg Atdl4jTesterPanel) --
+// 12/4/2010 Scott Atwell			fireStrategyEventListenerStrategyValidated( tempSelectedStrategy, tempUiFixMsg );
+			fireStrategyEventListenerStrategyValidated( tempSelectedStrategy, tempSelectedStrategyDetails );
 			return tempSelectedStrategy;
 		} 
 		catch (ValidationException ex) 
 		{
-			setValidateOutputText( AbstractAtdl4jUserMessageHandler.extractExceptionMessage( ex ));
+// 11/25/2010 moved to StrategyEventListener in Atdl4jTesterPanel			setValidateOutputText( AbstractAtdl4jUserMessageHandler.extractExceptionMessage( ex ));
 //			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "Validation Exception", "", ex );
 			getAtdl4jUserMessageHandler().displayException( "Validation Exception", "", ex );
 			logger.info( "Validation Exception:", ex );
+			
+			// -- Notify StrategyEventListener (eg Atdl4jTesterPanel) --
+			fireStrategyEventListenerStrategyValidationFailed( tempSelectedStrategy, ex );
 			return null;
 		} 
 	}
 	
-
+	public SelectedStrategyDetails getSelectedStrategyDetails( boolean aPerformValidationFlag ) 
+		throws ValidationException
+	{
+		StrategyT tempSelectedStrategy = getSelectedStrategy();
+		
+		if (tempSelectedStrategy == null)
+		{
+			return null;
+		}
+		
+		StrategyUI tempStrategyUI = getStrategiesUI().getStrategyUI(tempSelectedStrategy);
+		
+		if ( aPerformValidationFlag )
+		{
+			setSelectedStrategyValidated( false );
+			tempStrategyUI.validate();
+			setSelectedStrategyValidated( true );
+			logger.info("Successfully Validated strategy " + tempSelectedStrategy.getName() );
+		}
+		
+		return new SelectedStrategyDetails( getStrategies(), tempSelectedStrategy, tempStrategyUI );
+	}
+	
 	/* 
 	 * Parses the FIXatdl file aFilename into StrategiesT storing the result via Atdl4jOptions().setStrategies().
 	 */
@@ -565,7 +618,9 @@ public abstract class AbstractAtdl4jCompositePanel
 // 9/27/2010 Scott Atwell			if (getAtdl4jOptions().getSelectedStrategy() == null)
 			if (getSelectedStrategy() == null)
 			{
-				setValidateOutputText("Please select a strategy");
+// 11/25/2010 moved to StrategyEventListener in Atdl4jTesterPanel				setValidateOutputText("Please select a strategy");
+				// -- Notify StrategyEventListener (eg Atdl4jTesterPanel) --
+				fireStrategyEventListenerStrategyNotValidated( null, "Please select a strategy" );
 				return false;
 			}
 			
@@ -580,30 +635,40 @@ public abstract class AbstractAtdl4jCompositePanel
 				logger.info( "Invoking ui.setFIXMessage() for: " + ui.getStrategy().getName() + " with FIX Message: " + aFixMessage );
 				ui.setFIXMessage(aFixMessage);
 				logger.info( "FIX string loaded successfully!" );
-				setValidateOutputText("FIX string loaded successfully!");
+// 11/25/2010 moved to StrategyEventListener in Atdl4jTesterPanel				setValidateOutputText("FIX string loaded successfully!");
+				// -- Notify StrategyEventListener (eg Atdl4jTesterPanel), aSelectedViaInputFixMsg=true --
+				fireStrategyEventListenerStrategySelected( getSelectedStrategy(), true );
 				return true;
 			}
 			else
 			{
 // 9/27/2010 Scott Atwell				setValidateOutputText( getAtdl4jOptions().getSelectedStrategy().getName() + " is not available.");
-				setValidateOutputText( getSelectedStrategy().getName() + " is not available.");
+// 11/25/2010 moved to StrategyEventListener in Atdl4jTesterPanel				setValidateOutputText( getSelectedStrategy().getName() + " is not available.");
+				// -- Notify StrategyEventListener (eg Atdl4jTesterPanel) --
+				fireStrategyEventListenerStrategyNotValidated( getSelectedStrategy(), getSelectedStrategy().getName() + " is not available." );
 				return false;
 			}
 		} 
 		catch (ValidationException ex) 
 		{
-			setValidateOutputText( AbstractAtdl4jUserMessageHandler.extractExceptionMessage( ex ));
+// 11/25/2010 moved to StrategyEventListener in Atdl4jTesterPanel			setValidateOutputText( AbstractAtdl4jUserMessageHandler.extractExceptionMessage( ex ));
 //			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "Validation Exception", "", ex );
 			getAtdl4jUserMessageHandler().displayException( "Validation Exception", "", ex );
 			logger.info( "Validation Exception:", ex );
+
+			// -- Notify StrategyEventListener (eg Atdl4jTesterPanel) --
+			fireStrategyEventListenerStrategyValidationFailed( getSelectedStrategy(), ex );
 			return false;
 		} 
 		catch (Exception ex) 
 		{
-			setValidateOutputText( "" );
+// 11/25/2010 moved to StrategyEventListener in Atdl4jTesterPanel			setValidateOutputText( "" );
 //			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException( "Exception", "", ex );
 			getAtdl4jUserMessageHandler().displayException( "Exception", "", ex );
 			logger.warn( "Generic Exception", ex );
+			
+			// -- Notify StrategyEventListener (eg Atdl4jTesterPanel) --
+			fireStrategyEventListenerStrategyNotValidated( getSelectedStrategy(), "" );
 			return false;
 		}
 
@@ -624,22 +689,24 @@ public abstract class AbstractAtdl4jCompositePanel
 		return lastFixatdlFilename;
 	}
 	
-	/* 
-	 * Invokes fixatdlFileSelected() with getLastFixatdlFilename() if non-null.  
-	 * Re-reads the FIXatdl XML file and then re-loads the screen for StrategiesT.
-	 */
-	public void reloadFixatdlFile() throws Exception 
-	{
-		if ( getLastFixatdlFilename() != null )
-		{
-			fixatdlFileSelected( getLastFixatdlFilename() );
-		}
-	}
+// 11/25/2010 Scott Atwell	
+//	/* 
+//	 * Invokes fixatdlFileSelected() with getLastFixatdlFilename() if non-null.  
+//	 * Re-reads the FIXatdl XML file and then re-loads the screen for StrategiesT.
+//	 */
+//	public void reloadFixatdlFile() throws Exception 
+//	{
+//		if ( getLastFixatdlFilename() != null )
+//		{
+//			fixatdlFileSelected( getLastFixatdlFilename() );
+//		}
+//	}
 
-	protected void validateButtonSelected()
-	{
-		validateStrategy();
-	}
+// 11/26/2010 Scott Atwell moved to AbstractAtdl4jTesterPanel	
+//	protected void validateButtonSelected()
+//	{
+//		validateStrategy();
+//	}
 	
 	protected void okButtonSelected()
 	{
@@ -798,25 +865,25 @@ public abstract class AbstractAtdl4jCompositePanel
 	/**
 	 * @return the FixatdlFileSelectionPanel
 	 */
-	public FixatdlFileSelectionPanel getFixatdlFileSelectionPanel() 
-	{
-		if ( ( fixatdlFileSelectionPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameFixatdlFileSelectionPanel() != null ) )
-		{
-			String tempClassName = Atdl4jConfig.getConfig().getClassNameFixatdlFileSelectionPanel();
-			logger.debug( "getFixatdlFileSelectionPanel() loading class named: " + tempClassName );
-			try
-			{
-				fixatdlFileSelectionPanel = ((Class<FixatdlFileSelectionPanel>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-		}
-		
-		return fixatdlFileSelectionPanel;
-	}
+//	public FixatdlFileSelectionPanel getFixatdlFileSelectionPanel() 
+//	{
+//		if ( ( fixatdlFileSelectionPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameFixatdlFileSelectionPanel() != null ) )
+//		{
+//			String tempClassName = Atdl4jConfig.getConfig().getClassNameFixatdlFileSelectionPanel();
+//			logger.debug( "getFixatdlFileSelectionPanel() loading class named: " + tempClassName );
+//			try
+//			{
+//				fixatdlFileSelectionPanel = ((Class<FixatdlFileSelectionPanel>) Class.forName( tempClassName ) ).newInstance();
+//			}
+//			catch ( Exception e )
+//			{
+//				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+//				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+//			}
+//		}
+//		
+//		return fixatdlFileSelectionPanel;
+//	}
 	
 	/**
 	 * @return
@@ -883,5 +950,102 @@ public abstract class AbstractAtdl4jCompositePanel
 	{
 		getAtdl4jUserMessageHandler().init(  parentOrShell, getAtdl4jOptions() );
 	}
+	/**
+	 * @return the strategyEventListener
+	 */
+	protected StrategyEventListener getStrategyEventListener()
+	{
+		return this.strategyEventListener;
+	}
+	/**
+	 * @param aStrategyEventListener the strategyEventListener to set
+	 */
+	public void setStrategyEventListener(StrategyEventListener aStrategyEventListener)
+	{
+		this.strategyEventListener = aStrategyEventListener;
+	}
 
+
+	/**
+	 * @param aStrategy
+	 */
+	public void fireStrategyEventListenerStrategySelected( StrategyT aStrategy, boolean aSelectedViaLoadFixMsg )
+	{
+		if ( getStrategyEventListener() != null )
+		{
+			getStrategyEventListener().strategySelected( aStrategy, aSelectedViaLoadFixMsg );
+		}
+	}
+	
+	/**
+	 * @param aStrategy
+	 * @param aSelectedStrategyDetails
+	 */
+	public void fireStrategyEventListenerStrategyValidated( StrategyT aStrategy, SelectedStrategyDetails aSelectedStrategyDetails  )
+	{
+		if ( getStrategyEventListener() != null )
+		{
+			getStrategyEventListener().strategyValidated( aStrategy, aSelectedStrategyDetails  );
+		}
+	}
+	
+	/**
+	 * @param aStrategy  (may be null)
+	 * @param aMessageText
+	 */
+	public void fireStrategyEventListenerStrategyNotValidated( StrategyT aStrategy, String aMessageText )
+	{
+		if ( getStrategyEventListener() != null )
+		{
+			getStrategyEventListener().strategyNotValidated( aStrategy, aMessageText );
+		}
+	}
+	
+	/**
+	 * @param aStrategy  (may be null)
+	 * @param aException
+	 */
+	public void fireStrategyEventListenerStrategyValidationFailed( StrategyT aStrategy, Throwable aException )
+	{
+		if ( getStrategyEventListener() != null )
+		{
+			getStrategyEventListener().strategyValidationFailed( aStrategy, aException );
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.atdl4j.ui.app.Atdl4jCompositePanel#loadScreenWithFilteredStrategiesAndLoadFixMessage(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage(String aFixMessage, String aInputSelectStrategyName)
+	{
+// TODO 11/29/2010 Scott Atwell -- need to improve the behavior/performance of combination of both of these...
+		loadScreenWithFilteredStrategies();
+		getAtdl4jOptions().getInputAndFilterData().setInputSelectStrategyName( aInputSelectStrategyName );
+		if ( aFixMessage != null )
+		{
+			return loadFixMessage( aFixMessage );
+		}
+		else
+		{
+			return true;
+		}
+	}
+	/* (non-Javadoc)
+	 * @see org.atdl4j.ui.app.Atdl4jCompositePanel#loadScreenWithFilteredStrategiesAndLoadFixMessage(java.lang.String)
+	 */
+	@Override
+	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage(String aFixMessage)
+	{
+// TODO 11/29/2010 Scott Atwell -- need to improve the behavior/performance of combination of both of these...
+		loadScreenWithFilteredStrategies();
+		if ( aFixMessage != null )
+		{
+			return loadFixMessage( aFixMessage );
+		}
+		else
+		{
+			return true;
+		}
+	}
 }

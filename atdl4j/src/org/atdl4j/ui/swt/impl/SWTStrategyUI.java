@@ -515,7 +515,11 @@ public class SWTStrategyUI
 	{
 		for ( SWTStateListener stateListener : getStateListenerList() )
 		{
-			stateListener.handleLoadFixMessageEvent( null );
+// 11/22/2010 Scott Atwell corrected -- added if ( aControl.equals( stateListener.getAffectedWidget() ) )		
+			if ( aControl.equals( stateListener.getAffectedWidget() ) )
+			{
+				stateListener.handleLoadFixMessageEvent( null );
+			}
 		}
 	}
 

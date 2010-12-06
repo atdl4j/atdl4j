@@ -18,4 +18,18 @@ public interface Atdl4jTesterPanel
 	public void closePanel();
 	
 	public Atdl4jCompositePanel getAtdl4jCompositePanel();
+	
+	public void setVisibleFileSelectionSection( boolean aVisible );
+	
+	public void setVisibleValidateOutputSection( boolean aVisible );
+	
+	public void setVisibleTestingInputSection( boolean aVisible );
+		
+	public void addListener(Atdl4jTesterPanelListener aAtdl4jTesterPanelListener);
+	
+	public void removeListener(Atdl4jTesterPanelListener aAtdl4jTesterPanelListener);
+
+	public void setVisibleOkCancelButtonSection( boolean aVisible );	
+	
+	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler();
 }

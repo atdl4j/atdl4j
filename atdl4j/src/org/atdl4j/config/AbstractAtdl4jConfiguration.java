@@ -85,6 +85,7 @@ public abstract class AbstractAtdl4jConfiguration
 	private boolean showFileSelectionSection = true;
 	private boolean showValidateOutputSection = true;
 	private boolean showCompositePanelOkCancelButtonSection = true;
+	private boolean showTesterPanelOkCancelButtonSection = true;
 	private Integer strategyDropDownItemDepth = new Integer( 15 );  // ComboBox drop down 'depth' (aka VisibleItemCount)
 
 	
@@ -826,6 +827,14 @@ public abstract class AbstractAtdl4jConfiguration
 	}
 
 	/**
+	 * @return the showTesterPanelOkCancelButtonSection
+	 */
+	public boolean isShowTesterPanelOkCancelButtonSection()
+	{
+		return showTesterPanelOkCancelButtonSection;
+	}
+
+	/**
 	 * @return the showFileSelectionSection
 	 */
 	public boolean isShowFileSelectionSection()
@@ -863,6 +872,14 @@ public abstract class AbstractAtdl4jConfiguration
 	public void setShowCompositePanelOkCancelButtonSection(boolean showCompositePanelOkCancelButtonSection)
 	{
 		this.showCompositePanelOkCancelButtonSection = showCompositePanelOkCancelButtonSection;
+	}
+
+	/**
+	 * @param showTesterPanelOkCancelButtonSection the showTesterPanelOkCancelButtonSection to set
+	 */
+	public void setShowTesterPanelOkCancelButtonSection(boolean showTesterPanelOkCancelButtonSection)
+	{
+		this.showTesterPanelOkCancelButtonSection = showTesterPanelOkCancelButtonSection;
 	}
 
 	/**

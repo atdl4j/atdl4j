@@ -86,7 +86,8 @@ public class SWTAtdl4jInputAndFilterDataPanel
 	private Button checkboxAtd4ljShowStrategyDescription;
 	private Button checkboxAtd4ljShowFileSelectionSection;
 	private Button checkboxAtd4ljShowValidateOutputSection;
-	private Button checkboxAtd4ljShowCompositePanelOkCancelButtonSection;
+// 11/30/2010 use TesterPanel's	private Button checkboxAtd4ljShowCompositePanelOkCancelButtonSection;
+	private Button checkboxAtd4ljShowTesterPanelOkCancelButtonSection;
 	private Button checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls;
 
 	private Text textIncrementPolicyLotSize;
@@ -339,11 +340,12 @@ public class SWTAtdl4jInputAndFilterDataPanel
 //		checkboxAtd4ljShowValidateOutputSection.setSelection( getAtdl4jOptions().isShowValidateOutputSection() );
 		checkboxAtd4ljShowValidateOutputSection.setSelection( Atdl4jConfig.getConfig().isShowValidateOutputSection() );
 		
-		checkboxAtd4ljShowCompositePanelOkCancelButtonSection = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
-		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setText( "Show OK/Close" );
-		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setToolTipText( "When checked, \"OK\" and \"Close\" buttons will be displayed and available." );
-//		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setSelection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
-		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setSelection( Atdl4jConfig.getConfig().isShowCompositePanelOkCancelButtonSection() );
+		checkboxAtd4ljShowTesterPanelOkCancelButtonSection = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
+		checkboxAtd4ljShowTesterPanelOkCancelButtonSection.setText( "Show OK/Close" );
+		checkboxAtd4ljShowTesterPanelOkCancelButtonSection.setToolTipText( "When checked, \"OK\" and \"Close\" buttons will be displayed and available." );
+//		checkboxAtd4ljShowTesterPanelOkCancelButtonSection.setSelection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
+// 11/30/2010 Adjust TesterPanel's		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setSelection( Atdl4jConfig.getConfig().isShowCompositePanelOkCancelButtonSection() );
+		checkboxAtd4ljShowTesterPanelOkCancelButtonSection.setSelection( Atdl4jConfig.getConfig().isShowTesterPanelOkCancelButtonSection() );
 		
 		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls.setText( "Accommodate SP/Controls Mix" );
@@ -421,7 +423,8 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		Atdl4jConfig.getConfig().setShowStrategyDescription( getCheckboxValue( checkboxAtd4ljShowStrategyDescription, null ).booleanValue() );
 		Atdl4jConfig.getConfig().setShowFileSelectionSection( getCheckboxValue( checkboxAtd4ljShowFileSelectionSection, null ).booleanValue() );
 		Atdl4jConfig.getConfig().setShowValidateOutputSection( getCheckboxValue( checkboxAtd4ljShowValidateOutputSection, null ).booleanValue() );
-		Atdl4jConfig.getConfig().setShowCompositePanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowCompositePanelOkCancelButtonSection, null ).booleanValue() );
+// 11/30/2010 Adjust TesterPanel's		Atdl4jConfig.getConfig().setShowCompositePanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowCompositePanelOkCancelButtonSection, null ).booleanValue() );
+		Atdl4jConfig.getConfig().setShowTesterPanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowTesterPanelOkCancelButtonSection, null ).booleanValue() );
 		getAtdl4jOptions().setAccommodateMixOfStrategyPanelsAndControls( getCheckboxValue( checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls, null ).booleanValue() );
 
 // 4/18/2010 Scott Atwell		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigInteger( textIncrementPolicyLotSize ) );

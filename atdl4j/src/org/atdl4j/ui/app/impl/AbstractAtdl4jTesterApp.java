@@ -4,8 +4,12 @@ import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jConfiguration;
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.Atdl4jHelper;
+import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jCompositePanel;
 import org.atdl4j.ui.app.Atdl4jTesterPanel;
+import org.atdl4j.ui.app.Atdl4jTesterPanelListener;
+import org.atdl4j.ui.impl.SelectedStrategyDetails;
 
 /**
  * Represents the base, non-GUI system-specific "TesterApp" with a main() line.
@@ -16,6 +20,7 @@ import org.atdl4j.ui.app.Atdl4jTesterPanel;
  * @version 1.0, Feb 28, 2010
  */
 public abstract class AbstractAtdl4jTesterApp
+	implements Atdl4jTesterPanelListener
 {
 	private final Logger logger = Logger.getLogger(AbstractAtdl4jTesterApp.class);
 
@@ -149,21 +154,76 @@ public abstract class AbstractAtdl4jTesterApp
 	 */
 	public Atdl4jTesterPanel getAtdl4jTesterPanel() 
 	{
-		if ( ( atdl4jTesterPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameAtdl4jTesterPanel() != null ) )
+// 11/29/2010 Scott Atwell		
+//		if ( ( atdl4jTesterPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameAtdl4jTesterPanel() != null ) )
+//		{
+//			String tempClassName = Atdl4jConfig.getConfig().getClassNameAtdl4jTesterPanel();
+//			logger.debug( "getAtdl4jTesterPanel() loading class named: " + tempClassName );
+//			try
+//			{
+//				atdl4jTesterPanel = ((Class<Atdl4jTesterPanel>) Class.forName( tempClassName ) ).newInstance();
+//			}
+//			catch ( Exception e )
+//			{
+//				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
+//				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
+//			}
+//		}
+		
+		if ( atdl4jTesterPanel == null )
 		{
-			String tempClassName = Atdl4jConfig.getConfig().getClassNameAtdl4jTesterPanel();
-			logger.debug( "getAtdl4jTesterPanel() loading class named: " + tempClassName );
-			try
-			{
-				atdl4jTesterPanel = ((Class<Atdl4jTesterPanel>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
+			atdl4jTesterPanel = Atdl4jConfig.createAtdl4jTesterPanel();
+			atdl4jTesterPanel.addListener( this );
 		}
 		
 		return atdl4jTesterPanel;
 	}	
+	
+	public void okButtonSelected()
+	{
+		if ( getAtdl4jTesterPanel().getAtdl4jCompositePanel().getSelectedStrategy() != null )
+		{
+			try
+			{
+/*** 12/4/2010 Scott Atwell				
+				StrategyUI ui = getAtdl4jTesterPanel().getAtdl4jCompositePanel().getStrategiesUI().getStrategyUI( getAtdl4jTesterPanel().getAtdl4jCompositePanel().getSelectedStrategy() );
+				ui.validate();
+				String tempFixMsgFragment = ui.getFIXMessage();
+
+				getAtdl4jTesterPanel().getAtdl4jUserMessageHandler().displayMessage( "Strategy Selected", 
+						"Strategy selected: " + Atdl4jHelper.getStrategyUiRepOrName( getAtdl4jTesterPanel().getAtdl4jCompositePanel().getSelectedStrategy() ) 
+						+ "\nFIX msg: " + tempFixMsgFragment );
+***/
+				// -- (aPerformValidationFlag = true) --
+				SelectedStrategyDetails tempSelectedStrategyDetails = getAtdl4jTesterPanel().getAtdl4jCompositePanel().getSelectedStrategyDetails( true );
+				String tempFixMsgFragment = tempSelectedStrategyDetails.getFixMsgFragment();
+
+				getAtdl4jTesterPanel().getAtdl4jUserMessageHandler().displayMessage( "Strategy Selected", 
+						"Strategy selected: " + tempSelectedStrategyDetails.getSelectedStrategyUiRepOrName() 
+						+ "\nFIX msg: " + tempFixMsgFragment );
+				
+				getAtdl4jTesterPanel().closePanel();
+			}
+			catch ( Throwable e )
+			{
+				getAtdl4jTesterPanel().getAtdl4jUserMessageHandler().displayException( "Validation/FIX Message Extraction Error", 
+						"Error during Validation/FIX Message extraction.", e );
+			}
+		}
+		else
+		{
+			getAtdl4jTesterPanel().getAtdl4jUserMessageHandler().displayMessage( "Select Strategy", "Please select a Strategy" );
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see org.atdl4j.ui.app.Atdl4jTesterPanelListener#cancelButtonSelected()
+	 */
+	@Override
+	public void cancelButtonSelected()
+	{
+		getAtdl4jTesterPanel().closePanel();
+	}
 }
+
