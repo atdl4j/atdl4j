@@ -311,6 +311,8 @@ public class DecimalConverter
 			{
 				try
 				{
+					// -- Trim leading and/or trailing spaces --
+					str = str.trim();
 					tempBigDecimal = new BigDecimal( str );
 				}
 				catch (NumberFormatException e)
@@ -412,6 +414,8 @@ public class DecimalConverter
 			{
 				try
 				{
+					// -- Trim leading and/or trailing spaces --
+					str = str.trim();
 					tempBigDecimal = new BigDecimal( str );
 				}
 				catch (NumberFormatException e)
@@ -452,6 +456,8 @@ public class DecimalConverter
 			{
 				try
 				{
+					// -- Trim leading and/or trailing spaces --
+					str = str.trim();
 					tempBigDecimal = new BigDecimal( str );
 				}
 				catch (NumberFormatException e)
@@ -505,6 +511,8 @@ public class DecimalConverter
 			{
 				try
 				{
+					// -- Trim leading and/or trailing spaces --
+					str = str.trim();
 					tempBigDecimal = new BigDecimal( str );
 				}
 				catch (NumberFormatException e)

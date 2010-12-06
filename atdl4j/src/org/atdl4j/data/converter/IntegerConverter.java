@@ -164,6 +164,8 @@ public class IntegerConverter
 			{
 				try
 				{
+					// -- Trim leading and/or trailing spaces --
+					str = str.trim();
 					return new BigInteger( str );
 				}
 				catch (NumberFormatException e)
@@ -220,6 +222,8 @@ public class IntegerConverter
 			{
 				try
 				{
+					// -- Trim leading and/or trailing spaces --
+					str = str.trim();
 					return new BigInteger( str );
 				}
 				catch (NumberFormatException e)
@@ -260,6 +264,8 @@ public class IntegerConverter
 			{
 				try
 				{
+					// -- Trim leading and/or trailing spaces --
+					str = str.trim();
 					return new BigInteger( str );
 				}
 				catch (NumberFormatException e)

@@ -188,6 +188,8 @@ public class DatatypeConverter
 			}
 			else
 			{
+				// -- Trim leading and/or trailing spaces --
+				str = str.trim();
 				return new BigDecimal( str );
 			}
 		}
@@ -232,6 +234,8 @@ public class DatatypeConverter
 			}
 			else
 			{
+				// -- Trim leading and/or trailing spaces --
+				str = str.trim();
 				return new BigInteger( str );
 			}
 		}
