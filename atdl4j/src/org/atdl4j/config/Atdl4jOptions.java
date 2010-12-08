@@ -29,14 +29,9 @@ public class Atdl4jOptions
 
 	private InputAndFilterData inputAndFilterData;
 	
-//TODO 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel 	private boolean selectedStrategyValidated = false;
-	
-// 6/23/2010 Scott Atwell	private boolean usePreCachedStrategyPanels = true;
-
 	private boolean treatControlVisibleFalseAsNull = false;
 	private boolean treatControlEnabledFalseAsNull = false;	
 	private boolean restoreLastNonNullStateControlValueBehavior = true;	
-// 8/15/2010 Scott Atwell added
 	private boolean accommodateMixOfStrategyPanelsAndControls = false;  // FIXatdl 1.1 spec recommends against vs. prohibits
 	
 	private boolean showEnabledCheckboxOnOptionalClockControl = false;
@@ -45,10 +40,8 @@ public class Atdl4jOptions
 	private int defaultDigitsForSpinnerControlForQty = 0;
 	private int defaultDigitsForSpinnerControl = 2;
 
-	// 7/7/2010 Scott Atwell changed to null	private BigDecimal defaultIncrementValue = new BigDecimal( "1.0" );
 	private BigDecimal defaultIncrementValue = null;
 	private BigDecimal defaultLotSizeIncrementValue = new BigDecimal( "1.0" );
-// 7/6/2010 Scott Atwell	private BigDecimal defaultTickIncrementValue = new BigDecimal( "1.0" );
 	private BigDecimal defaultTickIncrementValue = new BigDecimal( "0.0001" );
 
 	// -- Controls Clock control's behavior when FIX message timestamp (eg "StartTime" or "EffectiveTime") is older than current time --
@@ -152,14 +145,6 @@ public class Atdl4jOptions
 		this.restoreLastNonNullStateControlValueBehavior = aRestoreLastNonNullStateControlValueBehavior;
 	}
 
-	/**
-	 * @return the usePreCachedStrategyPanels
-	 */
-// 6/23/2010 Scott Atwell	public boolean isUsePreCachedStrategyPanels()
-//	{
-//		return this.usePreCachedStrategyPanels;
-//	}
-
 	/* 
 	 * Returns the Spinner control's "digits" value for the specified aParameter (eg 0 vs. 2 for Percentage)
 	 */
@@ -174,20 +159,9 @@ public class Atdl4jOptions
 			else if ( aParameter instanceof QtyT )
 			{
 				return getDefaultDigitsForSpinnerControlForQty();
-			}			
-// use Atdl4jOptions.getDefaultDigitsForSpinnerControl() for these			
-//			else if ( aParameter instanceof FloatT )
-//			{
-//			}
-//			else if ( aParameter instanceof AmtT )
-//			{
-//			}
-//			else if ( aParameter instanceof PriceOffsetT )
-//			{
-//			}
-//			else if ( aParameter instanceof PriceT )
-//			{
-//			}
+			}
+			
+			// -- use Atdl4jOptions.getDefaultDigitsForSpinnerControl() for FloatT, AmtT, PriceOffsetT, PriceT --			
 		}
 		
 		// -- not specified via rule above, use default if we have one within Atdl4jOptions --

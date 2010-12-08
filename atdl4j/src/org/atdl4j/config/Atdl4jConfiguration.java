@@ -13,12 +13,6 @@ package org.atdl4j.config;
  */
 public interface Atdl4jConfiguration
 {
-	// -- UI Infrastructure --
-	/**
-	 * @return the strategiesUIFactory
-	 */
-//TODO 9/26/2010 Scott Atwell	public StrategiesUIFactory getStrategiesUIFactory();
-
 	public void setDebugLoggingLevel( boolean aDebugLevelFlag );
 	public boolean isDebugLoggingLevel();
 	

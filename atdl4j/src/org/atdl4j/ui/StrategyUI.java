@@ -20,7 +20,6 @@ public interface StrategyUI
 	 * @param strategiesRules
 	 * @param parentContainer (should be swt.Composite)
 	 */
-// TODO 9/27/2010 Scott Atwell added StrategiesT	public void init(StrategyT strategy, Atdl4jOptions aAtdl4jOptions, Map<String, ValidationRule> strategiesRules, Object parentContainer);
 	public void init(StrategyT strategy, StrategiesT aStrategies, Atdl4jOptions aAtdl4jOptions, Map<String, ValidationRule> strategiesRules, Object parentContainer);
    
 	public void validate() throws ValidationException;
@@ -41,7 +40,6 @@ public interface StrategyUI
 
    public void setCxlReplaceMode(boolean cxlReplaceMode);
 
-   
    public Atdl4jOptions getAtdl4jOptions();
 	public Map<String, ParameterT> getParameterMap();
 	public StrategyRuleset getStrategyRuleset();
@@ -49,6 +47,5 @@ public interface StrategyUI
 
 	public void reinitStrategyPanel();
 	
-// 8/27/2010 Scott Atwell added
 	public void relayoutCollapsibleStrategyPanels();
 }

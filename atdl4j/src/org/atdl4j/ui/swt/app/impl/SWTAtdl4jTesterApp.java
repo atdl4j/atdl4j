@@ -43,7 +43,6 @@ public class SWTAtdl4jTesterApp
 		}
 		catch (Exception e)
 		{
-//			if ( getAtdl4jOptions() != null && getAtdl4jOptions().isCatchAllMainlineExceptions() )
 			if ( Atdl4jConfig.getConfig() != null && Atdl4jConfig.getConfig().isCatchAllMainlineExceptions() )
 			{
 				tempSWTAtdl4jTesterApp.logger.warn( "Fatal Exception in mainLine", e );
@@ -57,8 +56,6 @@ public class SWTAtdl4jTesterApp
 
 	public void mainLine(String[] args) throws Exception
 	{
-		// try
-		// {
 		// -- Setup SWT-specific Display and Shell --
 		Display display = new Display();
 		shell = new Shell( display );
@@ -72,11 +69,9 @@ public class SWTAtdl4jTesterApp
 
 		// -- Delegate setup to AbstractAtdl4jTesterApp, construct a new
 		// SWT-specific Atdl4jOptions --
-// 9/29/2010 Scott Atwell		init( args, new SWTAtdl4jOptions(), shell );
 		init( args, new SWTAtdl4jConfiguration(), new Atdl4jOptions(), shell );
 
-		// -- Build the SWT.Composite from Atdl4jTesterPanel (** core GUI
-		// component **) --
+		// -- Build the SWT.Composite from Atdl4jTesterPanel (** core GUI component **) --
 		getAtdl4jTesterPanel().buildAtdl4jTesterPanel( shell, getAtdl4jOptions() );
 
 		// -- SWT-specific stuff to improve layout --
@@ -84,7 +79,7 @@ public class SWTAtdl4jTesterApp
 		shell.open();
 		shell.pack();
 
-		// 3/8/2010 Scott Atwell added to avoid postage stamp size at start
+		// -- avoid postage stamp size at start --
 		shell.setSize( shell.computeSize( 475, 500 ) );
 
 		// -- SWT-specific stuff to keep Display and Shell active --
@@ -99,13 +94,9 @@ public class SWTAtdl4jTesterApp
 			}
 			catch (Exception e)
 			{
-//				if ( getAtdl4jOptions() != null && getAtdl4jOptions().isCatchAllRuntimeExceptions() )
 				if ( Atdl4jConfig.getConfig() != null && Atdl4jConfig.getConfig().isCatchAllRuntimeExceptions() )
 				{
 					logger.warn( "Fatal Exception encountered", e );
-					// 9/29/2010 Scott Atwell
-					// getAtdl4jOptions().getAtdl4jUserMessageHandler().displayException(
-					// "Fatal Exception encountered", "", e );
 					if ( ( getAtdl4jTesterPanel() != null ) && 
 						  ( getAtdl4jTesterPanel().getAtdl4jCompositePanel() != null ) && 
 						  ( getAtdl4jTesterPanel().getAtdl4jCompositePanel().getAtdl4jUserMessageHandler() != null ) )
@@ -122,11 +113,6 @@ public class SWTAtdl4jTesterApp
 		}
 
 		display.dispose();
-		// }
-		// catch (Throwable e)
-		// {
-		// logger.warn( "Fatal Exception encountered during startup", e );
-		// }
 	}
 
 }

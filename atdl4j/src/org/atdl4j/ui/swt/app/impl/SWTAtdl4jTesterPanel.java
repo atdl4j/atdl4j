@@ -46,7 +46,6 @@ public class SWTAtdl4jTesterPanel
 	private MenuItem showFileSelectionMenuItem;
 	private MenuItem showValidateOutputMenuItem;
 	
-// 11/26/2010 Scott Atwell moved from SWTAtdl4jCompositePanel
 	private Composite okCancelButtonSection;
 	private Text outputFixMessageText;
 
@@ -59,12 +58,6 @@ public class SWTAtdl4jTesterPanel
 	public Composite buildAtdl4jTesterPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
 		parentComposite = (Composite) aParentOrShell;
-
-// SWT doesn't use this, if we use it, then consumes vertical height at top
-//		Composite tempComposite = new Composite(shell, SWT.NONE);
-//		GridLayout tempLayout = new GridLayout(1, false);
-//		tempComposite.setLayout(tempLayout);
-//		tempComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
 		// -- Delegate back to AbstractAtdl4jTesterPanel -- 
 		init( aParentOrShell, aAtdl4jOptions );
@@ -92,7 +85,6 @@ public class SWTAtdl4jTesterPanel
 		inputAndFilterDataAndLoadMessageComposite.setLayoutData( new GridData(SWT.FILL, SWT.FILL, true, false ) );
 		
 		// -- Build the SWT.Composite from Atdl4jInputAndFilterDataSelectionPanel ("Input Data/Filter Criteria" button) --
-// 9/29/2010 Scott Atwell		getAtdl4jInputAndFilterDataSelectionPanel().buildAtdl4jInputAndFilterDataSelectionPanel( inputAndFilterDataAndLoadMessageComposite, getAtdl4jOptions() );
 		getAtdl4jInputAndFilterDataSelectionPanel().buildAtdl4jInputAndFilterDataSelectionPanel( inputAndFilterDataAndLoadMessageComposite, getAtdl4jOptions(), getAtdl4jCompositePanel().getAtdl4jUserMessageHandler() );
 		
 		// -- Build the SWT.Composite from FixMsgLoadPanel ("Load FIX Message" button) --
@@ -150,11 +142,8 @@ public class SWTAtdl4jTesterPanel
 	protected void createMenuItems()
 	{
 		// -- "Show File Selection" --
-//		setVisibleFileSelectionSection( getAtdl4jOptions().isShowFileSelectionSection() );
 		setVisibleFileSelectionSection( Atdl4jConfig.getConfig().isShowFileSelectionSection() );
-//		final MenuItem tempShowFileSelectionMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show File Selection" );
 		showFileSelectionMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show File Selection" );
-//		showFileSelectionMenuItem.setSelection( getAtdl4jOptions().isShowFileSelectionSection() );
 		showFileSelectionMenuItem.setSelection( Atdl4jConfig.getConfig().isShowFileSelectionSection() );
 		showFileSelectionMenuItem.addListener( SWT.Selection, new Listener()
 		{
@@ -167,11 +156,8 @@ public class SWTAtdl4jTesterPanel
 		
 		
 		// -- "Show Validate Output" --
-//		setVisibleValidateOutputSection( getAtdl4jOptions().isShowValidateOutputSection() );
 		setVisibleValidateOutputSection( Atdl4jConfig.getConfig().isShowValidateOutputSection() );
-//		final MenuItem tempShowValidateOutputMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show Validate Output" );
 		showValidateOutputMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show Validate Output" );
-//		showValidateOutputMenuItem.setSelection( getAtdl4jOptions().isShowValidateOutputSection() );
 		showValidateOutputMenuItem.setSelection( Atdl4jConfig.getConfig().isShowValidateOutputSection() );
 		showValidateOutputMenuItem.addListener( SWT.Selection, new Listener()
 		{
@@ -226,10 +212,7 @@ public class SWTAtdl4jTesterPanel
 		 if ( ( validateOutputSection != null ) && ( ! validateOutputSection.isDisposed() ) )
 		 {
 			 validateOutputSection.setVisible( aVisible );
-//			 if ( ! aVisible )
-//			 {
-//				 validateOutputSection.dispose();
-//			 }
+			 
 			 if ( validateOutputSection.getLayoutData() instanceof GridData )
 			 {
 				((GridData) validateOutputSection.getLayoutData()).exclude = !aVisible;
@@ -253,12 +236,6 @@ public class SWTAtdl4jTesterPanel
 				((GridData) inputAndFilterDataAndLoadMessageComposite.getLayoutData()).exclude = !aVisible;
 			 }
 
-
-//			 if ( ! aVisible )
-//			 {
-//				 inputAndFilterDataAndLoadMessageComposite.dispose();
-//			 }
-			 
 			 packLayout();
 		 }
 	}
@@ -296,7 +273,6 @@ public class SWTAtdl4jTesterPanel
 			}
 		});
 		
-//		setVisibleOkCancelButtonSection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
 		setVisibleOkCancelButtonSection( Atdl4jConfig.getConfig().isShowTesterPanelOkCancelButtonSection() );
 		
 		return okCancelButtonSection;
@@ -356,24 +332,20 @@ public class SWTAtdl4jTesterPanel
 	
 	protected void setValidateOutputText(String aText)
 	{
-//		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowValidateOutputSection() ) )
 		if ( ( Atdl4jConfig.getConfig().isShowValidateOutputSection() ) )
 		{
 			if ( aText != null )
 			{
 				outputFixMessageText.setText( aText.replace( '\n', ' ' ) );
-//				setVisibleValidateOutputSection( true );
 			}
 			else
 			{
 				outputFixMessageText.setText( "" );
-//				setVisibleValidateOutputSection( false );
 			}
 		}
 		else
 		{
 			outputFixMessageText.setText( aText.replace( '\n', ' ' ) );
-//			setVisibleValidateOutputSection( false );
 		}	
 	}
 	

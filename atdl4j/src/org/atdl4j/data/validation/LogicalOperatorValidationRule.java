@@ -24,13 +24,10 @@ public class LogicalOperatorValidationRule
 
 	private List<ValidationRule> rules;
 
-	// private Object parent; // Can be either StrategyEdit or StateRule
-
 	public LogicalOperatorValidationRule(LogicOperatorT operator, Object parent)
 	{
 		this.operator = operator;
 		this.rules = new ArrayList<ValidationRule>();
-		// this.parent = parent;
 	}
 
 	public List<ValidationRule> getRules()

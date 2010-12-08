@@ -50,10 +50,6 @@ public class SWTStrategyUI
 	
 	private Composite parent;
 
-// TODO 9/26/2010 Scott Atwell	private SWTFactory controlFactory;  // note this is lazy-init'd (adjust getControlFactory() if you wish to override/substitute concrete class)
-// TODO 9/26/2010 Scott Atwell moved from SWTFactory
-// TODO 9/27/2010 Scott Atwell adjusted createWidget() 	private Atdl4jWidgetFactory controlWidgetFactory;
-
 	private List<ExpandBar> expandBarList;  // 8/27/2010 Scott Atwell added
 
 	/*
@@ -123,8 +119,7 @@ public class SWTStrategyUI
 	}
 
 	// Create a map of StateListeners to be added to each widget. This is to
-	// ensure
-	// that each StateListener is only added once to a given widget.
+	// ensure that each StateListener is only added once to a given widget.
 	private void putStateListener(SWTWidget<?> widget, SWTStateListener stateListener)
 	{
 		if ( !getWidgetStateListenerMap().containsKey( widget ) )
@@ -162,9 +157,7 @@ public class SWTStrategyUI
 				throw new IllegalStateException( "Error generating a State Rule => Control: " + field + " does not exist in Strategy: " + getStrategy().getName() );
 			putStateListener( targetParameterWidget, stateRuleListener );
 
-			// 2/1/2010 John Shields added
-			// RadioButtonT requires adding all associated RadioButtonTs in the
-			// ratioGroup
+			// -- RadioButtonT requires adding all associated RadioButtonTs in the radioGroup --
 			if ( targetParameterWidget.getControl() instanceof RadioButtonT
 					&& ( (RadioButtonT) targetParameterWidget.getControl() ).getRadioGroup() != null
 					&& ( ! "".equals( ( (RadioButtonT) targetParameterWidget.getControl() ).getRadioGroup() ) ) )
@@ -248,15 +241,11 @@ public class SWTStrategyUI
 	{
 		Map<String, SWTWidget<?>> tempControlMap = new HashMap<String, SWTWidget<?>>();
 		
-// 8/24/2010 Scott Atwell		
 		setExpandBarList( new ArrayList<ExpandBar>() );
 
 		// build panels and widgets recursively
 		for ( StrategyPanelT panel : aStrategyPanelList )
 		{
-//	8/24/2010 Scott Atwell		tempControlMap.putAll( getControlFactory().createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE ) );
-// 9/26/2010 Scott Atwell			tempControlMap.putAll( getControlFactory().createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE, getExpandBarList()	) );
-// 10/5/2010 Scott Atwell			tempControlMap.putAll( createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE, getExpandBarList()	) );
 			tempControlMap.putAll( SWTStrategyPanelFactory.createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE, getExpandBarList(), getAtdl4jWidgetFactory() ) );
 		}
 	
@@ -276,7 +265,7 @@ public class SWTStrategyUI
 
 	public void relayoutCollapsibleStrategyPanels()
 	{
-// 8/27/2010 Scott Atwell added (to avoid lots of 'thrash' during initial build/load of the various Strategy panels containing one or more collapsible panels --		
+		// -- avoid lots of 'thrash' during initial build/load of the various Strategy panels containing one or more collapsible panels --		
 		for ( ExpandBar tempExpandBar : getExpandBarList() )
 		{
 			// -- Force re-sizing (to support non-collapsed, collapsible ExpandBar components) --
@@ -515,7 +504,6 @@ public class SWTStrategyUI
 	{
 		for ( SWTStateListener stateListener : getStateListenerList() )
 		{
-// 11/22/2010 Scott Atwell corrected -- added if ( aControl.equals( stateListener.getAffectedWidget() ) )		
 			if ( aControl.equals( stateListener.getAffectedWidget() ) )
 			{
 				stateListener.handleLoadFixMessageEvent( null );
@@ -555,143 +543,5 @@ public class SWTStrategyUI
 	{
 		this.expandBarList = aExpandBarList;
 	}
-
-	
-// TODO 9/26/2010 Scott Atwell moved from SWTFactory
-// Used to create a single parameter widget
-/*** 10/05/2010 Scott Atwell moved to new SWTWidgetFactory	
-public SWTWidget<?> createWidget(Composite parent, ControlT control, ParameterT parameter, int style)
-{
-	SWTWidget<?> parameterWidget = null;
-
-	logger.debug( "createWidget() invoked " + "with parms parent: " + parent
-			+ " control: " + control + " parameter: " + parameter + " style: " + style );
-
-// TODO 9/27/2010 Scott Atwell	parameterWidget = (SWTWidget<?>) controlWidgetFactory.create( control, parameter );
-// TODO 9/29/2010 Scott Atwell	parameterWidget = (SWTWidget<?>) getAtdl4jOptions().getAtdl4jWidgetFactory().create( control, parameter );
-	parameterWidget = (SWTWidget<?>) getAtdl4jWidgetFactory().create( control, parameter );
-
-	logger.debug( "createWidget() returned parameterWidget: " + parameterWidget );
-
-	parameterWidget.createWidget( parent, style );
-	logger.debug( "createWidget() completed.  parameterWidget: " + parameterWidget );
-
-	parameterWidget.applyConstOrInitValues();
-
-	return parameterWidget;
-}
-***/
-	
-/*** 10/5/2010 Scott Atwell moved to new SWTStrategyPanelFactory	
-//TODO 9/26/2010 Scott Atwell moved from SWTFactory
-// Given a panel, recursively populates a map of Panels and Parameter widgets
-// Can also process options for a group frame instead of a single panel
-//8/24/2010	public Map<String, SWTWidget<?>> createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style)
-public Map<String, SWTWidget<?>> createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style, List<ExpandBar> aExpandBarList)
-{
-	logger.debug( "createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style)" + " invoked with parms parent: "
-			+ parent + " panel: " + panel + " parameters: " + parameters + " style: " + style );
-
-	Map<String, SWTWidget<?>> controlWidgets = new HashMap<String, SWTWidget<?>>();
-
-	// -- Handles StrategyPanel's Collapsible, Title, Border, etc.  Sets its layout and layoutData and data. --
-	Composite c = SWTStrategyPanelHelper.createStrategyPanelContainer( panel, parent, style );
-
-
-	if ( panel.getStrategyPanel().size() > 0 && panel.getControl().size() > 0 )
-	{
-		// -- Wrap each Control with an auto-built StrategyPanel if setting is true --
-		if ( getAtdl4jOptions().isAccommodateMixOfStrategyPanelsAndControls() )
-		{
-//7/20/2010 Scott Atwell			throw new IllegalStateException( "StrategyPanel may not contain both StrategyPanel and Control elements." );
-			// -- FIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file. --
-			logger.warn( "StrategyPanel contains both StrategyPanel (" + panel.getStrategyPanel().size() +") and Control ( " + panel.getControl().size() + " elements.\nSee Atdl4jOptions.setAccommodateMixOfStrategyPanelsAndControls() as potential work-around, though Controls will appear after StrategyPanels." );
-			
-			StrategyPanelT tempPanel = new StrategyPanelT();
-			tempPanel.setCollapsible( Boolean.FALSE );
-			tempPanel.setCollapsed( Boolean.FALSE );
-			tempPanel.setOrientation( panel.getOrientation() );
-			tempPanel.setColor( panel.getColor() );
-			
-			logger.warn( "Creating a StrategyPanel to contain " + panel.getControl().size() + " Controls." );
-			tempPanel.getControl().addAll( panel.getControl() );
-			panel.getControl().clear();
-			panel.getStrategyPanel().add(  tempPanel );
-		}
-		else
-		{
-			// 7/20/2010 -- original behavior:
-			throw new IllegalStateException( "StrategyPanel may not contain both StrategyPanel and Control elements." );
-		}
-	}
-
-	// build panels widgets recursively
-	for ( StrategyPanelT p : panel.getStrategyPanel() )
-	{
-//8/24/2010			Map<String, SWTWidget<?>> widgets = createStrategyPanelAndWidgets( c, p, parameters, style );
-		Map<String, SWTWidget<?>> widgets = createStrategyPanelAndWidgets( c, p, parameters, style, aExpandBarList );
-		// check for duplicate IDs
-		for ( String newID : widgets.keySet() )
-		{
-			for ( String existingID : controlWidgets.keySet() )
-			{
-				if ( newID.equals( existingID ) )
-					throw new IllegalStateException( "Duplicate Control ID: \"" + newID + "\"" );
-			}
-		}
-		controlWidgets.putAll( widgets );
-	}
-
-	// build control widgets recursively
-	for ( ControlT control : panel.getControl() )
-	{
-		ParameterT parameter = null;
-
-		if ( control.getParameterRef() != null )
-		{
-			parameter = parameters.get( control.getParameterRef() );
-			if ( parameter == null )
-				throw new IllegalStateException( "Cannot find Parameter \"" + control.getParameterRef() + "\" for Control ID: \"" + control.getID() + "\"" );
-		}
-		SWTWidget<?> widget = createWidget( c, control, parameter, style );
-		
-//8/22/2010 Scott Atwell			
-		widget.setParentStrategyPanel( panel );
-		widget.setParent( c );
-
-		// check for duplicate Control IDs
-		if ( control.getID() != null )
-		{
-			// check for duplicate Control IDs
-			for ( SWTWidget<?> w : controlWidgets.values() )
-			{
-				if ( w.getControl().getID().equals( control.getID() ) )
-					throw new IllegalStateException( "Duplicate Control ID: \"" + control.getID() + "\"" );
-			}
-			controlWidgets.put( control.getID(), widget );
-		}
-		else
-		{
-			throw new IllegalStateException( "Control Type: \"" + control.getClass().getSimpleName() + "\" is missing ID" );
-		}
-	}
-
-	
-	// -- Force re-sizing (to support non-collapsed, collapsible ExpandBar components) --
-//8/24/2010 Scott Atwell		if (c.getParent() instanceof ExpandBar) SWTStrategyPanelHelper.relayoutExpandBar( (ExpandBar)c.getParent(), false );
-/ ** 8/24/2010 
-		if ( (c.getParent() instanceof ExpandBar) && ( ! panel.isCollapsed() ) )
-		{
-		SWTStrategyPanelHelper.relayoutExpandBar( (ExpandBar)c.getParent(), false );
-	}
-** /
-	if ( c.getParent() instanceof ExpandBar )
-	{
-		aExpandBarList.add( (ExpandBar)c.getParent() );
-	}
-	
-	return controlWidgets;
-}
-***/
 
 }

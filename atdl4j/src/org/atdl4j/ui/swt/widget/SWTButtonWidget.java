@@ -41,19 +41,6 @@ public class SWTButtonWidget
 		if ( getTooltip() != null )
 			button.setToolTipText( getTooltip() );
 
-/*** 4/11/2010 Scott Atwell	
-		// init value
-		if ( control instanceof RadioButtonT )
-		{
-			if ( ( (RadioButtonT) control ).isInitValue() != null )
-				button.setSelection( ( (RadioButtonT) control ).isInitValue() );
-		}
-		else
-		{
-			if ( ( (CheckBoxT) control ).isInitValue() != null )
-				button.setSelection( ( (CheckBoxT) control ).isInitValue() );
-		}
-***/
 		Boolean tempInitValue = (Boolean) ControlHelper.getInitValue( control, getAtdl4jOptions() );
 		if ( tempInitValue != null )
 		{
@@ -87,7 +74,6 @@ public class SWTButtonWidget
 	public List<Control> getControlsExcludingLabel()
 	{
 		List<Control> widgets = new ArrayList<Control>();
-//		widgets.add( label );
 		widgets.add( button );
 		return widgets;
 	}

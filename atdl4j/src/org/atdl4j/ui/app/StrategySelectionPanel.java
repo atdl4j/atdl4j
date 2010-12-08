@@ -22,7 +22,6 @@ public interface StrategySelectionPanel
 	
 	public void loadStrategyList( List<StrategyT> aStrategyList );
 
-//	4/16/2010 Scott Atwell public void selectDropDownStrategy(String strategyName);
 	public void selectDropDownStrategyByStrategyName( String aStrategyName );
 	
 	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ); 

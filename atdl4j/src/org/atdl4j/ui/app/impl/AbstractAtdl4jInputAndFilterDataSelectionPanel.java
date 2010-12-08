@@ -35,10 +35,8 @@ public abstract class AbstractAtdl4jInputAndFilterDataSelectionPanel
 
 	private List<Atdl4jInputAndFilterDataPanelListener> listenerList = new Vector<Atdl4jInputAndFilterDataPanelListener>();
 
-// 9/29/2010 Scott Atwell Added
 	private Atdl4jUserMessageHandler atdl4jUserMessageHandler;
 	
-// 9/29/2010 	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions )
 	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler )
 	{
 		setAtdl4jOptions( aAtdl4jOptions );
@@ -47,7 +45,6 @@ public abstract class AbstractAtdl4jInputAndFilterDataSelectionPanel
 		setAtdl4jUserMessageHandler( aAtdl4jUserMessageHandler );
 		
 		// -- FixMsgLoadPanel (Load Message button/text field) - build() method called via concrete class --
-//		setAtdl4jInputAndFilterDataPanel( getAtdl4jOptions().getAtdl4jInputAndFilterDataPanel() );
 		setAtdl4jInputAndFilterDataPanel( getAtdl4jInputAndFilterDataPanel() );
 		getAtdl4jInputAndFilterDataPanel().addListener( this );
 	}
@@ -110,14 +107,6 @@ public abstract class AbstractAtdl4jInputAndFilterDataSelectionPanel
 	{
 		this.atdl4jInputAndFilterDataPanel = atdl4jInputAndFilterDataPanel;
 	}
-
-	/**
-	 * @return the atdl4jInputAndFilterDataPanel
-	 */
-//	public Atdl4jInputAndFilterDataPanel getAtdl4jInputAndFilterDataPanel()
-//	{
-//		return atdl4jInputAndFilterDataPanel;
-//	}
 
 	/* 
 	 * Re-fire to listeners who have registered with us.

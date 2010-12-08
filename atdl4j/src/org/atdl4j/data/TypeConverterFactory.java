@@ -120,23 +120,6 @@ public class TypeConverterFactory
 		}
 		else if ( control instanceof SingleSpinnerT || control instanceof DoubleSpinnerT )
 		{
-/*** 4/12/2010 Scott Atwell this doesn't work for Integer parameters within Spinner 
-	as AbstractAtdl4jWidget.setValueAsString() obtains control value as <E> type (Spinner expects BigDecimal) 
-	avoid getting this when using Integer Parameter with StateRule:	
-//	java.lang.ClassCastException: java.math.BigInteger cannot be cast to java.math.BigDecimal
-//	        at org.atdl4j.ui.swt.widget.SWTSpinnerWidget.setValue(SWTSpinnerWidget.java:25)
-//	        at org.atdl4j.ui.impl.AbstractAtdl4jWidget.setValueAsString(AbstractAtdl4jWidget.java:203)
-//	        at org.atdl4j.ui.swt.impl.SWTStateListener.setBehaviorAsStateRule(SWTStateListener.java:93)
- 			if ( ( aParameterTypeConverter != null ) &&
-					( aParameterTypeConverter.getParameter() instanceof NumericT ) )  // all of the Decimal types presently extend NumericT
-			{
-				return new DecimalConverter( aParameterTypeConverter );
-			}
-			else
-			{
-				return new IntegerConverter( aParameterTypeConverter );
-			}
-***/
 			return new DecimalConverter( aParameterTypeConverter );
 		}
 		else if ( control instanceof CheckBoxT || control instanceof RadioButtonT )

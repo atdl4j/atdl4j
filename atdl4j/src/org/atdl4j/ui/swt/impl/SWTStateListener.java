@@ -92,14 +92,10 @@ public class SWTStateListener
 					String value = stateRule.getValue();
 					affectedWidget.setValueAsString( value );
 				}
-/*** 4/11/2010 Scott Atwell not necessary as setValueAsString() already handles Atdl4jConstants.VALUE_NULL_INDICATOR
-***/			
-// 2/10/2010 Scott Atwell added the else clause
 				//  -- state arg is false and value involved is VALUE_NULL_INDICATOR --
 				else if ( Atdl4jConstants.VALUE_NULL_INDICATOR.equals( stateRule.getValue() ) )  
 				{
 					// -- This resets the widget (other widgets than value="{NULL}") to non-null --
-// 2/11/2010 Scott Atwell					affectedWidget.setNullValue( false );
 					affectedWidget.setNullValue( Boolean.FALSE );
 				}
 			}
@@ -173,9 +169,7 @@ public class SWTStateListener
 					if ( tempRuleNewValueAsString != null )
 					{
 						// -- Toggle the value --
-						if ( ( OperatorT.EQ.equals( tempValueOperatorValidationRule.getOperator() ) ) 
-// ??									|| ( OperatorT.NE.equals( tempValueOperatorValidationRule.getOperator() ) ) 
-						    )
+						if ( ( OperatorT.EQ.equals( tempValueOperatorValidationRule.getOperator() ) ) )
 						{
 							tempAssociatedControl.setValueAsString( tempRuleNewValueAsString );
 						}

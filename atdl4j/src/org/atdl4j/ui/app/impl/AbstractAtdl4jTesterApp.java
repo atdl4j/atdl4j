@@ -74,10 +74,8 @@ public abstract class AbstractAtdl4jTesterApp
 	}
 	
 
-// 9/29/2010 Scott Atwell	protected void init( String[] args, Atdl4jOptions aAtdl4jOptions, Object aParentOrShell )
 	protected void init( String[] args, Atdl4jConfiguration aAtdl4jConfiguration, Atdl4jOptions aAtdl4jOptions, Object aParentOrShell )
 	{
-// 9/29/2010 Scott Atwell added		
 		Atdl4jConfig.setConfig( aAtdl4jConfiguration );
 		
 		setAtdl4jOptions( aAtdl4jOptions );
@@ -85,17 +83,7 @@ public abstract class AbstractAtdl4jTesterApp
 		
 		parseMainLineArgs( args );
 		
-		// -- Init the Atdl4jUserMessageHandler --
-// 9/29/2010 handled by AbstractAtdl4jCompositePanel		
-//		if ( ( getAtdl4jOptions() != null ) && 
-//			  ( getAtdl4jOptions().getAtdl4jUserMessageHandler() != null ) && 
-//			  ( getAtdl4jOptions().getAtdl4jUserMessageHandler().isInitReqd() ) )
-//		{
-//			getAtdl4jOptions().initAtdl4jUserMessageHandler( aParentOrShell );
-//		}
-
 		// -- ** Construct the core GUI component ** --
-//		setAtdl4jTesterPanel( getAtdl4jOptions().getAtdl4jTesterPanel() );
 		setAtdl4jTesterPanel( getAtdl4jTesterPanel() );
 	}
 
@@ -133,15 +121,6 @@ public abstract class AbstractAtdl4jTesterApp
 
 
 	/**
-	 * @return the atdl4jTesterPanel
-	 */
-//	public Atdl4jTesterPanel getAtdl4jTesterPanel()
-//	{
-//		return this.atdl4jTesterPanel;
-//	}
-
-
-	/**
 	 * @param aAtdl4jTesterPanel the atdl4jTesterPanel to set
 	 */
 	private void setAtdl4jTesterPanel(Atdl4jTesterPanel aAtdl4jTesterPanel)
@@ -154,22 +133,6 @@ public abstract class AbstractAtdl4jTesterApp
 	 */
 	public Atdl4jTesterPanel getAtdl4jTesterPanel() 
 	{
-// 11/29/2010 Scott Atwell		
-//		if ( ( atdl4jTesterPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameAtdl4jTesterPanel() != null ) )
-//		{
-//			String tempClassName = Atdl4jConfig.getConfig().getClassNameAtdl4jTesterPanel();
-//			logger.debug( "getAtdl4jTesterPanel() loading class named: " + tempClassName );
-//			try
-//			{
-//				atdl4jTesterPanel = ((Class<Atdl4jTesterPanel>) Class.forName( tempClassName ) ).newInstance();
-//			}
-//			catch ( Exception e )
-//			{
-//				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-//				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-//			}
-//		}
-		
 		if ( atdl4jTesterPanel == null )
 		{
 			atdl4jTesterPanel = Atdl4jConfig.createAtdl4jTesterPanel();
@@ -185,15 +148,6 @@ public abstract class AbstractAtdl4jTesterApp
 		{
 			try
 			{
-/*** 12/4/2010 Scott Atwell				
-				StrategyUI ui = getAtdl4jTesterPanel().getAtdl4jCompositePanel().getStrategiesUI().getStrategyUI( getAtdl4jTesterPanel().getAtdl4jCompositePanel().getSelectedStrategy() );
-				ui.validate();
-				String tempFixMsgFragment = ui.getFIXMessage();
-
-				getAtdl4jTesterPanel().getAtdl4jUserMessageHandler().displayMessage( "Strategy Selected", 
-						"Strategy selected: " + Atdl4jHelper.getStrategyUiRepOrName( getAtdl4jTesterPanel().getAtdl4jCompositePanel().getSelectedStrategy() ) 
-						+ "\nFIX msg: " + tempFixMsgFragment );
-***/
 				// -- (aPerformValidationFlag = true) --
 				SelectedStrategyDetails tempSelectedStrategyDetails = getAtdl4jTesterPanel().getAtdl4jCompositePanel().getSelectedStrategyDetails( true );
 				String tempFixMsgFragment = tempSelectedStrategyDetails.getFixMsgFragment();

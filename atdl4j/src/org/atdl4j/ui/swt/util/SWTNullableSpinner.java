@@ -26,7 +26,6 @@ public class SWTNullableSpinner extends Composite
 	static final int BUTTON_WIDTH = 20;
 	Text text;
 	Button up, down;
-// 7/7/2010 Scott Atwell changed from int to BigDecimal	int minimum, maximum, increment, digits;
 	BigDecimal minimum, maximum;
 	BigDecimal increment = new BigDecimal( 1 );
 	int digits = 0;
@@ -89,10 +88,6 @@ public class SWTNullableSpinner extends Composite
 		});
 
 		text.setFont(getFont());
-// 7/7/2010 use null		minimum = 0;
-//	7/7/2010 use null	maximum = 9;
-//	7/7/2010 use data member default	increment = 1;
-//	7/7/2010 use data member default		digits = 0;
 	}
 
 	void verify(Event e) 
@@ -100,7 +95,7 @@ public class SWTNullableSpinner extends Composite
 		try 
 		{
 			if (e.text==null||e.text.equals("")) return;
-// 7/7/2010 Scott Atwell re-wrote   	Integer.parseInt(e.text);
+			
 			if ( ( e.text.equals( "." ) )	|| ( e.text.endsWith( "." ) ) )
 			{
 				// -- Let it go, assume user is entering the decimal place portion and just entered the "." part thus far --
@@ -137,28 +132,10 @@ public class SWTNullableSpinner extends Composite
 	}
 	
 	void up() 
-	{
-/*** 7/7/2010 Scott Atwell re-wrote		
-		if (getSelection()==null) {
-// 7/7/2010 Scott Atwell (do not want -Integer.MAX_VALUE) 			setSelection(getMinimum());
-			if ( getMinimum() != -Integer.MAX_VALUE )
-			{
-				setSelection(getMinimum());
-			}
-			else
-			{
-				setSelection( -getIncrement() );
-			}
-		}
-		else {
-			setSelection(getSelection() + getIncrement());
-		}
-***/		
+	{		
 		BigDecimal tempValue = getValue();
 		if ( tempValue == null )
 		{
-// 7/7/2010 Scott Atwell (do not want -Integer.MAX_VALUE) 			setSelection(getMinimum());
-// 7/7/2010			if ( getMinimum() != -Integer.MAX_VALUE )
 			if ( ( getMinimum() != null ) && ( ! MIN_INTEGER_VALUE_AS_BIG_DECIMAL.equals( getMinimum() ) ) )
 			{
 				setValue( getMinimum() );
@@ -170,7 +147,6 @@ public class SWTNullableSpinner extends Composite
 		}
 		else 
 		{
-// 7/7/2010			setSelection(getSelection() + getIncrement());
 			increment( getIncrement() );
 		}
 		
@@ -179,27 +155,9 @@ public class SWTNullableSpinner extends Composite
 
 	void down() 
 	{
-/*** 7/7/2010 Scott Atwell re-wrote		
-		if (getSelection()==null) {
-// 7/7/2010 Scott Atwell (do not want -Integer.MAX_VALUE)			setSelection(getMaximum());
-			if ( getMaximum() != Integer.MAX_VALUE )
-			{
-				setSelection(getMaximum());
-			}
-			else
-			{
-				setSelection( getIncrement() );
-			}
-		}
-		else {
-			setSelection(getSelection() - getIncrement());
-		}
-***/
 		BigDecimal tempValue = getValue();
 		if ( tempValue == null )
 		{
-// 7/7/2010 Scott Atwell (do not want -Integer.MAX_VALUE)			setSelection(getMaximum());
-// 7/7/2010			if ( getMaximum() != Integer.MAX_VALUE )
 			if ( ( getMaximum() != null ) && ( ! MAX_INTEGER_VALUE_AS_BIG_DECIMAL.equals( getMaximum() ) ) )
 			{
 				setValue( getMaximum() );
@@ -211,7 +169,6 @@ public class SWTNullableSpinner extends Composite
 		}
 		else 
 		{
-// 7/7/2010			setSelection(getSelection() - getIncrement());
 			decrement( getIncrement() );
 		}
 		
@@ -227,23 +184,6 @@ public class SWTNullableSpinner extends Composite
 		text.setFont(font);
 	}
 
-/**** 7/7/2010 SWL replaced setSelection() and getSelection() with BigDecimal-based setValue() and getValue()	
-	public void setSelection(int selection) {
-		if (selection < minimum) {
-			selection = minimum;
-		} else if (selection > maximum) {
-			selection = maximum;
-		}
-		text.setText(String.valueOf(selection));
-		text.selectAll();
-		text.setFocus();
-	}
-
-	public Integer getSelection() {
-		if (text.getText()==null||text.getText().equals("")) return null;
-		return Integer.parseInt(text.getText());
-	}
-****/
 	public void setValue(BigDecimal aValue) 
 	{
 		BigDecimal tempValue = aValue;
@@ -333,7 +273,6 @@ public class SWTNullableSpinner extends Composite
 
 	public void increment( BigDecimal aIncrement )
 	{
-		// 7/7/2010 Scott Atwell Moved logic from SWTSpinnerWidget.DoubleSpinnerSelection.widgetSelected()
 		if ( getValue() != null )
 		{
 			setValue( getValue().add( aIncrement ) );
@@ -404,7 +343,6 @@ public class SWTNullableSpinner extends Composite
 		this.increment = aIncrement;
 	}
 	
-// 8/15/2010 Scott Atwell added
 	public void addListener(Listener listener)
 	{
 		text.addListener( SWT.Modify, listener );

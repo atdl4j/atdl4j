@@ -30,19 +30,16 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 	private Shell atdl4jInputAndFilterDataPanelShell;
 	private Button debugModeButton;
 	
-// 9/29/2010 Scott Atwell	public Object buildAtdl4jInputAndFilterDataSelectionPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	public Object buildAtdl4jInputAndFilterDataSelectionPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
 	{
 		return buildAtdl4jInputAndFilterDataSelectionPanel( (Composite) aParentOrShell, aAtdl4jOptions, aAtdl4jUserMessageHandler );
 	}
 	
-// 9/29/2010 Scott Atwell	public Composite buildAtdl4jInputAndFilterDataSelectionPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	public Composite buildAtdl4jInputAndFilterDataSelectionPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
 	{
 		parentComposite = (Composite) aParentOrShell;
 
 		// -- Delegate back to AbstractAtdl4jInputAndFilterDataSelectionPanel -- 
-//		init( aParentOrShell, aAtdl4jOptions );
 		init( aParentOrShell, aAtdl4jOptions, aAtdl4jUserMessageHandler );
 		
 		
@@ -78,7 +75,6 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 		}
 		
 		getAtdl4jInputAndFilterDataPanel().loadScreenWithAtdl4jOptions();
-//		getDebugModeButton().setSelection( getAtdl4jOptions().isDebugLoggingLevel() );
 		getDebugModeButton().setSelection( Atdl4jConfig.getConfig().isDebugLoggingLevel() );
 		
 		// -- Open/Pop-up the dialog window --
@@ -90,7 +86,6 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 		// -- Atdl4jInputAndFilterDataPanel.extractAtdl4jOptionsFromScreen() populates/overlays data members within our Atdl4jOptions -- 
 		if ( ! getAtdl4jInputAndFilterDataPanel().extractAtdl4jOptionsFromScreen() )
 		{
-//			getAtdl4jOptions().getAtdl4jUserMessageHandler().displayMessage( "Error", "Error extracting Atdl4jOptions extracted from screen" );
 			getAtdl4jUserMessageHandler().displayMessage( "Error", "Error extracting Atdl4jOptions extracted from screen" );
 			return;
 		}
@@ -145,7 +140,6 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 		{
 			public void widgetSelected(SelectionEvent e) 
 			{
-//				getAtdl4jOptions().setDebugLoggingLevel( getDebugModeButton().getSelection() );
 				Atdl4jConfig.getConfig().setDebugLoggingLevel( getDebugModeButton().getSelection() );
 			}
 		});

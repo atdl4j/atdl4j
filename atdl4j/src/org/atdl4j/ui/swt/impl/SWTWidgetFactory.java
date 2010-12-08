@@ -19,9 +19,7 @@ public class SWTWidgetFactory
 {
 	protected static final Logger logger = Logger.getLogger( SWTWidgetFactory.class );
 
-// TODO 9/26/2010 Scott Atwell moved from SWTFactory
 	// Used to create a single parameter widget
-// TODO 10/05/2010 Scott Atwell moved from SWTStrategyUI	public static SWTWidget<?> createWidget(Composite parent, ControlT control, ParameterT parameter, int style)
 	public static SWTWidget<?> createWidget(Composite parent, ControlT control, ParameterT parameter, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory)
 	{
 		SWTWidget<?> parameterWidget = null;
@@ -29,9 +27,6 @@ public class SWTWidgetFactory
 		logger.debug( "createWidget() invoked " + "with parms parent: " + parent
 				+ " control: " + control + " parameter: " + parameter + " style: " + style );
 	
-	// TODO 9/27/2010 Scott Atwell	parameterWidget = (SWTWidget<?>) controlWidgetFactory.create( control, parameter );
-	// TODO 9/29/2010 Scott Atwell	parameterWidget = (SWTWidget<?>) getAtdl4jOptions().getAtdl4jWidgetFactory().create( control, parameter );
-// 10/05/2010 Scott Atwell		parameterWidget = (SWTWidget<?>) getAtdl4jWidgetFactory().create( control, parameter );
 		parameterWidget = (SWTWidget<?>) aAtdl4jWidgetFactory.create( control, parameter );
 	
 		logger.debug( "createWidget() returned parameterWidget: " + parameterWidget );

@@ -41,10 +41,8 @@ public class SWTSpinnerWidget
 	{
 		private SWTNullableSpinner spinner;
 
-// 7/7/2010 Scott Atwell use BigDecimal		private int increment;
 		private BigDecimal increment;
 
-// 7/7/2010 Scott Atwell use BigDecimal		public DoubleSpinnerSelection(SWTNullableSpinner spinner2, int increment)
 		public DoubleSpinnerSelection(SWTNullableSpinner spinner2, BigDecimal increment)
 		{
 			this.spinner = spinner2;
@@ -57,16 +55,6 @@ public class SWTSpinnerWidget
 
 		public void widgetSelected(SelectionEvent event)
 		{
-/*** 7/7/2010 Scott Atwell moved logic to SWTNullableSpinner			
-			if ( spinner.getSelection() != null )
-			{
-				spinner.setSelection( spinner.getSelection() + increment );
-			}
-			else
-			{
-				spinner.setSelection( increment );
-			}
-***/
 			spinner.increment( increment );
 		}
 	}
@@ -134,21 +122,11 @@ public class SWTSpinnerWidget
 				spinner.setDigits( ControlHelper.getDefaultDigitsForSpinnerControl( parameterConverter.getParameter(), getAtdl4jOptions() ) );
 			}
 
-// 3/17/2010 Scott Atwell moved these defaults above (avoid min value > 0 being ignored and set to 0)
-// --- public void setMinimum ( int value ) 
-//	--- Sets the minimum value that the receiver will allow. This new value 
-// --> will be ignored if it is negative  or is not less than the receiver's current maximum value. 			
-// 7/7/2010 Scott Atwell spinner now uses BigDecimal and defaults to null			spinner.setMinimum( -Integer.MAX_VALUE );
-// 7/7/2010 Scott Atwell spinner now uses BigDecimal and defaults to null			spinner.setMaximum( Integer.MAX_VALUE );
-			
 			if ( tempDecimalConverter.getMinValue() != null )
 			{
 				// -- need to handle Percentage ("control value" representation) --
 				BigDecimal tempParameterMin = tempDecimalConverter.getMinValue();
 				BigDecimal tempControlMin = tempDecimalConverter.convertParameterValueToControlValue( tempParameterMin );
-// 7/7/2010 Scott Atwell spinner now uses BigDecimal
-//				int tempMin = new Double( tempControlMin.doubleValue() *  Math.pow( 10, spinner.getDigits() ) ).intValue();
-//				spinner.setMinimum( tempMin );
 				spinner.setMinimum( tempControlMin.setScale( spinner.getDigits(), RoundingMode.HALF_UP )  );
 			}
 			
@@ -157,9 +135,6 @@ public class SWTSpinnerWidget
 				// -- need to handle Percentage ("control value" representation) --
 				BigDecimal tempParameterMax = tempDecimalConverter.getMaxValue();
 				BigDecimal tempControlMax = tempDecimalConverter.convertParameterValueToControlValue( tempParameterMax );
-// 7/7/2010 Scott Atwell spinner now uses BigDecimal
-//				int tempMax = new Double( tempControlMax.doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue();
-//				spinner.setMaximum( tempMax );
 				spinner.setMaximum( tempControlMax.setScale( spinner.getDigits(), RoundingMode.HALF_UP )  );
 			}
 		}
@@ -172,79 +147,53 @@ public class SWTSpinnerWidget
 
 			if ( tempIntegerConverter.getMinValue() != null )
 			{
-//				spinner.setMinimum( tempIntegerConverter.getMinValue().intValue() );
 				BigInteger tempParameterMin = tempIntegerConverter.getMinValue();
 				BigInteger tempControlMin = tempIntegerConverter.convertParameterValueToControlValue( tempParameterMin );
 				spinner.setMinimum( new BigDecimal( tempControlMin ) );
 			}
 			else
 			{
-// 				spinner.setMinimum( -Integer.MAX_VALUE );
 				spinner.setMinimum( SWTNullableSpinner.MIN_INTEGER_VALUE_AS_BIG_DECIMAL );
 			}
 			
 			if ( tempIntegerConverter.getMaxValue() != null )
 			{
-//				spinner.setMaximum( tempIntegerConverter.getMaxValue().intValue() );
 				BigInteger tempParameterMax = tempIntegerConverter.getMaxValue();
 				BigInteger tempControlMax = tempIntegerConverter.convertParameterValueToControlValue( tempParameterMax );
 				spinner.setMaximum( new BigDecimal( tempControlMax ) );
 			}
 			else
 			{
-//				spinner.setMaximum( Integer.MAX_VALUE );
 				spinner.setMaximum( SWTNullableSpinner.MAX_INTEGER_VALUE_AS_BIG_DECIMAL );
 			}
 		}
-// 7/7/2010 Scott Atwell - removed this as we're already defaulting  		else
-//		{
-//			spinner.setDigits( 0 );
-//			spinner.setMinimum( -Integer.MAX_VALUE );
-//			spinner.setMaximum( Integer.MAX_VALUE );
-//		}
-
-		
 
 		if ( control instanceof DoubleSpinnerT )
 		{
-// 4/18/2010 Scott Atwell			if ( ControlHelper.getInnerIncrementValue( control, getAtdl4jOptions() ) != null )
-//	4/18/2010 Scott Atwell				spinner.setIncrement( ControlHelper.getInnerIncrementValue( control, getAtdl4jOptions() ).intValue() );
-// 8/19/2010 Scott Atwell (avoid "1.0" vs. "1" on Int_t)			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jOptions() );
 			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jOptions(), spinner.getDigits() );
 			if ( tempInnerIncrement != null )
 			{
 				// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
-// 7/7/2010 Scott Atwell				spinner.setIncrement( new Double( tempInnerIncrement.doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue() );
 				spinner.setIncrement( tempInnerIncrement );
 			}
 			
-// 7/7/2010 Scott Atwell			int outerStepSize = 1 * (int) Math.pow( 10, spinner.getDigits() );
 			BigDecimal outerStepSize = new BigDecimal( "1" );
 			
-// 4/18/2010 Scott Atwell			if ( ControlHelper.getOuterIncrementValue( control, getAtdl4jOptions() ) != null )
-// 4/18/2010 Scott Atwell				outerStepSize = ControlHelper.getOuterIncrementValue( control, getAtdl4jOptions() ).intValue();
 			BigDecimal tempOuterIncrement = ControlHelper.getOuterIncrementValue( control, getAtdl4jOptions() );
 			if ( tempOuterIncrement != null )
 			{
-// TODO ?? verify				outerStepSize = (int) tempOuterIncrement.doubleValue();
-// 7/17/2010 Scott Atwell				outerStepSize = new Double( tempOuterIncrement.doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue();
 				outerStepSize = tempOuterIncrement;
 			}
 
 			buttonUp.addSelectionListener( new DoubleSpinnerSelection( spinner, outerStepSize ) );
-// 7/17/2010			buttonDown.addSelectionListener( new DoubleSpinnerSelection( spinner, -1 * outerStepSize ) );
 			buttonDown.addSelectionListener( new DoubleSpinnerSelection( spinner, outerStepSize.negate() ) );
 		}
 		else if ( control instanceof SingleSpinnerT )
 		{
-// 4/18/2010 Scott Atwell			if ( ControlHelper.getIncrementValue( control, getAtdl4jOptions() ) != null )
-// 4/18/2010 Scott Atwell				spinner.setIncrement( ControlHelper.getIncrementValue( control, getAtdl4jOptions() ).intValue() );
-// 8/19/2010 Scott Atwell (avoid "1.0" vs. "1" on Int_t)			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jOptions() );
 			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jOptions(), spinner.getDigits() );
 			if ( tempIncrement != null )
 			{
 				// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
-// 7/17/2010 Scott Atwell				spinner.setIncrement( new Double( tempIncrement.doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue() );
 				spinner.setIncrement( tempIncrement );
 			}
 			else  // tempIncrement is null
@@ -269,13 +218,6 @@ public class SWTSpinnerWidget
 
 	public BigDecimal getControlValueRaw()
 	{
-/*** 7/7/2010 Scott Atwell re-wrote		
-		if (spinner.getSelection()==null) return null;
-		try
-		{
-			return BigDecimal.valueOf( spinner.getSelection(), spinner.getDigits() );
-		}
-***/
 		try
 		{
 			return spinner.getValue();
@@ -288,7 +230,6 @@ public class SWTSpinnerWidget
 
 	public void setValue(BigDecimal value)
 	{
-// 7/7/2010 Scott Atwell re-wrote		spinner.setSelection( value.unscaledValue().intValue() );
 		spinner.setValue( value );
 	}
 
@@ -319,7 +260,6 @@ public class SWTSpinnerWidget
 
 	public void addListener(Listener listener)
 	{
-// 8/15/2010 Scott Atwell (use SWTNullableSpinner's implementation vs. default Control's)		spinner.addListener( SWT.Modify, listener );
 		spinner.addListener( listener );
 		if ( control instanceof DoubleSpinnerT )
 		{
@@ -330,7 +270,6 @@ public class SWTSpinnerWidget
 
 	public void removeListener(Listener listener)
 	{
-// 8/15/2010 Scott Atwell (use SWTNullableSpinner's implementation vs. default Control's)		spinner.removeListener( SWT.Modify, listener );
 		spinner.removeListener( listener );
 		if ( control instanceof DoubleSpinnerT )
 		{
@@ -364,7 +303,6 @@ public class SWTSpinnerWidget
 		if ( initValue != null )
 		{
 			// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
-// 7/7/2010 Scott Atwell simplified			spinner.setSelection( new Double( initValue.doubleValue() * Math.pow( 10, spinner.getDigits() ) ).intValue() );
 			setValue( new BigDecimal( initValue ) );
 		}
 	}

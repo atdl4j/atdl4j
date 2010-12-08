@@ -105,8 +105,7 @@ public class SWTDropDownListWidget
 		if ( control instanceof EditableDropDownListT && dropDownList.getText() != null && dropDownList.getText() != "" )
 		{
 			// use the Parameter's Enum wireValue if the text matches a combo box
-			// item,
-			// even if the dropdown was not used to select it
+			// item, even if the dropdown was not used to select it
 			for ( int i = 0; i < dropDownList.getItems().length; i++ )
 			{
 				if ( dropDownList.getItems()[ i ].equals( dropDownList.getText() ) )

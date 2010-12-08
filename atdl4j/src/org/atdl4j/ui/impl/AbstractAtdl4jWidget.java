@@ -52,7 +52,6 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 
 	private boolean hiddenFieldForInputAndFilterData = false;
 
-// 8/21/2010 Scott Atwell added
 	private StrategyPanelT parentStrategyPanel;
 	private Object parent;
 
@@ -67,17 +66,13 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 
 		if ( parameter != null )
 		{
-// 9/29/2010			parameterConverter = (ParameterTypeConverter<?>) getAtdl4jOptions().getTypeConverterFactory().createParameterTypeConverter( parameter );
 			parameterConverter = (ParameterTypeConverter<?>) TypeConverterFactoryConfig.getTypeConverterFactory().createParameterTypeConverter( parameter );
 		}
 
 		// -- Pass parameterConverter (which may be null if parameter is null) --
-// 9/29/2010 		controlConverter = (ControlTypeConverter<E>) getAtdl4jOptions().getTypeConverterFactory().createControlTypeConverter( control, parameterConverter );
 		controlConverter = (ControlTypeConverter<E>) TypeConverterFactoryConfig.getTypeConverterFactory().createControlTypeConverter( control, parameterConverter );
 
 		validateEnumPairs();
-		
-// too early in process, Control does not yet have widget built		applyConstValue( parameter );
 		
 		// -- This method can be overridden/implemented --
 		initPostCheck();
@@ -122,7 +117,6 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 			
 			if ( tempConstValue != null )
 			{
-			// 7/11/2010 Scott Atwell need to handle CheckBox control checkedEnumRef and uncheckedEnumRef (eg "100" -> true, "0" -> false)				E tempControlValue = controlConverter.convertParameterValueToControlValue( tempConstValue );
 				E tempControlValue = controlConverter.convertParameterValueToControlValue( tempConstValue, getControl() );
 				
 				if ( tempControlValue != null )
@@ -146,12 +140,6 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 	 */
 	private void applyInitValue()
 	{
-//		if ( getInitValue() != null )
-//		{
-//			E tempComparable = controlConverter.convertValueToControlComparable( tempInitValue );
-//			setValue( tempComparable );
-//			processInitValueHasBeenSet();
-//		}
 	}
 
 	public void applyConstOrInitValues()
@@ -360,23 +348,6 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 	{
 		if ( parameter != null )
 		{
-/**			
-			java.util.List<EnumPairT> enumPairs = parameter.getEnumPair();
-			for ( EnumPairT enumPair : enumPairs )
-			{
-				if ( enumPair.getEnumID().equals( enumID ) )
-				{
-					if ( Atdl4jConstants.VALUE_NULL_INDICATOR.equals( enumPair.getWireValue() ) )
-					{
-						return null;
-					}
-					else
-					{
-						return enumPair.getWireValue();
-					}
-				}
-			}
-**/
 			return ParameterHelper.getWireValueForEnumID( parameter, enumID );
 			// throw error?
 		}
@@ -617,7 +588,6 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 	{
 		// -- Must use parameterConverter's convertToControlString (eg TextField's controlConverter is a StringConverter, not a DecimalConverter like the Parameter's would be) --
 		Object tempParameterValue = parameterConverter.convertFixWireValueToParameterValue( aFIXValue ); 
-// 7/11/2010 Scott Atwell need to handle CheckBox control checkedEnumRef and uncheckedEnumRef (eg "100" -> true)		E tempValue = controlConverter.convertParameterValueToControlValue( tempParameterValue );
 		E tempValue = controlConverter.convertParameterValueToControlValue( tempParameterValue, getControl() );
 		
 		if ( ( tempValue == null ) && ( getNullValue() != null ) )

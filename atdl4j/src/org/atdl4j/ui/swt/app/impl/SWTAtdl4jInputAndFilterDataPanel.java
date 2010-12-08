@@ -82,11 +82,9 @@ public class SWTAtdl4jInputAndFilterDataPanel
 	public static String[] DEFAULT_FIX_FIELD_CL_ORD_LINK_ID_SUBSET_LIST = new String[] { "", "COMMON_ID_1", "COMMON_ID_2" };  // just to seed it with some  
 	public static String FIX_FIELD_NAME_CL_ORD_LINK_ID = "FIX_ClOrdLinkID";  // tag 583
 
-// 6/23/2010 Scott Atwell	private Button checkboxAtdl4jUsePreCachedStrategyPanels;
 	private Button checkboxAtd4ljShowStrategyDescription;
 	private Button checkboxAtd4ljShowFileSelectionSection;
 	private Button checkboxAtd4ljShowValidateOutputSection;
-// 11/30/2010 use TesterPanel's	private Button checkboxAtd4ljShowCompositePanelOkCancelButtonSection;
 	private Button checkboxAtd4ljShowTesterPanelOkCancelButtonSection;
 	private Button checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls;
 
@@ -317,34 +315,24 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		tempAtdl4jOptionsSettingsGroup.setLayout(tempAtdl4jOptionsSettingsGroupLayout);
 		tempAtdl4jOptionsSettingsGroup.setLayoutData(new GridData(SWT.TOP, SWT.FILL, false, false));
 		
-// 6/23/2010 Scott Atwell		checkboxAtdl4jUsePreCachedStrategyPanels = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
-//		checkboxAtdl4jUsePreCachedStrategyPanels.setText( "Pre-Cache Strategy Panels" );
-//		checkboxAtdl4jUsePreCachedStrategyPanels.setToolTipText( "When checked, Strategy Panels are built once when FIXatdl XML file is loaded and then re-used/re-init'd upon subsequent 'load' operations (Improves performance)" );
-//		checkboxAtdl4jUsePreCachedStrategyPanels.setSelection( getAtdl4jOptions().isUsePreCachedStrategyPanels() );
-		
 		checkboxAtd4ljShowStrategyDescription = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljShowStrategyDescription.setText( "Show Strategy Description" );
 		checkboxAtd4ljShowStrategyDescription.setToolTipText( "When checked, Strategy Description panel will be shown when Strategy's Description has been specified." );
-//		checkboxAtd4ljShowStrategyDescription.setSelection( getAtdl4jOptions().isShowStrategyDescription() );
 		checkboxAtd4ljShowStrategyDescription.setSelection( Atdl4jConfig.getConfig().isShowStrategyDescription() );
 		
 		checkboxAtd4ljShowFileSelectionSection = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljShowFileSelectionSection.setText( "Show File Selection" );
 		checkboxAtd4ljShowFileSelectionSection.setToolTipText( "When checked, File Selection panel will be shown." );
-//		checkboxAtd4ljShowFileSelectionSection.setSelection( getAtdl4jOptions().isShowFileSelectionSection() );
 		checkboxAtd4ljShowFileSelectionSection.setSelection( Atdl4jConfig.getConfig().isShowFileSelectionSection() );
 		
 		checkboxAtd4ljShowValidateOutputSection = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljShowValidateOutputSection.setText( "Show Validation Section" );
 		checkboxAtd4ljShowValidateOutputSection.setToolTipText( "When checked, Validation panel will be shown providing \"Validate\" button and output text field." );
-//		checkboxAtd4ljShowValidateOutputSection.setSelection( getAtdl4jOptions().isShowValidateOutputSection() );
 		checkboxAtd4ljShowValidateOutputSection.setSelection( Atdl4jConfig.getConfig().isShowValidateOutputSection() );
 		
 		checkboxAtd4ljShowTesterPanelOkCancelButtonSection = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
 		checkboxAtd4ljShowTesterPanelOkCancelButtonSection.setText( "Show OK/Close" );
 		checkboxAtd4ljShowTesterPanelOkCancelButtonSection.setToolTipText( "When checked, \"OK\" and \"Close\" buttons will be displayed and available." );
-//		checkboxAtd4ljShowTesterPanelOkCancelButtonSection.setSelection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
-// 11/30/2010 Adjust TesterPanel's		checkboxAtd4ljShowCompositePanelOkCancelButtonSection.setSelection( Atdl4jConfig.getConfig().isShowCompositePanelOkCancelButtonSection() );
 		checkboxAtd4ljShowTesterPanelOkCancelButtonSection.setSelection( Atdl4jConfig.getConfig().isShowTesterPanelOkCancelButtonSection() );
 		
 		checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls = new Button( tempAtdl4jOptionsSettingsGroup, SWT.CHECK );
@@ -415,20 +403,12 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_TIME_IN_FORCE, dropDownListFixFieldTimeInForce );
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_CL_ORD_LINK_ID, dropDownListFixFieldClOrdLinkID );
 	
-// 6/23/2010 Scott Atwell		getAtdl4jOptions().setUsePreCachedStrategyPanels( getCheckboxValue( checkboxAtdl4jUsePreCachedStrategyPanels, null ).booleanValue() );
-//		getAtdl4jOptions().setShowStrategyDescription( getCheckboxValue( checkboxAtd4ljShowStrategyDescription, null ).booleanValue() );
-//		getAtdl4jOptions().setShowFileSelectionSection( getCheckboxValue( checkboxAtd4ljShowFileSelectionSection, null ).booleanValue() );
-//		getAtdl4jOptions().setShowValidateOutputSection( getCheckboxValue( checkboxAtd4ljShowValidateOutputSection, null ).booleanValue() );
-//		getAtdl4jOptions().setShowCompositePanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowCompositePanelOkCancelButtonSection, null ).booleanValue() );
 		Atdl4jConfig.getConfig().setShowStrategyDescription( getCheckboxValue( checkboxAtd4ljShowStrategyDescription, null ).booleanValue() );
 		Atdl4jConfig.getConfig().setShowFileSelectionSection( getCheckboxValue( checkboxAtd4ljShowFileSelectionSection, null ).booleanValue() );
 		Atdl4jConfig.getConfig().setShowValidateOutputSection( getCheckboxValue( checkboxAtd4ljShowValidateOutputSection, null ).booleanValue() );
-// 11/30/2010 Adjust TesterPanel's		Atdl4jConfig.getConfig().setShowCompositePanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowCompositePanelOkCancelButtonSection, null ).booleanValue() );
 		Atdl4jConfig.getConfig().setShowTesterPanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowTesterPanelOkCancelButtonSection, null ).booleanValue() );
 		getAtdl4jOptions().setAccommodateMixOfStrategyPanelsAndControls( getCheckboxValue( checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls, null ).booleanValue() );
 
-// 4/18/2010 Scott Atwell		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigInteger( textIncrementPolicyLotSize ) );
-//	4/18/2010 Scott Atwell	getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigInteger( textIncrementPolicyTick ) );
 		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigDecimal( textIncrementPolicyLotSize ) );
 		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigDecimal( textIncrementPolicyTick ) );
 		
@@ -503,7 +483,6 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		else
 		{
 			// -- Split each line based upon '\n' --
-//			return Arrays.asList( tempText.split( "\\n" ) );
 			return Arrays.asList( tempText.split( "\\r\\n" ) );
 		}
 	}

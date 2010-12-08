@@ -55,7 +55,6 @@ public class SWTStrategySelectionPanel
 		strategiesDropDownLabel.setText("Strategy");
 		// dropDownList
 		strategiesDropDown = new Combo(dropdownComposite, SWT.READ_ONLY | SWT.BORDER);
-// 4/17/2010 Scott Atwell avoid taking the full width of screen for relatively short strategy names		strategiesDropDown.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		strategiesDropDown.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
 		// -- Increase font size for Drop Down --
@@ -80,10 +79,8 @@ public class SWTStrategySelectionPanel
 		
 // TODO wish to avoid issue with changing the font causes the initial combo box display to be very narrow 
 	
-//		if ( ( atdl4jOptions != null ) && ( atdl4jOptions.getStrategyDropDownItemDepth() != null ) )
 		if ( Atdl4jConfig.getConfig().getStrategyDropDownItemDepth() != null )
 		{
-//			strategiesDropDown.setVisibleItemCount( atdl4jOptions.getStrategyDropDownItemDepth().intValue() );
 			strategiesDropDown.setVisibleItemCount( Atdl4jConfig.getConfig().getStrategyDropDownItemDepth().intValue() );
 		}
 		// tooltip
@@ -95,7 +92,7 @@ public class SWTStrategySelectionPanel
 				public void widgetSelected(SelectionEvent event) 
 				{
 					int index = strategiesDropDown.getSelectionIndex();
-logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelectionIndex(): " + index );					
+					logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelectionIndex(): " + index );					
 					selectDropDownStrategy( index );
 				}
 			} 
@@ -109,20 +106,6 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 	{
 		// remove all dropdown items
 		strategiesDropDown.removeAll();
-/*** 4/16/2010 Scott Atwell
-		List<String> tempStrategyUiRepOrNameList = getStrategyUiRepOrNameList( aStrategyList );
-		
-		if ( tempStrategyUiRepOrNameList == null )
-		{
-			return;
-		}
-		
-		for (String tempStrategy : tempStrategyUiRepOrNameList) 
-		{
-			// create dropdown item for strategy
-			strategiesDropDown.add( tempStrategy );
-		}
-***/
 		setStrategiesList( aStrategyList );
 
 		if ( getStrategiesList() == null )
@@ -139,10 +122,6 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 		}
 		
 		dropdownComposite.layout(); 
-//		if (strategiesDropDown.getItemCount() > 0)
-//		{
-// 4/16/2010 Scott Atwell - Composite panel caller does this			strategiesDropDown.select( 0 );
-//		}
 	}
 
 
@@ -157,23 +136,6 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 		
 		strategiesDropDown.select( index );
 		
-/*** 4/16/2010 Scott Atwell		
-		if ( (getAtdl4jOptions() != null ) && (getAtdl4jOptions().getStrategies() != null) )
-		{
-			String tempSelectedDropDownName = strategiesDropDown.getItem( index );
-			getAtdl4jOptions().setSelectedStrategy( null ); 
-			for ( StrategyT tempStrategy : getAtdl4jOptions().getStrategies().getStrategy() )
-			{
-				if ( ( ( tempStrategy.getUiRep() != null ) && ( tempStrategy.getUiRep().equals( tempSelectedDropDownName ) ) ) ||
-					  ( ( tempStrategy.getUiRep() == null ) && ( tempStrategy.getName().equals( tempSelectedDropDownName ) ) ) )
-				{
-					getAtdl4jOptions().setSelectedStrategy( tempStrategy );
-					fireStrategySelectedEvent( tempStrategy, index );
-					break;
-				}
-			}
-		}
-***/		
 		StrategyT tempStrategy = getStrategiesList().get( index );
 		
 		if ( ! strategiesDropDown.getItem( index ).equals( Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) ) )
@@ -181,26 +143,12 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 			throw new IllegalStateException( "UNEXPECTED ERROR: strategiesDropDown.getItem(" + index + "): " + strategiesDropDown.getItem( index ) + " DID NOT MATCH tempStrategy: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
 		}
 		
-// 9/27/2010 Scott Atwell moved to AbstractAtdl4jCompositePanel.strategySelected()		getAtdl4jOptions().setSelectedStrategy( tempStrategy );
-		
-// 4/16/2010 Scott Atwell		fireStrategySelectedEvent( tempStrategy, index );
 		fireStrategySelectedEvent( tempStrategy );
 	}
 
 	
-// 4/16/2010 Scott Atwell	public void selectDropDownStrategy(String strategyName) 
 	public void selectDropDownStrategyByStrategyName(String aStrategyName) 
 	{
-/*** 4/16/2010 Scott Atwell		
-		for (int i = 0; i < strategiesDropDown.getItemCount(); i++) 
-		{
-			if ( strategyName.equals( strategiesDropDown.getItem( i ) ) ) 
-			{
-				selectDropDownStrategy( i );
-				return;
-			}
-		}
-***/		
 		logger.debug( "selectDropDownStrategyByStrategyName() aStrategyName: " + aStrategyName );
 		
 		if ( getStrategiesList().size() != strategiesDropDown.getItemCount() )
@@ -220,7 +168,6 @@ logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelecti
 		}
 	}
 
-// 4/16/2010 Scott Atwell added	
 	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ) 
 	{
 		logger.debug( "selectDropDownStrategyByStrategyWireValue() aStrategyWireValue: " + aStrategyWireValue );

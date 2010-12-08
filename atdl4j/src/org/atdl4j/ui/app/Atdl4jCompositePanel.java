@@ -108,28 +108,13 @@ public interface Atdl4jCompositePanel
 	 * @return StrategyT (non-null only if passes all validation)
 	 */
 	public StrategyT validateStrategy() throws Exception;
-	
 
-// 11/25/2010 Scott Atwell	
-//	/* 
-//	 * Invokes fixatdlFileSelected() with getLastFixatdlFilename() if non-null.  
-//	 * Re-reads the FIXatdl XML file and then re-loads the screen for StrategiesT.
-//	 */
-//	public void reloadFixatdlFile() throws Exception;
-	
-/** 10/7/2010 Scott Atwell moved to 	AbstractAtdl4jTesterPanel
-	public void setVisibleFileSelectionSection( boolean aVisible );
-	
-	public void setVisibleValidateOutputSection( boolean aVisible );
-**/
-	
 	public void setVisibleOkCancelButtonSection( boolean aVisible );
 	
 	public void addListener(Atdl4jCompositePanelListener aAtdl4jCompositePanelListener);
 	
 	public void removeListener(Atdl4jCompositePanelListener aAtdl4jCompositePanelListener);
 	
-//TODO 9/27/2010 Scott Atwell added
 	public StrategiesT getStrategies();
 	public void setStrategies(StrategiesT strategies);
 	
@@ -144,12 +129,10 @@ public interface Atdl4jCompositePanel
 
 	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler();
 
-	// TODO 9/26/2010 Scott Atwell	public StrategiesUI getStrategiesUI();
 	public void initAtdl4jUserMessageHandler( Object parentOrShell );
 	
 	public void setStrategyEventListener(StrategyEventListener aStrategyEventListener);
 	
 	public SelectedStrategyDetails getSelectedStrategyDetails( boolean aPerformValidationFlag ) 
 	   throws ValidationException;
-
 }

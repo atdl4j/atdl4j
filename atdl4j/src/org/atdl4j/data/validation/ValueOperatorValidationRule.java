@@ -50,7 +50,7 @@ public class ValueOperatorValidationRule
 		Atdl4jWidget<?> target = targets.get( field );
 		if ( target == null )
 		{
-// 7/18/2010 Scott Atwell Added to handle "FIX_fieldname" of "NX"
+			// -- Handle "FIX_fieldname" of "NX" --
 			if ( ( field != null ) && 
 				  ( field.startsWith( InputAndFilterData.FIX_DEFINED_FIELD_PREFIX ) )&&
 				  ( operator == OperatorT.NX ) )
@@ -93,8 +93,6 @@ public class ValueOperatorValidationRule
 		// StrategyEditT uses Parameter values
 		{
 			fieldValue = target.getParameterValueAsComparable();
-			// 3/10/2010 Scott Atwell v =
-			// target.convertStringToParameterComparable( value );
 			v = target.convertParameterStringToParameterComparable( value );
 		}
 

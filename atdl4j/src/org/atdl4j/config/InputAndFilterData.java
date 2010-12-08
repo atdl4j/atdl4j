@@ -33,18 +33,6 @@ public class InputAndFilterData
 
 	public static String FIX_DEFINED_FIELD_PREFIX = "FIX_";
 	
-	// -- Constants for "Hidden" parameters passed to app used to control eligibility of each Strategy -- 
-	// -- ("FIX_" + "FIXatdl_" + XmlElement + "_" + XmlAttribute) --
-	
-/*** 4/6/2010 Scott Atwell moved to StrategyFilterInputData
-// 3/4/2010 Scott Atwell Added	
-	public static String INPUT_FIELD_NAME_STRATEGY_FILTER_FIX_MSG_TYPE = "FIX_FIXatdl_FixMsgType";  // @see Strategy/@fixMsgType
-	
-	public static String INPUT_FIELD_NAME_STRATEGY_FILTER_SECURITY_TYPE_name = "FIX_FIXatdl_SecurityType_name";
-	public static String INPUT_FIELD_NAME_STRATEGY_FILTER_MARKET_MICCode = "FIX_FIXatdl_Market_MICCode";
-	public static String INPUT_FIELD_NAME_STRATEGY_FILTER_REGION_name = "FIX_FIXatdl_Region_name";
-	public static String INPUT_FIELD_NAME_STRATEGY_FILTER_COUNTRY_CountryCode = "FIX_FIXatdl_Country_CountryCode";
-***/
 	private List<StrategyFilterInputData> strategyFilterInputDataList = null;  // -- Use more than one when multiple individual orders are associated with a single algo panel display --
 	
 	public static String INPUT_FIELD_NAME_INCREMENT_POLICY_LotSize = "FIX_FIXatdl_LotSize";
@@ -55,8 +43,6 @@ public class InputAndFilterData
 	// -- Used to pass "other standard FIX message fields (eg FIX_OrderQty, FIX_Price, FIX_TimeInForce, etc)" and Strategy-eligibility ones (eg FIX_FIXatdl_Region, FIX_FIXatdl_Country, etc) -- 
 	private Map<String, String> inputHiddenFieldNameValueMap = null;
 	
-// 4/16/2010 Scott Atwell renamed (removed UiRepOr part as is optional and not req'd unique)	private List<String> inputStrategyUiRepOrNameList = null;  // -- if specified, controls the order strategy name choices presented to the user --
-// 4/16/2010 Scott Atwell renamed (removed UiRepOr part as is optional and not req'd unique)	private Boolean applyInputStrategyUiRepOrNameListAsFilter = null; // -- if specified, exclude any strategyNames not in inputStrategyUiRepOrNameList -- 
 	private List<String> inputStrategyNameList = null;  // -- if specified, controls the order strategy name choices presented to the user --
 	private Boolean applyInputStrategyNameListAsFilter = null; // -- if specified, exclude any strategyNames not in inputStrategyNameList -- 
 
@@ -227,13 +213,11 @@ public class InputAndFilterData
 	
 	/**
 	 */
-// 4/18/2010 Scott Atwell	public BigInteger getInputIncrementPolicy_LotSize()
 	public BigDecimal getInputIncrementPolicy_LotSize()
 	{
 		String tempValue = getInputHiddenFieldValue( INPUT_FIELD_NAME_INCREMENT_POLICY_LotSize );
 		if ( tempValue != null )
 		{
-// 4/18/2010 Scott Atwell			return new BigInteger( tempValue );
 			return new BigDecimal( tempValue );
 		}
 		else
@@ -244,13 +228,11 @@ public class InputAndFilterData
 	
 	/**
 	 */
-// 4/18/2010 Scott Atwell	public BigInteger getInputIncrementPolicy_Tick()
 	public BigDecimal getInputIncrementPolicy_Tick()
 	{
 		String tempValue = getInputHiddenFieldValue( INPUT_FIELD_NAME_INCREMENT_POLICY_Tick );
 		if ( tempValue != null )
 		{
-// 4/18/2010 Scott Atwell			return new BigInteger( tempValue );
 			return new BigDecimal( tempValue );
 		}
 		else
@@ -261,7 +243,6 @@ public class InputAndFilterData
 
 	/**
 	 */
-// 4/18/2010 Scott Atwell	public void setInputIncrementPolicy_LotSize( BigInteger aLotSize )
 	public void setInputIncrementPolicy_LotSize( BigDecimal aLotSize )
 	{
 		if ( aLotSize != null )
@@ -276,7 +257,6 @@ public class InputAndFilterData
 	
 	/**
 	 */
-// 4/18/2010 Scott Atwell	public void setInputIncrementPolicy_Tick( BigInteger aTick )
 	public void setInputIncrementPolicy_Tick( BigDecimal aTick )
 	{
 		if ( aTick != null )

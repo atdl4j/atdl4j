@@ -26,7 +26,6 @@ import org.atdl4j.ui.app.StrategiesUIListener;
  * @version 1.0, Feb 26, 2010
  */
 public abstract class AbstractStrategiesUI
-// 9/13/2010 Scott Atwell		implements StrategiesPanel
 		implements StrategiesUI
 {
 	protected static final Logger logger = Logger.getLogger( AbstractStrategiesUI.class );
@@ -96,7 +95,6 @@ public abstract class AbstractStrategiesUI
 		this.preCached = aPreCached;
 	}
 	
-// 6/23/2010 Scott Atwell added
 	public StrategyT getCurrentlyDisplayedStrategy()
 	{
 		StrategyUI tempStrategyUI = getCurrentlyDisplayedStrategyUI();
@@ -111,44 +109,6 @@ public abstract class AbstractStrategiesUI
 	}
 
 	
-	/**
-	 * Constructs a new instance every call.
-	 * 
-	 * @param strategy
-	 * @param aStrategies
-	 * @param strategiesRules
-	 * @param parentContainer (for SWT: should be swt.Composite)
-	 * @return
-	 */
-// 9/27/2010 Scott Atwell added StrategiesT	public StrategyUI getStrategyUI(StrategyT strategy, Map<String, ValidationRule> strategiesRules, Object parentContainer)
-// 9/29/2010 Scott Atwell moved from Atdl4jConfig	public StrategyUI getStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer)
-/*** 10/5/2010 Scott Atwell moved to BaseStrategyUIFactory	
-	public StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer)
-	{
-		// -- Constructs a new instance every call --
-		String tempClassName = Atdl4jConfig.getConfig().getClassNameStrategyUI();
-		logger.debug( "getStrategyUI() loading class named: " + tempClassName );
-		StrategyUI strategyUI;
-		try
-		{
-			strategyUI = ((Class<StrategyUI>) Class.forName( tempClassName ) ).newInstance();
-		}
-		catch ( Exception e )
-		{
-			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-		}
-		
-		if ( strategyUI != null )
-		{
-// 9/27/2010 Scott Atwell			strategyUI.init( strategy, this, strategiesRules, parentContainer );
-			strategyUI.init( strategy, aStrategies, getAtdl4jOptions(), strategiesRules, parentContainer );
-		}
-		
-		return strategyUI;
-	}
-***/
-
 	/**
 	 * @param atdl4jUserMessageHandler the atdl4jUserMessageHandler to set
 	 */

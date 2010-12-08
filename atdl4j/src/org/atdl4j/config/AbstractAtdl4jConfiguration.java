@@ -70,11 +70,6 @@ public abstract class AbstractAtdl4jConfiguration
 	private String classNameStrategySelectionPanel;
 	private String classNameStrategyDescriptionPanel;
 
-
-//TODO 9/27/2010 Scott Atwell removed	private StrategiesT strategies;
-// 6/23/2010 Scott Atwell	private Map<StrategyT, StrategyUI> strategyUIMap;
-// 9/27/2010 Scott Atwell moved to Atdl4jCompositePanel 	private StrategyT selectedStrategy;
-
 	private boolean catchAllMainlineExceptions  = false;
 	private boolean catchAllRuntimeExceptions  = false;
 	private boolean catchAllStrategyLoadExceptions  = false;
@@ -138,7 +133,6 @@ public abstract class AbstractAtdl4jConfiguration
 	public AbstractAtdl4jConfiguration()
 	{
 		// -- UI Infrastructure
-//TODO 9/26/2010 Scott Atwell		setClassNameStrategiesUIFactory( getDefaultClassNameStrategiesUIFactory() );
 		setClassNameStrategiesUI( getDefaultClassNameStrategiesUI() );
 		setClassNameStrategyUI( getDefaultClassNameStrategyUI() );
 		setClassNameAtdl4jWidgetFactory( getDefaultClassNameAtdl4jWidgetFactory() );
@@ -174,56 +168,7 @@ public abstract class AbstractAtdl4jConfiguration
 		setClassNameStrategyDescriptionPanel( getDefaultClassNameStrategyDescriptionPanel() );
 	}
 	
-	
-	/**
-	 * @param classNameStrategiesUIFactory the classNameStrategiesUIFactory to set
-	 */
-//TODO 9/26/2010 Scott Atwell	public void setClassNameStrategiesUIFactory(String classNameStrategiesUIFactory)
-//	{
-//		this.classNameStrategiesUIFactory = classNameStrategiesUIFactory;
-//		setStrategiesUIFactory( null );
-//	}
 
-	/**
-	 * @return the classNameStrategiesUIFactory
-	 */
-//TODO 9/26/2010 Scott Atwell	public String getClassNameStrategiesUIFactory()
-//	{
-//		return classNameStrategiesUIFactory;
-//	}
-	
-	/**
-	 * @param strategiesUIFactory the strategiesUIFactory to set
-	 */
-//TODO 9/26/2010 Scott Atwell	public void setStrategiesUIFactory(StrategiesUIFactory strategiesUIFactory)
-//	{
-//		this.strategiesUIFactory = strategiesUIFactory;
-//	}
-
-	/**
-	 * @return the strategiesUIFactory
-	 */
-//TODO 9/26/2010 Scott Atwell	public StrategiesUIFactory getStrategiesUIFactory() 
-/**	{
-		if ( ( strategiesUIFactory == null ) && ( getClassNameStrategiesUIFactory() != null ) )
-		{
-			String tempClassName = getClassNameStrategiesUIFactory();
-			logger.debug( "getStrategiesUIFactory() loading class named: " + tempClassName );
-			try
-			{
-				strategiesUIFactory = ((Class<StrategiesUIFactory>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-		}
-		
-		return strategiesUIFactory;
-	}
-**/
-	
 	/**
 	 * @param classNameStrategiesUI the classNameStrategiesUI to set
 	 */
@@ -528,36 +473,7 @@ public abstract class AbstractAtdl4jConfiguration
 	{
 		return classNameAtdl4jWidgetForRadioButtonT;
 	}
-	
-	/** TODO 9/27/2010 Scott Atwell removed/moved to AbstractAtdl4jCompositePanel	
-	public List<StrategyT> getStrategiesFilteredStrategyList()
-	{
-		if ( ( getStrategies() == null ) || ( getStrategies().getStrategy() == null ) )
-		{
-			return null;
-		}
-		
-		if ( getInputAndFilterData() == null )
-		{
-			return getStrategies().getStrategy();
-		}
-		
-		List<StrategyT> tempFilteredList = new ArrayList<StrategyT>();
-		
-		for ( StrategyT strategy : getStrategies().getStrategy() ) 
-		{
-			if ( !getInputAndFilterData().isStrategySupported( strategy ) )
-			{
-				logger.info("Excluding strategy: " + strategy.getName() + " as inputAndFilterData.isStrategySupported() returned false." );
-				continue; // skip it 
-			}
-			
-			tempFilteredList.add( strategy );
-		}
-		
-		return tempFilteredList;
-	}
-**/
+
 	/**
 	 * @param classNameStrategySelectionPanel the classNameStrategySelectionPanel to set
 	 */

@@ -297,7 +297,6 @@ public class StrategyFilterInputData
 		String tempRegion_name = getRegion_name();
 		String tempCountry_CountryCode = getCountry_CountryCode();
 
-// 3/4/2010 Scott Atwell added			
 		if ( isFixMsgTypeSupportedForStrategy( tempFixMsgType, aStrategy ) == false )
 		{
 			logger.info("Excluding strategy: " + aStrategy.getName() + " as isFixMsgTypeSupportedForStrategy() returned false for tempFixMsgType: " + tempFixMsgType );

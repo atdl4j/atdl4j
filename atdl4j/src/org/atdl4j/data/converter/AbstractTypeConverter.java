@@ -199,8 +199,6 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 	@Override
 	public E convertParameterValueToControlValue(Object aValue, ControlT aControl)
 	{
-// 7/11/2010 Scott Atwell need to handle CheckBox control checkedEnumRef and uncheckedEnumRef (eg "100" -> true, "0" -> false)
-///		Object tempValue = adjustParameterValueForEnumRefValue( aValue, getParameter(), aControl );
 		Object tempValue = adjustParameterValueForEnumRefValue( aValue, getParameterTypeConverter().getParameter(), aControl );
 		return convertParameterValueToControlValue( tempValue );
 	}

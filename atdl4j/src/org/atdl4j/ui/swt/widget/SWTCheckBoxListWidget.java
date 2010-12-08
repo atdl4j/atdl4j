@@ -166,7 +166,6 @@ public class SWTCheckBoxListWidget
 	public List<Control> getControlsExcludingLabel()
 	{
 		List<Control> widgets = new ArrayList<Control>();
-//		widgets.add( label );
 		widgets.addAll( multiCheckBox );
 		return widgets;
 	}

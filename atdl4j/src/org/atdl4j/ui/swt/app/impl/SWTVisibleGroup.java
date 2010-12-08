@@ -42,7 +42,6 @@ public class SWTVisibleGroup
 	{
 		if ( !isVisible() )
 		{
-// 6/23/2010 SWL avoid re-constructing			return new Point( 0, 0 );
 			return POINT_0_0;
 		}
 		else

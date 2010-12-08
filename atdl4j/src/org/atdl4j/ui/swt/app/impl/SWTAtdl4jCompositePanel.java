@@ -32,12 +32,7 @@ public class SWTAtdl4jCompositePanel
 	public final Logger logger = Logger.getLogger(SWTAtdl4jCompositePanel.class);
 	private Composite parentComposite;
 	
-// 10/26/2010 Scott Atwell moved to SWTAtdl4jTesterPanel	private Composite validateOutputSection;
 	private Composite okCancelButtonSection;
-// 11/26/2010 Scott Atwell moved to SWTAtdl4jTesterPanel	private Text outputFixMessageText;
-	
-// 10/26/2010 Scott Atwell moved to SWTAtdl4jTesterPanel	private MenuItem showFileSelectionMenuItem;
-// 10/26/2010 Scott Atwell moved to SWTAtdl4jTesterPanel	private MenuItem showValidateOutputMenuItem;
 	
 	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
@@ -48,17 +43,8 @@ public class SWTAtdl4jCompositePanel
 	{
 		setParentComposite( aParentComposite );
 		
-// SWT doesn't use this, if we use it, then consumes vertical height at top		
-//		Composite tempComposite = new Composite(aParentComposite, SWT.NONE);
-//		GridLayout tempLayout = new GridLayout(1, false);
-//		tempComposite.setLayout(tempLayout);
-//		tempComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-
 		// -- Delegate back to AbstractAtdl4jCompositePanel -- 
 		init( aParentComposite, aAtdl4jOptions );
-
-		// -- Build the SWT.Composite from FixatdlFileSelectionPanel (filename / file dialog) --
-// 10/26/2010 Scott Atwell moved to SWTAtdl4jTesterPanel		getFixatdlFileSelectionPanel().buildFixatdlFileSelectionPanel( getParentOrShell(), getAtdl4jOptions() );
 
 		// -- Build the SWT.Composite from StrategySelectionPanel (drop down with list of strategies to choose from) --
 		getStrategySelectionPanel().buildStrategySelectionPanel( getParentOrShell(), getAtdl4jOptions() );
@@ -68,146 +54,17 @@ public class SWTAtdl4jCompositePanel
 		getStrategyDescriptionPanel().setVisible( false );  // hide until there is data to populate it with
 		
 		// -- Build the SWT.Composite from StrategiesPanel (GUI display of each strategy's parameters) --
-// TODO 9/26/2010 Scott Atwell		getStrategiesPanel().buildStrategiesPanel( getParentOrShell(), getAtdl4jOptions() );
-// 9/29/2010 		getStrategiesUI().buildStrategiesPanel( getParentOrShell(), getAtdl4jOptions() );
 		getStrategiesUI().buildStrategiesPanel( getParentOrShell(), getAtdl4jOptions(), getAtdl4jUserMessageHandler() );
 
-		// -- Build the SWT.Composite containing "Validate Output" button and outputFixMessageText --
-// 10/26/2010 Scott Atwell moved to SWTAtdl4jTesterPanel		createValidateOutputSection();
-		
 		// -- Build the SWT.Composite containing "OK" and "Cancel" buttons --
 		createOkCancelButtonSection();
-		
-		// -- Build the SWT MenuItems --
-// 10/26/2010 Scott Atwell moved to SWTAtdl4jTesterPanel		createMenuItems();
 		
 		return aParentComposite;
 	}
 
-// 10/26/2010 Scott Atwell moved to SWTAtdl4jTesterPanel
-//	protected void createMenuItems()
-//	{
-//		// -- "Show File Selection" --
-////		setVisibleFileSelectionSection( getAtdl4jOptions().isShowFileSelectionSection() );
-//		setVisibleFileSelectionSection( Atdl4jConfig.getConfig().isShowFileSelectionSection() );
-////		final MenuItem tempShowFileSelectionMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show File Selection" );
-//		showFileSelectionMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show File Selection" );
-////		showFileSelectionMenuItem.setSelection( getAtdl4jOptions().isShowFileSelectionSection() );
-//		showFileSelectionMenuItem.setSelection( Atdl4jConfig.getConfig().isShowFileSelectionSection() );
-//		showFileSelectionMenuItem.addListener( SWT.Selection, new Listener()
-//		{
-//			@Override
-//			public void handleEvent(Event aEvent)
-//			{
-//				setVisibleFileSelectionSection( showFileSelectionMenuItem.getSelection() );
-//			}
-//		});
-//		
-//		
-//		// -- "Show Validate Output" --
-////		setVisibleValidateOutputSection( getAtdl4jOptions().isShowValidateOutputSection() );
-//		setVisibleValidateOutputSection( Atdl4jConfig.getConfig().isShowValidateOutputSection() );
-////		final MenuItem tempShowValidateOutputMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show Validate Output" );
-//		showValidateOutputMenuItem = SWTMenuHelper.addShellPopupCheckMenuItem( getShell(), "Show Validate Output" );
-////		showValidateOutputMenuItem.setSelection( getAtdl4jOptions().isShowValidateOutputSection() );
-//		showValidateOutputMenuItem.setSelection( Atdl4jConfig.getConfig().isShowValidateOutputSection() );
-//		showValidateOutputMenuItem.addListener( SWT.Selection, new Listener()
-//		{
-//			@Override
-//			public void handleEvent(Event aEvent)
-//			{
-//				setVisibleValidateOutputSection( showValidateOutputMenuItem.getSelection() );
-//			}
-//		});
-//		
-//		
-//	}
-	
-	
-//	protected Composite createValidateOutputSection()
-//	{
-//		// -- SWTVisibleGroup avoids consuming vertical space when hidden via setVisible(false) --
-//		validateOutputSection = new SWTVisibleGroup(getShell(), SWT.NONE);
-//		((Group) validateOutputSection).setText("Validation");
-//		validateOutputSection.setLayout(new GridLayout(2, false));
-//		validateOutputSection.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-//		
-//		// validate button
-//		Button validateButton = new Button(validateOutputSection, SWT.NONE);
-//		validateButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-//		validateButton.setText("Validate Output");
-//		validateButton.addSelectionListener(new SelectionAdapter() 
-//		{
-//			public void widgetSelected(SelectionEvent e) 
-//			{
-//				validateButtonSelected();
-//			}
-//		});
-//		
-//		outputFixMessageText = new Text(validateOutputSection, SWT.BORDER);
-//		outputFixMessageText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-//		
-//		setValidateOutputText( "" );
-//		
-//		return validateOutputSection;
-//	}
-//	
-//	public void setVisibleValidateOutputSection( boolean aVisible )
-//	{
-//		 if ( ( validateOutputSection != null ) && ( ! validateOutputSection.isDisposed() ) )
-//		 {
-//			 validateOutputSection.setVisible( aVisible );
-//			 if ( showValidateOutputMenuItem != null )
-//			 {
-//				 showValidateOutputMenuItem.setSelection( aVisible );
-//			 }
-//			 packLayout();
-//		 }
-//	}
-
-// 11/26/2010 Scott Atwell	
-//	protected void setValidateOutputText(String aText)
-//	{
-////		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowValidateOutputSection() ) )
-//		if ( ( Atdl4jConfig.getConfig().isShowValidateOutputSection() ) )
-//		{
-//			if ( aText != null )
-//			{
-//				outputFixMessageText.setText( aText.replace( '\n', ' ' ) );
-////				setVisibleValidateOutputSection( true );
-//			}
-//			else
-//			{
-//				outputFixMessageText.setText( "" );
-////				setVisibleValidateOutputSection( false );
-//			}
-//		}
-//		else
-//		{
-//			outputFixMessageText.setText( aText.replace( '\n', ' ' ) );
-////			setVisibleValidateOutputSection( false );
-//		}	
-//	}
-
-// 10/26/2010 Scott Atwell moved to SWTAtdl4jTesterPanel	
-//	public void setVisibleFileSelectionSection( boolean aVisible )
-//	{
-////		 if ( ( getFixatdlFileSelectionPanel() != null ) && ( ! getFixatdlFileSelectionPanel().isDisposed() ) )
-//		 if ( getFixatdlFileSelectionPanel() != null ) 
-//		 {
-//			 getFixatdlFileSelectionPanel().setVisible( aVisible );
-//			 if ( showFileSelectionMenuItem != null )
-//			 {
-//				 showFileSelectionMenuItem.setSelection( aVisible );
-//			 }
-//			 packLayout();
-//		 }
-//	}
 	
 	protected Composite createOkCancelButtonSection()
 	{
-		// -- SWTVisibleComposite avoids consuming vertical space when hidden via setVisible(false) --
-//TODO ?? doesn't work, use GridData.exclude on setVisible()		okCancelButtonSection = new SWTVisibleComposite(getShell(), SWT.NONE);
 		okCancelButtonSection = new Composite(getShell(), SWT.NONE);
 		okCancelButtonSection.setLayout(new GridLayout(2, true));
 		okCancelButtonSection.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -238,7 +95,6 @@ public class SWTAtdl4jCompositePanel
 			}
 		});
 		
-//		setVisibleOkCancelButtonSection( getAtdl4jOptions().isShowCompositePanelOkCancelButtonSection() );
 		setVisibleOkCancelButtonSection( Atdl4jConfig.getConfig().isShowCompositePanelOkCancelButtonSection() );
 		
 		return okCancelButtonSection;
@@ -254,10 +110,6 @@ public class SWTAtdl4jCompositePanel
 				((GridData) okCancelButtonSection.getLayoutData()).exclude = !aVisible;
 			 }
 
-//			 if ( ! aVisible )
-//			 {
-//				 okCancelButtonSection.dispose();
-//			 }
 			 packLayout();
 		 }
 	}

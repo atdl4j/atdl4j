@@ -13,12 +13,6 @@ public class SWTHiddenFieldWidget
 		extends AbstractHiddenFieldWidget
 		implements SWTWidget<String>
 {
-/** 2/9/2010 Scott Atwell	@see AbstractAtdl4jWidget.init(ControlT aControl, ParameterT aParameter, Atdl4jOptions aAtdl4jOptions) throws JAXBException
-	public SWTHiddenFieldWidget(HiddenFieldT control, ParameterT parameter) throws JAXBException {
-		super(control, parameter);
-	}
-	 **/
-
 	public Widget createWidget(Composite parent, int style)
 	{
 		return null;

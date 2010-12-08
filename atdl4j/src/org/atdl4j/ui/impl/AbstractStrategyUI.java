@@ -67,10 +67,8 @@ public abstract class AbstractStrategyUI
 
 	protected StrategyT strategy;
 	
-//TODO 9/27/2010 Scott Atwell added	
 	private StrategiesT strategies;
 	
-//TODO 9/29/2010 Scott Atwell added/moved from Atdl4jConfig	
 	Atdl4jWidgetFactory atdl4jWidgetFactory;
 	StrategyPanelHelper strategyPanelHelper;
 	
@@ -110,7 +108,6 @@ public abstract class AbstractStrategyUI
 	 * @param strategiesRules
 	 * @param parentContainer (should be swt.Composite)
 	 */
-// TODO 9/27/2010 Scott Atwell added StrategiesT	public void init(StrategyT strategy, Atdl4jOptions aAtdl4jOptions, Map<String, ValidationRule> strategiesRules, Object parentContainer)
 	public void init(StrategyT strategy, StrategiesT aStrategies, Atdl4jOptions aAtdl4jOptions, Map<String, ValidationRule> strategiesRules, Object parentContainer)
 	{
 		setStrategy( strategy );
@@ -257,7 +254,6 @@ public abstract class AbstractStrategyUI
 				}
 			}
 			
-			//	9/29/2010 Scott Atwell		ParameterTypeConverter tempTypeConverter = getAtdl4jOptions().getTypeConverterFactory().createParameterTypeConverter( parameter );
 			ParameterTypeConverter tempTypeConverter = TypeConverterFactoryConfig.getTypeConverterFactory().createParameterTypeConverter( parameter );
 			
 			if ( ParameterHelper.getConstValue( parameter ) != null )
@@ -494,7 +490,6 @@ public abstract class AbstractStrategyUI
 				hiddenField.setInitValue( tempValue.toString() );
 				hiddenField.setParameterRef( tempName );
 	
-// 9/29/2010				Atdl4jWidget hiddenFieldWidget = getAtdl4jOptions().createHiddenFieldT( hiddenField, parameter );
 				Atdl4jWidget hiddenFieldWidget = getAtdl4jWidgetFactory().createHiddenFieldT( hiddenField, parameter );
 				hiddenFieldWidget.setHiddenFieldForInputAndFilterData( true );
 				
@@ -542,7 +537,6 @@ public abstract class AbstractStrategyUI
 					HiddenFieldT tempHiddenField = new HiddenFieldT();
 					tempHiddenField.setParameterRef( tempName );
 		
-// 9/29/2010					Atdl4jWidget hiddenFieldWidget = getAtdl4jOptions().createHiddenFieldT( tempHiddenField, tempParameter );
 					Atdl4jWidget hiddenFieldWidget = getAtdl4jWidgetFactory().createHiddenFieldT( tempHiddenField, tempParameter );
 					addToControlMap( tempName, hiddenFieldWidget );
 					addToControlWithParameterMap( tempName, hiddenFieldWidget );
@@ -567,21 +561,6 @@ public abstract class AbstractStrategyUI
 			logger.info( "No validation rule defined for strategy " + getStrategy().getName() );
 		}
 	}
-
-	// Scott Atwell added 1/16/2010
-/** 9/27/2010 Scott Atwell replaced with local instance var	
-	protected StrategiesT getStrategies()
-	{
-		if ( getAtdl4jOptions() != null )
-		{
-			return getAtdl4jOptions().getStrategies();
-		}
-		else
-		{
-			return null;
-		}
-	}
-**/	
 
 	public String getFIXMessage()
 	{
@@ -669,14 +648,6 @@ public abstract class AbstractStrategyUI
 				{
 					if ( widget.getParameter().getFixTag() != null && widget.getParameter().getFixTag().equals( BigInteger.valueOf( tag ) ) )
 					{
-/** 8/22/2010 Scott Atwell - refactored into common method							
-						widget.setFIXValue( value );
-						
-						// -- Handles toggling associated controls (eg checkbox or radio button) when control is set to a non Atdl4jConstants.VALUE_NULL_INDICATOR value --
-						fireLoadFixMessageStateListenersForControl( widget );
-
-						fireStateListenersForControl( widget );
-**/						
 						loadControlWithFIXValue( widget, value );
 					}
 				}
@@ -695,14 +666,6 @@ public abstract class AbstractStrategyUI
 					{
 						if ( widget.getParameter().getName() != null && widget.getParameter().getName().equals( name ) )
 						{
-/** 8/22/2010 Scott Atwell - refactored into common method							
-							widget.setFIXValue( value2 );
-							
-							// -- Handles toggling associated controls (eg checkbox or radio button) when control is set to a non Atdl4jConstants.VALUE_NULL_INDICATOR value --
-							fireLoadFixMessageStateListenersForControl( widget );
-
-							fireStateListenersForControl( widget );
-**/
 							loadControlWithFIXValue( widget, value2 );
 						}
 					}
@@ -728,18 +691,6 @@ public abstract class AbstractStrategyUI
 		fireLoadFixMessageStateListenersForControl( aWidget );
 
 		fireStateListenersForControl( aWidget );
-		
-// 8/22/2010 Scott Atwell
-		// -- If the specified aWidget is part of a Collapsible StrategyPanel which is currently Collapsed, then expand it -- 
-//		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().getStrategyPanelHelper() != null ) )
-//		{
-//			// -- (aCollapsed=false) --
-//			return getAtdl4jOptions().getStrategyPanelHelper().expandControlParentStrategyPanel( aWidget );
-//		}
-//		else
-//		{
-//			return false;
-//		}
 		
 		// -- If the specified aWidget is part of a Collapsible StrategyPanel which is currently Collapsed, then expand it -- 
 		// -- (aCollapsed=false) --

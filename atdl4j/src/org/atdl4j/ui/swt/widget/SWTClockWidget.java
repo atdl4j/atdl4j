@@ -51,7 +51,6 @@ import org.joda.time.DateTimeZone;
  * @author john.shields
  */
 public class SWTClockWidget
-//3/18/2010 Scott Atwell avoid compile error "type parameter org.joda.time.DateTime is not within its bound"		extends AbstractSWTWidget<DateTime>
 	extends AbstractSWTWidget<Comparable<DateTime>>
 {
 
@@ -253,13 +252,11 @@ public class SWTClockWidget
 	public List<Control> getControls()
 	{
 		List<Control> widgets = new ArrayList<Control>();
-		// TODO 1/20/2010 Scott Atwell added
 		if ( enabledButton != null )
 		{
 			widgets.add( enabledButton );
 		}
 
-		// TODO 1/20/2010 Scott Atwell widgets.add(label);
 		if ( label != null )
 		{
 			widgets.add( label );
@@ -279,15 +276,6 @@ public class SWTClockWidget
 	public List<Control> getControlsExcludingLabel()
 	{
 		List<Control> widgets = new ArrayList<Control>();
-//		if ( enabledButton != null )
-//		{
-//			widgets.add( enabledButton );
-//		}
-//
-//		if ( label != null )
-//		{
-//			widgets.add( label );
-//		}
 
 		if ( showMonthYear )
 		{

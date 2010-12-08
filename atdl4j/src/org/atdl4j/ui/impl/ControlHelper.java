@@ -37,8 +37,9 @@ import org.atdl4j.fixatdl.layout.TextFieldT;
  */
 public class ControlHelper
 {
-	// 9/11/2010 John Shields adding back previous interface for Swing usage
-        public static BigDecimal getIncrementValue(ControlT aControl, Atdl4jOptions aAtdl4jOptions) {
+// 9/11/2010 John Shields adding back previous interface for Swing usage
+   public static BigDecimal getIncrementValue(ControlT aControl, Atdl4jOptions aAtdl4jOptions) 
+   {
 	   return getIncrementValue(aControl, aAtdl4jOptions, 0);
 	}
     
@@ -48,8 +49,6 @@ public class ControlHelper
 	 * @param aDigits
 	 * @return
 	 */
-// 4/18/2010 Scott Atwell	public static BigInteger getIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
-// 8/17/2010 Scott Atwell	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
 	public static BigDecimal getIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions, int aDigits )
 	{
       if ( aControl instanceof SingleSpinnerT )
@@ -63,8 +62,9 @@ public class ControlHelper
 		return null;
 	}
 	
-	// 9/11/2010 John Shields adding back previous interface for Swing usage
-        public static BigDecimal getInnerIncrementValue(ControlT aControl, Atdl4jOptions aAtdl4jOptions) {
+// 9/11/2010 John Shields adding back previous interface for Swing usage
+	public static BigDecimal getInnerIncrementValue(ControlT aControl, Atdl4jOptions aAtdl4jOptions) 
+	{
 	   return getInnerIncrementValue(aControl, aAtdl4jOptions, 0);
 	}
 	
@@ -74,8 +74,6 @@ public class ControlHelper
 	 * @param aDigits
 	 * @return
 	 */
-// 4/18/2010 Scott Atwell	public static BigInteger getInnerIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
-// 8/17/2010 Scott Atwell	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions, int aDigits  )
 	public static BigDecimal getInnerIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions, int aDigits  )
 	{
 		if ( aControl instanceof DoubleSpinnerT )
@@ -94,7 +92,6 @@ public class ControlHelper
 	 * @param aAtdl4jOptions
 	 * @return
 	 */
-// 4/18/2010 Scott Atwell	public static BigInteger getOuterIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
 	public static BigDecimal getOuterIncrementValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
 	{
 		if ( aControl instanceof DoubleSpinnerT )
@@ -121,8 +118,6 @@ public class ControlHelper
 		
 		if ( tempBigDecimal != null )
 		{
-// 8/23/2010  (handle "Tick" digits 2 - Atdl4jOptions default to .0001 and java.lang.ArithmeticException: Rounding necessary
-// 8/23/2010			return tempBigDecimal.setScale( aDigits );
 			BigDecimal tempBigDecimal2 = tempBigDecimal.setScale( aDigits, RoundingMode.HALF_UP );
 			if ( tempBigDecimal2.doubleValue() == 0.0d )
 			{
@@ -147,7 +142,6 @@ public class ControlHelper
 	 * @param aAtdl4jOptions
 	 * @return
 	 */
-// 4/18/2010 Scott Atwell	public static BigInteger determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jOptions aAtdl4jOptions )
 	public static BigDecimal determineIncrementValue( Double aIncrement, String aIncrementPolicy, Atdl4jOptions aAtdl4jOptions )
 	{ 
 		// -- FIXatdl 1.1 Schema documentation: --
@@ -167,14 +161,8 @@ public class ControlHelper
 			{
 				return aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicy_LotSize();
 			}
-//	4/18/2010 Scott Atwell removed
-//			else
-//			{
-//				throw new IllegalArgumentException( "LotSize for security was not specified.  Unable to support IncrementPolicy=" + aIncrementPolicy );
-//			}
 			else if ( aIncrement != null )
 			{
-// 7/18/2010 Scott Atwell				return new BigDecimal( aIncrement );
 				return new BigDecimal( aIncrement.toString() );
 			}
 			else
@@ -190,14 +178,8 @@ public class ControlHelper
 			{
 				return aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicy_Tick();
 			}
-//	4/18/2010 Scott Atwell removed
-//			else
-//			{
-//				throw new IllegalArgumentException( "Tick size for security was not specified.  Unable to support IncrementPolicy=" + aIncrementPolicy );
-//			}
 			else if ( aIncrement != null )
 			{
-// 7/18/2010 Scott Atwell				return new BigDecimal( aIncrement );
 				return new BigDecimal( aIncrement.toString() );
 			}
 			else
@@ -209,13 +191,10 @@ public class ControlHelper
 		{
 			if ( aIncrement != null )
 			{
-// 4/18/2010 Scott Atwell replaced				return BigInteger.valueOf( aIncrement.longValue() ); 
-// 7/18/2010 Scott Atwell				return new BigDecimal( aIncrement );
 				return new BigDecimal( aIncrement.toString() );
 			}
 			else
 			{
-// 4/18/2010 Scott Atwell replaced				return null;
 				return aAtdl4jOptions.getDefaultIncrementValue();
 			}
 		}
@@ -360,7 +339,7 @@ public class ControlHelper
 		
 		if ( ( tempInitValue == null ) && ( aControl instanceof LabelT ) )
 		{
-			// 3/14/2010 Scott Atwell LabelT may simply use "label=" and do not want to lose it upon reinit
+			// -- LabelT may simply use "label=" and do not want to lose it upon reinit --
 			return ((LabelT) aControl).getLabel();
 		}
 		else

@@ -62,52 +62,40 @@ public class SWTStrategyPanelHelper
 		relayoutExpandBar( expandBar, true );
 	}
 
-// 4/18/2010 Scott Atwell - refactored to support StrategyUI panels within StackLayout (equiv of Swing CardLayout)
-// 4/18/2010 Scott Atwell -- needed GridData.widthHint set to width of widest ExpandItem.getControl()
-// 4/18/2010 Scott Atwell -- needed expandBar.getParent().layout() when relayoutParents=false
-// 4/18/2010 Scott Atwell -- needed expandBar.getShell().layout() at very end
 	public static void relayoutExpandBar(ExpandBar expandBar, boolean relayoutParents)
 	{
 		Composite c = expandBar;
 		int tempMaxControlX = 0;
 		
-// 4/18/2010 Scott Atwell Added
 		logger.debug( "----- relayoutExpandBar (relayoutParents: " + relayoutParents + " expandBar: " + expandBar + " -----" );
 		
 		do
 		{
-// 4/18/2010 Scott Atwell Added
 			logger.debug( "c: " + c.getClass() + " c.getParent(): " + c.getParent().getClass() );
 			
 			if ( c instanceof ExpandBar )
 			{
 				ExpandBar eb = (ExpandBar) c;
 				
-// 4/18/2010 Scott Atwell Added
 				logger.debug( "ExpandBar.getSize(): " + eb.getSize() );
 				
 				for ( ExpandItem expandItem : eb.getItems() )
 				{
-// 4/18/2010 Scott Atwell Added
 					logger.debug( "expandItem: " + expandItem + " text: " + expandItem.getText() + " control: " + expandItem.getControl() + " controlLocation: " + expandItem.getControl().getLocation());					
 					logger.debug( "before pack(): expandItem.getControl().getSize(): " + expandItem.getControl().getSize() );
 
-// note Johnny had added this earlier
 					expandItem.getControl().pack();
 					
-// 4/18/2010 Scott Atwell Added
 					if ( expandItem.getControl().getSize().x > tempMaxControlX )
 					{
 						tempMaxControlX = expandItem.getControl().getSize().x;
 					}
 
-// 4/18/2010 Scott Atwell Added
 					logger.debug( "before: expandItem.getHeight(): " + expandItem.getHeight() + " expandItem.getControl().getSize(): " + expandItem.getControl().getSize() );
 
 					expandItem.setHeight( expandItem.getControl().computeSize( eb.getSize().x, SWT.DEFAULT, true ).y );
 				}
 
-// 4/18/2010 Scott Atwell Added
 				// -- Need to set ExpandBar's GridData.widthHint to the width of the widest control within it -- 
 				GridData tempGridData2 = (GridData) expandBar.getLayoutData();
 				tempGridData2.widthHint = tempMaxControlX;
@@ -140,7 +128,6 @@ public class SWTStrategyPanelHelper
 				}
 				else
 				{
-// 4/18/2010 Scott Atwell added this else clause (needed when relayoutParents=false)				
 					// -- this (or relayoutParents=true) is needed (otherwise ExampleStrategyPanelTests2.xml with 2 "columns" of StrategyPanels may not draw all of the ExpandBars initially) --
 					expandBar.getParent().layout();
 				}
@@ -151,10 +138,8 @@ public class SWTStrategyPanelHelper
 		while ( c != null && c.getParent() != null && !( c instanceof ScrolledComposite ) );
 
 
-// 4/18/2010 Scott Atwell added
 		// -- Needed to ensure that strategy panel is expanded vertically as panels go from collapsed to expanded
 		expandBar.getShell().layout();
-// 8/19/2010 Scott Atwell added		
 		expandBar.getShell().pack();
 	}
 	
@@ -182,16 +167,13 @@ public class SWTStrategyPanelHelper
 			ExpandBar tempExpandBar = new ExpandBar( aParent, SWT.NONE );
 			tempExpandBar.setSpacing( 1 );
 //TODO if want to get rid of white background, likely want a border around whole thing...
-			// TODO tempExpandBar.setBackground( aParent.getBackground() );
+//TODO tempExpandBar.setBackground( aParent.getBackground() );
 
 			if ( aParent.getLayout() instanceof GridLayout )
 			{
 				// mimics createStrategyPanelLayoutData() below
 				GridData tempGridData = new GridData( SWT.FILL, SWT.FILL, true, false );
-//				if ( aStrategyPanel.getOrientation() == PanelOrientationT.VERTICAL )
-				// {
-					tempGridData.horizontalSpan = 2;	// same as createStrategyPanelLayoutData
-				// }
+				tempGridData.horizontalSpan = 2;	// same as createStrategyPanelLayoutData
 				tempGridData.horizontalAlignment = GridData.FILL;	// occupy the full available horizontal width
 
 				tempExpandBar.setLayoutData( tempGridData );
@@ -272,12 +254,10 @@ public class SWTStrategyPanelHelper
 			GridLayout l = new GridLayout( 2, false );
 			return l;
 		}
-		// 4/6/2010 Scott Atwell Added
 		else
 		{
 			throw new IllegalStateException( "ERROR StrategyPanel (" + panel.getTitle() + ") is missing orientation attribute." );
 		}
-		// return null;
 	}
 
 	/**
@@ -302,7 +282,6 @@ public class SWTStrategyPanelHelper
 			}
 			return layoutData;
 		}
-		// 3/2/2010 Scott Atwell added for ExpandBar
 		else if ( ( c.getParent() instanceof ExpandBar ) && ( c.getData() instanceof StrategyPanelT ) )
 		{
 			GridData layoutData = new GridData( SWT.FILL, SWT.FILL, true, false );

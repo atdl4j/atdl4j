@@ -61,12 +61,10 @@ public abstract class AbstractStrategySelectionPanel
 		listenerList.remove( aStrategySelectionPanelListener );
 	}	
 	
-// 4/16/2010 Scott Atwell	protected void fireStrategySelectedEvent( StrategyT aStrategy, int index )
 	protected void fireStrategySelectedEvent( StrategyT aStrategy )
 	{
 		for ( StrategySelectionPanelListener tempListener : listenerList )
 		{
-// 4/16/2010 Scott Atwell			tempListener.strategySelected( aStrategy, index );
 			tempListener.strategySelected( aStrategy );
 		}
 	}

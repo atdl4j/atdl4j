@@ -23,7 +23,6 @@ public class BaseStrategyUIFactory
 	protected static final Logger logger = Logger.getLogger( BaseStrategyUIFactory.class );
 	private static Atdl4jUserMessageHandler atdl4jUserMessageHandler = null;
 
-//	public StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer)
 	public static StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer, Atdl4jOptions aAtdl4jOptions)
 	{
 		// -- Constructs a new instance every call --
@@ -42,7 +41,6 @@ public class BaseStrategyUIFactory
 		
 		if ( strategyUI != null )
 		{
-// 9/27/2010 Scott Atwell			strategyUI.init( strategy, this, strategiesRules, parentContainer );
 			strategyUI.init( strategy, aStrategies, aAtdl4jOptions, strategiesRules, parentContainer );
 		}
 		

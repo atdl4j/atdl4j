@@ -28,7 +28,6 @@ public abstract class AbstractStrategyDescriptionPanel
 	public void loadStrategyDescriptionVisible( StrategyT aStrategy )
 	{
 		setStrategyDescriptionText( "" );
-//		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowStrategyDescription() )
 		if ( ( Atdl4jConfig.getConfig().isShowStrategyDescription() )
 			&& ( aStrategy != null ) && ( aStrategy.getDescription() != null )  )
 		{
@@ -42,7 +41,6 @@ public abstract class AbstractStrategyDescriptionPanel
 	
 	public void loadStrategyDescriptionText( StrategyT aStrategy )
 	{
-//		if ( ( getAtdl4jOptions() != null ) && ( getAtdl4jOptions().isShowStrategyDescription() ) )
 		if ( ( Atdl4jConfig.getConfig().isShowStrategyDescription() ) )
 		{
 			if ( ( aStrategy != null ) && ( aStrategy.getDescription() != null ) )
@@ -52,7 +50,7 @@ public abstract class AbstractStrategyDescriptionPanel
 			else
 			{
 				setStrategyDescriptionText( "" );
-		}
+			}
 		}
 	}
 
