@@ -76,8 +76,21 @@ public class SWTSpinnerWidget
 
 		if ( control instanceof SingleSpinnerT )
 		{
+/*** 12/8/2010 Scott Atwell -- before border consumed space 'to the right' of the spinner box and buttons			
 			// spinner
 			spinner = new SWTNullableSpinner( parent, style | SWT.BORDER );
+			spinner.setLayoutData( controlGD );
+***/
+			Composite tempSpinnerComposite = new Composite( parent, SWT.NONE );
+			GridLayout gridLayout = new GridLayout();
+			gridLayout.numColumns = 2;
+			gridLayout.horizontalSpacing = 0;
+			gridLayout.verticalSpacing = 0;
+			tempSpinnerComposite.setLayout( gridLayout );
+			tempSpinnerComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false ) );
+			
+			// spinner
+			spinner = new SWTNullableSpinner( tempSpinnerComposite, SWT.BORDER );
 			spinner.setLayoutData( controlGD );
 		}
 		else if ( control instanceof DoubleSpinnerT )
