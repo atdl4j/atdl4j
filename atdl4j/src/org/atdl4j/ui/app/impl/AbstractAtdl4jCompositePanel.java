@@ -70,6 +70,8 @@ public abstract class AbstractAtdl4jCompositePanel
 	abstract public void setVisibleOkCancelButtonSection( boolean aVisible );
 	abstract protected void packLayout();
 
+// 12/8/2010 Scott Atwell added
+	List<StrategyT> lastFilteredStrategyList = null;
 
 	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions )
 	{
@@ -172,7 +174,6 @@ public abstract class AbstractAtdl4jCompositePanel
 	/**
 	 * @param strategiesUI the strategiesUI to set
 	 */
-// TODO 9/26/2010 Scott Atwell	protected void setStrategiesPanel(StrategiesPanel strategiesPanel)
 	protected void setStrategiesUI(StrategiesUI strategiesUI)
 	{
 		this.strategiesUI = strategiesUI;
@@ -276,6 +277,7 @@ public abstract class AbstractAtdl4jCompositePanel
 				 NumberFormatException 
 	{
 		setLastFixatdlFilename( null );
+		setLastFilteredStrategyList( null );
 		setStrategies( null );
 		
 		// parses the XML document and build an object model
@@ -341,6 +343,16 @@ public abstract class AbstractAtdl4jCompositePanel
 	 */
 	public void loadScreenWithFilteredStrategies()
 	{
+		// -- (aSelectStrategyName=null) --
+		loadScreenWithFilteredStrategies( null );
+	}
+	/**
+	 * Can be invoked/re-invoked at anytime provided that parseFixatdlFile() has successfully parsed the
+	 * FIXatdl file contents into Atdl4jOptions().setStrategies().  Re-generates the display.
+	 * @parm aSelectStrategyName
+	 */
+	public void loadScreenWithFilteredStrategies( String aSelectStrategyName )
+	{
 		// obtain filtered StrategyList
 		List<StrategyT> tempFilteredStrategyList = getStrategiesFilteredStrategyList();
 		
@@ -362,35 +374,68 @@ public abstract class AbstractAtdl4jCompositePanel
 			if ( getStrategies() != null )
 			{
 				// -- Only generate the error message if Strategies have been parsed -- 
-//				getAtdl4jOptions().getAtdl4jUserMessageHandler().displayMessage( "Unexpected Error", "Unexpected Error: getStrategyListUsingInputStrategyNameListFilter() was null." );
 				getAtdl4jUserMessageHandler().displayMessage( "Unexpected Error", "Unexpected Error: getStrategyListUsingInputStrategyNameListFilter() was null." );
 			}
 			return;
 		}
-		
-		// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
-		getStrategiesUI().setVisible( false );
 
-		// remove all strategy panels
-		getStrategiesUI().removeAllStrategyPanels();
+		// -- Avoid re-building the screen if the filtered StrategyList is unchanged --
+		if ( ( getLastFilteredStrategyList() != null ) &&
+			  ( isMatchingStrategyList( getLastFilteredStrategyList(), tempFilteredStrategyList ) ) )
+		{
+			if ( aSelectStrategyName != null )
+			{
+				getStrategySelectionPanel().selectDropDownStrategyByStrategyName( getAtdl4jOptions().getInputAndFilterData().getInputSelectStrategyName() );
+			}
+			else
+			{
+				if ( ( getAtdl4jOptions().getInputAndFilterData() != null ) && 
+						  ( getAtdl4jOptions().getInputAndFilterData().getInputSelectStrategyName() != null ) )
+				{
+					getStrategySelectionPanel().selectDropDownStrategyByStrategyName( getAtdl4jOptions().getInputAndFilterData().getInputSelectStrategyName() );
+				}
+				else
+				{
+					getStrategySelectionPanel().selectFirstDropDownStrategy();
+				}
+			}
+		}
+		else  // -- filtered StrategyList is new or has changed --
+		{
+			// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
+			getStrategiesUI().setVisible( false );
+	
+			// remove all strategy panels
+			getStrategiesUI().removeAllStrategyPanels();
+				
+			// -- Always build StrategyPanels anew (can be time intensive) --
+			getStrategiesUI().createStrategyPanels( getStrategies(), tempFilteredStrategyList );
 			
-		// -- Always build StrategyPanels anew (can be time intensive) --
-		getStrategiesUI().createStrategyPanels( getStrategies(), tempFilteredStrategyList );
-		
-		getStrategySelectionPanel().loadStrategyList( tempFilteredStrategyList );
-		
-		if ( ( getAtdl4jOptions().getInputAndFilterData() != null ) && 
-			  ( getAtdl4jOptions().getInputAndFilterData().getInputSelectStrategyName() != null ) )
-		{
-			getStrategySelectionPanel().selectDropDownStrategyByStrategyName( getAtdl4jOptions().getInputAndFilterData().getInputSelectStrategyName() );
+			getStrategySelectionPanel().loadStrategyList( tempFilteredStrategyList );
+			
+			if ( aSelectStrategyName != null )
+			{
+				getStrategySelectionPanel().selectDropDownStrategyByStrategyName( getAtdl4jOptions().getInputAndFilterData().getInputSelectStrategyName() );
+			}
+			else
+			{
+				if ( ( getAtdl4jOptions().getInputAndFilterData() != null ) && 
+						  ( getAtdl4jOptions().getInputAndFilterData().getInputSelectStrategyName() != null ) )
+				{
+					getStrategySelectionPanel().selectDropDownStrategyByStrategyName( getAtdl4jOptions().getInputAndFilterData().getInputSelectStrategyName() );
+				}
+				else
+				{
+					getStrategySelectionPanel().selectFirstDropDownStrategy();
+				}
+			}
+			
+			// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
+			getStrategiesUI().setVisible( true );
 		}
-		else
-		{
-			getStrategySelectionPanel().selectFirstDropDownStrategy();
-		}
 		
-		// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
-		getStrategiesUI().setVisible( true );
+		// -- Keep track of filtered StrategyList --
+		setLastFilteredStrategyList( tempFilteredStrategyList );
 	}
 	
 	public boolean loadFixMessage( String aFixMessage ) 
@@ -771,9 +816,9 @@ public abstract class AbstractAtdl4jCompositePanel
 	@Override
 	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage(String aFixMessage, String aInputSelectStrategyName)
 	{
-// TODO 11/29/2010 Scott Atwell -- need to improve the behavior/performance of combination of both of these...
-		loadScreenWithFilteredStrategies();
 		getAtdl4jOptions().getInputAndFilterData().setInputSelectStrategyName( aInputSelectStrategyName );
+// TODO 11/29/2010 Scott Atwell -- ?? further opportunity to improve the behavior/performance of combination of both of these...
+		loadScreenWithFilteredStrategies( aInputSelectStrategyName );
 		if ( aFixMessage != null )
 		{
 			return loadFixMessage( aFixMessage );
@@ -789,7 +834,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	@Override
 	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage(String aFixMessage)
 	{
-// TODO 11/29/2010 Scott Atwell -- need to improve the behavior/performance of combination of both of these...
+// TODO 11/29/2010 Scott Atwell -- ?? further opportunity to improve the behavior/performance of combination of both of these...
 		loadScreenWithFilteredStrategies();
 		if ( aFixMessage != null )
 		{
@@ -800,4 +845,54 @@ public abstract class AbstractAtdl4jCompositePanel
 			return true;
 		}
 	}
+	
+	/**
+	 * @param aStrategyList1
+	 * @param aStrategyList2
+	 * @return
+	 */
+	protected boolean isMatchingStrategyList( List<StrategyT> aStrategyList1, List<StrategyT> aStrategyList2 )
+	{
+		if ( ( aStrategyList1 != null ) && ( aStrategyList2 != null ) )
+		{
+			if ( aStrategyList1.size() == aStrategyList2.size() )
+			{
+				for ( int i=0; i < aStrategyList1.size(); i++ )
+				{
+					if ( aStrategyList1.get( i ).getName().equals( aStrategyList2.get( i ).getName() ) == false )
+					{
+						return false;
+					}
+				}
+				
+				return true;  // -- list matches in size and names/order --
+			}
+			
+			return false;
+		}
+		else if ( ( aStrategyList1 == null ) && ( aStrategyList2 == null ) )
+		{
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * @return the lastFilteredStrategyList
+	 */
+	protected List<StrategyT> getLastFilteredStrategyList()
+	{
+		return this.lastFilteredStrategyList;
+	}
+	
+	/**
+	 * @param aLastFilteredStrategyList the lastFilteredStrategyList to set
+	 */
+	protected void setLastFilteredStrategyList(List<StrategyT> aLastFilteredStrategyList)
+	{
+		this.lastFilteredStrategyList = aLastFilteredStrategyList;
+	}		
 }
