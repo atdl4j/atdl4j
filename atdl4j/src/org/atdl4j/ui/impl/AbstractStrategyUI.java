@@ -15,7 +15,6 @@ import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.data.ParameterTypeConverter;
 import org.atdl4j.data.StrategyRuleset;
-import org.atdl4j.data.TypeConverterFactory;
 import org.atdl4j.data.TypeConverterFactoryConfig;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
@@ -60,7 +59,7 @@ public abstract class AbstractStrategyUI
 	
 	private Atdl4jOptions atdl4jOptions;
 	
-	// of StateListeners to attach to controlWidgets
+	// of StateListeners to attach to Atdl4jWidgets
 	private StrategyRuleset strategyRuleset;
 	
 	private Map<String, ValidationRule> completeValidationRuleMap;
@@ -72,7 +71,7 @@ public abstract class AbstractStrategyUI
 	Atdl4jWidgetFactory atdl4jWidgetFactory;
 	StrategyPanelHelper strategyPanelHelper;
 	
-	abstract	protected void buildControlMap( List<StrategyPanelT> aStrategyPanelList );
+	abstract	protected void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList );
 	
 	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of Atdl4jWidget<?> --
 	abstract public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetMap();
@@ -82,21 +81,21 @@ public abstract class AbstractStrategyUI
 
 	// -- Used by init() --
 	abstract protected void initBegin(Object parentContainer);
-	abstract protected void buildControlMap();
+	abstract protected void buildAtdl4jWidgetMap();
 	abstract protected void createRadioGroups();
-	abstract protected void buildControlWithParameterMap();
+	abstract protected void buildAtdl4jWidgetWithParameterMap();
 	abstract protected void attachGlobalStateRulesToControls();
-	abstract protected void attachStateListenersToAllControls();
+	abstract protected void attachStateListenersToAllAtdl4jWidgets();
 	abstract protected void initEnd();
 
-	abstract protected void addToControlMap( String aName, Atdl4jWidget aAtdl4jWidget );
-	abstract protected void addToControlWithParameterMap( String aName, Atdl4jWidget aAtdl4jWidget );
-	abstract protected void removeFromControlMap( String aName );
-	abstract protected void removeFromControlWithParameterMap( String aName );
+	abstract protected void addToAtdl4jWidgetMap( String aName, Atdl4jWidget aAtdl4jWidget );
+	abstract protected void addToAtdl4jWidgetWithParameterMap( String aName, Atdl4jWidget aAtdl4jWidget );
+	abstract protected void removeFromAtdl4jWidgetMap( String aName );
+	abstract protected void removeFromAtdl4jWidgetWithParameterMap( String aName );
 	abstract public void setCxlReplaceMode(boolean cxlReplaceMode);
 	abstract protected void fireStateListeners();
-	abstract protected void fireStateListenersForControl( Atdl4jWidget aControl );
-	abstract protected void fireLoadFixMessageStateListenersForControl( Atdl4jWidget aControl );
+	abstract protected void fireStateListenersForAtdl4jWidget( Atdl4jWidget aAtdl4jWidget );
+	abstract protected void fireLoadFixMessageStateListenersForAtdl4jWidget( Atdl4jWidget aAtdl4jWidget );
 
 
 	abstract protected void applyRadioGroupRules();
@@ -123,19 +122,19 @@ public abstract class AbstractStrategyUI
 		
 		setCompleteValidationRuleMap( buildGlobalAndLocalRuleMap( getStrategy(), strategiesRules ) );
 		
-		buildControlMap();
+		buildAtdl4jWidgetMap();
 		
 		checkForDuplicateControlIDs();
 		createRadioGroups();
 
 		addHiddenFieldsForInputAndFilterData( getAtdl4jOptions().getInputAndFilterData() );
 		
-		buildControlWithParameterMap();
+		buildAtdl4jWidgetWithParameterMap();
 		attachGlobalStateRulesToControls();
 		
 		addHiddenFieldsForParameterWithoutControl( getParameterMap() );
 
-		attachStateListenersToAllControls();
+		attachStateListenersToAllAtdl4jWidgets();
 		
 		
 		
@@ -437,11 +436,11 @@ public abstract class AbstractStrategyUI
 	protected void checkForDuplicateControlIDs()
 	{
 		// -- Note getAtdl4jWidgetMap() constructs a new Map --
-		Collection<Atdl4jWidget<?>> tempControlMapValues = (Collection<Atdl4jWidget<?>>) getAtdl4jWidgetMap().values();
+		Collection<Atdl4jWidget<?>> tempAtdl4jWidgetMapValues = (Collection<Atdl4jWidget<?>>) getAtdl4jWidgetMap().values();
 		
-		for ( Atdl4jWidget<?> widget : tempControlMapValues )
+		for ( Atdl4jWidget<?> widget : tempAtdl4jWidgetMapValues )
 		{
-			for ( Atdl4jWidget<?> widget2 : tempControlMapValues )
+			for ( Atdl4jWidget<?> widget2 : tempAtdl4jWidgetMapValues )
 			{
 				if ( widget != widget2 && widget.getControl().getID().equals( widget2.getControl().getID() ) )
 					throw new IllegalStateException( "Duplicate Control ID: \"" + widget.getControl().getID() + "\"" );
@@ -449,13 +448,13 @@ public abstract class AbstractStrategyUI
 		}
 	}
 
-	public Atdl4jWidget getControlForParameter( ParameterT aParameterRef )
+	public Atdl4jWidget getAtdl4jWidgetForParameter( ParameterT aParameterRef )
 	{
 		if ( ( aParameterRef != null ) && ( getAtdl4jWidgetWithParameterMap() != null ) )
 		{
-			Collection<Atdl4jWidget<?>> tempControlWithParameterMapValues = (Collection<Atdl4jWidget<?>>) getAtdl4jWidgetWithParameterMap().values();
+			Collection<Atdl4jWidget<?>> tempAtdl4jWidgetWithParameterMapValues = (Collection<Atdl4jWidget<?>>) getAtdl4jWidgetWithParameterMap().values();
 			
-			for ( Atdl4jWidget<?> widget : tempControlWithParameterMapValues )
+			for ( Atdl4jWidget<?> widget : tempAtdl4jWidgetWithParameterMapValues )
 			{
 				if ( aParameterRef.equals( widget.getParameter() ) )
 				{
@@ -493,8 +492,8 @@ public abstract class AbstractStrategyUI
 				Atdl4jWidget hiddenFieldWidget = getAtdl4jWidgetFactory().createHiddenFieldT( hiddenField, parameter );
 				hiddenFieldWidget.setHiddenFieldForInputAndFilterData( true );
 				
-				addToControlMap( tempName, hiddenFieldWidget );
-				addToControlWithParameterMap( tempName, hiddenFieldWidget );
+				addToAtdl4jWidgetMap( tempName, hiddenFieldWidget );
+				addToAtdl4jWidgetWithParameterMap( tempName, hiddenFieldWidget );
 			}
 		}
 		
@@ -506,8 +505,8 @@ public abstract class AbstractStrategyUI
 		{
 			if ( tempEntry.getValue().isHiddenFieldForInputAndFilterData() )
 			{
-				removeFromControlMap( tempEntry.getKey() );
-				removeFromControlWithParameterMap( tempEntry.getKey() );
+				removeFromAtdl4jWidgetMap( tempEntry.getKey() );
+				removeFromAtdl4jWidgetWithParameterMap( tempEntry.getKey() );
 			}
 		}
 	}
@@ -531,15 +530,15 @@ public abstract class AbstractStrategyUI
 				ParameterT tempParameter = tempMapEntry.getValue();
 
 				// -- If Parameter does not have a Control --
-				if ( getControlForParameter( tempParameter ) == null )
+				if ( getAtdl4jWidgetForParameter( tempParameter ) == null )
 				{
 					// -- Add a HiddenField control for this parameter (to add to ControlWithParameters map used by StrategyEdit and FIX Message building) -- 
 					HiddenFieldT tempHiddenField = new HiddenFieldT();
 					tempHiddenField.setParameterRef( tempName );
 		
 					Atdl4jWidget hiddenFieldWidget = getAtdl4jWidgetFactory().createHiddenFieldT( tempHiddenField, tempParameter );
-					addToControlMap( tempName, hiddenFieldWidget );
-					addToControlWithParameterMap( tempName, hiddenFieldWidget );
+					addToAtdl4jWidgetMap( tempName, hiddenFieldWidget );
+					addToAtdl4jWidgetWithParameterMap( tempName, hiddenFieldWidget );
 				}
 			}
 		}
@@ -648,7 +647,7 @@ public abstract class AbstractStrategyUI
 				{
 					if ( widget.getParameter().getFixTag() != null && widget.getParameter().getFixTag().equals( BigInteger.valueOf( tag ) ) )
 					{
-						loadControlWithFIXValue( widget, value );
+						loadAtdl4jWidgetWithFIXValue( widget, value );
 					}
 				}
 			}
@@ -666,7 +665,7 @@ public abstract class AbstractStrategyUI
 					{
 						if ( widget.getParameter().getName() != null && widget.getParameter().getName().equals( name ) )
 						{
-							loadControlWithFIXValue( widget, value2 );
+							loadAtdl4jWidgetWithFIXValue( widget, value2 );
 						}
 					}
 					i = i + 3;
@@ -683,18 +682,18 @@ public abstract class AbstractStrategyUI
 	 * @param aValue
 	 * @return boolean indicating whether any Collapsible panels were adjusted;
 	 */
-	protected boolean loadControlWithFIXValue( Atdl4jWidget<?> aWidget, String aValue )
+	protected boolean loadAtdl4jWidgetWithFIXValue( Atdl4jWidget<?> aWidget, String aValue )
 	{
 		aWidget.setFIXValue( aValue );
 		
 		// -- Handles toggling associated controls (eg checkbox or radio button) when control is set to a non Atdl4jConstants.VALUE_NULL_INDICATOR value --
-		fireLoadFixMessageStateListenersForControl( aWidget );
+		fireLoadFixMessageStateListenersForAtdl4jWidget( aWidget );
 
-		fireStateListenersForControl( aWidget );
+		fireStateListenersForAtdl4jWidget( aWidget );
 		
 		// -- If the specified aWidget is part of a Collapsible StrategyPanel which is currently Collapsed, then expand it -- 
 		// -- (aCollapsed=false) --
-		return getStrategyPanelHelper().expandControlParentStrategyPanel( aWidget );
+		return getStrategyPanelHelper().expandAtdl4jWidgetParentStrategyPanel( aWidget );
 	}
 
 	/* (non-Javadoc)

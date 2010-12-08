@@ -303,7 +303,7 @@ public class SWTStrategyPanelHelper
 	 * @param aWidget
 	 * @return boolean indicating whether any ExpandBar ExpandItems were adjusted
 	 */
-	public boolean expandControlParentStrategyPanel( Atdl4jWidget<?> aWidget )
+	public boolean expandAtdl4jWidgetParentStrategyPanel( Atdl4jWidget<?> aWidget )
 	{
 		boolean tempAdjustedFlag = false;
 		if ( ( aWidget.getParent() != null ) && ( aWidget.getParent() instanceof Composite ) )

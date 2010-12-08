@@ -38,19 +38,19 @@ public class SWTStrategyUI
 {
 	protected static final Logger logger = Logger.getLogger( SWTStrategyUI.class );
 
-	protected Map<String, SWTWidget<?>> controlMap;  // formerly:  controls
+	protected Map<String, SWTWidget<?>> swtWidgetMap;  
 	
-	Map<String, SWTWidget<?>> controlWithParameterMap;	// formerly:  controlWithParameter
+	Map<String, SWTWidget<?>> swtWidgetWithParameterMap;	
 	
-	protected Map<String, SWTRadioButtonListener> radioGroupMap;	// formerly:  radioGroups
+	protected Map<String, SWTRadioButtonListener> radioGroupMap;
 	
-	protected List<SWTStateListener> stateListenerList;	// formerly:  stateListeners
+	protected List<SWTStateListener> stateListenerList;
 	
-	protected Map<SWTWidget<?>, Set<SWTStateListener>> widgetStateListenerMap; 	// formerly:  widgetStateListeners
+	protected Map<SWTWidget<?>, Set<SWTStateListener>> widgetStateListenerMap;
 	
 	private Composite parent;
 
-	private List<ExpandBar> expandBarList;  // 8/27/2010 Scott Atwell added
+	private List<ExpandBar> expandBarList;
 
 	/*
 	 * Call init() after invoking the no arg constructor
@@ -67,13 +67,13 @@ public class SWTStrategyUI
 	{
 		setParent( (Composite) parentContainer );
 
-		setControlWithParameterMap( new HashMap<String, SWTWidget<?>>() );
+		setSWTWidgetWithParameterMap( new HashMap<String, SWTWidget<?>>() );
 		
 //TODO !!! verify, as it does not appear that getWidgetStateListenerMap() is ever being populated (though, is being initialized)		
 		setWidgetStateListenerMap( new HashMap<SWTWidget<?>, Set<SWTStateListener>>() );
 	}
 
-	protected void buildControlMap()
+	protected void buildAtdl4jWidgetMap()
 	{
 		if ( getStrategy() == null )
 		{
@@ -91,7 +91,7 @@ public class SWTStrategyUI
 		}
 		
 		
-		buildControlMap( getStrategy().getStrategyLayout().getStrategyPanel() );
+		buildAtdl4jWidgetMap( getStrategy().getStrategyLayout().getStrategyPanel() );
 	}
 
 	public void initEnd()
@@ -103,7 +103,7 @@ public class SWTStrategyUI
 	public void setCxlReplaceMode(boolean cxlReplaceMode)
 	{
 		// enable/disable non-mutable parameters
-		for ( SWTWidget<?> widget : getControlWithParameterMap().values() )
+		for ( SWTWidget<?> widget : getSWTWidgetWithParameterMap().values() )
 		{
 			if ( !widget.getParameter().isMutableOnCxlRpl() )
 				widget.setEnabled( !cxlReplaceMode );
@@ -152,7 +152,7 @@ public class SWTStrategyUI
 	{
 		if ( field != null )
 		{
-			SWTWidget<?> targetParameterWidget = getControlMap().get( field );
+			SWTWidget<?> targetParameterWidget = getSWTWidgetMap().get( field );
 			if ( targetParameterWidget == null )
 				throw new IllegalStateException( "Error generating a State Rule => Control: " + field + " does not exist in Strategy: " + getStrategy().getName() );
 			putStateListener( targetParameterWidget, stateRuleListener );
@@ -163,7 +163,7 @@ public class SWTStrategyUI
 					&& ( ! "".equals( ( (RadioButtonT) targetParameterWidget.getControl() ).getRadioGroup() ) ) )
 			{
 				String rg = ( (RadioButtonT) targetParameterWidget.getControl() ).getRadioGroup();
-				for ( SWTWidget<?> widget : getControlMap().values() )
+				for ( SWTWidget<?> widget : getSWTWidgetMap().values() )
 				{
 					if ( widget.getControl() instanceof RadioButtonT && ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
 							&& ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
@@ -185,10 +185,9 @@ public class SWTStrategyUI
 	 */
 	public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetWithParameterMap()
 	{
-		// return new HashMap<String,Atdl4jWidget<?>>(getControlMap());
-		if ( getControlWithParameterMap() != null )
+		if ( getSWTWidgetWithParameterMap() != null )
 		{
-			return new HashMap<String, Atdl4jWidget<?>>( getControlWithParameterMap()  );
+			return new HashMap<String, Atdl4jWidget<?>>( getSWTWidgetWithParameterMap()  );
 		}
 		else
 		{
@@ -203,10 +202,9 @@ public class SWTStrategyUI
 	 */
 	public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetMap()
 	{
-		// return new HashMap<String,Atdl4jWidget<?>>(getControlMap());
-		if ( getControlMap() != null )
+		if ( getSWTWidgetMap() != null )
 		{
-			return new HashMap<String, Atdl4jWidget<?>>( getControlMap()  );
+			return new HashMap<String, Atdl4jWidget<?>>( getSWTWidgetMap()  );
 		}
 		else
 		{
@@ -217,19 +215,19 @@ public class SWTStrategyUI
 
 
 	/**
-	 * @return the controlMap
+	 * @return the swtWidgetMap
 	 */
-	public Map<String, SWTWidget<?>> getControlMap()
+	public Map<String, SWTWidget<?>> getSWTWidgetMap()
 	{
-		return this.controlMap;
+		return this.swtWidgetMap;
 	}
 
 	/**
-	 * @param aControlMap the controlMap to set
+	 * @param aSWTWidgetMap the swtWidgetMap to set
 	 */
-	protected void setControlMap(Map<String, SWTWidget<?>> aControlMap)
+	protected void setSWTWidgetMap(Map<String, SWTWidget<?>> aSWTWidgetMap)
 	{
-		this.controlMap = aControlMap;
+		this.swtWidgetMap = aSWTWidgetMap;
 	}
 	
 	
@@ -237,16 +235,16 @@ public class SWTStrategyUI
 	 * @param aStrategyPanelList
 	 * @return
 	 */
-	protected void buildControlMap( List<StrategyPanelT> aStrategyPanelList )
+	protected void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList )
 	{
-		Map<String, SWTWidget<?>> tempControlMap = new HashMap<String, SWTWidget<?>>();
+		Map<String, SWTWidget<?>> tempSWTWidgetMap = new HashMap<String, SWTWidget<?>>();
 		
 		setExpandBarList( new ArrayList<ExpandBar>() );
 
 		// build panels and widgets recursively
 		for ( StrategyPanelT panel : aStrategyPanelList )
 		{
-			tempControlMap.putAll( SWTStrategyPanelFactory.createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE, getExpandBarList(), getAtdl4jWidgetFactory() ) );
+			tempSWTWidgetMap.putAll( SWTStrategyPanelFactory.createStrategyPanelAndWidgets( getParent(), panel, getParameterMap(), SWT.NONE, getExpandBarList(), getAtdl4jWidgetFactory() ) );
 		}
 	
 		// 3/13/2010 John Shields HACK: make the first panel take the full width of the window
@@ -260,7 +258,7 @@ public class SWTStrategyUI
 	        }
 	    }
 		
-		setControlMap( tempControlMap );
+		setSWTWidgetMap( tempSWTWidgetMap );
 	}
 
 	public void relayoutCollapsibleStrategyPanels()
@@ -280,7 +278,7 @@ public class SWTStrategyUI
 	{
 		Map<String, SWTRadioButtonListener> tempRadioGroupMap = new HashMap<String, SWTRadioButtonListener>();
 		
-		for ( SWTWidget<?> widget : getControlMap().values() )
+		for ( SWTWidget<?> widget : getSWTWidgetMap().values() )
 		{
 			if ( widget.getControl() instanceof RadioButtonT && ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
 					&& ( (RadioButtonT) widget.getControl() ).getRadioGroup() != "" )
@@ -317,50 +315,50 @@ public class SWTStrategyUI
 		this.radioGroupMap = aRadioGroupMap;
 	}
 
-	protected void addToControlMap( String aName, Atdl4jWidget aAtdl4jWidget )
+	protected void addToAtdl4jWidgetMap( String aName, Atdl4jWidget aAtdl4jWidget )
 	{
-		getControlMap().put( aName, (SWTWidget<?>) aAtdl4jWidget );
+		getSWTWidgetMap().put( aName, (SWTWidget<?>) aAtdl4jWidget );
 	}
 
-	protected void addToControlWithParameterMap( String aName, Atdl4jWidget aAtdl4jWidget )
+	protected void addToAtdl4jWidgetWithParameterMap( String aName, Atdl4jWidget aAtdl4jWidget )
 	{
-		getControlWithParameterMap().put( aName, (SWTWidget<?>) aAtdl4jWidget );
+		getSWTWidgetWithParameterMap().put( aName, (SWTWidget<?>) aAtdl4jWidget );
 	}
 
-	protected void removeFromControlMap( String aName )
+	protected void removeFromAtdl4jWidgetMap( String aName )
 	{
-		getControlMap().remove( aName );
+		getSWTWidgetMap().remove( aName );
 	}
 
-	protected void removeFromControlWithParameterMap( String aName )
+	protected void removeFromAtdl4jWidgetWithParameterMap( String aName )
 	{
-		getControlWithParameterMap().remove( aName );
+		getSWTWidgetWithParameterMap().remove( aName );
 	}
 
 	/**
 	 * 
 	 */
-	protected void buildControlWithParameterMap()
+	protected void buildAtdl4jWidgetWithParameterMap()
 	{
-		Map<String, SWTWidget<?>> tempControlWithParameterMap = new HashMap<String, SWTWidget<?>>();
+		Map<String, SWTWidget<?>> tempSWTWidgetWithParameterMap = new HashMap<String, SWTWidget<?>>();
 		
 		// loop through all UI controls
-		for ( SWTWidget<?> widget : getControlMap().values() )
+		for ( SWTWidget<?> widget : getSWTWidgetMap().values() )
 		{
 			if ( widget.getParameter() != null )
 			{
 				// validate that a parameter is not being added twice
 				String tempParameterName = widget.getParameter().getName();
-				if ( tempControlWithParameterMap.containsKey( tempParameterName ) )
+				if ( tempSWTWidgetWithParameterMap.containsKey( tempParameterName ) )
 				{
 					throw new IllegalStateException( "Cannot add parameter \"" + tempParameterName + "\" to two separate controls." );
 				}
-				tempControlWithParameterMap.put( tempParameterName, widget );
+				tempSWTWidgetWithParameterMap.put( tempParameterName, widget );
 			}
 			
 		}
 		
-		setControlWithParameterMap( tempControlWithParameterMap );
+		setSWTWidgetWithParameterMap( tempSWTWidgetWithParameterMap );
 	}
 
 	/**
@@ -370,7 +368,7 @@ public class SWTStrategyUI
 		List<SWTStateListener> tempStateListenerList = new Vector<SWTStateListener>();
 		
 		// loop through all UI controls
-		for ( SWTWidget<?> widget : getControlMap().values() )
+		for ( SWTWidget<?> widget : getSWTWidgetMap().values() )
 		{
 			// parameter state rules that have an id should be included in
 			// the rules map
@@ -381,8 +379,8 @@ public class SWTStrategyUI
 				for ( StateRuleT stateRule : control.getStateRule() )
 				{
 	
-					SWTWidget<?> affectedWidget = getControlMap().get( control.getID() );
-					SWTStateListener stateListener = new SWTStateListener( affectedWidget, stateRule, getControlMap(), getCompleteValidationRuleMap() );
+					SWTWidget<?> affectedWidget = getSWTWidgetMap().get( control.getID() );
+					SWTStateListener stateListener = new SWTStateListener( affectedWidget, stateRule, getSWTWidgetMap(), getCompleteValidationRuleMap() );
 	
 					// attach the stateListener's rule to controls
 					attachRuleToControls( stateListener.getRule(), stateListener );
@@ -400,19 +398,19 @@ public class SWTStrategyUI
 	}	
 	
 	/**
-	 * @return the controlWithParameterMap
+	 * @return the swtWidgetWithParameterMap
 	 */
-	public Map<String, SWTWidget<?>> getControlWithParameterMap()
+	public Map<String, SWTWidget<?>> getSWTWidgetWithParameterMap()
 	{
-		return this.controlWithParameterMap;
+		return this.swtWidgetWithParameterMap;
 	}
 
 	/**
-	 * @param aControlWithParameterMap the controlWithParameterMap to set
+	 * @param aSWTWidgetWithParameterMap the swtWidgetWithParameterMap to set
 	 */
-	protected void setControlWithParameterMap(Map<String, SWTWidget<?>> aControlWithParameterMap)
+	protected void setSWTWidgetWithParameterMap(Map<String, SWTWidget<?>> aSWTWidgetWithParameterMap)
 	{
-		this.controlWithParameterMap = aControlWithParameterMap;
+		this.swtWidgetWithParameterMap = aSWTWidgetWithParameterMap;
 	}
 
 	/**
@@ -451,7 +449,7 @@ public class SWTStrategyUI
 	/**
 	 * 
 	 */
-	protected void	attachStateListenersToAllControls()
+	protected void	attachStateListenersToAllAtdl4jWidgets()
 	{
 //TODO !!! verify, as it does not appear that getWidgetStateListenerMap() is ever being populated (though, is being initialized)		
 		// add all StateListeners to the controls
@@ -485,11 +483,11 @@ public class SWTStrategyUI
 			stateListener.handleEvent( null );
 	}
 
-	protected void fireStateListenersForControl( Atdl4jWidget aControl )
+	protected void fireStateListenersForAtdl4jWidget( Atdl4jWidget aAtdl4jWidget )
 	{
 		for ( SWTStateListener stateListener : getStateListenerList() )
 		{
-			if ( aControl.equals( stateListener.getAffectedWidget() ) )
+			if ( aAtdl4jWidget.equals( stateListener.getAffectedWidget() ) )
 			{
 				stateListener.handleEvent( null );
 			}
@@ -497,14 +495,14 @@ public class SWTStrategyUI
 	}
 
 	/**
-	 * Invokes SWTStateListener.handleLoadFixMessageEvent() for aControl
-	 * @param aControl
+	 * Invokes SWTStateListener.handleLoadFixMessageEvent() for aAtdl4jWidget
+	 * @param aAtdl4jWidget
 	 */
-	protected void fireLoadFixMessageStateListenersForControl( Atdl4jWidget aControl )
+	protected void fireLoadFixMessageStateListenersForAtdl4jWidget( Atdl4jWidget aAtdl4jWidget )
 	{
 		for ( SWTStateListener stateListener : getStateListenerList() )
 		{
-			if ( aControl.equals( stateListener.getAffectedWidget() ) )
+			if ( aAtdl4jWidget.equals( stateListener.getAffectedWidget() ) )
 			{
 				stateListener.handleLoadFixMessageEvent( null );
 			}
