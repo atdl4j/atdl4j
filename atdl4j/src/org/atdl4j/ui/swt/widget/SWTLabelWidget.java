@@ -33,6 +33,7 @@ public class SWTLabelWidget
 		// label
 		label = new Label( parent, SWT.NONE );
 
+/*** initValue should take precedence over label property on Label control per JIRA item ATDL-146 and FPL Algo Trading Working Group meeting held 10/13/2010 		
 		if ( control.getLabel() != null )
 		{
 			label.setText( control.getLabel() );
@@ -40,6 +41,16 @@ public class SWTLabelWidget
 		else if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
 		{
 			label.setText( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ) );
+		}
+***/
+		// -- initValue should take precedence over label property on Label control per JIRA item ATDL-146 and FPL Algo Trading Working Group meeting held 10/13/2010 --
+		if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
+		{
+			label.setText( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ) );
+		}
+		else if ( control.getLabel() != null )
+		{
+			label.setText( control.getLabel() );
 		}
 		else
 		{
