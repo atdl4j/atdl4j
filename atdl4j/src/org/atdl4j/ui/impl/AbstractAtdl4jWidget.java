@@ -213,20 +213,23 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 	{
 		E tempControlValue = controlConverter.convertStringToControlValue( aString );
 		return controlConverter.convertControlValueToControlComparable( tempControlValue );
-	}
+	}	
 
-	
 	public Comparable<?> convertParameterStringToParameterComparable(String aParameterString)
 	{
-		if ( parameterConverter != null )
-		{
-			Object tempParameterValue = parameterConverter.convertParameterStringToParameterValue( aParameterString );
-			return parameterConverter.convertParameterValueToParameterComparable( tempParameterValue );
-		}
-		else
-			return null;
+	    // check if the control has an enum list
+	    // then check if the parameter string is an enum value (as opposed to a raw FIX value)
+	    String tempParameterString = (getListItems()==null||getEnumWireValue(aParameterString)==null) ?
+		    aParameterString : getEnumWireValue(aParameterString);
+	    
+	    if ( parameterConverter != null )
+	    {
+		Object tempParameterValue = parameterConverter.convertParameterStringToParameterValue( tempParameterString );
+		return parameterConverter.convertParameterValueToParameterComparable( tempParameterValue );
+	    }
+	    else return null;
 	}
-
+	
 	public ParameterT getParameter()
 	{
 		return parameter;
