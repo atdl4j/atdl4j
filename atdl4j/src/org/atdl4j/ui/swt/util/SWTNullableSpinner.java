@@ -188,16 +188,26 @@ public class SWTNullableSpinner extends Composite
 	{
 		BigDecimal tempValue = aValue;
 		
-		if ( ( getMinimum() != null ) && ( tempValue.compareTo( getMinimum() ) < 0 ) )
+// 12/15/2010 Scott Atwell		if ( ( getMinimum() != null ) && ( tempValue.compareTo( getMinimum() ) < 0 ) )
+		if ( ( getMinimum() != null ) && ( tempValue != null ) && ( tempValue.compareTo( getMinimum() ) < 0 ) )
 		{
 			tempValue = getMinimum();
 		}
-		else if ( ( getMaximum() != null ) && ( tempValue.compareTo( getMaximum() ) > 0 ) )
+// 12/15/2010 Scott Atwell		else if ( ( getMaximum() != null ) && ( tempValue.compareTo( getMaximum() ) > 0 ) )
+		else if ( ( getMaximum() != null ) && ( tempValue != null ) && ( tempValue.compareTo( getMaximum() ) > 0 ) )
 		{
 			tempValue = getMaximum();
 		} 
 			
-		text.setText( tempValue.toPlainString() );
+// 12/15/2010 Scott Atwell		text.setText( tempValue.toPlainString() );
+		if ( tempValue != null )
+		{
+			text.setText( tempValue.toPlainString() );
+		}
+		else
+		{
+			text.setText( "" );
+		}
 		text.selectAll();
 		text.setFocus();
 	}

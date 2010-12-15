@@ -318,6 +318,11 @@ public class SWTSpinnerWidget
 			// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
 			setValue( new BigDecimal( initValue ) );
 		}
+//TODO 12/15/2010 Scott Atwell added
+		else
+		{
+			setValue( null );
+		}
 	}
 
 	/* 
