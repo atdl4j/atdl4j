@@ -35,7 +35,9 @@ public interface StrategiesUI {
 
 	public void setVisible( boolean aVisible );
 	
-	public StrategyUI getStrategyUI( StrategyT aStrategy );
+// 12/15/2010 Scott Atwell	public StrategyUI getStrategyUI( StrategyT aStrategy );
+	public StrategyUI getStrategyUI( StrategyT aStrategy, boolean aReinitPanelFlag );
+	  
 	public StrategyUI getCurrentlyDisplayedStrategyUI();
 	public StrategyT getCurrentlyDisplayedStrategy();
 }

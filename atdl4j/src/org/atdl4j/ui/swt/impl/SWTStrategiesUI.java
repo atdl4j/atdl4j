@@ -120,7 +120,8 @@ public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
 {
 	if ( strategiesPanel != null )
 	{
-		StrategyUI tempStrategyUI = getStrategyUI( aStrategy );
+		// -- (aReinitPanelFlag=true) --
+		StrategyUI tempStrategyUI = getStrategyUI( aStrategy, true );
 		
 		if ( tempStrategyUI == null  )
 		{
@@ -153,11 +154,18 @@ public void setVisible(boolean aVisible)
 }
 
 
-public StrategyUI getStrategyUI( StrategyT aStrategy )
+// 12/15/2010 Scott Atwell public StrategyUI getStrategyUI( StrategyT aStrategy )
+public StrategyUI getStrategyUI( StrategyT aStrategy, boolean aReinitPanelFlag )
 {
 	if ( aStrategy.equals( getCurrentlyDisplayedStrategy() ) )
 	{
 		logger.debug("Strategy name: " + aStrategy.getName() + " is currently being displayed.  Returning getCurrentlyDisplayedStrategyUI()" );
+// 12/15/2010 Scott Atwell return getCurrentlyDisplayedStrategyUI();
+		if ( aReinitPanelFlag )
+		{
+			getCurrentlyDisplayedStrategyUI().reinitStrategyPanel();
+		}
+		
 		return getCurrentlyDisplayedStrategyUI();
 	}
 	else

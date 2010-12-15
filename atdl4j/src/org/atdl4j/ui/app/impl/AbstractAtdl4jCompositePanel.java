@@ -255,7 +255,8 @@ public abstract class AbstractAtdl4jCompositePanel
 			return null;
 		}
 		
-		StrategyUI tempStrategyUI = getStrategiesUI().getStrategyUI(tempSelectedStrategy);
+		// -- (aReinitPanelFlag=false) --
+		StrategyUI tempStrategyUI = getStrategiesUI().getStrategyUI(tempSelectedStrategy, false);
 		
 		if ( aPerformValidationFlag )
 		{
@@ -473,7 +474,8 @@ public abstract class AbstractAtdl4jCompositePanel
 				return false;
 			}
 			
-			StrategyUI ui = getStrategiesUI().getStrategyUI( getSelectedStrategy() );
+			// -- (aReinitPanelFlag=true) --
+			StrategyUI ui = getStrategiesUI().getStrategyUI( getSelectedStrategy(), true );
 			
 			// -- Note available getStrategies() may be filtered due to SecurityTypes, Markets, or Region/Country rules --  
 			if ( ui != null )
