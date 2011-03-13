@@ -2,10 +2,10 @@ package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
 
-import org.atdl4j.ui.swing.SwingWidget;
 import org.atdl4j.ui.impl.AbstractAtdl4jWidget;
+import org.atdl4j.ui.swing.SwingWidget;
 /**
- * Abstract class that represents a Parameter SWT Widget. Implements the FIX
+ * Abstract class that represents a Parameter Swing Widget. Implements the FIX
  * value getters's methods.
  */
 public abstract class AbstractSwingWidget<E extends Comparable<?>>
@@ -16,7 +16,9 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 	{		
 		for ( Component control : getComponents() )
 		{
-			control.setVisible( visible );
+			if (control != null) {
+				control.setVisible( visible );
+			}
 		}
 	}
 
@@ -24,7 +26,9 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 	{
 		for ( Component control : getComponents() )
 		{
-			control.setEnabled( enabled );
+			if (control != null) {
+				control.setEnabled( enabled );
+			}
 		}
 	}
 
@@ -32,7 +36,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 	{
 		for ( Component control : getComponents() )
 		{
-			if ( control.isVisible() )
+			if ((control != null) && control.isVisible() )
 			{
 				return true;
 			}
@@ -45,7 +49,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 	{
 		for ( Component control : getComponents() )
 		{
-			if ( control.isEnabled() )
+			if ( (control != null) && control.isEnabled() )
 			{
 				return true;
 			}
@@ -58,7 +62,9 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 	{
 		for ( Component control : getComponentsExcludingLabel() )
 		{
-			control.setEnabled( enabled );
+			if (control != null) {
+				control.setEnabled( enabled );
+			}
 		}
 	}
 
@@ -66,7 +72,7 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 	{
 		for ( Component control : getComponentsExcludingLabel() )
 		{
-			if ( control.isEnabled() )
+			if ( (control != null) && control.isEnabled() )
 			{
 				return true;
 			}

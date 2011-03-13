@@ -2,8 +2,9 @@ package org.atdl4j.ui.swing.app.impl;
 
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -29,35 +30,28 @@ public class SwingStrategyDescriptionPanel
 	private JPanel container;
 	private JTextArea strategyDescription;
 
-//	private int DEFAULT_STRATEGY_DESCRIPTION_HEIGHT_HINT = 35;
-	private int DEFAULT_STRATEGY_DESCRIPTION_ROWS = 2;
+	private int DEFAULT_STRATEGY_DESCRIPTION_ROWS = 4;
 
 	public Object buildStrategyDescriptionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		return buildStrategyDescriptionPanel( (Container) parentOrShell, atdl4jOptions );
+		return buildStrategyDescriptionPanel( (JFrame) parentOrShell, atdl4jOptions );
 	}
 	
-	public Container buildStrategyDescriptionPanel(Container aParentContainer, Atdl4jOptions atdl4jOptions)
+	public JPanel buildStrategyDescriptionPanel(JFrame aParentContainer, Atdl4jOptions atdl4jOptions)
 	{
 		setAtdl4jOptions( atdl4jOptions );
 	
-		JPanel tempContainer = new JPanel();
-		tempContainer.setBorder( new TitledBorder( "Strategy Description" ) );
-		BorderLayout tempLayout = new BorderLayout();
-		tempContainer.setLayout( tempLayout );
+		container = new JPanel(new BorderLayout());
+		container.setBorder( new TitledBorder( "Strategy Description" ) );
 		
-		aParentContainer.add( tempContainer );
-		
-  		strategyDescription = new JTextArea( DEFAULT_STRATEGY_DESCRIPTION_ROWS, 1);
-  		strategyDescription.setLineWrap( true );
-  		strategyDescription.setWrapStyleWord( true );
-  		strategyDescription.setEditable( false );
+ 		strategyDescription = new JTextArea( DEFAULT_STRATEGY_DESCRIPTION_ROWS, 1);
+ 		strategyDescription.setLineWrap( true );
+ 		strategyDescription.setWrapStyleWord( true );
+ 		strategyDescription.setEditable( false );
+ 		strategyDescription.setFont(new JLabel().getFont());
   		
-//TODO  	   strategyDescription.setBackground(container.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-//TODO  		strategyDescription.setForeground(container.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
-		
 		JScrollPane tempScrollPane = new JScrollPane( strategyDescription );
-		tempLayout.addLayoutComponent( tempScrollPane, BorderLayout.CENTER );
+		container.add( tempScrollPane, BorderLayout.CENTER );
 	
 		return container;
 	}

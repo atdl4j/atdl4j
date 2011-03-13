@@ -1,7 +1,6 @@
 package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -49,7 +48,7 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 		}
 	}
 	
-	public void createWidget(Container parent) {
+	public void createWidget(JPanel parent) {
 		String tooltip = getTooltip();
 
 		// label
@@ -140,7 +139,15 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 
 	public BigDecimal getControlValueRaw() {
 		try {
-			return BigDecimal.valueOf((Integer)spinner.getValue());
+			if (spinner.getValue() instanceof Double) {
+				return BigDecimal.valueOf((Double)spinner.getValue());
+			}
+			else if (spinner.getValue() instanceof Integer){
+				return BigDecimal.valueOf(((Integer)spinner.getValue()).longValue());
+			}
+			else {
+				return (BigDecimal)spinner.getValue();
+			}
 		} catch (NumberFormatException e) {
 			return null;
 		}

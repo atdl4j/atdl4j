@@ -1,13 +1,13 @@
 package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.util.List;
 
+import javax.swing.JPanel;
+
+import org.atdl4j.ui.impl.AbstractHiddenFieldWidget;
 import org.atdl4j.ui.swing.SwingListener;
 import org.atdl4j.ui.swing.SwingWidget;
-import org.atdl4j.ui.impl.AbstractHiddenFieldWidget;
-import org.eclipse.swt.widgets.Listener;
 
 public class SwingHiddenFieldWidget
 		extends AbstractHiddenFieldWidget
@@ -19,12 +19,12 @@ public class SwingHiddenFieldWidget
 	}
 	 **/
 
-	public void createWidget(Container parent)
+	public void createWidget(JPanel parent)
 	{
 		// do nothing
 	}
 
-	public void generateStateRuleListener(Listener listener)
+	public void generateStateRuleListener(SwingListener listener)
 	{
 		// do nothing
 	}

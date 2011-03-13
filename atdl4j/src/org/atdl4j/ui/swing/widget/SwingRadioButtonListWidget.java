@@ -1,7 +1,6 @@
 package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import javax.swing.JRadioButton;
 import org.apache.log4j.Logger;
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.layout.ListItemT;
-import org.atdl4j.fixatdl.layout.PanelOrientationT;
 import org.atdl4j.fixatdl.layout.RadioButtonListT;
 import org.atdl4j.ui.impl.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
@@ -27,7 +25,7 @@ public class SwingRadioButtonListWidget
 	private ButtonGroup group = new ButtonGroup();	
 	private JLabel label;
 
-	public void createWidget(Container parent)
+	public void createWidget(JPanel parent)
 	{		
 		JPanel wrapper = new JPanel();
 	    String tooltip = getTooltip();

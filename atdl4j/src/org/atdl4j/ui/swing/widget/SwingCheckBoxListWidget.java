@@ -1,12 +1,11 @@
 package org.atdl4j.ui.swing.widget;
 
-import java.awt.Container;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JCheckBox;
-import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -31,7 +30,7 @@ public class SwingCheckBoxListWidget
 					+ "\" are not equal in number." );
 	}
 
-	public void createWidget(Container parent)
+	public void createWidget(JPanel parent)
 	{
 		// wrapper
 		JPanel wrapper = new JPanel();

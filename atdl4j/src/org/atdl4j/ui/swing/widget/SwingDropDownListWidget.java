@@ -1,12 +1,13 @@
 package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
-import java.awt.Container;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.atdl4j.fixatdl.layout.DropDownListT;
 import org.atdl4j.fixatdl.layout.EditableDropDownListT;
@@ -21,7 +22,7 @@ public class SwingDropDownListWidget
 	private JComboBox dropDownList;
 	private JLabel label;
 
-	public void createWidget(Container parent)
+	public void createWidget(JPanel parent)
 	{
 		String tooltip = getTooltip();
 		
@@ -185,6 +186,17 @@ public class SwingDropDownListWidget
 		}
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see org.atdl4j.ui.impl.AbstractAtdl4jWidget#applyConstOrInitValues()
+	 */
+	@Override
+	public void applyConstOrInitValues() {
+		super.applyConstOrInitValues();
+		dropDownList.setMaximumSize(new Dimension(dropDownList.getPreferredSize().width + 5, dropDownList.getPreferredSize().height));
+		dropDownList.revalidate();
+	}
+	
 	/* 
 	 * 
 	 */

@@ -1,12 +1,11 @@
 package org.atdl4j.ui.swing.widget;
 
-import java.awt.Container;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -25,7 +24,7 @@ public class SwingListBoxWidget
 	private JLabel label;
 	private Vector<String> list = new Vector<String>();
 
-	public void createWidget(Container parent)
+	public void createWidget(JPanel parent)
 	{
 		String tooltip = getTooltip();
 
@@ -162,6 +161,17 @@ public class SwingListBoxWidget
 				}
 			}
 		}
+	}
+
+	
+	
+	/* (non-Javadoc)
+	 * @see org.atdl4j.ui.impl.AbstractAtdl4jWidget#applyConstOrInitValues()
+	 */
+	@Override
+	public void applyConstOrInitValues() {
+		super.applyConstOrInitValues();
+		listBox.revalidate();
 	}
 
 	/* 

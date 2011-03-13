@@ -1,17 +1,14 @@
 package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
-import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.fixatdl.core.BooleanT;
 import org.atdl4j.fixatdl.layout.CheckBoxT;
@@ -28,7 +25,7 @@ public class SwingButtonWidget
 	private JToggleButton button;
 	//private SwingRadioButtonListener radioButtonListener;
 
-	public void createWidget(Container parent) {
+	public void createWidget(JPanel parent) {
 		
 		// button
 		if (control instanceof RadioButtonT) {
@@ -42,14 +39,6 @@ public class SwingButtonWidget
 		if ( getTooltip() != null ) button.setToolTipText( getTooltip() );
 		// if (control.getTooltip() != null) button.setToolTipText(control.getTooltip());
 				
-		// init value		
-		/*if (control instanceof RadioButtonT) {
-			if (((RadioButtonT)control).isInitValue() != null) 
-				button.setEnabled(((RadioButtonT)control).isInitValue());
-		} else {
-			if (((CheckBoxT)control).isInitValue() != null)
-				button.setEnabled(((CheckBoxT)control).isInitValue());
-		}*/
 		Boolean tempInitValue = (Boolean) ControlHelper.getInitValue( control, getAtdl4jOptions() );
 		if ( tempInitValue != null )
 		{
@@ -61,7 +50,19 @@ public class SwingButtonWidget
 	
 	public void setValue(Boolean value)
 	{
-		button.setEnabled(value.booleanValue());
+		if (control instanceof CheckBoxT) {
+			if (button.isSelected() != value.booleanValue()){
+				button.doClick();
+			}
+		}
+		else if (control instanceof RadioButtonT) {
+			if (button.isSelected() != value.booleanValue()){
+				button.doClick();
+			}
+		}
+		else {
+			button.setEnabled(value.booleanValue());
+		}
 	}
 
 	public List<Component> getComponents()

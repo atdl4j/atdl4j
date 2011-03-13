@@ -5,8 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -24,8 +24,7 @@ import org.atdl4j.ui.app.impl.AbstractFixMsgLoadPanel;
  * @author Scott Atwell
  * @version 1.0, October 5, 2010
  */
-public class SwingFixMsgLoadPanel 
-	extends AbstractFixMsgLoadPanel
+public class SwingFixMsgLoadPanel extends AbstractFixMsgLoadPanel
 {
 	private final Logger logger = Logger.getLogger(SwingFixMsgLoadPanel.class);
 	Container parentContainer;
@@ -37,23 +36,19 @@ public class SwingFixMsgLoadPanel
 	
 	public Object buildFixMsgLoadPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		return buildFixMsgLoadPanel( (Container) parentOrShell, atdl4jOptions );
+		return buildFixMsgLoadPanel( (JPanel) parentOrShell, atdl4jOptions );
 	}
 	
-	public Container buildFixMsgLoadPanel(Container aParentContainer, Atdl4jOptions atdl4jOptions)
+	public JPanel buildFixMsgLoadPanel(Container aParentContainer, Atdl4jOptions atdl4jOptions)
 	{
 		setAtdl4jOptions( atdl4jOptions );
 		setParentContainer( aParentContainer );
 		
-		JPanel tempContainer = new JPanel();
+		JPanel tempContainer = new JPanel(new BorderLayout());
 		tempContainer.setBorder( new TitledBorder( "Pre-populate with FIX Message Fragment (tag=value syntax)" ) );
-		BorderLayout tempLayout = new BorderLayout();
-		tempContainer.setLayout( tempLayout );
-		
-		aParentContainer.add( tempContainer );
 		
 		loadFixMsgButton = new JButton("Load Message");
-		tempLayout.addLayoutComponent( loadFixMsgButton, BorderLayout.WEST );
+		tempContainer.add( loadFixMsgButton, BorderLayout.WEST );
 		loadFixMsgButton.addActionListener( new ActionListener()
 		{
 			@Override
@@ -63,27 +58,20 @@ public class SwingFixMsgLoadPanel
 			}
 		} );
 
-		fixMsgText = new JTextField();
-		tempLayout.addLayoutComponent( loadFixMsgButton, BorderLayout.CENTER );
+		fixMsgText = new JTextField(10);
+		tempContainer.add( fixMsgText, BorderLayout.CENTER );
 		// -- Handle Enter key within Text field --
-		fixMsgText.addKeyListener( new KeyListener()
+		fixMsgText.addKeyListener( new KeyAdapter()
 		{
 			@Override
-			public void keyReleased(KeyEvent aE)
-			{
-				if ( aE.isActionKey() )
-				{
+			public void keyPressed(KeyEvent aE) {
+				if ( aE.getKeyCode() == KeyEvent.VK_ENTER ){
 					fireFixMsgLoadSelectedEvent( fixMsgText.getText() );
 				}
 			}
-
-			@Override
-			public void keyPressed(KeyEvent aE) {};
-			@Override
-			public void keyTyped(KeyEvent aE) {};
-		} );
+		});
 		
-		return container;
+		return tempContainer;
 	}
 
 	/* (non-Javadoc)

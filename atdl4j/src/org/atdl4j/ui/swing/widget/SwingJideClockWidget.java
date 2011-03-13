@@ -1,19 +1,18 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
-import java.awt.Component;
-import java.awt.Container;
-
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.converter.DateTimeConverter;
 import org.atdl4j.fixatdl.core.LocalMktDateT;
@@ -23,11 +22,10 @@ import org.atdl4j.fixatdl.core.UTCTimeOnlyT;
 import org.atdl4j.fixatdl.core.UTCTimestampT;
 import org.atdl4j.fixatdl.core.UseT;
 import org.atdl4j.fixatdl.layout.ClockT;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
 import org.atdl4j.ui.impl.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.jidesoft.spinner.DateSpinner;
 
@@ -50,7 +48,7 @@ import com.jidesoft.spinner.DateSpinner;
  * @author john.shields
  */
 public class SwingJideClockWidget
-//3/18/2010 Scott Atwell avoid compile error "type parameter org.joda.time.DateTime is not within its bound"		extends AbstractSWTWidget<DateTime>
+//3/18/2010 Scott Atwell avoid compile error "type parameter org.joda.time.DateTime is not within its bound"		extends AbstractSwingWidget<DateTime>
 	extends AbstractSwingWidget<Comparable<DateTime>>
 {
 
@@ -71,7 +69,7 @@ public class SwingJideClockWidget
 	private boolean showDay;
 	private boolean showTime;
 
-	public void createWidget(Container parent)
+	public void createWidget(JPanel parent)
 	{
 		// tooltip
 		String tooltip = control.getTooltip();		
@@ -134,7 +132,7 @@ public class SwingJideClockWidget
 		
 		// date clock
 		if (showMonthYear) {
-			dateClock = new DateSpinner(showDay ? "DD/MM/YYYY" : "MM/YYYY");
+			dateClock = new DateSpinner(showDay ? "dd.MM.yyyy" : "MM.yyyy");
 			if (tooltip != null) dateClock.setToolTipText(tooltip);
 			parent.add(dateClock);
 		}
@@ -208,7 +206,7 @@ public class SwingJideClockWidget
 		DateTime tempLocalTzDateTime = ((DateTime)value).withZone( DateTimeZone.getDefault() );
 		
 		if (showMonthYear) dateClock.setValue(tempLocalTzDateTime.toDate());
-		if (showTime) timeClock.setValue(tempLocalTzDateTime.toLocalTime());
+		if (showTime) timeClock.setValue(tempLocalTzDateTime.toDate());
 	}
 
 	private void applyEnabledSetting()

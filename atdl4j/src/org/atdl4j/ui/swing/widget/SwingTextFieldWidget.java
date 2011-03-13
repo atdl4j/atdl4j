@@ -1,8 +1,6 @@
 package org.atdl4j.ui.swing.widget;
 
-import java.awt.Container;
 import java.awt.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +10,6 @@ import javax.swing.JPanel;
 
 import org.atdl4j.ui.impl.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
-/*
-import org.atdl4j.fixatdl.core.IntT;
-import org.atdl4j.fixatdl.core.LengthT;
-import org.atdl4j.fixatdl.core.NumInGroupT;
-import org.atdl4j.fixatdl.core.NumberFormatVerifier;
-import org.atdl4j.fixatdl.core.NumericT;
-import org.atdl4j.fixatdl.core.ParameterT;
-import org.atdl4j.fixatdl.core.SeqNumT;
-import org.atdl4j.fixatdl.core.TagNumT;
-*/
 
 public class SwingTextFieldWidget
 		extends AbstractSwingWidget<String>
@@ -29,7 +17,7 @@ public class SwingTextFieldWidget
 	private JFormattedTextField textField;
 	private JLabel label;
 
-	public void createWidget(Container parent)
+	public void createWidget(JPanel parent)
 	{
 		// tooltip
 		String tooltip = control.getTooltip();

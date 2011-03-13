@@ -1,17 +1,16 @@
 package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-import org.atdl4j.ui.swing.SwingListener;
-import org.atdl4j.ui.swing.SwingWidget;
 import org.atdl4j.ui.impl.AbstractLabelWidget;
 import org.atdl4j.ui.impl.ControlHelper;
-import org.eclipse.swt.widgets.Listener;
+import org.atdl4j.ui.swing.SwingListener;
+import org.atdl4j.ui.swing.SwingWidget;
 
 public class SwingLabelWidget
 		extends AbstractLabelWidget
@@ -26,7 +25,7 @@ public class SwingLabelWidget
 	 * public LabelWidget(LabelT control) { super(control); }
 	 **/
 
-	public void createWidget(Container parent)
+	public void createWidget(JPanel parent)
 	{
 		// label
 		label = new JLabel();
@@ -50,7 +49,7 @@ public class SwingLabelWidget
 		parent.add(label);
 	}
 
-	public void generateStateRuleListener(Listener listener)
+	public void generateStateRuleListener(SwingListener listener)
 	{
 		// do nothing
 	}
