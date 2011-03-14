@@ -1,6 +1,7 @@
 package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,10 @@ public class SwingTextFieldWidget
 		if (tooltip != null) textField.setToolTipText(tooltip);
 
 		parent.add(textField);
+		
+		textField.setPreferredSize(new Dimension(80, textField.getPreferredSize().height));
+		textField.revalidate();
+
 	}
 
 

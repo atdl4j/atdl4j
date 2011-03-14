@@ -1,6 +1,7 @@
 package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -134,6 +135,9 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 					(tempOuterIncrement != null) ? tempOuterIncrement.negate() : DEFAULT_OUTER_INCREMENT.negate()));
 		}  
 
+		spinner.setPreferredSize(new Dimension(80, spinner.getPreferredSize().height));
+		spinner.revalidate();
+		
 		applyInitialValue();		
 	}
 

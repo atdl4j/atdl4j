@@ -69,7 +69,7 @@ public class SwingFixatdlFileSelectionPanel
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fc = new JFileChooser();
+				JFileChooser fc = new JFileChooser(filepathText.getText());
 				fc.addChoosableFileFilter(new FileFilter() {
 					@Override
 					public String getDescription() {
