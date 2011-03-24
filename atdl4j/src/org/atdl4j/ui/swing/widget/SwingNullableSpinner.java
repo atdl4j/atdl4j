@@ -188,7 +188,8 @@ public class SwingNullableSpinner extends JSpinner {
 		}
 		
 		public NumberEditorNull(JSpinner spinner, String decimalFormatPattern) {
-			this(spinner, new DecimalFormat(decimalFormatPattern));
+//			this(spinner, new DecimalFormat(decimalFormatPattern));
+			this(spinner, new DecimalFormat("0.######"));
 		}
 		
 		private NumberEditorNull(JSpinner spinner, DecimalFormat format) {
