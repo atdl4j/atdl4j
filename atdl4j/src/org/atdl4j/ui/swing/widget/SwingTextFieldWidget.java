@@ -2,6 +2,9 @@ package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,38 +20,22 @@ public class SwingTextFieldWidget
 {
 	private JFormattedTextField textField;
 	private JLabel label;
+	private JPanel wrapper;
 
 	public void createWidget(JPanel parent)
 	{
 		// tooltip
 		String tooltip = control.getTooltip();
-							
+		
 		// label		
 		if ( control.getLabel() != null ) {
 			label = new JLabel();
 			label.setText(control.getLabel());
 			if ( tooltip != null ) label.setToolTipText( tooltip );
-			parent.add(label);
 		}
 				
 		// textField
 		textField = new JFormattedTextField();
-		
-		/*
-		// type validation
-		if (parameter instanceof IntT ||
-			parameter instanceof TagNumT ||
-			parameter instanceof LengthT ||	
-			parameter instanceof SeqNumT ||
-			parameter instanceof NumInGroupT) {
-			// Integer types
-			textField.setInputVerifier(new NumberFormatVerifier(new DecimalFormat("#"), false));
-		} else if (parameter instanceof NumericT) {
-			// Decimal types
-			textField.setInputVerifier(new NumberFormatVerifier(new DecimalFormat("0.0"), false));
-		}
-		// TODO: add regex verifier for MultipleCharValueT and MultipleStringValueT
-		*/
 		
 		// init value
 		if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
@@ -57,14 +44,40 @@ public class SwingTextFieldWidget
 		// tooltip
 		if (tooltip != null) textField.setToolTipText(tooltip);
 
-		parent.add(textField);
-		
-		textField.setPreferredSize(new Dimension(80, textField.getPreferredSize().height));
-		textField.revalidate();
+		if (label != null){
+			wrapper = new JPanel(new GridBagLayout());
+			GridBagConstraints c = new GridBagConstraints();
+			c.fill = GridBagConstraints.HORIZONTAL;
+	    c.gridx = 0;
+	    c.gridy = 0;   
+	    c.gridwidth = 1;
+	    c.weightx = 1.0;
+	    c.weighty = 1.0;
+	    c.insets = new Insets(0, 0, 0, 0);
+	    wrapper.add( label, c);
+			c.gridx = 1;
+	    c.gridy = 0;
+	    c.insets = new Insets(0, 0, 0, 0);
+	    wrapper.add( textField, c);
+			parent.add(wrapper);
+		}
+		else {
+			parent.add(textField);
+		}
 
+		textField.setPreferredSize(new Dimension(100, textField.getPreferredSize().height));
+		textField.revalidate();
 	}
 
 
+	
+	public void setVisible(boolean visible){
+		if (wrapper != null)
+			wrapper.setVisible(visible);
+		else 
+			super.setVisible(visible);
+	}
+	
 	public String getControlValueRaw()
 	{
 		String value = textField.getText();

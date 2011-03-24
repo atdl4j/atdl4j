@@ -69,7 +69,6 @@ public class SwingStateListener implements SwingListener {
 		// set visible
 		if ( stateRule.isVisible() != null )
 		{
-		//TODO: investigate NullPointerException
 			try {
 				affectedWidget.setVisible( !( stateRule.isVisible() ^ state ) );
 			}
