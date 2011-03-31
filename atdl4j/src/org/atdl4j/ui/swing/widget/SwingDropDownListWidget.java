@@ -150,28 +150,34 @@ public class SwingDropDownListWidget
 		this.setValue( value, false );
 	}
 
-	public void setValue(String value, boolean setValueAsControl)
-	{
-		for (int i = 0; i < getListItems().size(); i++)
-		{
-			if (setValueAsControl || parameter == null)
-			{
-				if (getListItems().get(i).getEnumID().equals(value))
-				{
-					dropDownList.setSelectedIndex(i);
-					break;
-				}
-			} else {
-				if (getListItems().get(i).getUiRep().equals(value))
-				{
-					dropDownList.setSelectedIndex(i);
-					break;
-				}
-				
-			}
-		}
-		// TODO: needs to handle case of editable dropdown list;
-	}
+    public void setValue(String value, boolean setValueAsControl)
+    {
+            for (int i = 0; i < getListItems().size(); i++)
+            {
+                    if (setValueAsControl || parameter == null)
+                    {
+                            if (getListItems().get(i).getEnumID().equals(value))
+                            {
+                                    dropDownList.setSelectedIndex(i);
+                                    break;
+                            }
+                    } else {
+                            if (parameter.getEnumPair().get( i ).getWireValue().equals( value ))
+                            {
+                                    String enumID = parameter.getEnumPair().get( i ).getEnumID();
+                                    for (int a = 0; a < getListItems().size(); a++) {
+                                            if (getListItems().get(a).getEnumID().equals(enumID)){
+                                                    dropDownList.setSelectedIndex(a);
+                                                    break;
+                                            }
+                                    }
+                                    break;
+                            }
+                    }
+            }
+
+    }
+
 	
 	public List<Component> getComponents() {
 		List<Component> widgets = new ArrayList<Component>();
