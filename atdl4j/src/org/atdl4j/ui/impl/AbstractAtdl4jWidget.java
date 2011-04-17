@@ -7,11 +7,11 @@ import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.ControlTypeConverter;
-import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.data.ParameterTypeConverter;
 import org.atdl4j.data.TypeConverterFactoryConfig;
-import org.atdl4j.data.fix.PlainFIXMessageBuilder;
+import org.atdl4j.data.fix.FIXMessageBuilder;
+import org.atdl4j.data.fix.StringFIXMessageBuilder;
 import org.atdl4j.data.fix.Tag959Helper;
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.core.ParameterT;
@@ -253,7 +253,7 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 
 	public String getFIXValue()
 	{
-		PlainFIXMessageBuilder builder = new PlainFIXMessageBuilder();
+		StringFIXMessageBuilder builder = new StringFIXMessageBuilder();
 		builder.onStart();
 		getFIXValue( builder );
 		builder.onEnd();

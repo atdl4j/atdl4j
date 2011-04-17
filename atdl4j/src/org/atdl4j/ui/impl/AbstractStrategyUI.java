@@ -11,14 +11,14 @@ import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.Atdl4jConstants;
-import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.data.ParameterTypeConverter;
 import org.atdl4j.data.StrategyRuleset;
 import org.atdl4j.data.TypeConverterFactoryConfig;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
-import org.atdl4j.data.fix.PlainFIXMessageBuilder;
+import org.atdl4j.data.fix.FIXMessageBuilder;
+import org.atdl4j.data.fix.StringFIXMessageBuilder;
 import org.atdl4j.data.validation.LengthValidationRule;
 import org.atdl4j.data.validation.LogicalOperatorValidationRule;
 import org.atdl4j.data.validation.PatternValidationRule;
@@ -563,7 +563,7 @@ public abstract class AbstractStrategyUI
 
 	public String getFIXMessage()
 	{
-		PlainFIXMessageBuilder builder = new PlainFIXMessageBuilder();
+		StringFIXMessageBuilder builder = new StringFIXMessageBuilder();
 		getFIXMessage( builder );
 		return builder.getMessage();
 	}

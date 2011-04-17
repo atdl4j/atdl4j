@@ -5,10 +5,9 @@ package org.atdl4j.data.fix;
  import java.util.Map;*/
 
 import org.atdl4j.data.Atdl4jConstants;
-import org.atdl4j.data.FIXMessageBuilder;
 
 // TODO: Change to handle generic repeating groups
-public class PlainFIXMessageBuilder
+public class StringFIXMessageBuilder
 		implements FIXMessageBuilder
 {
 

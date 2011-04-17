@@ -2,7 +2,7 @@
 package org.atdl4j.ui;
 
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.FIXMessageBuilder;
+import org.atdl4j.data.fix.FIXMessageBuilder;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;

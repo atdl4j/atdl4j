@@ -3,10 +3,10 @@ package org.atdl4j.ui;
 import java.util.Map;
 
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.FIXMessageBuilder;
 import org.atdl4j.data.StrategyRuleset;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
+import org.atdl4j.data.fix.FIXMessageBuilder;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
