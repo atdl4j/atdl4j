@@ -29,6 +29,7 @@ public class SwingLabelWidget
 	{
 		// label
 		label = new JLabel();
+		label.setName(getName()+"/label");
 
 		if ( control.getLabel() != null )
 		{

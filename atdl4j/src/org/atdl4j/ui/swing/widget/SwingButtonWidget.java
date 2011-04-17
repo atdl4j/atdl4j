@@ -29,10 +29,11 @@ public class SwingButtonWidget
 		
 		// button
 		if (control instanceof RadioButtonT) {
-			button = new JRadioButton();			
+			button = new JRadioButton();
 		} else {
 			button = new JCheckBox();
 		}
+		button.setName(getName()+"/button");
 		
 		// set label and tooltips
 		if ( control.getLabel() != null ) button.setText( control.getLabel() );

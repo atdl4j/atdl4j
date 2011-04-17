@@ -25,12 +25,14 @@ public class SwingSliderWidget
 	{		
 		// label
 		label = new JLabel();
+		label.setName(getName()+"/label");
 		if (control.getLabel() != null) label.setText(control.getLabel());
 		
 		int numColumns = ((SliderT)control).getListItem().size();
 
 		// slider
 		slider = new JSlider(JSlider.HORIZONTAL, 0, numColumns - 1, 0);
+		slider.setName(getName()+"/slider");
 
 		// add major tick marks
 		slider.setMajorTickSpacing(1);
@@ -44,6 +46,7 @@ public class SwingSliderWidget
 			for ( ListItemT li : ( (SliderT) control ).getListItem() )
 			{
 				JLabel label = new JLabel();
+				label.setName(getName()+"/slider/"+li.getEnumID()+"/label");
 				if (li.getUiRep() != null && !li.getUiRep().equals(""))
 				{
 					label.setText( li.getUiRep() );

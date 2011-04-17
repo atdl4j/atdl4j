@@ -30,12 +30,14 @@ public class SwingTextFieldWidget
 		// label		
 		if ( control.getLabel() != null ) {
 			label = new JLabel();
+			label.setName(getName()+"/label");
 			label.setText(control.getLabel());
 			if ( tooltip != null ) label.setToolTipText( tooltip );
 		}
 				
 		// textField
 		textField = new JFormattedTextField();
+		textField.setName(getName()+"/text");
 		
 		// init value
 		if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )

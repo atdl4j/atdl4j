@@ -72,6 +72,7 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 		// label
 		if (control.getLabel() != null) {
 			label = new JLabel();
+			label.setName(getName()+"/label");
 			label.setText(control.getLabel());
 			if (tooltip != null) label.setToolTipText(tooltip);
 		}
@@ -82,6 +83,7 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 		{
 			// spinner
 			spinner = new SwingNullableSpinner();			
+			spinner.setName(getName()+"/spinner");
 			
 			// tooltip
 			if (tooltip != null) spinner.setToolTipText(tooltip);

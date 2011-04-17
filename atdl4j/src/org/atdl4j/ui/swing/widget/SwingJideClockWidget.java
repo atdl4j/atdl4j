@@ -108,6 +108,7 @@ public class SwingJideClockWidget
 		{
 			hasLabelOrCheckbox = true;
 			enabledButton = new JCheckBox();
+			enabledButton.setName(getName()+"/enablebutton");
 			if (control.getLabel() != null) {
 				enabledButton.setText(control.getLabel());
 			}
@@ -125,6 +126,7 @@ public class SwingJideClockWidget
 			// add label
 			hasLabelOrCheckbox = true;
 			label = new JLabel();
+			label.setName(getName()+"/label");
 			label.setText(control.getLabel());
 			if (tooltip != null) label.setToolTipText(tooltip);
 			parent.add(label);
@@ -133,12 +135,14 @@ public class SwingJideClockWidget
 		// date clock
 		if (showMonthYear) {
 			dateClock = new DateSpinner(showDay ? "dd.MM.yyyy" : "MM.yyyy");
+			dateClock.setName(getName()+"/dateclock");
 			if (tooltip != null) dateClock.setToolTipText(tooltip);
 			parent.add(dateClock);
 		}
 		// time clock
 		if (showTime) {
 			timeClock = new DateSpinner(show24HourClock ? "HH:mm:ss" : "hh:mm:ss");
+			timeClock.setName(getName()+"/timeclock");
 			if (tooltip != null) timeClock.setToolTipText(tooltip);
 			parent.add(timeClock);
 		}

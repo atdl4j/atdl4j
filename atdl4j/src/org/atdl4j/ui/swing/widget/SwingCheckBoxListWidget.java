@@ -42,6 +42,7 @@ public class SwingCheckBoxListWidget
 		if (control.getLabel() != null)
 		{
 			label = new JLabel();
+			label.setName(getName()+"/label");
 			label.setText(control.getLabel());
 			if (tooltip != null) label.setToolTipText(tooltip);
 			wrapper.add(label);
@@ -60,7 +61,10 @@ public class SwingCheckBoxListWidget
 		// checkBoxes
 		List<ListItemT> listItems = ((CheckBoxListT)control).getListItem();
 		for (ListItemT listItem : listItems) {
+		
 			JCheckBox checkBox = new JCheckBox();
+			checkBox.setName(getName()+"/button/"+listItem.getEnumID());
+			
 			if (listItem.getUiRep() != null) checkBox.setText(listItem.getUiRep());
 			
 			if (parameter != null) {

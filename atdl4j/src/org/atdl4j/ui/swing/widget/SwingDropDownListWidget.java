@@ -33,12 +33,14 @@ public class SwingDropDownListWidget
 		// label
 		if ( control.getLabel() != null ) {
 			label = new JLabel();
+			label.setName(getName()+"/label");
 			label.setText( control.getLabel());
 			if ( tooltip != null ) label.setToolTipText( tooltip );
 		}
 		
 		// dropDownList
 		dropDownList = new JComboBox();
+		dropDownList.setName(getName()+"/dropdownlist");
 		
 		// set editable
 		dropDownList.setEditable(control instanceof EditableDropDownListT);

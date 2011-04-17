@@ -31,6 +31,7 @@ public class SwingListBoxWidget
 		// label
 		if ( control.getLabel() != null ) {
 			label = new JLabel();
+			label.setName(getName()+"/label");			
 			label.setText( control.getLabel() );
 			if ( tooltip != null ) label.setToolTipText( tooltip );
 			parent.add(label);
@@ -43,6 +44,7 @@ public class SwingListBoxWidget
 		} else if (control instanceof SingleSelectListT) {
 			listBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		}
+		listBox.setName(getName()+"/listbox");
 		
 		// listBox items
 		java.util.List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem()

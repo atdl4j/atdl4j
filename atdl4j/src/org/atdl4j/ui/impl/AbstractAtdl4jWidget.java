@@ -77,6 +77,12 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 		// -- This method can be overridden/implemented --
 		initPostCheck();
 	}
+	
+	// gets the control name
+	public String getName()
+	{
+	    return control.getID();
+	}
 
 	// -- Can be overridden --
 	protected void initPreCheck()

@@ -33,6 +33,7 @@ public class SwingRadioButtonListWidget
 		// label
 		if ( control.getLabel() != null ) {
 			label = new JLabel();
+			label.setName(getName()+"/label");
 			label.setText( control.getLabel() );
 			if ( tooltip != null ) label.setToolTipText( tooltip );
 			parent.add(label);
@@ -55,6 +56,7 @@ public class SwingRadioButtonListWidget
 		for ( ListItemT listItem : ( (RadioButtonListT) control ).getListItem() )
 		{
 			JRadioButton radioElement = new JRadioButton();
+			radioElement.setName(getName()+"/button/"+listItem.getEnumID());
 			radioElement.setText( listItem.getUiRep() );
 			if ( parameter != null )
 			{
