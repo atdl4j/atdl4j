@@ -1,5 +1,8 @@
 package org.atdl4j.ui.app;
 
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
+import org.atdl4j.data.exception.FIXatdlFormatException;
+
 /**
  * Represents FixatdlFileSelectionPanel events.
  * 
@@ -8,5 +11,5 @@ package org.atdl4j.ui.app;
  */
 public interface FixatdlFileSelectionPanelListener
 {
-	public void fixatdlFileSelected(String aFilename);
+	public void fixatdlFileSelected(String aFilename) throws Atdl4jClassLoadException, FIXatdlFormatException;
 }

@@ -1,6 +1,7 @@
 package org.atdl4j.ui.app;
 
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 
 
 /**
@@ -11,13 +12,13 @@ import org.atdl4j.config.Atdl4jOptions;
  */
 public interface Atdl4jTesterPanel
 {
-	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions);
+	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException;
 
 	public Atdl4jOptions getAtdl4jOptions();
 
 	public void closePanel();
 	
-	public Atdl4jCompositePanel getAtdl4jCompositePanel();
+	public Atdl4jCompositePanel getAtdl4jCompositePanel() throws Atdl4jClassLoadException;
 	
 	public void setVisibleFileSelectionSection( boolean aVisible );
 	
@@ -31,5 +32,5 @@ public interface Atdl4jTesterPanel
 
 	public void setVisibleOkCancelButtonSection( boolean aVisible );	
 	
-	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler();
+	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler() throws Atdl4jClassLoadException;
 }

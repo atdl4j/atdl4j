@@ -1,6 +1,7 @@
 package org.atdl4j.ui.app;
 
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 
 /**
  * Represents the tester's "Load Message" button and text field GUI component. 
@@ -12,7 +13,7 @@ public interface FixMsgLoadPanel
 {
 	public Object buildFixMsgLoadPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions);
 	
-	public void setFixMsg(String aFixMsg);
+	public void setFixMsg(String aFixMsg) throws Atdl4jClassLoadException;
 
 	public Atdl4jOptions getAtdl4jOptions();
 	

@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.data.ValidationRule;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
+import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.validation.ValidationRuleFactory;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
@@ -69,7 +71,7 @@ public void removeAllStrategyPanels()
 		control.dispose();
 }
 
-public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilteredStrategyList)
+public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilteredStrategyList) throws FIXatdlFormatException
 {
 	// -- Check to see if StrategiesT has changed (eg new file loaded) --
 	if ( ( getStrategies() == null ) || ( ! getStrategies().equals( aStrategies ) ) )
@@ -116,7 +118,7 @@ public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilte
 }  
 
 
-public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
+public void adjustLayoutForSelectedStrategy( StrategyT aStrategy ) throws Atdl4jClassLoadException
 {
 	if ( strategiesPanel != null )
 	{
@@ -155,7 +157,7 @@ public void setVisible(boolean aVisible)
 
 
 // 12/15/2010 Scott Atwell public StrategyUI getStrategyUI( StrategyT aStrategy )
-public StrategyUI getStrategyUI( StrategyT aStrategy, boolean aReinitPanelFlag )
+public StrategyUI getStrategyUI( StrategyT aStrategy, boolean aReinitPanelFlag ) throws Atdl4jClassLoadException
 {
 	if ( aStrategy.equals( getCurrentlyDisplayedStrategy() ) )
 	{

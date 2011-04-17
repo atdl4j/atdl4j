@@ -1,6 +1,5 @@
 package org.atdl4j.ui.app;
 
-
 /**
  * Listener for Atdl4jTesterPanelListener
  * 

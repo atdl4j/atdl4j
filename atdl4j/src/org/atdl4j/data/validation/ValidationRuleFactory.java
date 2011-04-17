@@ -3,6 +3,7 @@ package org.atdl4j.data.validation;
 import java.util.Map;
 
 import org.atdl4j.data.ValidationRule;
+import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.fixatdl.validation.EditRefT;
 import org.atdl4j.fixatdl.validation.EditT;
 import org.atdl4j.fixatdl.validation.LogicOperatorT;
@@ -11,7 +12,7 @@ import org.atdl4j.fixatdl.validation.OperatorT;
 public abstract class ValidationRuleFactory
 {
 	// TODO: refactor so outer method adds to refRules, not inner
-	public static ValidationRule createRule(EditT edit, Map<String, ValidationRule> refRules, Object parent)
+	public static ValidationRule createRule(EditT edit, Map<String, ValidationRule> refRules, Object parent) throws FIXatdlFormatException
 	{
 		if ( edit.getLogicOperator() != null )
 		{
@@ -82,23 +83,22 @@ public abstract class ValidationRuleFactory
 					}
 					else
 					{
-						throw new IllegalStateException( "Operator must be EX or NX when there is no \"value\" of \"field2\" attribute" );
+						throw new FIXatdlFormatException( "Operator must be EX or NX when there is no \"value\" of \"field2\" attribute" );
 					}
 				}
 			}
 			else
 			{
-				throw new IllegalStateException( "No field set for edit  \"" + edit.getId() + "\"" );
+				throw new FIXatdlFormatException( "No field set for edit  \"" + edit.getId() + "\"" );
 			}
 		}
 		else
 		{
-			throw new IllegalStateException( "No logic operator or operator set for edit \"" + edit.getId() + "\"" );
+			throw new FIXatdlFormatException( "No logic operator or operator set for edit \"" + edit.getId() + "\"" );
 		}
 	}
 
-	public static ValidationRule createRule(EditRefT editRef) 
-		throws IllegalStateException
+	public static ValidationRule createRule(EditRefT editRef) throws FIXatdlFormatException
 	{
 		if ( editRef.getId() != null )
 		{
@@ -107,7 +107,7 @@ public abstract class ValidationRuleFactory
 		}
 		else
 		{
-			throw new IllegalStateException( "EditRef without an id" );
+			throw new FIXatdlFormatException( "EditRef without an id" );
 		}
 	}
 

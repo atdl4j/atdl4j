@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.ValidationRule;
+import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.data.validation.ValidationRuleFactory;
 import org.atdl4j.data.validation.ValueOperatorValidationRule;
@@ -26,7 +27,7 @@ public class SWTStateListener
 	private ValidationRule rule;
 	private boolean cxlReplaceMode = false;
 
-	public SWTStateListener(SWTWidget<?> affectedWidget, StateRuleT stateRule, Map<String, SWTWidget<?>> controls, Map<String, ValidationRule> refRules)
+	public SWTStateListener(SWTWidget<?> affectedWidget, StateRuleT stateRule, Map<String, SWTWidget<?>> controls, Map<String, ValidationRule> refRules) throws FIXatdlFormatException
 	{
 		this.affectedWidget = affectedWidget;
 		this.stateRule = stateRule;

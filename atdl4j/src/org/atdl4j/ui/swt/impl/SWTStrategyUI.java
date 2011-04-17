@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.data.ValidationRule;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
+import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.validation.Field2OperatorValidationRule;
 import org.atdl4j.data.validation.LogicalOperatorValidationRule;
 import org.atdl4j.data.validation.ValueOperatorValidationRule;
@@ -73,7 +75,7 @@ public class SWTStrategyUI
 		setWidgetStateListenerMap( new HashMap<SWTWidget<?>, Set<SWTStateListener>>() );
 	}
 
-	protected void buildAtdl4jWidgetMap()
+	protected void buildAtdl4jWidgetMap() throws Atdl4jClassLoadException
 	{
 		if ( getStrategy() == null )
 		{
@@ -234,8 +236,9 @@ public class SWTStrategyUI
 	/**
 	 * @param aStrategyPanelList
 	 * @return
+	 * @throws Atdl4jClassLoadException 
 	 */
-	protected void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList )
+	protected void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList ) throws Atdl4jClassLoadException
 	{
 		Map<String, SWTWidget<?>> tempSWTWidgetMap = new HashMap<String, SWTWidget<?>>();
 		
@@ -315,12 +318,12 @@ public class SWTStrategyUI
 		this.radioGroupMap = aRadioGroupMap;
 	}
 
-	protected void addToAtdl4jWidgetMap( String aName, Atdl4jWidget aAtdl4jWidget )
+	protected void addToAtdl4jWidgetMap( String aName, Atdl4jWidget<?> aAtdl4jWidget )
 	{
 		getSWTWidgetMap().put( aName, (SWTWidget<?>) aAtdl4jWidget );
 	}
 
-	protected void addToAtdl4jWidgetWithParameterMap( String aName, Atdl4jWidget aAtdl4jWidget )
+	protected void addToAtdl4jWidgetWithParameterMap( String aName, Atdl4jWidget<?> aAtdl4jWidget )
 	{
 		getSWTWidgetWithParameterMap().put( aName, (SWTWidget<?>) aAtdl4jWidget );
 	}
@@ -362,8 +365,9 @@ public class SWTStrategyUI
 	}
 
 	/**
+	 * @throws FIXatdlFormatException 
 	 */
-	protected void attachGlobalStateRulesToControls()
+	protected void attachGlobalStateRulesToControls() throws FIXatdlFormatException
 	{
 		List<SWTStateListener> tempStateListenerList = new Vector<SWTStateListener>();
 		
@@ -483,7 +487,7 @@ public class SWTStrategyUI
 			stateListener.handleEvent( null );
 	}
 
-	protected void fireStateListenersForAtdl4jWidget( Atdl4jWidget aAtdl4jWidget )
+	protected void fireStateListenersForAtdl4jWidget( Atdl4jWidget<?> aAtdl4jWidget )
 	{
 		for ( SWTStateListener stateListener : getStateListenerList() )
 		{
@@ -498,7 +502,7 @@ public class SWTStrategyUI
 	 * Invokes SWTStateListener.handleLoadFixMessageEvent() for aAtdl4jWidget
 	 * @param aAtdl4jWidget
 	 */
-	protected void fireLoadFixMessageStateListenersForAtdl4jWidget( Atdl4jWidget aAtdl4jWidget )
+	protected void fireLoadFixMessageStateListenersForAtdl4jWidget( Atdl4jWidget<?> aAtdl4jWidget )
 	{
 		for ( SWTStateListener stateListener : getStateListenerList() )
 		{

@@ -2,6 +2,7 @@ package org.atdl4j.data;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 
 
 /**
@@ -17,25 +18,14 @@ public class TypeConverterFactoryConfig
 	
 	/**
 	 * @return
+	 * @throws Atdl4jClassLoadException 
 	 */
-	public static TypeConverterFactory getTypeConverterFactory() 
+	public static TypeConverterFactory getTypeConverterFactory() throws Atdl4jClassLoadException 
 	{
-		if ( ( typeConverterFactory == null ) && ( Atdl4jConfig.getConfig().getClassNameTypeConverterFactory() != null ) )
+		if ( typeConverterFactory == null )
 		{
-			String tempClassName = Atdl4jConfig.getConfig().getClassNameTypeConverterFactory();
-			logger.debug( "getTypeConverterFactory() loading class named: " + tempClassName );
-			TypeConverterFactory typeConverterFactory;
-			try
-			{
-				typeConverterFactory = ((Class<TypeConverterFactory>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
+		    typeConverterFactory = Atdl4jConfig.getConfig().createTypeConverterFactory();
 		}
-		
 		return typeConverterFactory;
 	}	
 }

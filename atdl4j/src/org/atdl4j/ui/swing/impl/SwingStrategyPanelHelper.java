@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
 
+import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.fixatdl.layout.BorderT;
 import org.atdl4j.fixatdl.layout.PanelOrientationT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
@@ -67,7 +68,7 @@ public class SwingStrategyPanelHelper
 		return c;
 	}
 
-	public static void createStrategyPanelSpringLayout(StrategyPanelT _panelT, JPanel _panel) {
+	public static void createStrategyPanelSpringLayout(StrategyPanelT _panelT, JPanel _panel) throws FIXatdlFormatException {
 		
 		PanelOrientationT orientation = _panelT.getOrientation();
 		if ( orientation == PanelOrientationT.HORIZONTAL )
@@ -86,7 +87,7 @@ public class SwingStrategyPanelHelper
 		}
 		else
 		{
-			throw new IllegalStateException( "ERROR StrategyPanel (" + _panelT.getTitle() + ") is missing orientation attribute." );
+			throw new FIXatdlFormatException( "StrategyPanel (" + _panelT.getTitle() + ") is missing orientation attribute." );
 		}
 	}
 

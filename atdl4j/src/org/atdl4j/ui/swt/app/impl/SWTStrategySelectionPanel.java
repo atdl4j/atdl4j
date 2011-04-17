@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.app.impl.AbstractStrategySelectionPanel;
 import org.eclipse.swt.SWT;
@@ -147,7 +148,7 @@ public class SWTStrategySelectionPanel
 	}
 
 	
-	public void selectDropDownStrategyByStrategyName(String aStrategyName) 
+	public void selectDropDownStrategyByStrategyName(String aStrategyName) throws Atdl4jClassLoadException 
 	{
 		logger.debug( "selectDropDownStrategyByStrategyName() aStrategyName: " + aStrategyName );
 		
@@ -168,7 +169,7 @@ public class SWTStrategySelectionPanel
 		}
 	}
 
-	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ) 
+	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ) throws Atdl4jClassLoadException 
 	{
 		logger.debug( "selectDropDownStrategyByStrategyWireValue() aStrategyWireValue: " + aStrategyWireValue );
 		
@@ -189,7 +190,7 @@ public class SWTStrategySelectionPanel
 		}
 	}
 	
-	public void selectFirstDropDownStrategy()
+	public void selectFirstDropDownStrategy() throws Atdl4jClassLoadException
 	{
 		if ( ( strategiesDropDown != null ) && 
 			  ( strategiesDropDown.getItemCount() > 0 ) )

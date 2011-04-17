@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.data.ValidationRule;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
+import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.validation.Field2OperatorValidationRule;
 import org.atdl4j.data.validation.LogicalOperatorValidationRule;
 import org.atdl4j.data.validation.ValueOperatorValidationRule;
@@ -62,7 +64,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#buildAtdl4jWidgetMap(java.util.List)
 	 */
 	@Override
-	protected void buildAtdl4jWidgetMap(List<StrategyPanelT> aStrategyPanelList) {
+	protected void buildAtdl4jWidgetMap(List<StrategyPanelT> aStrategyPanelList) throws FIXatdlFormatException, Atdl4jClassLoadException {
 		Map<String, SwingWidget<?>> tempSwingWidgetMap = new HashMap<String, SwingWidget<?>>();
 		// build panels and widgets recursively
 		for (StrategyPanelT panel : aStrategyPanelList) {
@@ -122,19 +124,17 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#buildAtdl4jWidgetMap()
 	 */
 	@Override
-	protected void buildAtdl4jWidgetMap() {
+	protected void buildAtdl4jWidgetMap() throws FIXatdlFormatException, Atdl4jClassLoadException {
 		if (getStrategy() == null) {
-			throw new IllegalStateException("Unexpected error: getStrategy() was null.");
+			throw new FIXatdlFormatException("getStrategy() was null.");
 		}
 		
 		if (getStrategy().getStrategyLayout() == null) {
-			throw new IllegalStateException(
-					"Unexpected error: getStrategy().getStrategyLayout() was null .  (verify  <lay:StrategyLayout>)");
+			throw new FIXatdlFormatException("getStrategy().getStrategyLayout() was null (verify <lay:StrategyLayout>)");
 		}
 		
 		if (getStrategy().getStrategyLayout() == null) {
-			throw new IllegalStateException(
-					"Unexpected error: getStrategy().getStrategyLayout().getStrategyPanel() was null .  (verify  <lay:StrategyLayout> <lay:StrategyPanel>)");
+			throw new FIXatdlFormatException("getStrategy().getStrategyLayout().getStrategyPanel() was null (verify <lay:StrategyLayout> <lay:StrategyPanel>)");
 		}
 		
 		buildAtdl4jWidgetMap(getStrategy().getStrategyLayout().getStrategyPanel());
@@ -200,7 +200,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#attachGlobalStateRulesToControls()
 	 */
 	@Override
-	protected void attachGlobalStateRulesToControls() {
+	protected void attachGlobalStateRulesToControls() throws FIXatdlFormatException {
 		List<SwingStateListener> tempStateListenerList = new Vector<SwingStateListener>();
 		
 		// loop through all UI controls
@@ -319,8 +319,8 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#addToAtdl4jWidgetMap(java.lang.String, org.atdl4j.ui.Atdl4jWidget)
 	 */
 	@Override
-	protected void addToAtdl4jWidgetMap(String aName, Atdl4jWidget aAtdl4jWidget) {
-		swingWidgetMap.put(aName, (SwingWidget)aAtdl4jWidget);
+	protected void addToAtdl4jWidgetMap(String aName, Atdl4jWidget<?> aAtdl4jWidget) {
+		swingWidgetMap.put(aName, (SwingWidget<?>)aAtdl4jWidget);
 	}
 	
 	/*
@@ -330,8 +330,8 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * org.atdl4j.ui.Atdl4jWidget)
 	 */
 	@Override
-	protected void addToAtdl4jWidgetWithParameterMap(String aName, Atdl4jWidget aAtdl4jWidget) {
-		swingWidgetWithParameterMap.put(aName, (SwingWidget)aAtdl4jWidget);
+	protected void addToAtdl4jWidgetWithParameterMap(String aName, Atdl4jWidget<?> aAtdl4jWidget) {
+		swingWidgetWithParameterMap.put(aName, (SwingWidget<?>)aAtdl4jWidget);
 	}
 	
 	/*
@@ -396,7 +396,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#fireStateListenersForAtdl4jWidget(org.atdl4j.ui.Atdl4jWidget)
 	 */
 	@Override
-	protected void fireStateListenersForAtdl4jWidget(Atdl4jWidget aAtdl4jWidget) {
+	protected void fireStateListenersForAtdl4jWidget(Atdl4jWidget<?> aAtdl4jWidget) {
 		for ( SwingStateListener stateListener : stateListenerList )
 		{
 			if ( aAtdl4jWidget.equals( stateListener.getAffectedWidget() ) )
@@ -413,7 +413,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * org.atdl4j.ui.impl.AbstractStrategyUI#fireLoadFixMessageStateListenersForAtdl4jWidget(org.atdl4j.ui.Atdl4jWidget)
 	 */
 	@Override
-	protected void fireLoadFixMessageStateListenersForAtdl4jWidget(Atdl4jWidget aAtdl4jWidget) {
+	protected void fireLoadFixMessageStateListenersForAtdl4jWidget(Atdl4jWidget<?> aAtdl4jWidget) {
 		for ( SwingStateListener stateListener : stateListenerList )
 		{
 			if ( aAtdl4jWidget.equals( stateListener.getAffectedWidget() ) )

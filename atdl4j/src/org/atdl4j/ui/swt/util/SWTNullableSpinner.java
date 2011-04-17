@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.ui.swt.impl.SWTStrategyPanelHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.events.SelectionListener;

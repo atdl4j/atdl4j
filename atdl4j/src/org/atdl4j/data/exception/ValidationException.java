@@ -2,7 +2,12 @@ package org.atdl4j.data.exception;
 
 import org.atdl4j.ui.Atdl4jWidget;
 
-public class ValidationException extends RuntimeException {
+/** 
+ * ValidationException is thrown whenever a control validation
+ * fails during a user-initiated validation event (e.g. when 
+ * outputting a FIX message from the screen.)
+ */
+public class ValidationException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 

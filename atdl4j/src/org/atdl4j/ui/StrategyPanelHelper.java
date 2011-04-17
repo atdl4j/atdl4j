@@ -1,7 +1,5 @@
 package org.atdl4j.ui;
 
-import org.atdl4j.fixatdl.layout.StrategyPanelT;
-
 /**
  * Creation date: (Aug 22, 2010 8:51:45 AM)
  * @author Scott Atwell

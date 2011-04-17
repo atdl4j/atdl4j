@@ -2,6 +2,22 @@ package org.atdl4j.config;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.atdl4j.data.TypeConverterFactory;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
+import org.atdl4j.ui.Atdl4jWidget;
+import org.atdl4j.ui.Atdl4jWidgetFactory;
+import org.atdl4j.ui.StrategiesUI;
+import org.atdl4j.ui.StrategyPanelHelper;
+import org.atdl4j.ui.StrategyUI;
+import org.atdl4j.ui.app.Atdl4jCompositePanel;
+import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel;
+import org.atdl4j.ui.app.Atdl4jInputAndFilterDataSelectionPanel;
+import org.atdl4j.ui.app.Atdl4jTesterPanel;
+import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
+import org.atdl4j.ui.app.FixMsgLoadPanel;
+import org.atdl4j.ui.app.FixatdlFileSelectionPanel;
+import org.atdl4j.ui.app.StrategyDescriptionPanel;
+import org.atdl4j.ui.app.StrategySelectionPanel;
 
 /**
  * Typical setup (for class named XXX):
@@ -14,8 +30,8 @@ import org.apache.log4j.Logger;
  * 	NOTE:  add public XXX getXXX() to Atdl4jOptions
  * 	NOTE:  implement protected String getDefaultClassNameXXX(); within derived classes
  * 
- * Note that Class.forName()'s InstantiationException, IllegalAccessException, ClassNotFoundException will be caught and 
- * handled as a run-time error (IllegalStateException)
+ * Note that Class.forName()'s InstantiationException, IllegalAccessException, ClassNotFoundException are
+ * rethrown as an Atdl4jClassLoadException
  * 
  * This class contains the data associated with the <code>AbstractAtdl4jConfiguration</code>.
  * 
@@ -74,6 +90,7 @@ public abstract class AbstractAtdl4jConfiguration
 	private boolean catchAllRuntimeExceptions  = false;
 	private boolean catchAllStrategyLoadExceptions  = false;
 	private boolean catchAllValidationExceptions  = false;
+	private boolean throwEventRuntimeExceptions = true;
 	
 	private boolean showStrategyDescription = true;
 	private boolean showTimezoneSelector = false;
@@ -703,6 +720,13 @@ public abstract class AbstractAtdl4jConfiguration
 	}
 
 	/**
+	 * @return the throwEventRuntimeExceptions
+	 */
+	public boolean isThrowEventRuntimeExceptions() {
+	    return throwEventRuntimeExceptions;
+	}
+	
+	/**
 	 * @param aCatchAllMainlineExceptions the catchAllMainlineExceptions to set
 	 */
 	public void setCatchAllMainlineExceptions(boolean aCatchAllMainlineExceptions)
@@ -734,6 +758,14 @@ public abstract class AbstractAtdl4jConfiguration
 		this.catchAllValidationExceptions = aCatchAllValidationExceptions;
 	}
 
+	/**
+	 * @param throwEventRuntimeExceptions the throwEventRuntimeExceptions to set
+	 */
+	public void setThrowEventRuntimeExceptions(
+		boolean throwEventRuntimeExceptions) {
+	    this.throwEventRuntimeExceptions = throwEventRuntimeExceptions;
+	}
+	
 	/**
 	 * @return the showCompositePanelOkCancelButtonSection
 	 */
@@ -845,5 +877,138 @@ public abstract class AbstractAtdl4jConfiguration
 	{
 		return this.strategyDropDownItemDepth;
 	}
-
+	
+	/**
+	 * Class factory methods
+	 */
+	private <E> E createClass(String aClassName) throws Atdl4jClassLoadException
+	{
+	    if (aClassName==null) throw new Atdl4jClassLoadException(aClassName);
+	    logger.debug( "Loading class: " + aClassName );
+	    try {
+		    return ((Class<E>) Class.forName( aClassName ) ).newInstance();		    
+	    } catch (InstantiationException e) {
+		    throw new Atdl4jClassLoadException(aClassName, e);
+	    } catch (IllegalAccessException e) {
+		    throw new Atdl4jClassLoadException(aClassName, e);
+	    } catch (ClassNotFoundException e) {
+		    throw new Atdl4jClassLoadException(aClassName, e);
+	    } 
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForCheckBoxListT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForCheckBoxListT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForCheckBoxT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForCheckBoxT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForClockT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForClockT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForDoubleSpinnerT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForDoubleSpinnerT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForDropDownListT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForDropDownListT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForEditableDropDownListT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForEditableDropDownListT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForHiddenFieldT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForHiddenFieldT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForLabelT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForLabelT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForMultiSelectListT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForMultiSelectListT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForRadioButtonListT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForRadioButtonListT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForRadioButtonT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForRadioButtonT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForSingleSelectListT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForSingleSelectListT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForSingleSpinnerT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForSingleSpinnerT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForSliderT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForSliderT());
+	}
+	public Atdl4jWidget<?> createAtdl4jWidgetForTextFieldT() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetForTextFieldT());
+	}
+	public Atdl4jCompositePanel createAtdl4jCompositePanel() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jCompositePanel());
+	}
+	public Atdl4jInputAndFilterDataPanel createAtdl4jInputAndFilterDataPanel() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jInputAndFilterDataPanel());
+	}
+	public Atdl4jInputAndFilterDataSelectionPanel createAtdl4jInputAndFilterDataSelectionPanel() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jInputAndFilterDataSelectionPanel());
+	}
+	public Atdl4jTesterPanel createAtdl4jTesterPanel() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jTesterPanel());
+	}
+	public Atdl4jUserMessageHandler createAtdl4jUserMessageHandler() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jUserMessageHandler());
+	}
+	public Atdl4jWidgetFactory createAtdl4jWidgetFactory() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameAtdl4jWidgetFactory());
+	}
+	public FixatdlFileSelectionPanel createFixatdlFileSelectionPanel() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameFixatdlFileSelectionPanel());
+	}
+	public FixMsgLoadPanel createFixMsgLoadPanel() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameFixMsgLoadPanel());
+	}
+	public StrategiesUI createStrategiesUI() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameStrategiesUI());
+	}
+	public StrategyDescriptionPanel createStrategyDescriptionPanel() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameStrategyDescriptionPanel());
+	}
+	public StrategyPanelHelper createStrategyPanelHelper() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameStrategyPanelHelper());
+	}
+	public StrategySelectionPanel createStrategySelectionPanel() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameStrategySelectionPanel());
+	}
+	public StrategyUI createStrategyUI() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameStrategyUI());
+	}
+	public TypeConverterFactory createTypeConverterFactory() throws Atdl4jClassLoadException
+	{
+	    return createClass(getClassNameTypeConverterFactory());
+	}
 }

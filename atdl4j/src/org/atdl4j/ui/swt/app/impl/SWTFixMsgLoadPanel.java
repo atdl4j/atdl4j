@@ -3,6 +3,7 @@ package org.atdl4j.ui.swt.app.impl;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.ui.app.impl.AbstractFixMsgLoadPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -53,7 +54,7 @@ public class SWTFixMsgLoadPanel
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				fireFixMsgLoadSelectedEvent( fixMsgText.getText() );
+				loadFixMessage();
 			}
 		});
 
@@ -72,7 +73,7 @@ public class SWTFixMsgLoadPanel
 		{
 			public void handleEvent(Event e) 
 			{
-				fireFixMsgLoadSelectedEvent( fixMsgText.getText() );
+				loadFixMessage();
 			}
 		});
 		
@@ -81,11 +82,21 @@ public class SWTFixMsgLoadPanel
 		return composite;
 	}
 
+	private void loadFixMessage()
+	{
+		try {
+		    fireFixMsgLoadSelectedEvent( fixMsgText.getText() );
+		} catch (Atdl4jClassLoadException e) {
+		    logger.info( "Atdl4jClassLoadException occured while loading FIX message: " + fixMsgText.getText());
+		    // TODO: needs impl of getAtdl4jUserMessageHandler()
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.atdl4j.ui.app.FixMsgLoadPanel#selectFilename(java.lang.String)
 	 */
 	@Override
-	public void setFixMsg(String aFixMsg)
+	public void setFixMsg(String aFixMsg) throws Atdl4jClassLoadException
 	{
 		if ( fixMsgText != null )
 		{

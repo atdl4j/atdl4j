@@ -15,6 +15,7 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.ui.app.impl.AbstractFixMsgLoadPanel;
 
 
@@ -29,7 +30,6 @@ public class SwingFixMsgLoadPanel extends AbstractFixMsgLoadPanel
 	private final Logger logger = Logger.getLogger(SwingFixMsgLoadPanel.class);
 	Container parentContainer;
 // JPanel as we need TitledBorder	private Container container;
-	private JPanel container;
 	
 	JTextField fixMsgText;
 	JButton loadFixMsgButton;
@@ -54,7 +54,7 @@ public class SwingFixMsgLoadPanel extends AbstractFixMsgLoadPanel
 			@Override
 			public void actionPerformed(ActionEvent aE)
 			{
-				fireFixMsgLoadSelectedEvent( fixMsgText.getText() );
+			    loadFixMessage();
 			}
 		} );
 
@@ -66,19 +66,29 @@ public class SwingFixMsgLoadPanel extends AbstractFixMsgLoadPanel
 			@Override
 			public void keyPressed(KeyEvent aE) {
 				if ( aE.getKeyCode() == KeyEvent.VK_ENTER ){
-					fireFixMsgLoadSelectedEvent( fixMsgText.getText() );
+				    loadFixMessage();
 				}
 			}
 		});
 		
 		return tempContainer;
 	}
+	
+	private void loadFixMessage()
+	{
+		try {
+		    fireFixMsgLoadSelectedEvent( fixMsgText.getText() );
+		} catch (Atdl4jClassLoadException e) {
+		    logger.info( "Atdl4jClassLoadException occured while loading FIX message: " + fixMsgText.getText());
+		    // TODO: needs impl of getAtdl4jUserMessageHandler()
+		}
+	}
 
 	/* (non-Javadoc)
 	 * @see org.atdl4j.ui.app.FixMsgLoadPanel#selectFilename(java.lang.String)
 	 */
 	@Override
-	public void setFixMsg(String aFixMsg)
+	public void setFixMsg(String aFixMsg) throws Atdl4jClassLoadException
 	{
 		if ( fixMsgText != null )
 		{

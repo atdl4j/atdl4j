@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jCompositePanel;
 
@@ -26,12 +27,12 @@ public class SwingAtdl4jCompositePanel
 	private JPanel strPanel;
 	private JPanel strategySelectionPanel;
 	
-	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
+	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
 	{
 		return buildAtdl4jCompositePanel( (JFrame) aParentOrShell, aAtdl4jOptions );
 	}
 	
-	public JPanel buildAtdl4jCompositePanel(JFrame aParentComposite, Atdl4jOptions aAtdl4jOptions)
+	public JPanel buildAtdl4jCompositePanel(JFrame aParentComposite, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
 	{
 		parentComposite =  aParentComposite;
 
@@ -88,7 +89,7 @@ public class SwingAtdl4jCompositePanel
 	 * @see org.atdl4j.ui.app.StrategySelectionPanelListener#strategySelected(org.atdl4j.fixatdl.core.StrategyT, int)
 	 */
 	@Override
-	public void strategySelected(StrategyT aStrategy)
+	public void strategySelected(StrategyT aStrategy) throws Atdl4jClassLoadException
 	{
 		setSelectedStrategy( aStrategy );
 		setSelectedStrategyValidated( false );

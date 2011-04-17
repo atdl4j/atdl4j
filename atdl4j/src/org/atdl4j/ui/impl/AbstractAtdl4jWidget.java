@@ -10,6 +10,7 @@ import org.atdl4j.data.ControlTypeConverter;
 import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.data.ParameterTypeConverter;
 import org.atdl4j.data.TypeConverterFactoryConfig;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.fix.FIXMessageBuilder;
 import org.atdl4j.data.fix.StringFIXMessageBuilder;
 import org.atdl4j.data.fix.Tag959Helper;
@@ -55,7 +56,7 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 	private StrategyPanelT parentStrategyPanel;
 	private Object parent;
 
-	public void init(ControlT aControl, ParameterT aParameter, Atdl4jOptions aAtdl4jOptions)
+	public void init(ControlT aControl, ParameterT aParameter, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
 	{
 		control = aControl;
 		parameter = aParameter;

@@ -2,6 +2,7 @@ package org.atdl4j.data.converter;
 
 import java.util.GregorianCalendar;
 
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -168,13 +169,10 @@ public class DateTimeConverter
 		// -- Lazy init --
 		if ( javaxDatatypeFactory == null )
 		{
-			try
-			{
+			try {
 				javaxDatatypeFactory = DatatypeFactory.newInstance();
-			}
-			catch (Exception e)
-			{
-				// swallow, likely generate NPE
+			} catch (DatatypeConfigurationException e) {
+			    	// swallow, likely generate NPE   
 			}
 		}
 		

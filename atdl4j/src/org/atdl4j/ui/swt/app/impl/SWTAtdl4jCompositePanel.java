@@ -3,8 +3,8 @@ package org.atdl4j.ui.swt.app.impl;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jCompositePanel;
-import org.atdl4j.ui.swt.util.SWTMenuHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -12,12 +12,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Represents the SWT-specific strategy selection and display GUI component.
@@ -34,12 +29,12 @@ public class SWTAtdl4jCompositePanel
 	
 	private Composite okCancelButtonSection;
 	
-	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
+	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
 	{
 		return buildAtdl4jCompositePanel( (Composite) aParentOrShell, aAtdl4jOptions );
 	}
 	
-	public Composite buildAtdl4jCompositePanel(Composite aParentComposite, Atdl4jOptions aAtdl4jOptions)
+	public Composite buildAtdl4jCompositePanel(Composite aParentComposite, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
 	{
 		setParentComposite( aParentComposite );
 		

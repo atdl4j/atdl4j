@@ -68,7 +68,7 @@ public class LengthValidationRule
 		return field;
 	}
 
-	protected void validateLength(Atdl4jWidget<?> aTarget, String aValue, OperatorT aOperator)
+	protected void validateLength(Atdl4jWidget<?> aTarget, String aValue, OperatorT aOperator) throws ValidationException
 	{
 		switch ( aOperator )
 		{

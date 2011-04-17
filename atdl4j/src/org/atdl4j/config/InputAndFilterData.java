@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.fixatdl.core.StrategyT;
 
 /**
@@ -29,8 +28,6 @@ import org.atdl4j.fixatdl.core.StrategyT;
  */
 public class InputAndFilterData
 {
-	private static final Logger logger = Logger.getLogger(InputAndFilterData.class);
-
 	public static String FIX_DEFINED_FIELD_PREFIX = "FIX_";
 	
 	private List<StrategyFilterInputData> strategyFilterInputDataList = null;  // -- Use more than one when multiple individual orders are associated with a single algo panel display --

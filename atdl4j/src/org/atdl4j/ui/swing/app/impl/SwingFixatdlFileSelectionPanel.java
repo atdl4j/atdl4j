@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.impl.AbstractFixatdlFileSelectionPanel;
 
@@ -30,7 +29,6 @@ import org.atdl4j.ui.app.impl.AbstractFixatdlFileSelectionPanel;
 public class SwingFixatdlFileSelectionPanel 
 	extends AbstractFixatdlFileSelectionPanel
 {
-	private final Logger logger = Logger.getLogger(SwingFixatdlFileSelectionPanel.class);
 	JFrame parentComposite;
 	JPanel composite;
 	

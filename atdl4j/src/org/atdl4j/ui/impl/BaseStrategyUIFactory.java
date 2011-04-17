@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.ValidationRule;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
+import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.StrategyUI;
@@ -23,7 +25,7 @@ public class BaseStrategyUIFactory
 	protected static final Logger logger = Logger.getLogger( BaseStrategyUIFactory.class );
 	private static Atdl4jUserMessageHandler atdl4jUserMessageHandler = null;
 
-	public static StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer, Atdl4jOptions aAtdl4jOptions)
+	public static StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer, Atdl4jOptions aAtdl4jOptions) throws FIXatdlFormatException, Atdl4jClassLoadException
 	{
 		// -- Constructs a new instance every call --
 		String tempClassName = Atdl4jConfig.getConfig().getClassNameStrategyUI();

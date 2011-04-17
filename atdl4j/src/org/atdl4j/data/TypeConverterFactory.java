@@ -6,7 +6,6 @@ import java.math.BigInteger;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.atdl4j.data.converter.BooleanConverter;
-import org.atdl4j.data.converter.DatatypeConverter;
 import org.atdl4j.data.converter.DateTimeConverter;
 import org.atdl4j.data.converter.DecimalConverter;
 import org.atdl4j.data.converter.IntegerConverter;

@@ -1,20 +1,15 @@
 package org.atdl4j.data.converter;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import org.apache.log4j.Logger;
 import org.atdl4j.data.ControlTypeConverter;
 import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.data.ParameterTypeConverter;
 import org.atdl4j.data.TypeConverterFactory;
-import org.atdl4j.data.TypeConverterFactoryConfig;
-import org.atdl4j.data.validation.Field2OperatorValidationRule;
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.core.PercentageT;
 import org.atdl4j.fixatdl.layout.CheckBoxT;
 import org.atdl4j.fixatdl.layout.ControlT;
-import org.joda.time.DateTime;
 
 /**
  * Base class for ParameterTypeConverter and ControlTypeConverter interfaces

@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
+import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
@@ -26,7 +28,7 @@ public class SwingStrategyPanelFactory
 
 	// Given a panel, recursively populates a map of Panels and Parameter widgets
 	// Can also process options for a group frame instead of a single panel
-	public static Map<String, SwingWidget<?>> createStrategyPanelAndWidgets(JPanel parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory)
+	public static Map<String, SwingWidget<?>> createStrategyPanelAndWidgets(JPanel parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory) throws FIXatdlFormatException, Atdl4jClassLoadException
 	{
 		logger.debug( "createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style)" + " invoked with parms parent: "
 				+ parent + " panel: " + panel + " parameters: " + parameters + " style: " + style );
@@ -59,7 +61,7 @@ public class SwingStrategyPanelFactory
 			else
 			{
 				// 7/20/2010 -- original behavior:
-				throw new IllegalStateException( "StrategyPanel may not contain both StrategyPanel and Control elements." );
+				throw new FIXatdlFormatException( "StrategyPanel may not contain both StrategyPanel and Control elements." );
 			}
 		}
 	
@@ -73,7 +75,7 @@ public class SwingStrategyPanelFactory
 				for ( String existingID : controlWidgets.keySet() )
 				{
 					if ( newID.equals( existingID ) )
-						throw new IllegalStateException( "Duplicate Control ID: \"" + newID + "\"" );
+						throw new FIXatdlFormatException( "Duplicate Control ID: \"" + newID + "\"" );
 				}
 			}
 			controlWidgets.putAll( widgets );
@@ -88,7 +90,7 @@ public class SwingStrategyPanelFactory
 			{
 				parameter = parameters.get( control.getParameterRef() );
 				if ( parameter == null )
-					throw new IllegalStateException( "Cannot find Parameter \"" + control.getParameterRef() + "\" for Control ID: \"" + control.getID() + "\"" );
+					throw new FIXatdlFormatException( "Cannot find Parameter \"" + control.getParameterRef() + "\" for Control ID: \"" + control.getID() + "\"" );
 			}
 			SwingWidget<?> widget = SwingWidgetFactory.createWidget( c, control, parameter, style, aAtdl4jWidgetFactory );
 			
@@ -102,13 +104,13 @@ public class SwingStrategyPanelFactory
 				for ( SwingWidget<?> w : controlWidgets.values() )
 				{
 					if ( w.getControl().getID().equals( control.getID() ) )
-						throw new IllegalStateException( "Duplicate Control ID: \"" + control.getID() + "\"" );
+						throw new FIXatdlFormatException( "Duplicate Control ID: \"" + control.getID() + "\"" );
 				}
 				controlWidgets.put( control.getID(), widget );
 			}
 			else
 			{
-				throw new IllegalStateException( "Control Type: \"" + control.getClass().getSimpleName() + "\" is missing ID" );
+				throw new FIXatdlFormatException( "Control Type: \"" + control.getClass().getSimpleName() + "\" is missing ID" );
 			}
 		}
 	

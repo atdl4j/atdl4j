@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.app.impl.AbstractStrategySelectionPanel;
 
@@ -64,7 +65,6 @@ public class SwingStrategySelectionPanel
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					int index = strategiesDropDown.getSelectedIndex();
-					logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelectionIndex(): " + index );
 					selectDropDownStrategy( index );
 				}
 			}
@@ -116,7 +116,7 @@ public class SwingStrategySelectionPanel
 
 	
 // 4/16/2010 Scott Atwell	public void selectDropDownStrategy(String strategyName) 
-	public void selectDropDownStrategyByStrategyName(String aStrategyName) 
+	public void selectDropDownStrategyByStrategyName(String aStrategyName) throws Atdl4jClassLoadException 
 	{
 		logger.debug( "selectDropDownStrategyByStrategyName() aStrategyName: " + aStrategyName );
 		
@@ -138,7 +138,7 @@ public class SwingStrategySelectionPanel
 	}
 
 // 4/16/2010 Scott Atwell added	
-	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ) 
+	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ) throws Atdl4jClassLoadException 
 	{
 		logger.debug( "selectDropDownStrategyByStrategyWireValue() aStrategyWireValue: " + aStrategyWireValue );
 		
@@ -159,7 +159,7 @@ public class SwingStrategySelectionPanel
 		}
 	}
 	
-	public void selectFirstDropDownStrategy()
+	public void selectFirstDropDownStrategy() throws Atdl4jClassLoadException
 	{
 		if ( ( strategiesDropDown != null ) && 
 			  ( strategiesDropDown.getItemCount() > 0 ) )

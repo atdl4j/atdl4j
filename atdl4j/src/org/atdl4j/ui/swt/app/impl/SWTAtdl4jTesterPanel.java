@@ -7,6 +7,8 @@ package org.atdl4j.ui.swt.app.impl;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
+import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jTesterPanel;
 import org.atdl4j.ui.swt.util.SWTMenuHelper;
 import org.eclipse.swt.SWT;
@@ -16,7 +18,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
@@ -50,12 +51,12 @@ public class SWTAtdl4jTesterPanel
 	private Text outputFixMessageText;
 
 	
-	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
+	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
 	{
 		return buildAtdl4jTesterPanel( (Composite) aParentOrShell, aAtdl4jOptions );
 	}
 	
-	public Composite buildAtdl4jTesterPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions)
+	public Composite buildAtdl4jTesterPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
 	{
 		parentComposite = (Composite) aParentOrShell;
 
@@ -187,15 +188,29 @@ public class SWTAtdl4jTesterPanel
 		{
 			public void widgetSelected(SelectionEvent e) 
 			{
-				try
-				{
-					validateButtonSelected();
-				}
-				catch (Exception ex) 
-				{
-					getAtdl4jUserMessageHandler().displayException( "Validation Exception", "", ex );
-					logger.info( "Validation Exception:", ex );
-				} 
+                		try {
+                		    validateButtonSelected();
+                		} catch (Atdl4jClassLoadException ex) {
+                		    logger.info("Validation Exception:", ex);
+                		    try {
+                			getAtdl4jUserMessageHandler().displayException(
+                				"Validation Exception", "", ex);
+                		    } catch (Atdl4jClassLoadException ex2) {
+                			logger.info(
+                				"Could not load UserMessageHandler while processing Atdl4jClassLoadException",
+                				ex2);
+                		    }
+                		} catch (ValidationException ex) {
+                		    logger.info("Validation Exception:", ex);
+                		    try {
+                			getAtdl4jUserMessageHandler().displayException(
+                				"Validation Exception", "", ex);
+                		    } catch (Atdl4jClassLoadException ex2) {
+                			logger.info(
+                				"Could not load UserMessageHandler while processing ValidationException",
+                				ex2);
+                		    }
+                		}
 			}
 		});
 		

@@ -9,6 +9,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.ValidationRule;
+import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.data.validation.ValidationRuleFactory;
 import org.atdl4j.data.validation.ValueOperatorValidationRule;
@@ -28,7 +29,7 @@ public class SwingStateListener implements SwingListener {
 	private ValidationRule rule;
 	private boolean cxlReplaceMode = false;
 
-	public SwingStateListener(SwingWidget<?> affectedWidget, StateRuleT stateRule, Map<String, SwingWidget<?>> controls, Map<String, ValidationRule> refRules)
+	public SwingStateListener(SwingWidget<?> affectedWidget, StateRuleT stateRule, Map<String, SwingWidget<?>> controls, Map<String, ValidationRule> refRules) throws FIXatdlFormatException
 	{
 		this.affectedWidget = affectedWidget;
 		this.stateRule = stateRule;
