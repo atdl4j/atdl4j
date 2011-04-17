@@ -101,6 +101,24 @@ public abstract class AbstractStrategyUI
 	abstract protected void applyRadioGroupRules();
 	
 	/**
+	 * Standalone intializer
+	 * 
+	 * @param strategy
+	 * @param aStrategies
+	 * @param aAtdl4jOptions (contains getStrategies())
+	 * @param strategiesRules
+	 * @param parentContainer (should be swt.Composite)
+	 */
+	public void init(StrategyT strategy, Object parentContainer)
+	{
+	    init(strategy,
+		 new StrategiesT(),
+		 new Atdl4jOptions(),
+		 new HashMap<String, ValidationRule>(),
+		 parentContainer);
+	}	
+	
+	/**
 	 * @param strategy
 	 * @param aStrategies
 	 * @param aAtdl4jOptions (contains getStrategies())

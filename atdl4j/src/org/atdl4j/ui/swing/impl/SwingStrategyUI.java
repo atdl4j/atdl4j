@@ -32,13 +32,13 @@ import org.atdl4j.ui.swing.widget.SwingButtonWidget;
  * 
  */
 public class SwingStrategyUI extends AbstractStrategyUI {
-	protected static final Logger					logger	= Logger.getLogger(SwingStrategyUI.class);
+	protected static final Logger logger = Logger.getLogger(SwingStrategyUI.class);
 	
-	protected Map<String, SwingWidget<?>>	swingWidgetMap;
+	protected Map<String, SwingWidget<?>> swingWidgetMap;
 	
-	protected Map<String, SwingWidget<?>>						swingWidgetWithParameterMap;
+	protected Map<String, SwingWidget<?>> swingWidgetWithParameterMap;
 	
-	private JPanel												parentComponent;
+	private JPanel parentComponent;
 	
 	protected List<SwingStateListener> stateListenerList;
 	
