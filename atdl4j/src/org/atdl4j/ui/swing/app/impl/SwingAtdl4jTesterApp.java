@@ -18,7 +18,7 @@ import org.atdl4j.ui.swing.config.SwingAtdl4jConfiguration;
  * 
  */
 public class SwingAtdl4jTesterApp extends AbstractAtdl4jTesterApp {
-	public final Logger	logger	= Logger.getLogger(SwingAtdl4jTesterApp.class);
+	public final Logger logger = Logger.getLogger(SwingAtdl4jTesterApp.class);
 	
 	/**
 	 * @param args
@@ -64,7 +64,7 @@ public class SwingAtdl4jTesterApp extends AbstractAtdl4jTesterApp {
 			frame.setVisible(true);
 		}
 		catch (Exception e) {
-			if (Atdl4jConfig.getConfig() != null && Atdl4jConfig.getConfig().isCatchAllRuntimeExceptions()) {
+			if (Atdl4jConfig.getConfig().isCatchAllRuntimeExceptions()) {
 				logger.warn("Fatal Exception encountered", e);
 				if ((getAtdl4jTesterPanel() != null) && (getAtdl4jTesterPanel().getAtdl4jCompositePanel() != null)
 						&& (getAtdl4jTesterPanel().getAtdl4jCompositePanel().getAtdl4jUserMessageHandler() != null)) {

@@ -185,8 +185,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	public StrategyT validateStrategy() throws ValidationException 
 	{
 				
-		if ( (Atdl4jConfig.getConfig() != null) && 
-			  (Atdl4jConfig.getConfig().isCatchAllValidationExceptions()) )
+		if ( Atdl4jConfig.getConfig().isCatchAllValidationExceptions() )
 		{
 			try 
 			{

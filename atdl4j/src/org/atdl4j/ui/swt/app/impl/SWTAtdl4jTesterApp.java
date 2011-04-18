@@ -96,7 +96,7 @@ public class SWTAtdl4jTesterApp
 			}
 			catch (Exception e)
 			{
-				if ( Atdl4jConfig.getConfig() != null && Atdl4jConfig.getConfig().isCatchAllRuntimeExceptions() )
+				if ( Atdl4jConfig.getConfig().isCatchAllRuntimeExceptions() )
 				{
 					logger.warn( "Fatal Exception encountered", e );
 					if ( ( getAtdl4jTesterPanel() != null ) && 
