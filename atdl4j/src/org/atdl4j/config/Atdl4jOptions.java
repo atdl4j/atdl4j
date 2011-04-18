@@ -35,6 +35,7 @@ public class Atdl4jOptions
 	private boolean accommodateMixOfStrategyPanelsAndControls = false;  // FIXatdl 1.1 spec recommends against vs. prohibits
 	
 	private boolean showEnabledCheckboxOnOptionalClockControl = false;
+	private boolean showDateInputOnTimestampClockControl = false;
 	
 	private int defaultDigitsForSpinnerControlForPercentage = 0;
 	private int defaultDigitsForSpinnerControlForQty = 0;
@@ -487,6 +488,25 @@ public class Atdl4jOptions
 		}
 		
 		return false;
+	}
+
+	/**
+	 * Determines whether ClockT controls with Parameter type TZTimestamp
+	 * 
+	 * @return the showDateInputOnTimestampClockControl
+	 */
+	public boolean isShowDateInputOnTimestampClockControl() {
+	    return showDateInputOnTimestampClockControl;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param showDateInputOnTimestampClockControl the showDateInputOnTimestampClockControl to set
+	 */
+	public void setShowDateInputOnTimestampClockControl(
+		boolean showDateInputOnTimestampClockControl) {
+	    this.showDateInputOnTimestampClockControl = showDateInputOnTimestampClockControl;
 	}
 
 	/**

@@ -112,11 +112,11 @@ public abstract class AbstractStrategyUI
 	 * @throws FIXatdlFormatException 
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public void init(StrategyT strategy, Object parentContainer) throws FIXatdlFormatException
+	public void init(StrategyT strategy, Atdl4jOptions options, Object parentContainer) throws FIXatdlFormatException
 	{
 	    init(strategy,
 		 new StrategiesT(),
-		 new Atdl4jOptions(),
+		 options,
 		 new HashMap<String, ValidationRule>(),
 		 parentContainer);
 	}	

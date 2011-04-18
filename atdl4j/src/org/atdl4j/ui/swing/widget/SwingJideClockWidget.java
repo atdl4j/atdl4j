@@ -20,6 +20,8 @@ import org.atdl4j.fixatdl.core.MonthYearT;
 import org.atdl4j.fixatdl.core.UTCDateOnlyT;
 import org.atdl4j.fixatdl.core.UTCTimeOnlyT;
 import org.atdl4j.fixatdl.core.UTCTimestampT;
+import org.atdl4j.fixatdl.core.TZTimeOnlyT;
+import org.atdl4j.fixatdl.core.TZTimestampT;
 import org.atdl4j.fixatdl.core.UseT;
 import org.atdl4j.fixatdl.layout.ClockT;
 import org.atdl4j.ui.impl.ControlHelper;
@@ -68,16 +70,24 @@ public class SwingJideClockWidget
 	private boolean showMonthYear;
 	private boolean showDay;
 	private boolean showTime;
+	private boolean useNowAsDate = false;
 
 	public void createWidget(JPanel parent)
 	{
 		// tooltip
 		String tooltip = control.getTooltip();		
 		
-		if ( parameter instanceof UTCTimestampT )
+		if ( parameter instanceof UTCTimestampT || parameter instanceof TZTimestampT )
 		{
-			showMonthYear = true;
-			showDay = true;
+		    	if (getAtdl4jOptions()==null||getAtdl4jOptions().isShowDateInputOnTimestampClockControl())
+		    	{
+        			showMonthYear = true;
+        			showDay = true;
+		    	} else {
+        			showMonthYear = false;
+        			showDay = false;
+        			useNowAsDate = true;
+		    	}
 			showTime = true;
 		}
 		else if ( parameter instanceof UTCDateOnlyT || parameter instanceof LocalMktDateT )
@@ -92,7 +102,7 @@ public class SwingJideClockWidget
 			showDay = false;
 			showTime = false;
 		}
-		else if ( parameter == null || parameter instanceof UTCTimeOnlyT )
+		else if ( parameter == null || parameter instanceof UTCTimeOnlyT || parameter instanceof TZTimeOnlyT )
 		{
 			showMonthYear = false;
 			showDay = false;
@@ -169,19 +179,21 @@ public class SwingJideClockWidget
 		{
 			return null; // disabled, no value to use
 		}
-
+				
+		DateTime now = null; 
 		DateTime date = null;
 		DateTime time = null;
-		if (showMonthYear) date = new DateTime(dateClock.getValue());
+		if (useNowAsDate) now = new DateTime( DateTimeZone.getDefault() );
+		if (showMonthYear) date = new DateTime(dateClock.getValue()); 
 		if (showTime) time = new DateTime(timeClock.getValue());
-		DateTime result = new DateTime(showMonthYear ? date.getYear() : 1970,
-									showMonthYear ? date.getMonthOfYear() : 1,
-									showDay ? date.getDayOfMonth() : 1, 
-									showTime ? time.getHourOfDay() : 0,
-									showTime ? time.getMinuteOfHour() : 0,
-									showTime ? time.getSecondOfMinute() : 0,
-									0,
-									DateTimeZone.getDefault() );
+		DateTime result = new DateTime(useNowAsDate ? now.getYear() : showMonthYear ? date.getYear() : 1970,
+					        useNowAsDate ? now.getMonthOfYear() : showMonthYear ? date.getMonthOfYear() : 1,
+					        useNowAsDate ? now.getDayOfMonth() : showDay ? date.getDayOfMonth() : 1, 
+						showTime ? time.getHourOfDay() : 0,
+						showTime ? time.getMinuteOfHour() : 0,
+						showTime ? time.getSecondOfMinute() : 0,
+						0,
+						DateTimeZone.getDefault() );
 		
 
 		// Convert to UTC time for UTCTimestampT and UTCTimeOnlyT.
