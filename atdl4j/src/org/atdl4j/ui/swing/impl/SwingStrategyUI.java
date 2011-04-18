@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.data.ValidationRule;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.validation.Field2OperatorValidationRule;
 import org.atdl4j.data.validation.LogicalOperatorValidationRule;
@@ -64,7 +63,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#buildAtdl4jWidgetMap(java.util.List)
 	 */
 	@Override
-	protected void buildAtdl4jWidgetMap(List<StrategyPanelT> aStrategyPanelList) throws FIXatdlFormatException, Atdl4jClassLoadException {
+	protected void buildAtdl4jWidgetMap(List<StrategyPanelT> aStrategyPanelList) throws FIXatdlFormatException {
 		Map<String, SwingWidget<?>> tempSwingWidgetMap = new HashMap<String, SwingWidget<?>>();
 		// build panels and widgets recursively
 		for (StrategyPanelT panel : aStrategyPanelList) {
@@ -124,7 +123,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#buildAtdl4jWidgetMap()
 	 */
 	@Override
-	protected void buildAtdl4jWidgetMap() throws FIXatdlFormatException, Atdl4jClassLoadException {
+	protected void buildAtdl4jWidgetMap() throws FIXatdlFormatException {
 		if (getStrategy() == null) {
 			throw new FIXatdlFormatException("getStrategy() was null.");
 		}

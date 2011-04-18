@@ -1,16 +1,12 @@
 package org.atdl4j.ui.app.impl;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
-
-import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.core.StrategyT;
@@ -64,7 +60,7 @@ public abstract class AbstractAtdl4jTesterPanel
 	private List<Atdl4jTesterPanelListener> listenerList = new Vector<Atdl4jTesterPanelListener>();
 
 	
-	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions ) throws Atdl4jClassLoadException
+	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions )
 	{
 		setAtdl4jOptions( aAtdl4jOptions );
 		setParentOrShell( aParentOrShell );
@@ -138,7 +134,7 @@ public abstract class AbstractAtdl4jTesterPanel
 	 * @see org.atdl4j.ui.app.FixMsgLoadPanelListener#fixMsgLoadSelected(java.lang.String)
 	 */
 	@Override
-	public void fixMsgLoadSelected(String aFixMsg) throws Atdl4jClassLoadException
+	public void fixMsgLoadSelected(String aFixMsg)
 	{
 		if ( getAtdl4jCompositePanel() != null )
 		{
@@ -167,21 +163,9 @@ public abstract class AbstractAtdl4jTesterPanel
 			// -- Reloads the screen for the pre-loaded/cached FIXatdl file (if specified and cached) --
 			getAtdl4jCompositePanel().loadScreenWithFilteredStrategies();
 		}
-		catch (Atdl4jClassLoadException ex)
-		{
-		    	logger.error( "Atdl4jClassLoadException occured while selecting inputAndFilterData");
-			try {
-			    getAtdl4jCompositePanel().getAtdl4jUserMessageHandler().displayException( "Error", "ERROR during loadScreenWithFilteredStrategies()", ex );
-			} catch (Atdl4jClassLoadException ex2) {
-			    logger.error("Could not get UserMessageHandler while processing Atdl4jClassLoadException");
-			}
-		} catch (FIXatdlFormatException ex) {
+		catch (FIXatdlFormatException ex) {
 		    	logger.error( "FIXatdlFormatException occured while selecting inputAndFilterData");
-			try {
 			    getAtdl4jCompositePanel().getAtdl4jUserMessageHandler().displayException( "Error", "ERROR during loadScreenWithFilteredStrategies()", ex );
-			} catch (Atdl4jClassLoadException ex2) {
-			    logger.error("Could not get UserMessageHandler while processing FIXatdlFormatException");			    
-			}
 		}
 	}
 
@@ -213,28 +197,19 @@ public abstract class AbstractAtdl4jTesterPanel
 
 	/**
 	 * @return the Atdl4jInputAndFilterDataSelectionPanel
+	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jInputAndFilterDataSelectionPanel getAtdl4jInputAndFilterDataSelectionPanel() 
 	{
-		if ( ( atdl4jInputAndFilterDataSelectionPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameAtdl4jInputAndFilterDataSelectionPanel() != null ) )
+		if ( atdl4jInputAndFilterDataSelectionPanel == null )
 		{
-			String tempClassName = Atdl4jConfig.getConfig().getClassNameAtdl4jInputAndFilterDataSelectionPanel();
-			logger.debug( "getAtdl4jInputAndFilterDataSelectionPanel() loading class named: " + tempClassName );
-			try
-			{
-				atdl4jInputAndFilterDataSelectionPanel = ((Class<Atdl4jInputAndFilterDataSelectionPanel>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
+		    atdl4jInputAndFilterDataSelectionPanel = Atdl4jConfig.getConfig().createAtdl4jInputAndFilterDataSelectionPanel();
 		}
 		
 		return atdl4jInputAndFilterDataSelectionPanel;
 	}
 	
-	public Atdl4jCompositePanel getAtdl4jCompositePanel() throws Atdl4jClassLoadException 
+	public Atdl4jCompositePanel getAtdl4jCompositePanel() 
 	{
 		if ( atdl4jCompositePanel == null )
 		{
@@ -249,24 +224,14 @@ public abstract class AbstractAtdl4jTesterPanel
 	
 	/**
 	 * @return the FixMsgLoadPanel
+	 * @throws Atdl4jClassLoadException 
 	 */
 	public FixMsgLoadPanel getFixMsgLoadPanel() 
 	{
-		if ( ( fixMsgLoadPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameFixMsgLoadPanel() != null ) )
+		if ( fixMsgLoadPanel == null )
 		{
-			String tempClassName = Atdl4jConfig.getConfig().getClassNameFixMsgLoadPanel();
-			logger.debug( "getFixMsgLoadPanel() loading class named: " + tempClassName );
-			try
-			{
-				fixMsgLoadPanel = ((Class<FixMsgLoadPanel>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-		}
-		
+		    fixMsgLoadPanel = Atdl4jConfig.getConfig().createFixMsgLoadPanel();
+		}		
 		return fixMsgLoadPanel;
 	}
 
@@ -282,26 +247,15 @@ public abstract class AbstractAtdl4jTesterPanel
 	 * @see org.atdl4j.ui.app.FixatdlFileSelectionPanelListener#fixatdlFileSelected(java.lang.String)
 	 */
 	@Override
-	public void fixatdlFileSelected(String aFilename) throws Atdl4jClassLoadException, FIXatdlFormatException
+	public void fixatdlFileSelected(String aFilename) throws FIXatdlFormatException
 	{
 		if (Atdl4jConfig.getConfig().isCatchAllStrategyLoadExceptions())
 		{
 		    	try {
 			    fixatdlFileSelectedNotCatchAllExceptions(aFilename);
-			} catch (Atdl4jClassLoadException ex) {
-				logger.warn( "Atdl4jClassLoadException while loading FIXatdl file", ex );
-				try {
-				    getAtdl4jUserMessageHandler().displayException( "FIXatdl file load exception", "", ex );
-				} catch (Atdl4jClassLoadException ex2) {
-				    logger.warn( "Could not get UserMessageHandler while processing Atdl4jClassLoadException", ex2 );
-				}
 			} catch (FIXatdlFormatException ex) {
 				logger.warn( "Atdl4jClassLoadException while loading FIXatdl file", ex );
-				try {
-				    getAtdl4jUserMessageHandler().displayException( "FIXatdl file load exception", "", ex );
-				} catch (Atdl4jClassLoadException ex2) {
-				    logger.warn( "Could not get UserMessageHandler while processing FIXatdlFormatException", ex2 );
-				}
+				getAtdl4jUserMessageHandler().displayException( "FIXatdl file load exception", "", ex );
 			}
 		} else {
 			fixatdlFileSelectedNotCatchAllExceptions(aFilename);
@@ -312,8 +266,7 @@ public abstract class AbstractAtdl4jTesterPanel
 	 * @see org.atdl4j.ui.app.FixatdlFileSelectionPanelListener#fixatdlFileSelected(java.lang.String)
 	 */
 	protected void fixatdlFileSelectedNotCatchAllExceptions(String aFilename)
-		throws Atdl4jClassLoadException,
-		       FIXatdlFormatException
+		throws FIXatdlFormatException
 	{
 		getAtdl4jCompositePanel().parseFixatdlFile( aFilename );
 		getAtdl4jCompositePanel().loadScreenWithFilteredStrategies();
@@ -321,24 +274,14 @@ public abstract class AbstractAtdl4jTesterPanel
 
 	/**
 	 * @return the FixatdlFileSelectionPanel
+	 * @throws Atdl4jClassLoadException 
 	 */
 	public FixatdlFileSelectionPanel getFixatdlFileSelectionPanel() 
 	{
-		if ( ( fixatdlFileSelectionPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameFixatdlFileSelectionPanel() != null ) )
+		if ( fixatdlFileSelectionPanel == null )
 		{
-			String tempClassName = Atdl4jConfig.getConfig().getClassNameFixatdlFileSelectionPanel();
-			logger.debug( "getFixatdlFileSelectionPanel() loading class named: " + tempClassName );
-			try
-			{
-				fixatdlFileSelectionPanel = ((Class<FixatdlFileSelectionPanel>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-		}
-		
+		    fixatdlFileSelectionPanel = Atdl4jConfig.getConfig().createFixatdlFileSelectionPanel();
+		}		
 		return fixatdlFileSelectionPanel;
 	}
 	
@@ -346,7 +289,7 @@ public abstract class AbstractAtdl4jTesterPanel
 	 * @return the Atdl4jUserMessageHandler
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler() throws Atdl4jClassLoadException 
+	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler() 
 	{
 		return getAtdl4jCompositePanel().getAtdl4jUserMessageHandler();
 	}
@@ -420,7 +363,7 @@ public abstract class AbstractAtdl4jTesterPanel
 		}
 	}	
 	
-	protected void validateButtonSelected() throws Atdl4jClassLoadException, ValidationException
+	protected void validateButtonSelected() throws ValidationException
 	{
 		getAtdl4jCompositePanel().validateStrategy();
 	}

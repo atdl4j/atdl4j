@@ -4,7 +4,6 @@
  */
 package org.atdl4j.ui.app;
 
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.StrategyT;
 
 /**
@@ -16,5 +15,5 @@ import org.atdl4j.fixatdl.core.StrategyT;
  */
 public interface StrategySelectionPanelListener
 {
-	public void strategySelected(StrategyT strategy) throws Atdl4jClassLoadException;
+	public void strategySelected(StrategyT strategy);
 }

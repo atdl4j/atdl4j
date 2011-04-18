@@ -278,15 +278,7 @@ public class IntegerConverter
 		else if ( aValue instanceof Boolean )
 		{
 			Boolean bool = (Boolean) aValue;
-			if ( bool != null )
-			{
-				if ( bool )
-					return new BigInteger( "1" );
-				else
-					return new BigInteger( "0" );
-			}
-			else
-				return null;
+			return new BigInteger( bool ? "1" : "0" );
 		}
 		else
 		{

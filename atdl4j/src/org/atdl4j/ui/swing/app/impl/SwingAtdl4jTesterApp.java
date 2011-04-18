@@ -5,6 +5,7 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jConfiguration;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jTesterApp;
 import org.atdl4j.ui.swing.config.SwingAtdl4jConfiguration;
@@ -24,19 +25,19 @@ public class SwingAtdl4jTesterApp extends AbstractAtdl4jTesterApp {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-  	try {
-	     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } 
-    catch (Exception e) {
-	     e.printStackTrace();
-    }
-		
-		SwingAtdl4jTesterApp tempSwingAtdl4jTesterApp = new SwingAtdl4jTesterApp();
+              	try {
+            	     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } 
+                catch (Exception e) {
+            	     e.printStackTrace();
+                }
+                Atdl4jConfiguration config = new SwingAtdl4jConfiguration();                
+                SwingAtdl4jTesterApp tempSwingAtdl4jTesterApp = new SwingAtdl4jTesterApp();		
 		try {
-			tempSwingAtdl4jTesterApp.mainLine(args);
+			tempSwingAtdl4jTesterApp.mainLine(args, config);
 		}
 		catch (Exception e) {
-			if (Atdl4jConfig.getConfig() != null && Atdl4jConfig.getConfig().isCatchAllMainlineExceptions()) {
+			if (Atdl4jConfig.getConfig().isCatchAllMainlineExceptions()) {
 				tempSwingAtdl4jTesterApp.logger.warn("Fatal Exception in mainLine", e);
 			}
 			else {
@@ -45,14 +46,14 @@ public class SwingAtdl4jTesterApp extends AbstractAtdl4jTesterApp {
 		}
 	}
 	
-	public void mainLine(String[] args) throws Exception {
+	public void mainLine(String[] args, Atdl4jConfiguration config) throws Exception {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setTitle("atdl4j - The Open-Source Java Solution for FIXatdl (Swing)");
 		
 		// -- Delegate setup to AbstractAtdl4jTesterApp, construct a new
 		// Swing-specific Atdl4jOptions --
-		init(args, new SwingAtdl4jConfiguration(), new Atdl4jOptions(), frame);
+		init(args, config, new Atdl4jOptions(), frame);
 		
 		// -- Build the Swing panel from Atdl4jTesterPanel (** core GUI component **) --
 		getAtdl4jTesterPanel().buildAtdl4jTesterPanel(frame, getAtdl4jOptions());

@@ -2,7 +2,6 @@ package org.atdl4j.data;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 
 
 /**
@@ -20,7 +19,7 @@ public class TypeConverterFactoryConfig
 	 * @return
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public static TypeConverterFactory getTypeConverterFactory() throws Atdl4jClassLoadException 
+	public static TypeConverterFactory getTypeConverterFactory() 
 	{
 		if ( typeConverterFactory == null )
 		{

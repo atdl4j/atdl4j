@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
@@ -27,7 +26,7 @@ public class SWTStrategyPanelFactory
 
 	// Given a panel, recursively populates a map of Panels and Parameter widgets
 	// Can also process options for a group frame instead of a single panel
-	public static Map<String, SWTWidget<?>> createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style, List<ExpandBar> aExpandBarList, Atdl4jWidgetFactory aAtdl4jWidgetFactory) throws Atdl4jClassLoadException
+	public static Map<String, SWTWidget<?>> createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style, List<ExpandBar> aExpandBarList, Atdl4jWidgetFactory aAtdl4jWidgetFactory)
 	{
 		logger.debug( "createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style)" + " invoked with parms parent: "
 				+ parent + " panel: " + panel + " parameters: " + parameters + " style: " + style );

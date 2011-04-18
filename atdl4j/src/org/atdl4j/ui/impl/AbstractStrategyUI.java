@@ -16,7 +16,6 @@ import org.atdl4j.data.ParameterTypeConverter;
 import org.atdl4j.data.StrategyRuleset;
 import org.atdl4j.data.TypeConverterFactoryConfig;
 import org.atdl4j.data.ValidationRule;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.data.fix.FIXMessageBuilder;
@@ -73,7 +72,7 @@ public abstract class AbstractStrategyUI
 	Atdl4jWidgetFactory atdl4jWidgetFactory;
 	StrategyPanelHelper strategyPanelHelper;
 	
-	abstract protected void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList ) throws FIXatdlFormatException, Atdl4jClassLoadException;
+	abstract protected void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList ) throws FIXatdlFormatException;
 	
 	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of Atdl4jWidget<?> --
 	abstract public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetMap();
@@ -83,7 +82,7 @@ public abstract class AbstractStrategyUI
 
 	// -- Used by init() --
 	abstract protected void initBegin(Object parentContainer);
-	abstract protected void buildAtdl4jWidgetMap() throws FIXatdlFormatException, Atdl4jClassLoadException;
+	abstract protected void buildAtdl4jWidgetMap() throws FIXatdlFormatException;
 	abstract protected void createRadioGroups();
 	abstract protected void buildAtdl4jWidgetWithParameterMap();
 	abstract protected void attachGlobalStateRulesToControls() throws FIXatdlFormatException;
@@ -113,7 +112,7 @@ public abstract class AbstractStrategyUI
 	 * @throws FIXatdlFormatException 
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public void init(StrategyT strategy, Object parentContainer) throws FIXatdlFormatException, Atdl4jClassLoadException
+	public void init(StrategyT strategy, Object parentContainer) throws FIXatdlFormatException
 	{
 	    init(strategy,
 		 new StrategiesT(),
@@ -130,7 +129,7 @@ public abstract class AbstractStrategyUI
 	 * @param parentContainer (should be swt.Composite)
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public void init(StrategyT strategy, StrategiesT aStrategies, Atdl4jOptions aAtdl4jOptions, Map<String, ValidationRule> strategiesRules, Object parentContainer) throws FIXatdlFormatException, Atdl4jClassLoadException
+	public void init(StrategyT strategy, StrategiesT aStrategies, Atdl4jOptions aAtdl4jOptions, Map<String, ValidationRule> strategiesRules, Object parentContainer) throws FIXatdlFormatException
 	{
 		setStrategy( strategy );
 		setStrategies( aStrategies );
@@ -255,7 +254,7 @@ public abstract class AbstractStrategyUI
 	 * @throws FIXatdlFormatException 
 	 * @throws Atdl4jClassLoadException 
 	 */
-	protected Map<String, ParameterT> buildParameters(StrategyT strategy) throws FIXatdlFormatException, Atdl4jClassLoadException
+	protected Map<String, ParameterT> buildParameters(StrategyT strategy) throws FIXatdlFormatException
 	{
 		Map<String, ParameterT> tempParameters = new HashMap<String, ParameterT>();
 		
@@ -278,7 +277,7 @@ public abstract class AbstractStrategyUI
 				}
 			}
 			
-			ParameterTypeConverter tempTypeConverter = TypeConverterFactoryConfig.getTypeConverterFactory().createParameterTypeConverter( parameter );
+			ParameterTypeConverter<?> tempTypeConverter = TypeConverterFactoryConfig.getTypeConverterFactory().createParameterTypeConverter( parameter );
 			
 			if ( ParameterHelper.getConstValue( parameter ) != null )
 			{
@@ -493,7 +492,7 @@ public abstract class AbstractStrategyUI
 	}
 
 
-	protected void addHiddenFieldsForInputAndFilterData( InputAndFilterData aInputAndFilterData ) throws Atdl4jClassLoadException
+	protected void addHiddenFieldsForInputAndFilterData( InputAndFilterData aInputAndFilterData )
 	{
 		if ( ( aInputAndFilterData != null )
 				&& ( aInputAndFilterData.getInputHiddenFieldNameValueMap() != null ) )
@@ -537,14 +536,14 @@ public abstract class AbstractStrategyUI
 		}
 	}
 
-	protected void reloadHiddenFieldsForInputAndFilterData( InputAndFilterData aInputAndFilterData ) throws Atdl4jClassLoadException
+	protected void reloadHiddenFieldsForInputAndFilterData( InputAndFilterData aInputAndFilterData )
 	{
 		clearHiddenFieldsForInputAndFilterData();
 		addHiddenFieldsForInputAndFilterData( aInputAndFilterData );
 	}
 	
 	
-	protected void addHiddenFieldsForParameterWithoutControl( Map<String, ParameterT> aParameterMap ) throws Atdl4jClassLoadException
+	protected void addHiddenFieldsForParameterWithoutControl( Map<String, ParameterT> aParameterMap )
 	{
 		if ( aParameterMap != null )
 		{
@@ -649,7 +648,7 @@ public abstract class AbstractStrategyUI
 	// TODO: this doesn't know how to load custom repeating groups
 	// or standard repeating groups aside from Atdl4jConstants.TAG_NO_STRATEGY_PARAMETERS StrategyParameters
 	// TODO: would like to integrate with QuickFIX engine
-	public void setFIXMessage(String fixMessage) throws Atdl4jClassLoadException
+	public void setFIXMessage(String fixMessage)
 	{
 		// TODO: need to reverse engineer state groups
 
@@ -707,7 +706,7 @@ public abstract class AbstractStrategyUI
 	 * @return boolean indicating whether any Collapsible panels were adjusted;
 	 * @throws Atdl4jClassLoadException 
 	 */
-	protected boolean loadAtdl4jWidgetWithFIXValue( Atdl4jWidget<?> aWidget, String aValue ) throws Atdl4jClassLoadException
+	protected boolean loadAtdl4jWidgetWithFIXValue( Atdl4jWidget<?> aWidget, String aValue )
 	{
 		aWidget.setFIXValue( aValue );
 		
@@ -725,7 +724,7 @@ public abstract class AbstractStrategyUI
 	 * @see org.atdl4j.ui.StrategyUI#reinitStrategyPanel()
 	 */
 	@Override
-	public void reinitStrategyPanel() throws Atdl4jClassLoadException
+	public void reinitStrategyPanel()
 	{
 		reloadHiddenFieldsForInputAndFilterData( getAtdl4jOptions().getInputAndFilterData() );
 		
@@ -762,7 +761,7 @@ public abstract class AbstractStrategyUI
 		this.strategies = aStrategies;
 	}
 	
-	public Atdl4jWidgetFactory getAtdl4jWidgetFactory() throws Atdl4jClassLoadException 
+	public Atdl4jWidgetFactory getAtdl4jWidgetFactory() 
 	{
 		if ( atdl4jWidgetFactory == null ) 
 		{
@@ -776,7 +775,7 @@ public abstract class AbstractStrategyUI
 	 * @return
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public StrategyPanelHelper getStrategyPanelHelper() throws Atdl4jClassLoadException
+	public StrategyPanelHelper getStrategyPanelHelper()
 	{
 		if ( strategyPanelHelper == null ) 
 		{

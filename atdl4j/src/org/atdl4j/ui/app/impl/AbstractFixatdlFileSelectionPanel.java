@@ -6,7 +6,6 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.ui.app.FixatdlFileSelectionPanel;
 import org.atdl4j.ui.app.FixatdlFileSelectionPanelListener;
@@ -62,10 +61,6 @@ public abstract class AbstractFixatdlFileSelectionPanel
 		{
 			tempListener.fixatdlFileSelected( aFilename );
 		}
-	    } catch (Atdl4jClassLoadException ex) {
-		logger.info( "Atdl4jClassLoadException occured while loading file: " + aFilename );
-		if (Atdl4jConfig.getConfig().isThrowEventRuntimeExceptions())
-		    throw new RuntimeException("Atdl4jClassLoadException while loading file: " + aFilename, ex);
 	    } catch (FIXatdlFormatException ex) {
 		logger.info( "FIXatdlFormatException occured while loading file: " + aFilename );
 		if (Atdl4jConfig.getConfig().isThrowEventRuntimeExceptions())

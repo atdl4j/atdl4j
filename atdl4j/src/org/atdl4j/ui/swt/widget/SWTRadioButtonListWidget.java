@@ -3,7 +3,6 @@ package org.atdl4j.ui.swt.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.layout.ListItemT;
 import org.atdl4j.fixatdl.layout.PanelOrientationT;
@@ -23,8 +22,6 @@ import org.eclipse.swt.widgets.Widget;
 public class SWTRadioButtonListWidget
 		extends AbstractSWTWidget<String>
 {
-	private static final Logger logger = Logger.getLogger( SWTRadioButtonListWidget.class );
-
 	private List<Button> buttons = new ArrayList<Button>();
 	private Label label;
 

@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.data.ValidationRule;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.validation.Field2OperatorValidationRule;
 import org.atdl4j.data.validation.LogicalOperatorValidationRule;
@@ -75,7 +74,7 @@ public class SWTStrategyUI
 		setWidgetStateListenerMap( new HashMap<SWTWidget<?>, Set<SWTStateListener>>() );
 	}
 
-	protected void buildAtdl4jWidgetMap() throws Atdl4jClassLoadException
+	protected void buildAtdl4jWidgetMap()
 	{
 		if ( getStrategy() == null )
 		{
@@ -238,7 +237,7 @@ public class SWTStrategyUI
 	 * @return
 	 * @throws Atdl4jClassLoadException 
 	 */
-	protected void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList ) throws Atdl4jClassLoadException
+	protected void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList )
 	{
 		Map<String, SWTWidget<?>> tempSWTWidgetMap = new HashMap<String, SWTWidget<?>>();
 		

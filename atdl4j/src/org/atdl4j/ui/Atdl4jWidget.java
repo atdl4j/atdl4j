@@ -2,7 +2,6 @@
 package org.atdl4j.ui;
 
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.fix.FIXMessageBuilder;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
@@ -14,7 +13,7 @@ import org.atdl4j.fixatdl.layout.StrategyPanelT;
  */
 public interface Atdl4jWidget<E extends Comparable<?>> 
 {
-	public void init(ControlT control, ParameterT parameter, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException;
+	public void init(ControlT control, ParameterT parameter, Atdl4jOptions aAtdl4jOptions);
 
 	public void reinit();
 

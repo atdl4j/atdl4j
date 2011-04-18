@@ -1,12 +1,8 @@
 package org.atdl4j.ui.app;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.core.StrategiesT;
@@ -85,7 +81,7 @@ import org.atdl4j.ui.impl.SelectedStrategyDetails;
  */
 public interface Atdl4jCompositePanel
 {
-	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException;
+	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions);
 
 	public Atdl4jOptions getAtdl4jOptions();
 	
@@ -101,17 +97,17 @@ public interface Atdl4jCompositePanel
 	 * @throws Atdl4jClassLoadException 
 	 * @throws FIXatdlFormatException 
 	 */
-	public void loadScreenWithFilteredStrategies() throws Atdl4jClassLoadException, FIXatdlFormatException;
+	public void loadScreenWithFilteredStrategies() throws FIXatdlFormatException;
 	
-	public boolean loadFixMessage( String aFixMessage ) throws Atdl4jClassLoadException;
+	public boolean loadFixMessage( String aFixMessage );
 
-	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage( String aFixMessage ) throws Atdl4jClassLoadException;
-	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage( String aFixMessage, String aInputSelectStrategyName ) throws Atdl4jClassLoadException, FIXatdlFormatException;
+	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage( String aFixMessage );
+	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage( String aFixMessage, String aInputSelectStrategyName ) throws FIXatdlFormatException;
 
 	/* 
 	 * @return StrategyT (non-null only if passes all validation)
 	 */
-	public StrategyT validateStrategy() throws ValidationException, Atdl4jClassLoadException;
+	public StrategyT validateStrategy() throws ValidationException;
 
 	public void setVisibleOkCancelButtonSection( boolean aVisible );
 	
@@ -129,14 +125,14 @@ public interface Atdl4jCompositePanel
 	public boolean isSelectedStrategyValidated();
 	public void setSelectedStrategyValidated(boolean aSelectedStrategyValidated);
 
-	public StrategiesUI getStrategiesUI() throws Atdl4jClassLoadException;
+	public StrategiesUI getStrategiesUI();
 
-	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler() throws Atdl4jClassLoadException;
+	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler();
 
-	public void initAtdl4jUserMessageHandler( Object parentOrShell ) throws Atdl4jClassLoadException;
+	public void initAtdl4jUserMessageHandler( Object parentOrShell );
 	
 	public void setStrategyEventListener(StrategyEventListener aStrategyEventListener);
 	
 	public SelectedStrategyDetails getSelectedStrategyDetails( boolean aPerformValidationFlag ) 
-	   throws ValidationException, Atdl4jClassLoadException;
+	   throws ValidationException;
 }

@@ -161,22 +161,12 @@ public class BooleanConverter
 	@Override
 	public String convertParameterValueToFixWireValue(Object aParameterValue)
 	{
-		// TODO: cleanup
-		BooleanT booleanT = null;
-		if ( getParameter() != null && getParameter() instanceof BooleanT )
-		{
-			booleanT = (BooleanT) getParameter();
-		}
-
-		Boolean bool = convertParameterValueToParameterComparable( aParameterValue ); 
-
-		// 2/1/2010 John Shields added
-		if ( bool != null )
-		{
-			return bool.booleanValue() ? BOOLEAN_TRUE : BOOLEAN_FALSE;
-		}
-		else
-			return null;
+	    Boolean bool = convertParameterValueToParameterComparable( aParameterValue ); 
+	    if ( bool != null )
+	    {
+		return bool.booleanValue() ? BOOLEAN_TRUE : BOOLEAN_FALSE;
+	    }
+	    else return null;
 
 // 2/1/2010 John Shields deleted
 // trueWireValue and falseWireValue are deprecated

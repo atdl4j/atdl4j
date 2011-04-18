@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.app.StrategySelectionPanel;
 import org.atdl4j.ui.app.StrategySelectionPanelListener;
@@ -62,18 +60,11 @@ public abstract class AbstractStrategySelectionPanel
 	}	
 	
 	protected void fireStrategySelectedEvent( StrategyT aStrategy )
-	{
-	    try {    
-        	for ( StrategySelectionPanelListener tempListener : listenerList )
+	{  
+		for ( StrategySelectionPanelListener tempListener : listenerList )
         	{
         		tempListener.strategySelected( aStrategy );
         	}
-	    } catch (Atdl4jClassLoadException ex) {
-		String strategyName = aStrategy.getName() == null ? "" : ": " + aStrategy.getName();		
-		logger.info( "Atdl4jClassLoadException occured while selecting strategy" + strategyName );
-		if (Atdl4jConfig.getConfig().isThrowEventRuntimeExceptions())
-		    throw new RuntimeException("Error while selecting strategy" + strategyName,	ex);
-	    }
 	}
 
 

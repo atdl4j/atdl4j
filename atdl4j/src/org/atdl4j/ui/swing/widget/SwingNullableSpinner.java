@@ -39,8 +39,9 @@ public class SwingNullableSpinner extends JSpinner {
 	}
 	
 	public class SpinnerNumberModelNull extends AbstractSpinnerModel implements Serializable {
-		private Number	stepSize, value;
-		private Comparable	minimum, maximum;
+	    	private static final long serialVersionUID = -7274426043990492783L;
+		private Number stepSize, value;
+		private Comparable minimum, maximum;
 		
 		public SpinnerNumberModelNull(Number value, Comparable minimum, Comparable maximum, Number stepSize) {
 			this.value = value;
@@ -177,6 +178,8 @@ public class SwingNullableSpinner extends JSpinner {
 	}
 	
 	public static class NumberEditorNull extends DefaultEditor {
+	    	private static final long serialVersionUID = 4927264073154690869L;
+
 		private static String getDefaultPattern(Locale locale) {
 			ResourceBundle rb = LocaleData.getNumberFormatData(locale);
 			String[] all = rb.getStringArray("NumberPatterns");
@@ -226,6 +229,7 @@ public class SwingNullableSpinner extends JSpinner {
 	}
 	
 	private static class NumberEditorFormatterNull extends NumberFormatter {
+	   	private static final long serialVersionUID = 4731911867350591824L;
 		private final SpinnerNumberModelNull	model;
 		
 		NumberEditorFormatterNull(SpinnerNumberModelNull model, NumberFormat format) {

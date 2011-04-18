@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.ui.app.FixMsgLoadPanel;
 import org.atdl4j.ui.app.FixMsgLoadPanelListener;
 
@@ -50,7 +49,7 @@ public abstract class AbstractFixMsgLoadPanel
 		listenerList.remove( aFixMsgLoadPanelListener );
 	}	
 	
-	protected void fireFixMsgLoadSelectedEvent( String aFixMsg ) throws Atdl4jClassLoadException
+	protected void fireFixMsgLoadSelectedEvent( String aFixMsg )
 	{
 		for ( FixMsgLoadPanelListener tempListener : listenerList )
 		{

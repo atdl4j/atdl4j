@@ -1,7 +1,6 @@
 package org.atdl4j.ui.app.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.Atdl4jHelper;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.data.fix.FIXMessageParser;
@@ -75,7 +73,7 @@ public abstract class AbstractAtdl4jCompositePanel
 // 12/8/2010 Scott Atwell added
 	List<StrategyT> lastFilteredStrategyList = null;
 
-	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions ) throws Atdl4jClassLoadException
+	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions )
 	{
 		setAtdl4jOptions( aAtdl4jOptions );
 		setParentOrShell( aParentOrShell );
@@ -159,7 +157,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @see org.atdl4j.ui.app.StrategySelectionPanelListener#strategySelected(org.atdl4j.fixatdl.core.StrategyT, int)
 	 */
 	@Override
-	public void strategySelected(StrategyT aStrategy) throws Atdl4jClassLoadException
+	public void strategySelected(StrategyT aStrategy)
 	{
 		setSelectedStrategy( aStrategy );
 		setSelectedStrategyValidated( false );
@@ -184,7 +182,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	/* 
 	 * @return StrategyT (non-null only if passes all validation)
 	 */
-	public StrategyT validateStrategy() throws ValidationException, Atdl4jClassLoadException 
+	public StrategyT validateStrategy() throws ValidationException 
 	{
 				
 		if ( (Atdl4jConfig.getConfig() != null) && 
@@ -210,7 +208,7 @@ public abstract class AbstractAtdl4jCompositePanel
 		}
 	}	
 	
-	public StrategyT validateStrategyWithoutCatchingAllExceptions() throws ValidationException, Atdl4jClassLoadException 
+	public StrategyT validateStrategyWithoutCatchingAllExceptions() throws ValidationException 
 	{
 		StrategyT tempSelectedStrategy = getSelectedStrategy();
 		
@@ -237,7 +235,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	}
 	
 	public SelectedStrategyDetails getSelectedStrategyDetails( boolean aPerformValidationFlag ) 
-		throws ValidationException, Atdl4jClassLoadException
+		throws ValidationException
 	{
 		StrategyT tempSelectedStrategy = getSelectedStrategy();
 		
@@ -338,7 +336,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @throws Atdl4jClassLoadException 
 	 * @throws FIXatdlFormatException 
 	 */
-	public void loadScreenWithFilteredStrategies() throws Atdl4jClassLoadException
+	public void loadScreenWithFilteredStrategies()
 	{
 		// -- (aSelectStrategyName=null) --
 		loadScreenWithFilteredStrategies( null );
@@ -350,7 +348,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @throws FIXatdlFormatException 
 	 * @parm aSelectStrategyName
 	 */
-	public void loadScreenWithFilteredStrategies( String aSelectStrategyName ) throws Atdl4jClassLoadException
+	public void loadScreenWithFilteredStrategies( String aSelectStrategyName )
 	{
 		// obtain filtered StrategyList
 		List<StrategyT> tempFilteredStrategyList = getStrategiesFilteredStrategyList();
@@ -430,11 +428,7 @@ public abstract class AbstractAtdl4jCompositePanel
         			}
 			} catch (FIXatdlFormatException ex) {
 			    	logger.error( "FIXatdlFormatException occured while loading Strategies");
-				try {
-				    getAtdl4jUserMessageHandler().displayException( "Error", "ERROR during loadScreenWithFilteredStrategies()", ex );
-				} catch (Atdl4jClassLoadException ex2) {
-				    logger.error("Could not get UserMessageHandler while processing FIXatdlFormatException");			    
-				}
+			    	getAtdl4jUserMessageHandler().displayException( "Error", "ERROR during loadScreenWithFilteredStrategies()", ex );
 			}
 			
 			// -- Reduce screen re-draw/flash (doesn't really work for SWT, though) --
@@ -445,7 +439,7 @@ public abstract class AbstractAtdl4jCompositePanel
 		setLastFilteredStrategyList( tempFilteredStrategyList );
 	}
 	
-	public boolean loadFixMessage( String aFixMessage ) throws Atdl4jClassLoadException 
+	public boolean loadFixMessage( String aFixMessage ) 
 	{
 		logger.info("Loading FIX string " + aFixMessage);
 		
@@ -647,7 +641,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @return the StrategyDescriptionPanel
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public StrategyDescriptionPanel getStrategyDescriptionPanel() throws Atdl4jClassLoadException 
+	public StrategyDescriptionPanel getStrategyDescriptionPanel() 
 	{
 		if ( strategyDescriptionPanel == null )
 		{
@@ -660,7 +654,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @return the StrategySelectionPanel
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public StrategySelectionPanel getStrategySelectionPanel() throws Atdl4jClassLoadException 
+	public StrategySelectionPanel getStrategySelectionPanel() 
 	{
 		if ( strategySelectionPanel == null )
 		{
@@ -673,7 +667,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @return
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public StrategiesUI getStrategiesUI() throws Atdl4jClassLoadException
+	public StrategiesUI getStrategiesUI()
 	{
 		if ( strategiesUI == null )
 		{
@@ -687,7 +681,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @return the Atdl4jUserMessageHandler
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler() throws Atdl4jClassLoadException 
+	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler() 
 	{
 		if ( atdl4jUserMessageHandler == null )
 		{
@@ -707,7 +701,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @param parentOrShell
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public void initAtdl4jUserMessageHandler( Object parentOrShell ) throws Atdl4jClassLoadException
+	public void initAtdl4jUserMessageHandler( Object parentOrShell )
 	{
 		getAtdl4jUserMessageHandler().init(  parentOrShell, getAtdl4jOptions() );
 	}
@@ -778,7 +772,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @see org.atdl4j.ui.app.Atdl4jCompositePanel#loadScreenWithFilteredStrategiesAndLoadFixMessage(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage(String aFixMessage, String aInputSelectStrategyName) throws Atdl4jClassLoadException, FIXatdlFormatException
+	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage(String aFixMessage, String aInputSelectStrategyName) throws FIXatdlFormatException
 	{
 		getAtdl4jOptions().getInputAndFilterData().setInputSelectStrategyName( aInputSelectStrategyName );
 // TODO 11/29/2010 Scott Atwell -- ?? further opportunity to improve the behavior/performance of combination of both of these...
@@ -796,7 +790,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	 * @see org.atdl4j.ui.app.Atdl4jCompositePanel#loadScreenWithFilteredStrategiesAndLoadFixMessage(java.lang.String)
 	 */
 	@Override
-	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage(String aFixMessage) throws Atdl4jClassLoadException
+	public boolean loadScreenWithFilteredStrategiesAndLoadFixMessage(String aFixMessage)
 	{
 // TODO 11/29/2010 Scott Atwell -- ?? further opportunity to improve the behavior/performance of combination of both of these...
 		loadScreenWithFilteredStrategies();

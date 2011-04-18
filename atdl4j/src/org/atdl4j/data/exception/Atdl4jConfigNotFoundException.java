@@ -9,8 +9,8 @@ package org.atdl4j.data.exception;
  */
 public class Atdl4jConfigNotFoundException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = 3638444545494779721L;
+
     public Atdl4jConfigNotFoundException()
     {
 	super("Application Error: Atdl4j configuration not specified");

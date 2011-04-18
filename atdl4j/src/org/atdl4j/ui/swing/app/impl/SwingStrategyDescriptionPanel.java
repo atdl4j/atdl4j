@@ -1,6 +1,5 @@
 package org.atdl4j.ui.swing.app.impl;
 
-
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
@@ -10,10 +9,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.impl.AbstractStrategyDescriptionPanel;
-
 
 /**
  * Represents the Swing-specific Strategy Description GUI component.
@@ -23,9 +20,7 @@ import org.atdl4j.ui.app.impl.AbstractStrategyDescriptionPanel;
  */
 public class SwingStrategyDescriptionPanel 
 	extends AbstractStrategyDescriptionPanel
-{
-	private final Logger logger = Logger.getLogger(SwingStrategyDescriptionPanel.class);
-	
+{	
 // JPanel as we need TitledBorder	private Container container;
 	private JPanel container;
 	private JTextArea strategyDescription;

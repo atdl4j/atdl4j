@@ -11,8 +11,8 @@ package org.atdl4j.data.exception;
  */
 public class FIXatdlFormatException extends Exception {
 
-    private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = -5879202469838145293L;
+
     public FIXatdlFormatException(String message)
     {
 	super(message);

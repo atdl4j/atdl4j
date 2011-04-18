@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.ValidationRule;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
@@ -25,58 +24,31 @@ public class BaseStrategyUIFactory
 	protected static final Logger logger = Logger.getLogger( BaseStrategyUIFactory.class );
 	private static Atdl4jUserMessageHandler atdl4jUserMessageHandler = null;
 
-	public static StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer, Atdl4jOptions aAtdl4jOptions) throws FIXatdlFormatException, Atdl4jClassLoadException
+	public static StrategyUI createStrategyUI(StrategyT strategy, StrategiesT aStrategies, Map<String, ValidationRule> strategiesRules, Object parentContainer, Atdl4jOptions aAtdl4jOptions) throws FIXatdlFormatException
 	{
-		// -- Constructs a new instance every call --
-		String tempClassName = Atdl4jConfig.getConfig().getClassNameStrategyUI();
-		logger.debug( "getStrategyUI() loading class named: " + tempClassName );
-		StrategyUI strategyUI;
-		try
-		{
-			strategyUI = ((Class<StrategyUI>) Class.forName( tempClassName ) ).newInstance();
-		}
-		catch ( Exception e )
-		{
-			logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-			throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-		}
-		
-		if ( strategyUI != null )
-		{
-			strategyUI.init( strategy, aStrategies, aAtdl4jOptions, strategiesRules, parentContainer );
-		}
-		
+		StrategyUI strategyUI = Atdl4jConfig.getConfig().createStrategyUI();
+		strategyUI.init( strategy, aStrategies, aAtdl4jOptions, strategiesRules, parentContainer );
 		return strategyUI;
 	}
 
 	/**
 	 * @param atdl4jUserMessageHandler the atdl4jUserMessageHandler to set
 	 */
-	public void setAtdl4jUserMessageHandler(Atdl4jUserMessageHandler atdl4jUserMessageHandler)
+	public void setAtdl4jUserMessageHandler(Atdl4jUserMessageHandler anAtdl4jUserMessageHandler)
 	{
-		this.atdl4jUserMessageHandler = atdl4jUserMessageHandler;
+		atdl4jUserMessageHandler = anAtdl4jUserMessageHandler;
 	}
 
 	/**
 	 * @return the atdl4jUserMessageHandler
+	 * @throws Atdl4jClassLoadException 
 	 */
 	public static Atdl4jUserMessageHandler getAtdl4jUserMessageHandler()
 	{
-		if ( ( atdl4jUserMessageHandler == null ) && ( Atdl4jConfig.getConfig().getClassNameAtdl4jUserMessageHandler() != null ) )
+		if ( atdl4jUserMessageHandler == null )
 		{
-			String tempClassName = Atdl4jConfig.getConfig().getClassNameAtdl4jUserMessageHandler();
-			logger.debug( "getAtdl4jUserMessageHandler() loading class named: " + tempClassName );
-			try
-			{
-				atdl4jUserMessageHandler = ((Class<Atdl4jUserMessageHandler>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-		}
-		
+		    	atdl4jUserMessageHandler = Atdl4jConfig.getConfig().createAtdl4jUserMessageHandler();
+		}		
 		return atdl4jUserMessageHandler;
 	}
 }

@@ -3,7 +3,6 @@ package org.atdl4j.ui.swing.impl;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.ui.Atdl4jWidgetFactory;
@@ -21,7 +20,7 @@ public class SwingWidgetFactory
 	protected static final Logger logger = Logger.getLogger( SwingWidgetFactory.class );
 
 	// Used to create a single parameter widget
-	public static SwingWidget<?> createWidget(JPanel parent, ControlT control, ParameterT parameter, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory) throws Atdl4jClassLoadException
+	public static SwingWidget<?> createWidget(JPanel parent, ControlT control, ParameterT parameter, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory)
 	{
 		SwingWidget<?> parameterWidget = null;
 	

@@ -17,7 +17,6 @@ import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jTesterPanel;
 
@@ -44,12 +43,12 @@ public class SwingAtdl4jTesterPanel
 	private JTextField outputFixMessageText;
 
 	
-	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
+	public Object buildAtdl4jTesterPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
 		return buildAtdl4jTesterPanel( (JFrame) aParentOrShell, aAtdl4jOptions );
 	}
 	
-	public JFrame buildAtdl4jTesterPanel(JFrame frame, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
+	public JFrame buildAtdl4jTesterPanel(JFrame frame, Atdl4jOptions aAtdl4jOptions)
 	{
 		
 		JPanel mainPanel = new JPanel(new BorderLayout());
@@ -175,26 +174,10 @@ public class SwingAtdl4jTesterPanel
 			public void actionPerformed(ActionEvent e) {
                 		try {
                 		    validateButtonSelected();
-                		} catch (Atdl4jClassLoadException ex) {
-                		    logger.info("Validation Exception:", ex);
-                		    try {
-                			getAtdl4jUserMessageHandler().displayException(
-                				"Validation Exception", "", ex);
-                		    } catch (Atdl4jClassLoadException ex2) {
-                			logger.info(
-                				"Could not load UserMessageHandler while processing Atdl4jClassLoadException",
-                				ex2);
-                		    }
                 		} catch (ValidationException ex) {
                 		    logger.info("Validation Exception:", ex);
-                		    try {
-                			getAtdl4jUserMessageHandler().displayException(
+               			    getAtdl4jUserMessageHandler().displayException(
                 				"Validation Exception", "", ex);
-                		    } catch (Atdl4jClassLoadException ex2) {
-                			logger.info(
-                				"Could not load UserMessageHandler while processing ValidationException",
-                				ex2);
-                		    }
                 		}
 			}
 		});

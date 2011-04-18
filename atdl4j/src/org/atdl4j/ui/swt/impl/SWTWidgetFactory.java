@@ -2,7 +2,6 @@ package org.atdl4j.ui.swt.impl;
 
 import org.eclipse.swt.widgets.Composite;
 import org.apache.log4j.Logger;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.ui.Atdl4jWidgetFactory;
@@ -20,7 +19,7 @@ public class SWTWidgetFactory
 	protected static final Logger logger = Logger.getLogger( SWTWidgetFactory.class );
 
 	// Used to create a single parameter widget
-	public static SWTWidget<?> createWidget(Composite parent, ControlT control, ParameterT parameter, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory) throws Atdl4jClassLoadException
+	public static SWTWidget<?> createWidget(Composite parent, ControlT control, ParameterT parameter, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory)
 	{
 		SWTWidget<?> parameterWidget = null;
 	

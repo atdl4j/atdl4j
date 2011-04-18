@@ -1,10 +1,8 @@
 package org.atdl4j.ui.app.impl;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jConfiguration;
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.app.Atdl4jTesterPanel;
 import org.atdl4j.ui.app.Atdl4jTesterPanelListener;
@@ -21,8 +19,6 @@ import org.atdl4j.ui.impl.SelectedStrategyDetails;
 public abstract class AbstractAtdl4jTesterApp
 	implements Atdl4jTesterPanelListener
 {
-	private final Logger logger = Logger.getLogger(AbstractAtdl4jTesterApp.class);
-
 	static Atdl4jOptions atdl4jOptions;
 	Object parentOrShell;  // SWT: Shell, Swing: JFrame, etc
 	
@@ -73,7 +69,7 @@ public abstract class AbstractAtdl4jTesterApp
 	}
 	
 
-	protected void init( String[] args, Atdl4jConfiguration aAtdl4jConfiguration, Atdl4jOptions aAtdl4jOptions, Object aParentOrShell ) throws Atdl4jClassLoadException
+	protected void init( String[] args, Atdl4jConfiguration aAtdl4jConfiguration, Atdl4jOptions aAtdl4jOptions, Object aParentOrShell )
 	{
 		Atdl4jConfig.setConfig( aAtdl4jConfiguration );
 		
@@ -131,7 +127,7 @@ public abstract class AbstractAtdl4jTesterApp
 	 * @return the Atdl4jTesterPanel
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public Atdl4jTesterPanel getAtdl4jTesterPanel() throws Atdl4jClassLoadException 
+	public Atdl4jTesterPanel getAtdl4jTesterPanel() 
 	{
 		if ( atdl4jTesterPanel == null )
 		{
@@ -144,7 +140,6 @@ public abstract class AbstractAtdl4jTesterApp
 	
 	public void okButtonSelected()
 	{
-		try {
 		    if ( getAtdl4jTesterPanel().getAtdl4jCompositePanel().getSelectedStrategy() != null )
 		    {
 			try
@@ -167,11 +162,6 @@ public abstract class AbstractAtdl4jTesterApp
 		    {
 		    	getAtdl4jTesterPanel().getAtdl4jUserMessageHandler().displayMessage( "Select Strategy", "Please select a Strategy" );
 		    }
-		} catch (Atdl4jClassLoadException ex) {
-			logger.info( "Atdl4jClassLoadException occured when OK button pressed" );
-			if (Atdl4jConfig.getConfig().isThrowEventRuntimeExceptions())
-			    throw new RuntimeException("Error when OK button pressed", ex);
-		} 
 	}
 
 
@@ -181,13 +171,7 @@ public abstract class AbstractAtdl4jTesterApp
 	@Override
 	public void cancelButtonSelected()
 	{
-		try {
 		    	getAtdl4jTesterPanel().closePanel();
-		} catch (Atdl4jClassLoadException ex) {
-			logger.info( "Atdl4jClassLoadException occured when Cancel button pressed" );
-			if (Atdl4jConfig.getConfig().isThrowEventRuntimeExceptions())
-			    throw new RuntimeException("Error when Cancel button pressed", ex);
-		}
 	}
 }
 

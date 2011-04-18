@@ -3,7 +3,6 @@ package org.atdl4j.ui.swt.app.impl;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jCompositePanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -29,12 +28,12 @@ public class SWTAtdl4jCompositePanel
 	
 	private Composite okCancelButtonSection;
 	
-	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
+	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
 		return buildAtdl4jCompositePanel( (Composite) aParentOrShell, aAtdl4jOptions );
 	}
 	
-	public Composite buildAtdl4jCompositePanel(Composite aParentComposite, Atdl4jOptions aAtdl4jOptions) throws Atdl4jClassLoadException
+	public Composite buildAtdl4jCompositePanel(Composite aParentComposite, Atdl4jOptions aAtdl4jOptions)
 	{
 		setParentComposite( aParentComposite );
 		

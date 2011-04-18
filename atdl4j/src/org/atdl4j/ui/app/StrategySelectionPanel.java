@@ -7,7 +7,6 @@ package org.atdl4j.ui.app;
 import java.util.List;
 
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.StrategyT;
 
 /**
@@ -23,11 +22,11 @@ public interface StrategySelectionPanel
 	
 	public void loadStrategyList( List<StrategyT> aStrategyList );
 
-	public void selectDropDownStrategyByStrategyName( String aStrategyName ) throws Atdl4jClassLoadException;
+	public void selectDropDownStrategyByStrategyName( String aStrategyName );
 	
-	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ) throws Atdl4jClassLoadException; 
+	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ); 
 	
-	public void selectFirstDropDownStrategy() throws Atdl4jClassLoadException;
+	public void selectFirstDropDownStrategy();
 
 	public Atdl4jOptions getAtdl4jOptions();
 	

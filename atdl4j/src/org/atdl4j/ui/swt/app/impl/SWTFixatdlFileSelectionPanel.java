@@ -1,7 +1,5 @@
 package org.atdl4j.ui.swt.app.impl;
 
-
-import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.impl.AbstractFixatdlFileSelectionPanel;
 import org.eclipse.swt.SWT;
@@ -28,7 +26,6 @@ import org.eclipse.swt.widgets.Text;
 public class SWTFixatdlFileSelectionPanel 
 	extends AbstractFixatdlFileSelectionPanel
 {
-	private final Logger logger = Logger.getLogger(SWTFixatdlFileSelectionPanel.class);
 	Composite parentComposite;
 	Composite composite;
 	

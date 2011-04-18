@@ -324,15 +324,7 @@ public class DecimalConverter
 		else if ( aValue instanceof Boolean )
 		{
 			Boolean bool = (Boolean) aValue;
-			if ( bool != null )
-			{
-				if ( bool )
-					tempBigDecimal = new BigDecimal( 1 );
-				else
-					tempBigDecimal = new BigDecimal( 0 );
-			}
-			else
-				return null;
+			tempBigDecimal =  new BigDecimal( bool ? 1 : 0 );
 		}
 		
 		if ( ( tempBigDecimal != null ) && ( isControlMultiplyBy100() ) )

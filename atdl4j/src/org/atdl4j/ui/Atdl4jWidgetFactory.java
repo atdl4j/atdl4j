@@ -5,7 +5,6 @@
 package org.atdl4j.ui;
 
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.fixatdl.layout.HiddenFieldT;
@@ -32,7 +31,7 @@ public interface Atdl4jWidgetFactory
  	 * @param parameter
  	 * @return (for SWT returns SWTWidget<?>)
  	 */
- 	public Atdl4jWidget<?> create(ControlT control, ParameterT parameter) throws Atdl4jClassLoadException;
+ 	public Atdl4jWidget<?> create(ControlT control, ParameterT parameter);
 
-	public Atdl4jWidget<?> createHiddenFieldT(HiddenFieldT control, ParameterT parameter) throws Atdl4jClassLoadException;
+	public Atdl4jWidget<?> createHiddenFieldT(HiddenFieldT control, ParameterT parameter);
 }

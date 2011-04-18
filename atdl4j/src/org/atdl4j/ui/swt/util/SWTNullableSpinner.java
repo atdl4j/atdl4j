@@ -101,7 +101,7 @@ public class SWTNullableSpinner extends Composite
 			}
 			else
 			{
-				BigDecimal tempBigDecimal = new BigDecimal( e.text );
+				new BigDecimal( e.text ); // validate text as a big decimal
 			}
 		} 
 		catch (NumberFormatException ex) 

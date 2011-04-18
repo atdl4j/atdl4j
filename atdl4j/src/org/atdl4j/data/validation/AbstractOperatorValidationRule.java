@@ -58,7 +58,7 @@ public abstract class AbstractOperatorValidationRule
 			case LT :
 				if ( value1 instanceof Comparable )
 				{
-					Comparable c = (Comparable) value1;
+					Comparable<Object> c = (Comparable<Object>) value1;
 					if ( c.compareTo( value2 ) >= 0 )
 					{
 						throw new ValidationException( target, "Rule tested: [" + value1 + " LT " + value2 + "]" );
@@ -73,7 +73,7 @@ public abstract class AbstractOperatorValidationRule
 			case LE :
 				if ( value1 instanceof Comparable )
 				{
-					Comparable c = (Comparable) value1;
+					Comparable<Object> c = (Comparable<Object>) value1;
 					if ( c.compareTo( value2 ) > 0 )
 					{
 						throw new ValidationException(target, "Rule tested: [" + value1 + " LE " + value2 + "]" );
@@ -88,7 +88,7 @@ public abstract class AbstractOperatorValidationRule
 			case GT :
 				if ( value1 instanceof Comparable )
 				{
-					Comparable c = (Comparable) value1;
+					Comparable<Object> c = (Comparable<Object>) value1;
 					if ( c.compareTo( value2 ) <= 0 )
 					{
 						throw new ValidationException(target, "Rule tested: [" + value1 + " GT " + value2 + "]" );
@@ -103,7 +103,7 @@ public abstract class AbstractOperatorValidationRule
 			case GE :
 				if ( value1 instanceof Comparable )
 				{
-					Comparable c = (Comparable) value1;
+					Comparable<Object> c = (Comparable<Object>) value1;
 					if ( c.compareTo( value2 ) < 0 )
 					{
 						throw new ValidationException(target, "Rule tested: [" + value1 + " GE " + value2 + "]" );

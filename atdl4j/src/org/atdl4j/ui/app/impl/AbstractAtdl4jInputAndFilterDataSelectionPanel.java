@@ -7,7 +7,6 @@ package org.atdl4j.ui.app.impl;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
@@ -26,8 +25,6 @@ public abstract class AbstractAtdl4jInputAndFilterDataSelectionPanel
 	implements Atdl4jInputAndFilterDataSelectionPanel,
 		Atdl4jInputAndFilterDataPanelListener
 {
-	private final Logger logger = Logger.getLogger(AbstractAtdl4jInputAndFilterDataSelectionPanel.class);
-
 	Atdl4jOptions atdl4jOptions;
 	Object parentOrShell;  // SWT: Shell, Swing: JFrame, etc
 	
@@ -119,24 +116,14 @@ public abstract class AbstractAtdl4jInputAndFilterDataSelectionPanel
 	
 	/**
 	 * @return the Atdl4jInputAndFilterDataPanel
+	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jInputAndFilterDataPanel getAtdl4jInputAndFilterDataPanel() 
 	{
-		if ( ( atdl4jInputAndFilterDataPanel == null ) && ( Atdl4jConfig.getConfig().getClassNameAtdl4jInputAndFilterDataPanel() != null ) )
+		if ( atdl4jInputAndFilterDataPanel == null )
 		{
-			String tempClassName = Atdl4jConfig.getConfig().getClassNameAtdl4jInputAndFilterDataPanel();
-			logger.debug( "getAtdl4jInputAndFilterDataPanel() loading class named: " + tempClassName );
-			try
-			{
-				atdl4jInputAndFilterDataPanel = ((Class<Atdl4jInputAndFilterDataPanel>) Class.forName( tempClassName ) ).newInstance();
-			}
-			catch ( Exception e )
-			{
-				logger.warn( "Exception attempting to load Class.forName( " + tempClassName + " ).  Catching/Re-throwing as IllegalStateException", e );
-				throw new IllegalStateException( "Exception attempting to load Class.forName( " + tempClassName + " )", e );
-			}
-		}
-		
+		    atdl4jInputAndFilterDataPanel = Atdl4jConfig.getConfig().createAtdl4jInputAndFilterDataPanel();
+		}		
 		return atdl4jInputAndFilterDataPanel;
 	}
 

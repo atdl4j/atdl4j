@@ -91,6 +91,7 @@ public abstract class AbstractAtdl4jConfiguration
 	private boolean catchAllStrategyLoadExceptions  = false;
 	private boolean catchAllValidationExceptions  = false;
 	private boolean throwEventRuntimeExceptions = true;
+	private boolean prevalidateClassLoaders = true;
 	
 	private boolean showStrategyDescription = true;
 	private boolean showTimezoneSelector = false;
@@ -183,6 +184,9 @@ public abstract class AbstractAtdl4jConfiguration
 		setClassNameFixMsgLoadPanel( getDefaultClassNameFixMsgLoadPanel() );
 		setClassNameStrategySelectionPanel( getDefaultClassNameStrategySelectionPanel() );
 		setClassNameStrategyDescriptionPanel( getDefaultClassNameStrategyDescriptionPanel() );
+		
+		// test for runtime exceptions
+		if (prevalidateClassLoaders) testClassLoaders();
 	}
 	
 
@@ -727,6 +731,13 @@ public abstract class AbstractAtdl4jConfiguration
 	}
 	
 	/**
+	 * @return the prevalidateClassLoaders
+	 */
+	public boolean isPrevalidateClassLoaders() {
+	    return prevalidateClassLoaders;
+	}
+
+	/**
 	 * @param aCatchAllMainlineExceptions the catchAllMainlineExceptions to set
 	 */
 	public void setCatchAllMainlineExceptions(boolean aCatchAllMainlineExceptions)
@@ -764,6 +775,13 @@ public abstract class AbstractAtdl4jConfiguration
 	public void setThrowEventRuntimeExceptions(
 		boolean throwEventRuntimeExceptions) {
 	    this.throwEventRuntimeExceptions = throwEventRuntimeExceptions;
+	}
+	
+	/**
+	 * @param prevalidateClassLoaders the prevalidateClassLoaders to set
+	 */
+	public void setPrevalidateClassLoaders(boolean prevalidateClassLoaders) {
+	    this.prevalidateClassLoaders = prevalidateClassLoaders;
 	}
 	
 	/**
@@ -881,134 +899,168 @@ public abstract class AbstractAtdl4jConfiguration
 	/**
 	 * Class factory methods
 	 */
-	private <E> E createClass(String aClassName) throws Atdl4jClassLoadException
+	private <E> E createClass(String aClassName)
 	{
 	    if (aClassName==null) throw new Atdl4jClassLoadException(aClassName);
 	    logger.debug( "Loading class: " + aClassName );
 	    try {
 		    return ((Class<E>) Class.forName( aClassName ) ).newInstance();		    
 	    } catch (InstantiationException e) {
-		    throw new Atdl4jClassLoadException(aClassName, e);
+		 throw new Atdl4jClassLoadException(aClassName, e);
 	    } catch (IllegalAccessException e) {
-		    throw new Atdl4jClassLoadException(aClassName, e);
+		throw new Atdl4jClassLoadException(aClassName, e);
 	    } catch (ClassNotFoundException e) {
-		    throw new Atdl4jClassLoadException(aClassName, e);
-	    } 
+		throw new Atdl4jClassLoadException(aClassName, e);
+	    }
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForCheckBoxListT() throws Atdl4jClassLoadException
+	
+	public Atdl4jWidget<?> createAtdl4jWidgetForCheckBoxListT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForCheckBoxListT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForCheckBoxT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForCheckBoxT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForCheckBoxT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForClockT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForClockT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForClockT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForDoubleSpinnerT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForDoubleSpinnerT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForDoubleSpinnerT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForDropDownListT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForDropDownListT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForDropDownListT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForEditableDropDownListT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForEditableDropDownListT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForEditableDropDownListT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForHiddenFieldT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForHiddenFieldT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForHiddenFieldT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForLabelT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForLabelT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForLabelT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForMultiSelectListT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForMultiSelectListT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForMultiSelectListT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForRadioButtonListT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForRadioButtonListT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForRadioButtonListT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForRadioButtonT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForRadioButtonT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForRadioButtonT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForSingleSelectListT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForSingleSelectListT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForSingleSelectListT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForSingleSpinnerT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForSingleSpinnerT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForSingleSpinnerT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForSliderT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForSliderT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForSliderT());
 	}
-	public Atdl4jWidget<?> createAtdl4jWidgetForTextFieldT() throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createAtdl4jWidgetForTextFieldT()
 	{
 	    return createClass(getClassNameAtdl4jWidgetForTextFieldT());
 	}
-	public Atdl4jCompositePanel createAtdl4jCompositePanel() throws Atdl4jClassLoadException
+	public Atdl4jCompositePanel createAtdl4jCompositePanel()
 	{
 	    return createClass(getClassNameAtdl4jCompositePanel());
 	}
-	public Atdl4jInputAndFilterDataPanel createAtdl4jInputAndFilterDataPanel() throws Atdl4jClassLoadException
+	public Atdl4jInputAndFilterDataPanel createAtdl4jInputAndFilterDataPanel()
 	{
 	    return createClass(getClassNameAtdl4jInputAndFilterDataPanel());
 	}
-	public Atdl4jInputAndFilterDataSelectionPanel createAtdl4jInputAndFilterDataSelectionPanel() throws Atdl4jClassLoadException
+	public Atdl4jInputAndFilterDataSelectionPanel createAtdl4jInputAndFilterDataSelectionPanel()
 	{
 	    return createClass(getClassNameAtdl4jInputAndFilterDataSelectionPanel());
 	}
-	public Atdl4jTesterPanel createAtdl4jTesterPanel() throws Atdl4jClassLoadException
+	public Atdl4jTesterPanel createAtdl4jTesterPanel()
 	{
 	    return createClass(getClassNameAtdl4jTesterPanel());
 	}
-	public Atdl4jUserMessageHandler createAtdl4jUserMessageHandler() throws Atdl4jClassLoadException
+	public Atdl4jUserMessageHandler createAtdl4jUserMessageHandler()
 	{
 	    return createClass(getClassNameAtdl4jUserMessageHandler());
 	}
-	public Atdl4jWidgetFactory createAtdl4jWidgetFactory() throws Atdl4jClassLoadException
+	public Atdl4jWidgetFactory createAtdl4jWidgetFactory()
 	{
 	    return createClass(getClassNameAtdl4jWidgetFactory());
 	}
-	public FixatdlFileSelectionPanel createFixatdlFileSelectionPanel() throws Atdl4jClassLoadException
+	public FixatdlFileSelectionPanel createFixatdlFileSelectionPanel()
 	{
 	    return createClass(getClassNameFixatdlFileSelectionPanel());
 	}
-	public FixMsgLoadPanel createFixMsgLoadPanel() throws Atdl4jClassLoadException
+	public FixMsgLoadPanel createFixMsgLoadPanel()
 	{
 	    return createClass(getClassNameFixMsgLoadPanel());
 	}
-	public StrategiesUI createStrategiesUI() throws Atdl4jClassLoadException
+	public StrategiesUI createStrategiesUI()
 	{
 	    return createClass(getClassNameStrategiesUI());
 	}
-	public StrategyDescriptionPanel createStrategyDescriptionPanel() throws Atdl4jClassLoadException
+	public StrategyDescriptionPanel createStrategyDescriptionPanel()
 	{
 	    return createClass(getClassNameStrategyDescriptionPanel());
 	}
-	public StrategyPanelHelper createStrategyPanelHelper() throws Atdl4jClassLoadException
+	public StrategyPanelHelper createStrategyPanelHelper()
 	{
 	    return createClass(getClassNameStrategyPanelHelper());
 	}
-	public StrategySelectionPanel createStrategySelectionPanel() throws Atdl4jClassLoadException
+	public StrategySelectionPanel createStrategySelectionPanel()
 	{
 	    return createClass(getClassNameStrategySelectionPanel());
 	}
-	public StrategyUI createStrategyUI() throws Atdl4jClassLoadException
+	public StrategyUI createStrategyUI()
 	{
 	    return createClass(getClassNameStrategyUI());
 	}
-	public TypeConverterFactory createTypeConverterFactory() throws Atdl4jClassLoadException
+	public TypeConverterFactory createTypeConverterFactory()
 	{
 	    return createClass(getClassNameTypeConverterFactory());
+	}
+	
+	public void testClassLoaders()
+	{
+        	createAtdl4jWidgetForCheckBoxListT();
+        	createAtdl4jWidgetForCheckBoxT();
+        	createAtdl4jWidgetForClockT();
+        	createAtdl4jWidgetForDoubleSpinnerT();
+        	createAtdl4jWidgetForDropDownListT();
+        	createAtdl4jWidgetForEditableDropDownListT();
+        	createAtdl4jWidgetForHiddenFieldT();
+        	createAtdl4jWidgetForLabelT();
+        	createAtdl4jWidgetForMultiSelectListT();
+        	createAtdl4jWidgetForRadioButtonListT();
+        	createAtdl4jWidgetForRadioButtonT();
+        	createAtdl4jWidgetForSingleSelectListT();
+        	createAtdl4jWidgetForSingleSpinnerT();
+        	createAtdl4jWidgetForSliderT();
+        	createAtdl4jWidgetForTextFieldT();
+        	createAtdl4jCompositePanel();
+        	createAtdl4jInputAndFilterDataPanel();
+        	createAtdl4jInputAndFilterDataSelectionPanel();
+        	createAtdl4jTesterPanel();
+        	createAtdl4jUserMessageHandler();
+        	createAtdl4jWidgetFactory();
+        	createFixatdlFileSelectionPanel();
+        	createFixMsgLoadPanel();
+        	createStrategiesUI();
+        	createStrategyDescriptionPanel();
+        	createStrategyPanelHelper();
+        	createStrategySelectionPanel();
+        	createStrategyUI();
+        	createTypeConverterFactory();
 	}
 }

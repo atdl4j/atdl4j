@@ -1,9 +1,7 @@
 package org.atdl4j.ui.impl;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.fixatdl.core.IntT;
 import org.atdl4j.fixatdl.core.LengthT;
 import org.atdl4j.fixatdl.core.LocalMktDateT;
@@ -50,9 +48,7 @@ import org.atdl4j.ui.Atdl4jWidgetFactory;
  */
 public class BaseAtdl4jWidgetFactory
 		implements Atdl4jWidgetFactory
-{
-	private final Logger logger = Logger.getLogger(BaseAtdl4jWidgetFactory.class);
-	
+{	
 	private Atdl4jOptions atdl4jOptions;
 	
 	// Invoke init() following no-arg constructor
@@ -70,7 +66,7 @@ public class BaseAtdl4jWidgetFactory
  	 * @param parameter
  	 * @return (for SWT returns SWTWidget<?>)
  	 */
- 	public Atdl4jWidget<?> create(ControlT control, ParameterT parameter) throws Atdl4jClassLoadException 
+ 	public Atdl4jWidget<?> create(ControlT control, ParameterT parameter) 
 	{
 		if ( control instanceof CheckBoxT )
 		{
@@ -184,7 +180,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @return
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public Atdl4jWidget<?> createCheckBoxListT(CheckBoxListT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createCheckBoxListT(CheckBoxListT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForCheckBoxListT = Atdl4jConfig.getConfig().createAtdl4jWidgetForCheckBoxListT();
 	    atdl4jWidgetForCheckBoxListT.init( control, parameter, getAtdl4jOptions() );
@@ -199,7 +195,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @return
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public Atdl4jWidget<?> createCheckBoxT(CheckBoxT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createCheckBoxT(CheckBoxT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForCheckBoxT = Atdl4jConfig.getConfig().createAtdl4jWidgetForCheckBoxT();
 	    atdl4jWidgetForCheckBoxT.init( control, parameter, getAtdl4jOptions() );
@@ -214,7 +210,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @return
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public Atdl4jWidget<?> createClockT(ClockT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createClockT(ClockT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForClockT = Atdl4jConfig.getConfig().createAtdl4jWidgetForClockT();
 	    atdl4jWidgetForClockT.init( control, parameter, getAtdl4jOptions() );
@@ -229,7 +225,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @return
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public Atdl4jWidget<?> createDoubleSpinnerT(DoubleSpinnerT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createDoubleSpinnerT(DoubleSpinnerT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForDoubleSpinnerT = Atdl4jConfig.getConfig().createAtdl4jWidgetForDoubleSpinnerT();
 	    atdl4jWidgetForDoubleSpinnerT.init( control, parameter, getAtdl4jOptions() );
@@ -244,7 +240,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @return
 	 * @throws Atdl4jClassLoadException 
 	 */
-	public Atdl4jWidget<?> createDropDownListT(DropDownListT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createDropDownListT(DropDownListT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForDropDownListT = Atdl4jConfig.getConfig().createAtdl4jWidgetForDropDownListT();
 	    atdl4jWidgetForDropDownListT.init( control, parameter, getAtdl4jOptions() );
@@ -258,7 +254,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @param parameter
 	 * @return
 	 */
-	public Atdl4jWidget<?> createEditableDropDownListT(EditableDropDownListT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createEditableDropDownListT(EditableDropDownListT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForEditableDropDownListT = Atdl4jConfig.getConfig().createAtdl4jWidgetForEditableDropDownListT();
 	    atdl4jWidgetForEditableDropDownListT.init( control, parameter, getAtdl4jOptions() );
@@ -272,7 +268,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @param parameter
 	 * @return
 	 */
-	public Atdl4jWidget<?> createHiddenFieldT(HiddenFieldT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createHiddenFieldT(HiddenFieldT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForHiddenFieldT = Atdl4jConfig.getConfig().createAtdl4jWidgetForHiddenFieldT();
 	    atdl4jWidgetForHiddenFieldT.init( control, parameter, getAtdl4jOptions() );
@@ -286,7 +282,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @param parameter
 	 * @return
 	 */
-	public Atdl4jWidget<?> createLabelT(LabelT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createLabelT(LabelT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForLabelT = Atdl4jConfig.getConfig().createAtdl4jWidgetForLabelT();
 	    atdl4jWidgetForLabelT.init( control, parameter, getAtdl4jOptions() );
@@ -300,7 +296,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @param parameter
 	 * @return
 	 */
-	public Atdl4jWidget<?> createMultiSelectListT(MultiSelectListT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createMultiSelectListT(MultiSelectListT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForMultiSelectListT = Atdl4jConfig.getConfig().createAtdl4jWidgetForMultiSelectListT();
 	    atdl4jWidgetForMultiSelectListT.init( control, parameter, getAtdl4jOptions() );
@@ -314,7 +310,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @param parameter
 	 * @return
 	 */
-	public Atdl4jWidget<?> createRadioButtonListT(RadioButtonListT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createRadioButtonListT(RadioButtonListT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForRadioButtonListT = Atdl4jConfig.getConfig().createAtdl4jWidgetForRadioButtonListT();
 	    atdl4jWidgetForRadioButtonListT.init( control, parameter, getAtdl4jOptions() );
@@ -328,7 +324,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @param parameter
 	 * @return
 	 */
-	public Atdl4jWidget<?> createRadioButtonT(RadioButtonT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createRadioButtonT(RadioButtonT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForRadioButtonT = Atdl4jConfig.getConfig().createAtdl4jWidgetForRadioButtonT();
 	    atdl4jWidgetForRadioButtonT.init( control, parameter, getAtdl4jOptions() );
@@ -342,7 +338,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @param parameter
 	 * @return
 	 */
-	public Atdl4jWidget<?> createSingleSelectListT(SingleSelectListT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createSingleSelectListT(SingleSelectListT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForSingleSelectListT = Atdl4jConfig.getConfig().createAtdl4jWidgetForSingleSelectListT();
 	    atdl4jWidgetForSingleSelectListT.init( control, parameter, getAtdl4jOptions() );
@@ -356,7 +352,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @param parameter
 	 * @return
 	 */
-	public Atdl4jWidget<?> createSingleSpinnerT(SingleSpinnerT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createSingleSpinnerT(SingleSpinnerT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForSingleSpinnerT = Atdl4jConfig.getConfig().createAtdl4jWidgetForSingleSpinnerT();
 	    atdl4jWidgetForSingleSpinnerT.init( control, parameter, getAtdl4jOptions() );
@@ -370,7 +366,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @param parameter
 	 * @return
 	 */
-	public Atdl4jWidget<?> createSliderT(SliderT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createSliderT(SliderT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForSliderT = Atdl4jConfig.getConfig().createAtdl4jWidgetForSliderT();
 	    atdl4jWidgetForSliderT.init( control, parameter, getAtdl4jOptions() );
@@ -384,7 +380,7 @@ public class BaseAtdl4jWidgetFactory
 	 * @param parameter
 	 * @return
 	 */
-	public Atdl4jWidget<?> createTextFieldT(TextFieldT control, ParameterT parameter) throws Atdl4jClassLoadException
+	public Atdl4jWidget<?> createTextFieldT(TextFieldT control, ParameterT parameter)
 	{
 	    Atdl4jWidget<?> atdl4jWidgetForTextFieldT = Atdl4jConfig.getConfig().createAtdl4jWidgetForTextFieldT();
 	    atdl4jWidgetForTextFieldT.init( control, parameter, getAtdl4jOptions() );

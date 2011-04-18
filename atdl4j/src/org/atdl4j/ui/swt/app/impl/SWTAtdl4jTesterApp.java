@@ -6,6 +6,7 @@ package org.atdl4j.ui.swt.app.impl;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
+import org.atdl4j.config.Atdl4jConfiguration;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jTesterApp;
 import org.atdl4j.ui.swt.config.SWTAtdl4jConfiguration;
@@ -36,14 +37,15 @@ public class SWTAtdl4jTesterApp
 	 */
 	public static void main(String[] args) throws Exception
 	{
+	    	Atdl4jConfiguration config = new SWTAtdl4jConfiguration();
 		SWTAtdl4jTesterApp tempSWTAtdl4jTesterApp = new SWTAtdl4jTesterApp();
 		try
 		{
-			tempSWTAtdl4jTesterApp.mainLine( args );
+			tempSWTAtdl4jTesterApp.mainLine( args, config );
 		}
 		catch (Exception e)
 		{
-			if ( Atdl4jConfig.getConfig() != null && Atdl4jConfig.getConfig().isCatchAllMainlineExceptions() )
+			if ( Atdl4jConfig.getConfig().isCatchAllMainlineExceptions() )
 			{
 				tempSWTAtdl4jTesterApp.logger.warn( "Fatal Exception in mainLine", e );
 			}
@@ -54,7 +56,7 @@ public class SWTAtdl4jTesterApp
 		}
 	}
 
-	public void mainLine(String[] args) throws Exception
+	public void mainLine(String[] args, Atdl4jConfiguration config) throws Exception
 	{
 		// -- Setup SWT-specific Display and Shell --
 		Display display = new Display();
@@ -69,7 +71,7 @@ public class SWTAtdl4jTesterApp
 
 		// -- Delegate setup to AbstractAtdl4jTesterApp, construct a new
 		// SWT-specific Atdl4jOptions --
-		init( args, new SWTAtdl4jConfiguration(), new Atdl4jOptions(), shell );
+		init( args, config, new Atdl4jOptions(), shell );
 
 		// -- Build the SWT.Composite from Atdl4jTesterPanel (** core GUI component **) --
 		getAtdl4jTesterPanel().buildAtdl4jTesterPanel( shell, getAtdl4jOptions() );
