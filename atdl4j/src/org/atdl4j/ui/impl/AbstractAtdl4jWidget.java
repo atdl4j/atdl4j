@@ -279,7 +279,11 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 		String value = getParameterFixWireValue();
 		if ( value != null )
 		{
-			if ( getParameter().getFixTag() != null )
+			if ( getParameter().getFixTag() != null 
+				    && getParameter().getFixTag().intValue()!= Atdl4jConstants.TAG_NO_STRATEGY_PARAMETERS 
+				    && getParameter().getFixTag().intValue()!= Atdl4jConstants.TAG_STRATEGY_PARAMETER_NAME
+				    && getParameter().getFixTag().intValue()!= Atdl4jConstants.TAG_STRATEGY_PARAMETER_TYPE
+				    && getParameter().getFixTag().intValue()!= Atdl4jConstants.TAG_STRATEGY_PARAMETER_VALUE)
 			{
 					builder.onField( getParameter().getFixTag().intValue(), value.toString() );
 			}
