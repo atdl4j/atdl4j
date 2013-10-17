@@ -178,12 +178,7 @@ public class SwingNullableSpinner extends JSpinner {
 	    	private static final long serialVersionUID = 4927264073154690869L;
 
 		private static DecimalFormat getDefaultPattern(Locale locale) {
-			
 			return (DecimalFormat) NumberFormat.getNumberInstance(locale);
-			
-//			ResourceBundle rb = LocaleData.getNumberFormatData(locale);
-//			String[] all = rb.getStringArray("NumberPatterns");
-//			return all[0];
 		}
 		
 		public NumberEditorNull(JSpinner spinner) {
