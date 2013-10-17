@@ -3,7 +3,7 @@
 	<groupId>org.atdl4j</groupId>
 	<version>1.0-beta-2-SNAPSHOT</version>
 	<artifactId>atdl4j-ui</artifactId>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<name>atdl4j-ui</name>
 	<developers>
 		<developer>
@@ -25,7 +25,82 @@
 			</roles>
 		</developer>
 	</developers>
+	
+	<repositories>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+	</repositories>
+	
+	<scm>
+		<connection>scm:git:git://github.com/atdl4j/atdl4j.git</connection>
+		<developerConnection>scm:git:git@github.com:atdl4j/atdl4j.git</developerConnection>
+		<url>http://github.com/atdl4j/atdl4j</url>
+	</scm>
+	
+	<distributionManagement>
+		<repository>
+			<id>googlecode</id>
+			<name>atdl4j googlecode</name>
+			<url>svn:https://atdl4j.googlecode.com/svn/repo</url>
+		</repository>
+		<snapshotRepository>
+			<id>googlecode-snapshots</id>
+			<name>atdl4j googlecode Snapshots</name>
+			<url>svn:https://atdl4j.googlecode.com/svn/repo</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	<properties>
+		<jdkVersion>1.7</jdkVersion>
+		<swt.native.groupId>org.eclipse.swt</swt.native.groupId>
+		<swt.native.artifactId>org.eclipse.swt.win32.win32.x86_64</swt.native.artifactId>
+		<swt.native.version>4.3</swt.native.version>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.5.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.10</version>
+		</dependency>
+		<dependency>
+			<groupId>${swt.native.groupId}</groupId>
+			<artifactId>${swt.native.artifactId}</artifactId>
+			<version>${swt.native.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jidesoft</groupId>
+			<artifactId>jide-oss</artifactId>
+			<version>3.5.8</version>
+		</dependency>
+	</dependencies>
+		
 	<build>
+		<plugins>
+			<plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+					<configuration>
+						<source>${jdkVersion}</source>
+						<target>${jdkVersion}</target>
+					</configuration>
+			</plugin>
+		</plugins>
 		<extensions>
 			<extension>
 				<groupId>org.jvnet.wagon-svn</groupId>
@@ -34,35 +109,21 @@
 			</extension>
 		</extensions>
 	</build>
-	<repositories>
-		<repository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/2</url>
-		</repository>
-	</repositories>    
-	<modules>
-		<module>atdl4j-ui-swt</module>
-	</modules>
-	<scm>
-		<connection>scm:git:git://github.com/tuler/atdl4j-ui.git</connection>
-		<developerConnection>scm:git:git@github.com:tuler/atdl4j-ui.git</developerConnection>
-		<url>http://github.com/tuler/atdl4j-ui</url>
-	</scm>
-	<distributionManagement>
-		<repository>
-			<id>googlecode</id>
-			<name>atdl4j googlecode</name>
-			<url>
-				svn:https://atdl4j.googlecode.com/svn/repo
-			</url>
-		</repository>
-		<snapshotRepository>
-			<id>googlecode-snapshots</id>
-			<name>atdl4j googlecode Snapshots</name>
-			<url>
-				svn:https://atdl4j.googlecode.com/svn/repo
-			</url>
-		</snapshotRepository>
-	</distributionManagement>
+	
+	<profiles>
+		<profile>
+			<id>macos</id>
+			<activation>
+				<os>
+					<family>mac</family>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.native.groupId>org.eclipse.swt.cocoa.macosx</swt.native.groupId>
+				<swt.native.artifactId>x86_64</swt.native.artifactId>
+				<swt.native.version>3.5.1-v3555a</swt.native.version>
+			</properties>
+		</profile>
+	</profiles>
 </project>

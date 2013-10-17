@@ -7,7 +7,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.swing.AbstractSpinnerModel;
 import javax.swing.JComponent;
@@ -18,8 +17,6 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
-
-import sun.util.resources.LocaleData;
 
 
 public class SwingNullableSpinner extends JSpinner {
@@ -180,10 +177,13 @@ public class SwingNullableSpinner extends JSpinner {
 	public static class NumberEditorNull extends DefaultEditor {
 	    	private static final long serialVersionUID = 4927264073154690869L;
 
-		private static String getDefaultPattern(Locale locale) {
-			ResourceBundle rb = LocaleData.getNumberFormatData(locale);
-			String[] all = rb.getStringArray("NumberPatterns");
-			return all[0];
+		private static DecimalFormat getDefaultPattern(Locale locale) {
+			
+			return (DecimalFormat) NumberFormat.getNumberInstance(locale);
+			
+//			ResourceBundle rb = LocaleData.getNumberFormatData(locale);
+//			String[] all = rb.getStringArray("NumberPatterns");
+//			return all[0];
 		}
 		
 		public NumberEditorNull(JSpinner spinner) {
