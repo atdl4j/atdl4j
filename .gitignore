@@ -1,6 +1,4 @@
 .project
+.classpath
 .settings/
-atdl4j/.classpath
-atdl4j/.project
-atdl4j/.settings
-atdl4j/target
+target/

@@ -115,6 +115,4 @@ public class SWTAtdl4jUserMessageHandler
 			return null;
 		}
 	}
-
-	
 }
