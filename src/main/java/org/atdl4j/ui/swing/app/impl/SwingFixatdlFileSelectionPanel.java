@@ -2,6 +2,7 @@ package org.atdl4j.ui.swing.app.impl;
 
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -11,7 +12,6 @@ import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
@@ -29,7 +29,7 @@ import org.atdl4j.ui.app.impl.AbstractFixatdlFileSelectionPanel;
 public class SwingFixatdlFileSelectionPanel 
 	extends AbstractFixatdlFileSelectionPanel
 {
-	JFrame parentComposite;
+	Window parentComposite;
 	JPanel composite;
 	
 	JTextField filepathText;
@@ -37,10 +37,10 @@ public class SwingFixatdlFileSelectionPanel
 	
 	public Object buildFixatdlFileSelectionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		return buildFixatdlFileSelectionPanel( (JFrame) parentOrShell, atdl4jOptions );
+		return buildFixatdlFileSelectionPanel( (Window) parentOrShell, atdl4jOptions );
 	}
 	
-	public JPanel buildFixatdlFileSelectionPanel(JFrame aParentComposite, Atdl4jOptions atdl4jOptions)
+	public JPanel buildFixatdlFileSelectionPanel(Window aParentComposite, Atdl4jOptions atdl4jOptions)
 	{
 		setAtdl4jOptions( atdl4jOptions );
 		setParentComposite( aParentComposite );
@@ -130,11 +130,11 @@ public class SwingFixatdlFileSelectionPanel
 	 * Returns getParentComposite().getShell().
 	 * @return the shell
 	 */
-	private JFrame getShell()
+	private Window getShell()
 	{
 		if ( getParentComposite() != null )
 		{
-			return (JFrame)getParentComposite().getParent();
+			return (Window)getParentComposite().getParent();
 		}
 		else
 		{
@@ -145,7 +145,7 @@ public class SwingFixatdlFileSelectionPanel
 	/**
 	 * @return the parentComposite
 	 */
-	private JFrame getParentComposite()
+	private Window getParentComposite()
 	{
 		return this.parentComposite;
 	}
@@ -153,7 +153,7 @@ public class SwingFixatdlFileSelectionPanel
 	/**
 	 * @param aParentComposite the parentComposite to set
 	 */
-	private void setParentComposite(JFrame aParentComposite)
+	private void setParentComposite(Window aParentComposite)
 	{
 		this.parentComposite = aParentComposite;
 	}

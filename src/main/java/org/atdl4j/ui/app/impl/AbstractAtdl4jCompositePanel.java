@@ -18,6 +18,7 @@ import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.Atdl4jHelper;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.data.fix.FIXMessageParser;
@@ -49,7 +50,7 @@ public abstract class AbstractAtdl4jCompositePanel
 	public final Logger logger = Logger.getLogger(AbstractAtdl4jCompositePanel.class);
 
 	Atdl4jOptions atdl4jOptions;
-	Object parentOrShell;  // SWT: Shell, Swing: JFrame, etc
+	Object parentOrShell;  // SWT: Shell, Swing: JFrame, JDialog, etc
 	
 	private List<Atdl4jCompositePanelListener> listenerList = new Vector<Atdl4jCompositePanelListener>();
 
