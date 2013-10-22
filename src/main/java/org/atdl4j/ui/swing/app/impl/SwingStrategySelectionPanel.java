@@ -2,12 +2,12 @@ package org.atdl4j.ui.swing.app.impl;
 
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
 
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -33,10 +33,10 @@ public class SwingStrategySelectionPanel
 	private JComboBox strategiesDropDown;
 	public Object buildStrategySelectionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		return buildStrategySelectionPanel( (JFrame) parentOrShell, atdl4jOptions );
+		return buildStrategySelectionPanel( (Window) parentOrShell, atdl4jOptions );
 	}
 	
-	public JPanel buildStrategySelectionPanel(JFrame aParentContainer, Atdl4jOptions atdl4jOptions)
+	public JPanel buildStrategySelectionPanel(Window aParentContainer, Atdl4jOptions atdl4jOptions)
 	{
 		setAtdl4jOptions( atdl4jOptions );
 		

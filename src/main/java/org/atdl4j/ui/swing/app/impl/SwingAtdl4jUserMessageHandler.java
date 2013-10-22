@@ -1,7 +1,8 @@
 package org.atdl4j.ui.swing.app.impl;
 
 
-import javax.swing.JFrame;
+import java.awt.Window;
+
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
@@ -20,14 +21,14 @@ public class SwingAtdl4jUserMessageHandler
 {
 	private final Logger logger = Logger.getLogger(SwingAtdl4jUserMessageHandler.class);
 	
-	private JFrame parentComposite;
+	private Window parentComposite;
 	
 	public void init(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		init( (JFrame) parentOrShell, atdl4jOptions );
+		init( (Window) parentOrShell, atdl4jOptions );
 	}
 	
-	public void init(JFrame aParentComposite, Atdl4jOptions atdl4jOptions)
+	public void init(Window aParentComposite, Atdl4jOptions atdl4jOptions)
 	{
 		parentComposite = aParentComposite;
 		setAtdl4jOptions( atdl4jOptions );

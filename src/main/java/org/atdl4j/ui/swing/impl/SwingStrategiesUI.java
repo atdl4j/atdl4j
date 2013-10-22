@@ -1,9 +1,9 @@
 package org.atdl4j.ui.swing.impl;
 
+import java.awt.Window;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
@@ -23,7 +23,7 @@ public class SwingStrategiesUI
 	extends AbstractStrategiesUI
 {
 	private final Logger logger = Logger.getLogger( SwingStrategiesUI.class );
-	private JFrame parentFrame;
+	private Window parentFrame;
 	
 	private JPanel strategiesPanel;
 	
@@ -46,10 +46,10 @@ public void init(Atdl4jOptions aAtdl4jOptions)
 	
 public Object buildStrategiesPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
 {
-	return buildStrategiesPanel( (JFrame) parentOrShell, atdl4jOptions, aAtdl4jUserMessageHandler );
+	return buildStrategiesPanel( (Window) parentOrShell, atdl4jOptions, aAtdl4jUserMessageHandler );
 }
 
-public JPanel buildStrategiesPanel(JFrame aParentComposite, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
+public JPanel buildStrategiesPanel(Window aParentComposite, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
 {
 	parentFrame = aParentComposite;
 	

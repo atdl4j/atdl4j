@@ -1,8 +1,8 @@
 package org.atdl4j.ui.swing.app.impl;
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -22,16 +22,16 @@ public class SwingAtdl4jCompositePanel
 		extends AbstractAtdl4jCompositePanel
 {
 	public final Logger logger = Logger.getLogger(SwingAtdl4jCompositePanel.class);
-	private JFrame parentComposite;
+	private Window parentComposite;
 	private JPanel strPanel;
 	private JPanel strategySelectionPanel;
 	
 	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
-		return buildAtdl4jCompositePanel( (JFrame) aParentOrShell, aAtdl4jOptions );
+		return buildAtdl4jCompositePanel( (Window) aParentOrShell, aAtdl4jOptions );
 	}
 	
-	public JPanel buildAtdl4jCompositePanel(JFrame aParentComposite, Atdl4jOptions aAtdl4jOptions)
+	public JPanel buildAtdl4jCompositePanel(Window aParentComposite, Atdl4jOptions aAtdl4jOptions)
 	{
 		parentComposite =  aParentComposite;
 
