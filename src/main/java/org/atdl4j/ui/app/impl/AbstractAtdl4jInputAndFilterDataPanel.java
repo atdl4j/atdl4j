@@ -23,7 +23,7 @@ public abstract class AbstractAtdl4jInputAndFilterDataPanel
 {
 
 	Atdl4jOptions atdl4jOptions;
-	Object parentOrShell;  // SWT: Shell, Swing: JFrame, etc
+	Object parentOrShell;  // SWT: Shell, Swing: JFrame, JDialog, etc
 	
 	private List<Atdl4jInputAndFilterDataPanelListener> listenerList = new Vector<Atdl4jInputAndFilterDataPanelListener>();
 

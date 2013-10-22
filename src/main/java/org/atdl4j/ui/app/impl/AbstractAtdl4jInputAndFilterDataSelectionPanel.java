@@ -10,6 +10,7 @@ import java.util.Vector;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanelListener;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataSelectionPanel;
@@ -26,7 +27,7 @@ public abstract class AbstractAtdl4jInputAndFilterDataSelectionPanel
 		Atdl4jInputAndFilterDataPanelListener
 {
 	Atdl4jOptions atdl4jOptions;
-	Object parentOrShell;  // SWT: Shell, Swing: JFrame, etc
+	Object parentOrShell;  // SWT: Shell, Swing: JFrame, JDialog, etc
 	
 	private Atdl4jInputAndFilterDataPanel atdl4jInputAndFilterDataPanel;
 

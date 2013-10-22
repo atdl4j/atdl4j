@@ -3,6 +3,7 @@ package org.atdl4j.ui.app.impl;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jConfiguration;
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.app.Atdl4jTesterPanel;
 import org.atdl4j.ui.app.Atdl4jTesterPanelListener;
@@ -20,7 +21,7 @@ public abstract class AbstractAtdl4jTesterApp
 	implements Atdl4jTesterPanelListener
 {
 	static Atdl4jOptions atdl4jOptions;
-	Object parentOrShell;  // SWT: Shell, Swing: JFrame, etc
+	Object parentOrShell;  // SWT: Shell, Swing: JFrame, JDialog, etc
 	
 	Atdl4jTesterPanel atdl4jTesterPanel;
 

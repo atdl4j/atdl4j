@@ -1,8 +1,8 @@
 package org.atdl4j.ui.swing.app.impl;
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,10 +29,10 @@ public class SwingStrategyDescriptionPanel
 
 	public Object buildStrategyDescriptionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
-		return buildStrategyDescriptionPanel( (JFrame) parentOrShell, atdl4jOptions );
+		return buildStrategyDescriptionPanel( (Window) parentOrShell, atdl4jOptions );
 	}
 	
-	public JPanel buildStrategyDescriptionPanel(JFrame aParentContainer, Atdl4jOptions atdl4jOptions)
+	public JPanel buildStrategyDescriptionPanel(Window aParentContainer, Atdl4jOptions atdl4jOptions)
 	{
 		setAtdl4jOptions( atdl4jOptions );
 	

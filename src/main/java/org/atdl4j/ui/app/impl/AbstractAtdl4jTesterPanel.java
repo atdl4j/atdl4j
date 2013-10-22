@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.core.StrategyT;
@@ -43,7 +44,7 @@ public abstract class AbstractAtdl4jTesterPanel
 	private final Logger logger = Logger.getLogger(AbstractAtdl4jTesterPanel.class);
 	
 	Atdl4jOptions atdl4jOptions;
-	Object parentOrShell;  // SWT: Shell, Swing: JFrame, etc
+	Object parentOrShell;  // SWT: Shell, Swing: JFrame, JDialog, etc
 	
 	private Atdl4jInputAndFilterDataSelectionPanel atdl4jInputAndFilterDataSelectionPanel;
 	
