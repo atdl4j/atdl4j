@@ -32,7 +32,7 @@ If you are new to git source control and/or Github, please visit the [Github Hel
 
 Docs and downloads are available at the [atdl4j Wiki](https://github.com/atdl4j/atdl4j/wiki)
 
-(Examples)[examples.md]
+[Examples](examples.md)
 
 ## FIX Engine Integration
 
