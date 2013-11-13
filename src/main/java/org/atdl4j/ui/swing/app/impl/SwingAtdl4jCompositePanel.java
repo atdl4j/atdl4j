@@ -68,6 +68,7 @@ public class SwingAtdl4jCompositePanel
 			public void run() {
 				if (strPanel != null) {
 					strPanel.revalidate();
+					strPanel.repaint();
 				}
 				if (parentComposite != null) {
 					parentComposite.pack();
