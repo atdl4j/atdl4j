@@ -60,6 +60,10 @@ public class SwingStrategyDescriptionPanel
 		if ( strategyDescription != null )
 		{
 			strategyDescription.setText( aText );
+			
+			// Scroll to the top of the scroll pane
+			strategyDescription.setSelectionStart(0);
+			strategyDescription.setSelectionEnd(0);
 		}
 	}
 
