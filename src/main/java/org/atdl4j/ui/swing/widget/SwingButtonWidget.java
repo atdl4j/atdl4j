@@ -25,8 +25,8 @@ public class SwingButtonWidget
 	private JToggleButton button;
 	//private SwingRadioButtonListener radioButtonListener;
 
-	public void createWidget(JPanel parent) {
-		
+	public void createWidget(JPanel parent) 
+	{
 		// button
 		if (control instanceof RadioButtonT) {
 			button = new JRadioButton();
@@ -51,17 +51,22 @@ public class SwingButtonWidget
 	
 	public void setValue(Boolean value)
 	{
-		if (control instanceof CheckBoxT) {
-			if (button.isSelected() != value.booleanValue()){
-				button.doClick();
+		if (control instanceof CheckBoxT) 
+		{
+			if (button.isSelected() != value.booleanValue())
+			{
+				button.setSelected(value.booleanValue());
 			}
 		}
-		else if (control instanceof RadioButtonT) {
-			if (button.isSelected() != value.booleanValue()){
-				button.doClick();
+		else if (control instanceof RadioButtonT) 
+		{
+			if (button.isSelected() != value.booleanValue())
+			{
+				button.setSelected(value.booleanValue());
 			}
 		}
-		else {
+		else 
+		{
 			button.setEnabled(value.booleanValue());
 		}
 	}
