@@ -33,8 +33,10 @@ If you are new to git source control and/or Github, please visit the [Github Hel
 Docs and downloads are available at the [atdl4j Wiki](https://github.com/atdl4j/atdl4j/wiki)
 
 Running the testing apps:
-Swing: mvn.bat exec:java -Pswing
-SWT: mvn.bat exec:java -Pswt
+
+Swing: ```mvn.bat exec:java -Pswing```
+
+SWT: ```mvn.bat exec:java -Pswt```
 
 [Examples](examples.md)
 
