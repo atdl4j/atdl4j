@@ -17,11 +17,11 @@ import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.converter.DateTimeConverter;
 import org.atdl4j.fixatdl.core.LocalMktDateT;
 import org.atdl4j.fixatdl.core.MonthYearT;
+import org.atdl4j.fixatdl.core.TZTimeOnlyT;
+import org.atdl4j.fixatdl.core.TZTimestampT;
 import org.atdl4j.fixatdl.core.UTCDateOnlyT;
 import org.atdl4j.fixatdl.core.UTCTimeOnlyT;
 import org.atdl4j.fixatdl.core.UTCTimestampT;
-import org.atdl4j.fixatdl.core.TZTimeOnlyT;
-import org.atdl4j.fixatdl.core.TZTimestampT;
 import org.atdl4j.fixatdl.core.UseT;
 import org.atdl4j.fixatdl.layout.ClockT;
 import org.atdl4j.ui.impl.ControlHelper;
@@ -111,8 +111,6 @@ public class SwingJideClockWidget
 		
 		if ( getAtdl4jOptions() != null && 
 			getAtdl4jOptions().isShowEnabledCheckboxOnOptionalClockControl() && 
-//		if ( ( Atdl4jConfig.get() != null ) &&
-//			  ( Atdl4jConfig.get().isShowEnabledCheckboxOnOptionalClockControl() ) && 
 			parameter != null && 
 			UseT.OPTIONAL.equals( parameter.getUse() ) )
 		{
@@ -355,7 +353,6 @@ public class SwingJideClockWidget
 			logger.debug( "setFIXValue(" + aFIXValue + ") resulted in time < present (" + tempFIXValueTime + " < " + tempCurrentTime + ")" );
 		
 			Integer tempClockPastTimeSetFIXValueRule = getAtdl4jOptions().getClockPastTimeSetFIXValueRule( getControl() );
-		//	Integer tempClockPastTimeSetFIXValueRule = Atdl4jConfig().getClockPastTimeSetFIXValueRule( getControl() );
 			logger.debug( "Control: " + getControl().getID() + " tempClockPastTimeSetFIXValueRule: " + tempClockPastTimeSetFIXValueRule );
 			
 			if ( getAtdl4jOptions().CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS.equals( tempClockPastTimeSetFIXValueRule ) )
