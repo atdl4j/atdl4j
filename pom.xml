@@ -110,6 +110,21 @@
 						<target>${jdkVersion}</target>
 					</configuration>
 			</plugin>
+			<plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+	            <artifactId>exec-maven-plugin</artifactId>
+	            <version>1.2.1</version>
+	            <executions>
+	                <execution>
+	                    <goals>
+	                        <goal>java</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
+				<configuration>
+					<mainClass>${main.class}</mainClass>
+				</configuration>
+	        </plugin>
 		</plugins>
 		<extensions>
 			<extension>
@@ -133,6 +148,18 @@
 				<swt.native.groupId>org.eclipse.swt.cocoa.macosx</swt.native.groupId>
 				<swt.native.artifactId>x86_64</swt.native.artifactId>
 				<swt.native.version>3.5.1-v3555a</swt.native.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>swing</id>
+			<properties>
+				<main.class>org.atdl4j.ui.swing.app.impl.SwingAtdl4jTesterApp</main.class>
+			</properties>
+		</profile>
+		<profile>
+			<id>swt</id>
+			<properties>
+				<main.class>org.atdl4j.ui.swt.app.impl.SWTAtdl4jTesterApp</main.class>
 			</properties>
 		</profile>
 	</profiles>
