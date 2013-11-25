@@ -39,151 +39,150 @@ public class SwingStrategiesUI
 		init(aAtdl4jOptions);
 	}
 
-public void init(Atdl4jOptions aAtdl4jOptions)
-{
-	setAtdl4jOptions( aAtdl4jOptions );
-}
-	
-public Object buildStrategiesPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
-{
-	return buildStrategiesPanel( (Window) parentOrShell, atdl4jOptions, aAtdl4jUserMessageHandler );
-}
-
-public JPanel buildStrategiesPanel(Window aParentComposite, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
-{
-	parentFrame = aParentComposite;
-	
-	setAtdl4jOptions( atdl4jOptions );
-
-	setAtdl4jUserMessageHandler( aAtdl4jUserMessageHandler );
-
-	// Main strategies panel
-	strategiesPanel = new JPanel();
-//	strategiesPanel.setPreferredSize(new Dimension(500, 500));
-
-	return strategiesPanel;
-}
-
-public void removeAllStrategyPanels(){
-	strategiesPanel.removeAll();
-}
-
-public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilteredStrategyList) throws FIXatdlFormatException
-{
-	// -- Check to see if StrategiesT has changed (eg new file loaded) --
-	if ( ( getStrategies() == null ) || ( ! getStrategies().equals( aStrategies ) ) )
+	public void init(Atdl4jOptions aAtdl4jOptions)
 	{
-		setStrategies( aStrategies );
+		setAtdl4jOptions( aAtdl4jOptions );
+	}
 		
-		setStrategiesRules( new HashMap<String, ValidationRule>() );
-		for (EditT edit : getStrategies().getEdit()) {
-			String id = edit.getId();
-			if (id != null) {
-				ValidationRule rule = ValidationRuleFactory.createRule(edit,
-						getStrategiesRules(), getStrategies());
-				getStrategiesRules().put(id, rule);
-			} else {
-				throw new IllegalArgumentException("Strategies-scoped edit without id");
+	public Object buildStrategiesPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
+	{
+		return buildStrategiesPanel( (Window) parentOrShell, atdl4jOptions, aAtdl4jUserMessageHandler );
+	}
+	
+	public JPanel buildStrategiesPanel(Window aParentComposite, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
+	{
+		parentFrame = aParentComposite;
+		
+		setAtdl4jOptions( atdl4jOptions );
+	
+		setAtdl4jUserMessageHandler( aAtdl4jUserMessageHandler );
+	
+		// Main strategies panel
+		strategiesPanel = new JPanel();
+	
+		return strategiesPanel;
+	}
+	
+	public void removeAllStrategyPanels()
+	{
+		strategiesPanel.removeAll();
+	}
+	
+	public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilteredStrategyList) throws FIXatdlFormatException
+	{
+		// -- Check to see if StrategiesT has changed (eg new file loaded) --
+		if ( ( getStrategies() == null ) || ( ! getStrategies().equals( aStrategies ) ) )
+		{
+			setStrategies( aStrategies );
+			
+			setStrategiesRules( new HashMap<String, ValidationRule>() );
+			for (EditT edit : getStrategies().getEdit()) {
+				String id = edit.getId();
+				if (id != null) {
+					ValidationRule rule = ValidationRuleFactory.createRule(edit,
+							getStrategiesRules(), getStrategies());
+					getStrategiesRules().put(id, rule);
+				} else {
+					throw new IllegalArgumentException("Strategies-scoped edit without id");
+				}
 			}
 		}
-	}
+				
+		setPreCached( false );
+		setCurrentlyDisplayedStrategyUI( null );
+		for ( StrategyT strategy : aFilteredStrategyList )
+		{
+			removeAllStrategyPanels();
+			StrategyUI ui = SwingStrategyUIFactory.createStrategyUIAndContainer( this, strategy );
+			setCurrentlyDisplayedStrategyUI( ui );
 			
-	setPreCached( false );
-	setCurrentlyDisplayedStrategyUI( null );
-
-	for ( StrategyT strategy : aFilteredStrategyList )
-	{
-		removeAllStrategyPanels();
-		StrategyUI ui = SwingStrategyUIFactory.createStrategyUIAndContainer( this, strategy );
-		setCurrentlyDisplayedStrategyUI( ui );
-
-		if ( ui == null )
-		{
-			// skip to next strategy
-			continue;
+			if ( ui == null )
+			{
+				// skip to next strategy
+				continue;
+			}
 		}
-	}
-	setPreCached( true );
-}  
-
-
-public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
-{
+		setPreCached( true );
+	}  
 	
-	if ( strategiesPanel != null )
+	
+	public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
 	{
-		// -- (aReinitPanelFlag=true) --
-		StrategyUI tempStrategyUI = getStrategyUI( aStrategy, true );
 		
-		if ( tempStrategyUI == null  )
+		if ( strategiesPanel != null )
 		{
-			logger.info("ERROR:  Strategy name: " + aStrategy.getName() + " was not found.  (aStrategy: " + aStrategy + ")" );
-			return;
+			// -- (aReinitPanelFlag=true) --
+			StrategyUI tempStrategyUI = getStrategyUI( aStrategy, true );
+			
+			if ( tempStrategyUI == null  )
+			{
+				logger.info("ERROR:  Strategy name: " + aStrategy.getName() + " was not found.  (aStrategy: " + aStrategy + ")" );
+				return;
+			}
+	
+			logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );								
+			tempStrategyUI.reinitStrategyPanel();
 		}
-
-		logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );								
-		tempStrategyUI.reinitStrategyPanel();
 	}
-}
-
-
-/* 
- * (non-Javadoc)
- * @see org.atdl4j.ui.app.StrategiesPanel#setVisible(boolean)
- */
-@Override
-public void setVisible(boolean aVisible)
-{
-	if ( strategiesPanel != null )
+	
+	
+	/* 
+	 * (non-Javadoc)
+	 * @see org.atdl4j.ui.app.StrategiesPanel#setVisible(boolean)
+	 */
+	@Override
+	public void setVisible(boolean aVisible)
 	{
-		strategiesPanel.setVisible( aVisible );
-	}
-}
-
-
-// 12/15/2010 Scott Atwell public StrategyUI getStrategyUI( StrategyT aStrategy )
-public StrategyUI getStrategyUI( StrategyT aStrategy, boolean aReinitPanelFlag )
-{
-	if ( aStrategy.equals( getCurrentlyDisplayedStrategy() ) )
-	{
-		logger.debug("Strategy name: " + aStrategy.getName() + " is currently being displayed.  Returning getCurrentlyDisplayedStrategyUI()" );
-// 12/15/2010 Scott Atwell return getCurrentlyDisplayedStrategyUI();
-		if ( aReinitPanelFlag )
+		if ( strategiesPanel != null )
 		{
-			getCurrentlyDisplayedStrategyUI().reinitStrategyPanel();
+			strategiesPanel.setVisible( aVisible );
 		}
-		
-		return getCurrentlyDisplayedStrategyUI();
 	}
-	else
+	
+	
+	// 12/15/2010 Scott Atwell public StrategyUI getStrategyUI( StrategyT aStrategy )
+	public StrategyUI getStrategyUI( StrategyT aStrategy, boolean aReinitPanelFlag )
 	{
-		logger.debug("Strategy name: " + aStrategy.getName() + " is not currently displayed.  Invoking removeAllStrategyPanels() and returning createStrategyPanel()" );
-		removeAllStrategyPanels();
-
-		StrategyUI tempStrategyUI = SwingStrategyUIFactory.createStrategyUIAndContainer( this, aStrategy );
-		setCurrentlyDisplayedStrategyUI( tempStrategyUI );
-		
-		logger.debug("Invoking relayoutCollapsibleStrategyPanels() for: " + aStrategy.getName() );
-		tempStrategyUI.relayoutCollapsibleStrategyPanels();
-		
-		return tempStrategyUI;
+		if ( aStrategy.equals( getCurrentlyDisplayedStrategy() ) )
+		{
+			logger.debug("Strategy name: " + aStrategy.getName() + " is currently being displayed.  Returning getCurrentlyDisplayedStrategyUI()" );
+	// 12/15/2010 Scott Atwell return getCurrentlyDisplayedStrategyUI();
+			if ( aReinitPanelFlag )
+			{
+				getCurrentlyDisplayedStrategyUI().reinitStrategyPanel();
+			}
+			
+			return getCurrentlyDisplayedStrategyUI();
+		}
+		else
+		{
+			logger.debug("Strategy name: " + aStrategy.getName() + " is not currently displayed.  Invoking removeAllStrategyPanels() and returning createStrategyPanel()" );
+			removeAllStrategyPanels();
+	
+			StrategyUI tempStrategyUI = SwingStrategyUIFactory.createStrategyUIAndContainer( this, aStrategy );
+			setCurrentlyDisplayedStrategyUI( tempStrategyUI );
+			
+			logger.debug("Invoking relayoutCollapsibleStrategyPanels() for: " + aStrategy.getName() );
+			tempStrategyUI.relayoutCollapsibleStrategyPanels();
+			
+			return tempStrategyUI;
+		}
 	}
-}
-
-/**
- * @return the strategiesPanel
- */
-protected JPanel getStrategiesPanel()
-{
-	return this.strategiesPanel;
-}
-
-/**
- * @param aStrategiesPanel the strategiesPanel to set
- */
-protected void setStrategiesPanel(JPanel aStrategiesPanel)
-{
-	this.strategiesPanel = aStrategiesPanel;
-}
+	
+	/**
+	 * @return the strategiesPanel
+	 */
+	protected JPanel getStrategiesPanel()
+	{
+		return this.strategiesPanel;
+	}
+	
+	/**
+	 * @param aStrategiesPanel the strategiesPanel to set
+	 */
+	protected void setStrategiesPanel(JPanel aStrategiesPanel)
+	{
+		this.strategiesPanel = aStrategiesPanel;
+	}
 
 }
