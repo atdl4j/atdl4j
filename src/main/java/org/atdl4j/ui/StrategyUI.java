@@ -3,8 +3,10 @@ package org.atdl4j.ui;
 import java.util.Map;
 
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.StrategyRuleset;
 import org.atdl4j.data.ValidationRule;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.data.fix.FIXMessageBuilder;
@@ -47,6 +49,8 @@ public interface StrategyUI
 	public StrategyRuleset getStrategyRuleset();
 	public Map<String, ValidationRule> getCompleteValidationRuleMap();
 
+	public void reloadHiddenFieldsForInputAndFilterData( InputAndFilterData aInputAndFilterData );
+	
 	public void reinitStrategyPanel();
 	
 	public void relayoutCollapsibleStrategyPanels();

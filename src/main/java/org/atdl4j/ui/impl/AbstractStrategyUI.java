@@ -16,6 +16,7 @@ import org.atdl4j.data.ParameterTypeConverter;
 import org.atdl4j.data.StrategyRuleset;
 import org.atdl4j.data.TypeConverterFactoryConfig;
 import org.atdl4j.data.ValidationRule;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.data.fix.FIXMessageBuilder;
@@ -536,7 +537,7 @@ public abstract class AbstractStrategyUI
 		}
 	}
 
-	protected void reloadHiddenFieldsForInputAndFilterData( InputAndFilterData aInputAndFilterData )
+	public void reloadHiddenFieldsForInputAndFilterData( InputAndFilterData aInputAndFilterData )
 	{
 		clearHiddenFieldsForInputAndFilterData();
 		addHiddenFieldsForInputAndFilterData( aInputAndFilterData );
