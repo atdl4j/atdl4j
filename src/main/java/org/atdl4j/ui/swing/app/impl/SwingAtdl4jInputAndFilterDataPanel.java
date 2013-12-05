@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -36,6 +36,7 @@ public class SwingAtdl4jInputAndFilterDataPanel
 	private JComboBox<String> fixFieldExecCombo;
 	private JComboBox<String> fixFieldTimeInForceCombo;
 	private JComboBox<String> fixFieldClOrdLinkIDCombo;
+	private JCheckBox checkboxInputCxlReplaceMode;
 	
 	
 	/* (non-Javadoc)
@@ -64,7 +65,7 @@ public class SwingAtdl4jInputAndFilterDataPanel
 	{
 		JPanel tempPanel = new JPanel();
 		
-//		tempPanel.add(buildStrategyFilterPanel());
+		tempPanel.add(buildStrategyFilterPanel());
 		tempPanel.add(buildStandardFixFieldsPanel());
 		
 		aParentOrShell.add(tempPanel);
@@ -77,11 +78,8 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		JPanel strategyFilterPanel = new JPanel(new BorderLayout());
 		strategyFilterPanel.setBorder(BorderFactory.createTitledBorder( STRATEGY_FILTER_PANEL_NAME ));
 		
-		strategyFilterPanel.add(new JButton("Button"), BorderLayout.CENTER);
-		strategyFilterPanel.add(new JButton("Button"), BorderLayout.CENTER);
-		strategyFilterPanel.add(new JButton("Button"), BorderLayout.CENTER);
-		strategyFilterPanel.add(new JButton("Button"), BorderLayout.CENTER);
-		
+		checkboxInputCxlReplaceMode = new JCheckBox("Cxl Replace Mode");
+		strategyFilterPanel.add(checkboxInputCxlReplaceMode, BorderLayout.CENTER);
 		
 		return strategyFilterPanel;
 	}
@@ -154,6 +152,8 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		// -- Set the StrategyFilterInputData we just built --
 		getAtdl4jOptions().getInputAndFilterData().setStrategyFilterInputData( tempStrategyFilterInputData );
 		
+		getAtdl4jOptions().getInputAndFilterData().setInputCxlReplaceMode(checkboxInputCxlReplaceMode.isSelected());
+		
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_ORD_TYPE, fixFieldOrdTypeCombo );
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_SIDE, fixFieldSideCombo );
 		addFixFieldToInputAndFilterData( FIX_FIELD_NAME_ORDER_QTY, fixFieldOrderQtyCombo );
@@ -172,7 +172,37 @@ public class SwingAtdl4jInputAndFilterDataPanel
 	@Override
 	public boolean loadScreenWithAtdl4jOptions() 
 	{
-		return false;
+		
+		if ( getAtdl4jOptions().getInputAndFilterData() != null )
+		{
+			setCheckboxValue( checkboxInputCxlReplaceMode, getAtdl4jOptions().getInputAndFilterData().getInputCxlReplaceMode(), Boolean.FALSE );
+			
+			selectDropDownItem( fixFieldOrdTypeCombo, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_ORD_TYPE ) );
+			selectDropDownItem( fixFieldSideCombo, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_SIDE ) );
+			selectDropDownItem( fixFieldOrderQtyCombo, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_ORDER_QTY ) );
+			selectDropDownItem( fixFieldPriceCombo, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_PRICE ) );
+			selectDropDownItem( fixFieldHandlInstCombo, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_HANDL_INST ) );
+			selectDropDownItem( fixFieldExecCombo, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_EXEC_INST ) );
+			selectDropDownItem( fixFieldTimeInForceCombo, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_TIME_IN_FORCE ) );
+			selectDropDownItem( fixFieldClOrdLinkIDCombo, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_CL_ORD_LINK_ID ) );
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public static void setCheckboxValue( JCheckBox aCheckbox, Boolean aValue, boolean aStateIfNull )
+	{
+		if ( aValue == null )
+		{
+			aCheckbox.setSelected(aStateIfNull);
+		}
+		else
+		{
+			aCheckbox.setSelected(aValue);
+		}
 	}
 	
 	public static String getDropDownItemSelected( JComboBox<String> aDropDown )
@@ -185,6 +215,18 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		else
 		{
 			return tempText;
+		}
+	}
+	
+	public static void selectDropDownItem( JComboBox<String> aDropDown, String aItem )
+	{
+		if ( aItem != null )
+		{
+			aDropDown.setSelectedItem(aItem);
+		}
+		else
+		{
+			aDropDown.setSelectedIndex(-1);
 		}
 	}
 	
