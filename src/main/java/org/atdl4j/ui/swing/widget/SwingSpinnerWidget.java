@@ -51,9 +51,13 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 			this.increment = increment;
 		}
 	
-		public void actionPerformed(ActionEvent arg0) {
-			spinner.setValue(new BigDecimal((Integer)spinner.getValue()).add(increment));
-		}
+        public void actionPerformed(ActionEvent arg0) {
+          Object value = spinner.getValue();
+          if (value == null) {
+            value = BigDecimal.ZERO;
+          }
+          spinner.setValue(((BigDecimal) value).add(increment));
+        }
 	}
 	
 	
@@ -218,8 +222,8 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 				outerStepSize = tempOuterIncrement;
 			}
 
-//			buttonUp.addSelectionListener( new DoubleSpinnerSelection( spinner, outerStepSize ) );
-//			buttonDown.addSelectionListener( new DoubleSpinnerSelection( spinner, outerStepSize.negate() ) );
+			buttonUp.addActionListener( new DoubleSpinnerListener( spinner, outerStepSize ) );
+			buttonDown.addActionListener( new DoubleSpinnerListener( spinner, outerStepSize.negate() ) );
 		}
 		else if ( control instanceof SingleSpinnerT )
 		{
@@ -282,6 +286,8 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 		Double initValue = (Double) ControlHelper.getInitValue(control, getAtdl4jOptions());
 		if (initValue != null) {
 			setValue(new BigDecimal(initValue));
+		} else {
+            setValue(null);
 		}
 	}
 
