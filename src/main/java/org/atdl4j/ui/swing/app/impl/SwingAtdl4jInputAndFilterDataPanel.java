@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -13,6 +14,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.StrategyFilterInputData;
+import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jInputAndFilterDataPanel;
 
 /**
@@ -28,6 +30,13 @@ public class SwingAtdl4jInputAndFilterDataPanel
 	
 	private JDialog parentDialog;
 	
+	private JComboBox<String> strategyFilterFixMsgTypeCombo; 
+	private JCheckBox checkboxInputCxlReplaceMode;
+	private JComboBox<String> strategyFilterRegionCombo;
+	private JComboBox<String> strategyFilterCountryCombo;
+	private JComboBox<String> strategyFilterMICCodeCombo;
+	private JComboBox<String> strategyFilterSecurityTypeCombo;
+	
 	private JComboBox<String> fixFieldOrdTypeCombo;
 	private JComboBox<String> fixFieldSideCombo;
 	private JComboBox<String> fixFieldOrderQtyCombo;
@@ -36,7 +45,6 @@ public class SwingAtdl4jInputAndFilterDataPanel
 	private JComboBox<String> fixFieldExecCombo;
 	private JComboBox<String> fixFieldTimeInForceCombo;
 	private JComboBox<String> fixFieldClOrdLinkIDCombo;
-	private JCheckBox checkboxInputCxlReplaceMode;
 	
 	
 	/* (non-Javadoc)
@@ -63,10 +71,10 @@ public class SwingAtdl4jInputAndFilterDataPanel
 	
 	protected JPanel buildCoreAtdl4jSettingsPanel(JDialog aParentOrShell)
 	{
-		JPanel tempPanel = new JPanel();
+		JPanel tempPanel = new JPanel(new BorderLayout());
 		
-		tempPanel.add(buildStrategyFilterPanel());
-		tempPanel.add(buildStandardFixFieldsPanel());
+		tempPanel.add(buildStrategyFilterPanel(), BorderLayout.NORTH);
+		tempPanel.add(buildStandardFixFieldsPanel(), BorderLayout.CENTER);
 		
 		aParentOrShell.add(tempPanel);
 		
@@ -75,11 +83,45 @@ public class SwingAtdl4jInputAndFilterDataPanel
 	
 	protected JPanel buildStrategyFilterPanel()
 	{
-		JPanel strategyFilterPanel = new JPanel(new BorderLayout());
+		JPanel strategyFilterPanel = new JPanel();
+		strategyFilterPanel.setLayout(new BoxLayout(strategyFilterPanel, BoxLayout.Y_AXIS));
 		strategyFilterPanel.setBorder(BorderFactory.createTitledBorder( STRATEGY_FILTER_PANEL_NAME ));
 		
+		JPanel panel1 = new JPanel();
+		panel1.add(new JLabel("FixMsgType:"));
+		strategyFilterFixMsgTypeCombo = new JComboBox<String>(prepareContantsForGUI(Atdl4jConstants.STRATEGY_FILTER_FIX_MSG_TYPES));
+		strategyFilterFixMsgTypeCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
+		panel1.add(strategyFilterFixMsgTypeCombo);
+		
 		checkboxInputCxlReplaceMode = new JCheckBox("Cxl Replace Mode");
-		strategyFilterPanel.add(checkboxInputCxlReplaceMode, BorderLayout.CENTER);
+		panel1.add(checkboxInputCxlReplaceMode);
+		
+		JPanel panel2 = new JPanel();
+		panel2.add(new JLabel("Region:"));
+		strategyFilterRegionCombo = new JComboBox<String>(prepareContantsForGUI(Atdl4jConstants.STRATEGY_FILTER_REGIONS));
+		strategyFilterRegionCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
+		panel2.add(strategyFilterRegionCombo);
+		
+		panel2.add(new JLabel("Country:"));
+		strategyFilterCountryCombo = new JComboBox<String>(DEFAULT_STRATEGY_FILTER_COUNTRY_SUBSET_LIST);
+		strategyFilterCountryCombo.setEditable(true);
+		strategyFilterCountryCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
+		panel2.add(strategyFilterCountryCombo);
+		
+		panel2.add(new JLabel("MIC Code:"));
+		strategyFilterMICCodeCombo = new JComboBox<String>(DEFAULT_STRATEGY_FILTER_MIC_CODE_SUBSET_LIST);
+		strategyFilterMICCodeCombo.setEditable(true);
+		strategyFilterMICCodeCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
+		panel2.add(strategyFilterMICCodeCombo);
+		
+		panel2.add(new JLabel("Security Type:"));
+		strategyFilterSecurityTypeCombo = new JComboBox<String>(prepareContantsForGUI(Atdl4jConstants.STRATEGY_FILTER_SECURITY_TYPES));
+		strategyFilterSecurityTypeCombo.setEditable(true);
+		strategyFilterSecurityTypeCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
+		panel2.add(strategyFilterSecurityTypeCombo);
+		
+		strategyFilterPanel.add(panel1);
+		strategyFilterPanel.add(panel2);
 		
 		return strategyFilterPanel;
 	}
@@ -149,6 +191,18 @@ public class SwingAtdl4jInputAndFilterDataPanel
 	{
 		StrategyFilterInputData tempStrategyFilterInputData = new StrategyFilterInputData();
 		
+		tempStrategyFilterInputData.setFixMsgType(getDropDownItemSelected(strategyFilterFixMsgTypeCombo));
+		tempStrategyFilterInputData.setRegion_name(getDropDownItemSelected(strategyFilterRegionCombo));
+		tempStrategyFilterInputData.setCountry_CountryCode(getDropDownItemSelected(strategyFilterCountryCombo));
+		if ( ( tempStrategyFilterInputData.getCountry_CountryCode() != null ) &&
+				  ( tempStrategyFilterInputData.getRegion_name() == null ) )
+		{
+			throw new IllegalArgumentException("Region is required when Country is specified.");
+		}
+		
+		tempStrategyFilterInputData.setMarket_MICCode(getDropDownItemSelected(strategyFilterMICCodeCombo));
+		tempStrategyFilterInputData.setSecurityType_name(getDropDownItemSelected(strategyFilterSecurityTypeCombo));
+		
 		// -- Set the StrategyFilterInputData we just built --
 		getAtdl4jOptions().getInputAndFilterData().setStrategyFilterInputData( tempStrategyFilterInputData );
 		
@@ -175,6 +229,34 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		
 		if ( getAtdl4jOptions().getInputAndFilterData() != null )
 		{
+			StrategyFilterInputData tempStrategyFilterInputData = null;
+			if ( ( getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList() != null ) &&
+				  ( getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList().size() > 0 ) )
+			{
+				tempStrategyFilterInputData = getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList().get( 0 );
+			}
+
+			String tempFixMsgType = null;
+			String tempRegion_name = null;
+			String tempCountry_CountryCode = null;
+			String tempMarket_MICCode = null;
+			String tempSecurityType_name = null;
+			
+			if ( tempStrategyFilterInputData != null )
+			{
+				tempFixMsgType = tempStrategyFilterInputData.getFixMsgType();
+				tempRegion_name = tempStrategyFilterInputData.getRegion_name();
+				tempCountry_CountryCode = tempStrategyFilterInputData.getCountry_CountryCode();
+				tempMarket_MICCode = tempStrategyFilterInputData.getMarket_MICCode();
+				tempSecurityType_name = tempStrategyFilterInputData.getSecurityType_name();
+			}
+			
+			selectDropDownItem( strategyFilterFixMsgTypeCombo, tempFixMsgType );
+			selectDropDownItem( strategyFilterRegionCombo, tempRegion_name );
+			selectDropDownItem( strategyFilterCountryCombo, tempCountry_CountryCode );
+			selectDropDownItem( strategyFilterMICCodeCombo, tempMarket_MICCode );
+			selectDropDownItem( strategyFilterSecurityTypeCombo, tempSecurityType_name );
+			
 			setCheckboxValue( checkboxInputCxlReplaceMode, getAtdl4jOptions().getInputAndFilterData().getInputCxlReplaceMode(), Boolean.FALSE );
 			
 			selectDropDownItem( fixFieldOrdTypeCombo, getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldValue( FIX_FIELD_NAME_ORD_TYPE ) );
@@ -248,6 +330,22 @@ public class SwingAtdl4jInputAndFilterDataPanel
 				getAtdl4jOptions().getInputAndFilterData().getInputHiddenFieldNameValueMap().remove( aFieldName );
 			}
 		}
+	}
+	
+	private String[] prepareContantsForGUI(String[] constants)
+	{
+		if (constants.length == 0)
+		{
+			return constants;
+		}
+		String[] val = new String[constants.length + 1];
+		val[0] = "";
+		
+		for (int i = 0; i < constants.length; i++) 
+		{
+			val[i+1] = constants[i];
+		}
+		return val;
 	}
 	
 }
