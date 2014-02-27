@@ -1,5 +1,6 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -13,6 +14,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -97,12 +99,19 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 		else if (control instanceof DoubleSpinnerT)
 		{
 			// doubleSpinnerGrid
-			JPanel w = new JPanel();
+			JPanel w = new JPanel(new GridBagLayout());
 	
+			GridBagConstraints gc = new GridBagConstraints();
+		    gc.fill = GridBagConstraints.HORIZONTAL;
+		    gc.weightx = 1;
+		    gc.gridx = 0;
+		    gc.gridy = 0;
+		    
 			// doubleSpinner
-			spinner = new SwingNullableSpinner();	
-			buttonUp = new BasicArrowButton(BasicArrowButton.NORTH);
-			buttonDown = new BasicArrowButton(BasicArrowButton.SOUTH);
+			spinner = new SwingNullableSpinner();
+			
+			JPanel buttonPanel = new JPanel(new GridBagLayout());
+			doButtonsLayout(buttonPanel);
 			
 			// tooltip
 			if (tooltip != null)
@@ -113,9 +122,14 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 			}
 			
 			// layout
-			w.add(spinner);
-			w.add(buttonUp);
-			w.add(buttonDown);
+			w.add(spinner, gc);
+			
+			gc.weightx = 0;
+		    gc.gridx = 1;
+		    gc.gridy = 0;
+		    
+		    
+		    w.add(buttonPanel, gc);
 
 			comp = w;
 		}
@@ -254,6 +268,17 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 		applyInitialValue();		
 	}
 
+
+    private void doButtonsLayout(JPanel buttonPanel) {
+      buttonPanel.setBorder(BorderFactory.createLoweredBevelBorder());
+      GridBagConstraints gc = new GridBagConstraints();
+      gc.gridx=0;
+      buttonUp = new BasicArrowButtonFixedSize(BasicArrowButton.NORTH);
+      buttonDown = new BasicArrowButtonFixedSize(BasicArrowButton.SOUTH);
+      buttonPanel.add(buttonUp, gc);
+      buttonPanel.add(buttonDown, gc);
+    }
+
 	public BigDecimal getControlValueRaw() {
 		BigDecimal val = (BigDecimal)spinner.getValue();
 		if (val != null) {
@@ -334,5 +359,31 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 			buttonUp.removeActionListener(listener);
 			buttonDown.removeActionListener(listener);
 		}
-	}	
+	}
+	
+	
+	
+
+  private static class BasicArrowButtonFixedSize
+      extends BasicArrowButton
+  {
+
+    private static final long serialVersionUID = 20140226L;
+
+    public BasicArrowButtonFixedSize(int direction, Color background,
+                                     Color shadow, Color darkShadow,
+                                     Color highlight)
+    {
+      super(direction, background, shadow, darkShadow, highlight);
+    }
+
+    public BasicArrowButtonFixedSize(int direction) {
+      super(direction);
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+      return new Dimension(16, 9);
+    }
+  }
 }
