@@ -1,5 +1,6 @@
 package org.atdl4j.ui.swing.widget;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -358,5 +359,31 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 			buttonUp.removeActionListener(listener);
 			buttonDown.removeActionListener(listener);
 		}
-	}	
+	}
+	
+	
+	
+
+  private static class BasicArrowButtonFixedSize
+      extends BasicArrowButton
+  {
+
+    private static final long serialVersionUID = 20140226L;
+
+    public BasicArrowButtonFixedSize(int direction, Color background,
+                                     Color shadow, Color darkShadow,
+                                     Color highlight)
+    {
+      super(direction, background, shadow, darkShadow, highlight);
+    }
+
+    public BasicArrowButtonFixedSize(int direction) {
+      super(direction);
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+      return new Dimension(16, 9);
+    }
+  }
 }
