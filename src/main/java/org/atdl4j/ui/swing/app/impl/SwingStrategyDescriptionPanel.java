@@ -43,7 +43,6 @@ public class SwingStrategyDescriptionPanel
     strategyDescription.setContentType("text/html");
     strategyDescription.setFont(new JLabel().getFont());
     strategyDescription.setEditable(false);
-    strategyDescription.setFont(new JLabel().getFont());
 
     JScrollPane tempScrollPane = new JScrollPane(strategyDescription);
     container.add(tempScrollPane, BorderLayout.CENTER);

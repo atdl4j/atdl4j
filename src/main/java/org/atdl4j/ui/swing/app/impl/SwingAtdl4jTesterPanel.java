@@ -12,6 +12,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
@@ -78,7 +79,7 @@ public class SwingAtdl4jTesterPanel
 
 		// -- Build the Swing.JPanel from Atdl4jCompositePanel --
 		JPanel strategyParamsPanel = (JPanel)getAtdl4jCompositePanel().buildAtdl4jCompositePanel( parentComposite, aAtdl4jOptions );
-		internalPanel.add(strategyParamsPanel, BorderLayout.CENTER);	
+		internalPanel.add(new JScrollPane(strategyParamsPanel), BorderLayout.CENTER);	
 		
 		// -- Build the Swing.JPanel containing "Validate Output" button and outputFixMessageText --
 		JPanel validatePanel = createValidateOutputSection();

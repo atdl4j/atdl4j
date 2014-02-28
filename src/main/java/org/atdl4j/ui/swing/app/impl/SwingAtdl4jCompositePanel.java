@@ -1,6 +1,8 @@
 package org.atdl4j.ui.swing.app.impl;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Window;
 
 import javax.swing.JPanel;
@@ -25,6 +27,7 @@ public class SwingAtdl4jCompositePanel
 	private Window parentComposite;
 	private JPanel strPanel;
 	private JPanel strategySelectionPanel;
+	private JPanel panel;
 	
 	public Object buildAtdl4jCompositePanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
@@ -33,25 +36,42 @@ public class SwingAtdl4jCompositePanel
 	
 	public JPanel buildAtdl4jCompositePanel(Window aParentComposite, Atdl4jOptions aAtdl4jOptions)
 	{
-		parentComposite =  aParentComposite;
+	  parentComposite =  aParentComposite;
 
-		JPanel panel = new JPanel(new BorderLayout());
-		
-		// -- Delegate back to AbstractAtdl4jCompositePanel -- 
-		init( aParentComposite, aAtdl4jOptions );
+      panel = new JPanel(new GridBagLayout());
+      
+      GridBagConstraints gbc = new GridBagConstraints();
+      
+      // -- Delegate back to AbstractAtdl4jCompositePanel -- 
+      init( aParentComposite, aAtdl4jOptions );
 
-		strategySelectionPanel = new JPanel();
-		strategySelectionPanel.add((JPanel)getStrategySelectionPanel().buildStrategySelectionPanel( getParentOrShell(), getAtdl4jOptions()));
-		panel.add(strategySelectionPanel, BorderLayout.NORTH);
-		
-		JPanel descrPanel = (JPanel)getStrategyDescriptionPanel().buildStrategyDescriptionPanel( getParentOrShell(), getAtdl4jOptions() );
-		panel.add(descrPanel, BorderLayout.SOUTH);
-		descrPanel.setVisible( false );  // hide until there is data to populate it with
-		
-		strPanel = (JPanel)getStrategiesUI().buildStrategiesPanel( getParentOrShell(), getAtdl4jOptions(), getAtdl4jUserMessageHandler() );
-		panel.add(strPanel, BorderLayout.CENTER);
-		
-		return panel;
+      strategySelectionPanel = new JPanel();
+      strategySelectionPanel.add((JPanel)getStrategySelectionPanel().buildStrategySelectionPanel( getParentOrShell(), getAtdl4jOptions()));
+      gbc.gridx = 0;
+      gbc.gridy = 0;
+      gbc.gridwidth = GridBagConstraints.REMAINDER;
+      gbc.fill = GridBagConstraints.HORIZONTAL;
+      panel.add(strategySelectionPanel, gbc);
+      
+      
+      gbc.weightx = 1;
+      gbc.gridy = 1;
+      gbc.gridwidth = GridBagConstraints.REMAINDER;
+      gbc.fill = GridBagConstraints.BOTH;
+      strPanel = (JPanel)getStrategiesUI().buildStrategiesPanel( getParentOrShell(), getAtdl4jOptions(), getAtdl4jUserMessageHandler() );
+      panel.add(strPanel, gbc);
+      
+      
+      
+      JPanel descrPanel = (JPanel)getStrategyDescriptionPanel().buildStrategyDescriptionPanel( getParentOrShell(), getAtdl4jOptions() );
+      gbc.weightx = 0;
+      gbc.gridy = 2;
+      gbc.gridwidth = 1;
+      descrPanel.setPreferredSize(new Dimension((int) strPanel.getPreferredSize().getWidth(), 120)); 
+      panel.add(descrPanel, gbc);
+      descrPanel.setVisible( false );  // hide until there is data to populate it with
+      
+      return panel;
 	}
 	
 	public void setVisibleStrategySectionPanel( boolean aVisible )
