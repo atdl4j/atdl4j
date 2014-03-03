@@ -8,6 +8,7 @@ Please see [the atdl4j Homepage](http://atdl4j.org) for an overview.
 
 ## Features
 
+* Compatible with Java 6 and upper version
 * Displays algo input screens based on the latest industry-standard FIXatdl 1.1 XML schema
 * Reads and generates algorithm-specific FIX message content
 * Can be integrated into a trading system, or run as a standalone testing/validation tool.
