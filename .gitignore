@@ -2,3 +2,6 @@
 .classpath
 .settings/
 target/
+.idea/
+atdl4j.iml
+atdl4j.iws
