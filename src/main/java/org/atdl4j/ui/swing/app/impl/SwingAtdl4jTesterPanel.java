@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.exception.ValidationException;
+import org.atdl4j.ui.app.StrategySelectionEvent;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jTesterPanel;
 
 /**
@@ -308,5 +309,9 @@ public class SwingAtdl4jTesterPanel
 			outputFixMessageText.setText( aText.replace( '\n', ' ' ) );
 		}	
 	}
+
+  @Override
+  public void beforeStrategyIsSelected(StrategySelectionEvent event) {
+  }
 	
 }

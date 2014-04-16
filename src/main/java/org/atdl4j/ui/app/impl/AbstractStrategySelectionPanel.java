@@ -66,6 +66,13 @@ public abstract class AbstractStrategySelectionPanel
         		tempListener.strategySelected( aStrategy );
         	}
 	}
+	
+	protected void firePreStrategySelectedEvent() {
+      for ( StrategySelectionPanelListener tempListener : listenerList )
+      {
+          tempListener.beforeStrategyIsSelected(new StrategySelectionEventImpl());
+      }
+    }
 
 
 	/**

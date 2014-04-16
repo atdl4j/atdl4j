@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.fixatdl.core.StrategyT;
+import org.atdl4j.ui.app.StrategySelectionEvent;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jCompositePanel;
 
 /**
@@ -120,4 +121,9 @@ public class SwingAtdl4jCompositePanel
 		fireStrategyEventListenerStrategySelected( aStrategy, false );
 		packLayout();
 	}
+
+  @Override
+  public void beforeStrategyIsSelected(StrategySelectionEvent event) {
+    fireStrategyEventListenerBeforeStrategySelected();
+  }
 }

@@ -3,6 +3,7 @@ package org.atdl4j.ui.swt.app.impl;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.ui.app.StrategySelectionEvent;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jCompositePanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -145,4 +146,8 @@ public class SWTAtdl4jCompositePanel
 	{
 		this.parentComposite = aParentComposite;
 	}
+
+  @Override
+  public void beforeStrategyIsSelected(StrategySelectionEvent event) {
+  }
 }

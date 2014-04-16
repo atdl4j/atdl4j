@@ -732,6 +732,15 @@ public abstract class AbstractAtdl4jCompositePanel
 		}
 	}
 	
+	
+	public void fireStrategyEventListenerBeforeStrategySelected()
+    {
+        if ( getStrategyEventListener() != null )
+        {
+            getStrategyEventListener().beforeStrategyIsSelected(new StrategySelectionEventImpl());
+        }
+    }
+	
 	/**
 	 * @param aStrategy
 	 * @param aSelectedStrategyDetails

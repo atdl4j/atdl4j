@@ -16,4 +16,6 @@ import org.atdl4j.fixatdl.core.StrategyT;
 public interface StrategySelectionPanelListener
 {
 	public void strategySelected(StrategyT strategy);
+
+    public void beforeStrategyIsSelected(StrategySelectionEvent selectionEvent);
 }

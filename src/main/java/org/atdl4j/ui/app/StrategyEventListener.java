@@ -36,4 +36,10 @@ public interface StrategyEventListener
 	 * @param aException
 	 */
 	public void strategyValidationFailed( StrategyT aStrategy, Throwable aException );
+
+	/**
+	 * called when a new strategy has been selected but the 
+	 * previous strategy's panel is still available to retrieve data
+	 */
+    public void beforeStrategyIsSelected(StrategySelectionEvent event);
 }
