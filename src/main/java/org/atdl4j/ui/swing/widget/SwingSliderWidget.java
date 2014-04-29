@@ -6,7 +6,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 import org.atdl4j.fixatdl.core.EnumPairT;
@@ -21,65 +20,6 @@ public class SwingSliderWidget
 	private JSlider slider;
 	private JLabel label;
 
-	public void createWidget(JPanel parent)
-	{		
-		// label
-		label = new JLabel();
-		label.setName(getName()+"/label");
-		if (control.getLabel() != null) label.setText(control.getLabel());
-		
-		int numColumns = ((SliderT)control).getListItem().size();
-
-		// slider
-		slider = new JSlider(JSlider.HORIZONTAL, 0, numColumns - 1, 0);
-		slider.setName(getName()+"/slider");
-
-		// add major tick marks
-		slider.setMajorTickSpacing(1);
-		slider.setPaintTicks(true);
-		
-		// labels based on parameter ListItemTs
-	//	if ( ( (SliderT) control ).getListItem() != null )
-	//	{
-			Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();			
-			int i = 0;
-			for ( ListItemT li : ( (SliderT) control ).getListItem() )
-			{
-				JLabel label = new JLabel();
-				label.setName(getName()+"/slider/"+li.getEnumID()+"/label");
-				if (li.getUiRep() != null && !li.getUiRep().equals(""))
-				{
-					label.setText( li.getUiRep() );
-				}
-				for ( EnumPairT ep : parameter.getEnumPair() )
-				{
-				    if (ep.getEnumID().equals(li.getEnumID()) && ep.getDescription() != null && !ep.getDescription().equals(""))
-				    {
-				    	label.setToolTipText(ep.getDescription());
-				    }
-				}
-				labelTable.put(new Integer(i), label);				
-				i++;
-			}
-			slider.setLabelTable(labelTable);
-			slider.setPaintLabels(true);
-	//	}
-		
-		// tooltip
-		if ( getTooltip() != null )
-		{
-			slider.setToolTipText( getTooltip() );
-			if (label != null) label.setToolTipText( getTooltip() );
-		}
-		
-		if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
-			setValue( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ), true );
-		
-		//TODO: make this a composite
-		parent.add(label);
-		parent.add(slider);
-	}
-	
 	public String getControlValueRaw()
 	{
 		return ( (SliderT) control ).getListItem().get( slider.getValue() ).getEnumID();
@@ -169,5 +109,68 @@ public class SwingSliderWidget
 	protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd)
 	{
 		// TODO ?? adjust the visual appearance of the control ??
+	}
+	
+	@Override
+	protected List< ? extends Component> createBrickComponents() {
+	  List<Component> components = new ArrayList<Component>();
+	  
+	  //  label
+      label = new JLabel();
+      label.setName(getName()+"/label");
+      if (control.getLabel() != null) label.setText(control.getLabel());
+      
+      int numColumns = ((SliderT)control).getListItem().size();
+
+      // slider
+      slider = new JSlider(JSlider.HORIZONTAL, 0, numColumns - 1, 0);
+      slider.setName(getName()+"/slider");
+
+      // add major tick marks
+      slider.setMajorTickSpacing(1);
+      slider.setPaintTicks(true);
+      
+      // labels based on parameter ListItemTs
+  //  if ( ( (SliderT) control ).getListItem() != null )
+  //  {
+          Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();           
+          int i = 0;
+          for ( ListItemT li : ( (SliderT) control ).getListItem() )
+          {
+              JLabel label = new JLabel();
+              label.setName(getName()+"/slider/"+li.getEnumID()+"/label");
+              if (li.getUiRep() != null && !li.getUiRep().equals(""))
+              {
+                  label.setText( li.getUiRep() );
+              }
+              for ( EnumPairT ep : parameter.getEnumPair() )
+              {
+                  if (ep.getEnumID().equals(li.getEnumID()) && ep.getDescription() != null && !ep.getDescription().equals(""))
+                  {
+                      label.setToolTipText(ep.getDescription());
+                  }
+              }
+              labelTable.put(new Integer(i), label);              
+              i++;
+          }
+          slider.setLabelTable(labelTable);
+          slider.setPaintLabels(true);
+  //  }
+      
+      // tooltip
+      if ( getTooltip() != null )
+      {
+          slider.setToolTipText( getTooltip() );
+          if (label != null) label.setToolTipText( getTooltip() );
+      }
+      
+      if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
+          setValue( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ), true );
+      
+      //TODO: make this a composite
+      components.add(label);
+      components.add(slider);
+      
+      return components;
 	}
 }

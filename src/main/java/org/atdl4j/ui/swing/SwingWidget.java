@@ -23,5 +23,8 @@ public interface SwingWidget<E extends Comparable<?>> extends Atdl4jWidget<E>
 	public void addListener(SwingListener listener);
 
 	public void removeListener(SwingListener listener);
+	
+	public List< ? extends Component> getBrickComponents();
+	
 
 }

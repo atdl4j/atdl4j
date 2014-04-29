@@ -2,9 +2,6 @@ package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,66 +22,6 @@ public class SwingDropDownListWidget
 	private JComboBox dropDownList;
 	private JLabel label;
 	private JPanel wrapper;
-
-	public void createWidget(JPanel parent)
-	{
-		String tooltip = getTooltip();
-		
-		// label
-		if ( control.getLabel() != null ) {
-			label = new JLabel();
-			label.setName(getName()+"/label");
-			label.setText( control.getLabel());
-			if ( tooltip != null ) label.setToolTipText( tooltip );
-		}
-		
-		// dropDownList
-		dropDownList = new JComboBox();
-		dropDownList.setName(getName()+"/dropdownlist");
-		
-		// set editable
-		dropDownList.setEditable(control instanceof EditableDropDownListT);
-		
-		// dropDownList items
-		List<ListItemT> listItems = ( control instanceof EditableDropDownListT ) ? ( (EditableDropDownListT) control ).getListItem()
-				: ( (DropDownListT) control ).getListItem();
-		// TODO: throw error if there are no list items
-		for ( ListItemT listItem : listItems )
-			dropDownList.addItem(listItem.getUiRep() != null ? listItem.getUiRep() : "");
-
-		// tooltip
-		if ( tooltip != null ) dropDownList.setToolTipText( tooltip );
-
-		// default initializer
-		dropDownList.setSelectedIndex(0);
-
-		// select initValue if available
-		String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jOptions() );
-		if ( initValue != null )
-			setValue( initValue, true );
-		
-		
-		if (label != null){
-			wrapper = new JPanel(new GridBagLayout());
-			GridBagConstraints c = new GridBagConstraints();
-			c.fill = GridBagConstraints.HORIZONTAL;
-	    c.gridx = 0;
-	    c.gridy = 0;   
-	    c.gridwidth = 1;
-	    c.weightx = 1.0;
-	    c.weighty = 1.0;
-	    c.insets = new Insets(0, 0, 0, 0);
-	    wrapper.add( label, c);
-			c.gridx = 1;
-	    c.gridy = 0;
-	    c.insets = new Insets(0, 0, 0, 0);
-	    wrapper.add( dropDownList, c);
-			parent.add(wrapper);
-		}
-		else {
-			parent.add(dropDownList);
-		}
-	}
 
 	public void setVisible(boolean visible){
 		if (wrapper != null)
@@ -243,5 +180,53 @@ public class SwingDropDownListWidget
 	protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd)
 	{
 		// TODO ?? adjust the visual appearance of the control ??
+	}
+	
+	@Override
+	protected List< ? extends Component> createBrickComponents() {
+	  ArrayList<Component> components = new ArrayList<Component>();
+	  
+	  String tooltip = getTooltip();
+      
+      // label
+      if ( control.getLabel() != null ) {
+          label = new JLabel();
+          label.setName(getName()+"/label");
+          label.setText( control.getLabel());
+          if ( tooltip != null ) label.setToolTipText( tooltip );
+      }
+      
+      // dropDownList
+      dropDownList = new JComboBox();
+      dropDownList.setName(getName()+"/dropdownlist");
+      
+      // set editable
+      dropDownList.setEditable(control instanceof EditableDropDownListT);
+      
+      // dropDownList items
+      List<ListItemT> listItems = ( control instanceof EditableDropDownListT ) ? ( (EditableDropDownListT) control ).getListItem()
+              : ( (DropDownListT) control ).getListItem();
+      // TODO: throw error if there are no list items
+      for ( ListItemT listItem : listItems )
+          dropDownList.addItem(listItem.getUiRep() != null ? listItem.getUiRep() : "");
+
+      // tooltip
+      if ( tooltip != null ) dropDownList.setToolTipText( tooltip );
+
+      // default initializer
+      dropDownList.setSelectedIndex(0);
+
+      // select initValue if available
+      String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jOptions() );
+      if ( initValue != null )
+          setValue( initValue, true );
+      
+      
+      if (label != null){
+        components.add(label);
+      }
+      components.add( dropDownList);
+	  
+	  return components;
 	}
 }

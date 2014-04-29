@@ -72,70 +72,10 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 	
 	
 	public void createWidget(JPanel parent) {
-		String tooltip = getTooltip();
-
-		
-		// label
-		if (control.getLabel() != null) {
-			label = new JLabel();
-			label.setName(getName()+"/label");
-			label.setText(control.getLabel());
-			if (tooltip != null) label.setToolTipText(tooltip);
-		}
-		
-		Component comp = null;
-		
-		if (control instanceof SingleSpinnerT)
-		{
-			// spinner
-			spinner = new SwingNullableSpinner();			
-			spinner.setName(getName()+"/spinner");
-			
-			// tooltip
-			if (tooltip != null) spinner.setToolTipText(tooltip);
-			
-			comp = spinner;
-		}
-		else if (control instanceof DoubleSpinnerT)
-		{
-			// doubleSpinnerGrid
-			JPanel w = new JPanel(new GridBagLayout());
-	
-			GridBagConstraints gc = new GridBagConstraints();
-		    gc.fill = GridBagConstraints.HORIZONTAL;
-		    gc.weightx = 1;
-		    gc.gridx = 0;
-		    gc.gridy = 0;
-		    
-			// doubleSpinner
-			spinner = new SwingNullableSpinner();
-			
-			JPanel buttonPanel = new JPanel(new GridBagLayout());
-			doButtonsLayout(buttonPanel);
-			
-			// tooltip
-			if (tooltip != null)
-			{
-				spinner.setToolTipText(tooltip);
-				buttonUp.setToolTipText(tooltip);
-				buttonDown.setToolTipText(tooltip);
-			}
-			
-			// layout
-			w.add(spinner, gc);
-			
-			gc.weightx = 0;
-		    gc.gridx = 1;
-		    gc.gridy = 0;
-		    
-		    
-		    w.add(buttonPanel, gc);
-
-			comp = w;
-		}
-
-		if (comp != null) {
-			if (label != null){
+	  List< ? extends Component> components = getBrickComponents();
+	  
+		if (!components.isEmpty()) {
+			if (components.size()>1 ){
 				wrapper = new JPanel(new GridBagLayout());
 				GridBagConstraints c = new GridBagConstraints();
 				c.fill = GridBagConstraints.HORIZONTAL;
@@ -144,128 +84,19 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 				c.weightx = 1.0;
 				c.weighty = 1.0;
 				c.insets = new Insets(0, 0, 0, 0);
-				wrapper.add( label, c);
+				wrapper.add( components.get(0), c);
 				c.gridx = 1;
 				c.gridy = 0;
 				c.insets = new Insets(0, 0, 0, 0);
-				wrapper.add( comp, c);
+				wrapper.add( components.get(1), c);
 				parent.add(wrapper);
 			}
 			else {
-				parent.add(comp);
+				parent.add(components.get(0));
 			}
 		}
 		
-		// number model
-		SpinnerNumberModelNull model = (SpinnerNumberModelNull)spinner.getModel();
-		
-	// Set min/max/precision if a parameter is attached
-		if ( parameterConverter != null && parameterConverter instanceof DecimalConverter )
-		{
-			DecimalConverter tempDecimalConverter = (DecimalConverter) parameterConverter;
-			
-			if ( tempDecimalConverter.getPrecision() != null )
-			{
-				digits = tempDecimalConverter.getPrecision().intValue();
-			}
-			else
-			{
-				digits = ControlHelper.getDefaultDigitsForSpinnerControl( parameterConverter.getParameter(), getAtdl4jOptions());
-			}
-
-			if ( tempDecimalConverter.getMinValue() != null )
-			{
-				// -- need to handle Percentage ("control value" representation) --
-				BigDecimal tempParameterMin = tempDecimalConverter.getMinValue();
-				BigDecimal tempControlMin = tempDecimalConverter.convertParameterValueToControlValue( tempParameterMin );
-				model.setMinimum( tempControlMin.setScale( digits, RoundingMode.HALF_UP )  );
-			}
-			
-			if ( tempDecimalConverter.getMaxValue() != null )
-			{
-				// -- need to handle Percentage ("control value" representation) --
-				BigDecimal tempParameterMax = tempDecimalConverter.getMaxValue();
-				BigDecimal tempControlMax = tempDecimalConverter.convertParameterValueToControlValue( tempParameterMax );
-				model.setMaximum( tempControlMax.setScale( digits, RoundingMode.HALF_UP )  );
-			}
-		}
-		else if ( parameterConverter != null && parameterConverter instanceof IntegerConverter )
-		{
-			IntegerConverter tempIntegerConverter = (IntegerConverter) parameterConverter;
-			
-			// -- Integer always has 0 digits --
-			digits = 0;
-
-			if ( tempIntegerConverter.getMinValue() != null )
-			{
-				BigInteger tempParameterMin = tempIntegerConverter.getMinValue();
-				BigInteger tempControlMin = tempIntegerConverter.convertParameterValueToControlValue( tempParameterMin );
-				model.setMinimum( new BigDecimal( tempControlMin ) );
-			}
-			else
-			{
-				model.setMinimum( SwingNullableSpinner.MIN_INTEGER_VALUE_AS_BIG_DECIMAL );
-			}
-			
-			if ( tempIntegerConverter.getMaxValue() != null )
-			{
-				BigInteger tempParameterMax = tempIntegerConverter.getMaxValue();
-				BigInteger tempControlMax = tempIntegerConverter.convertParameterValueToControlValue( tempParameterMax );
-				model.setMaximum( new BigDecimal( tempControlMax ) );
-			}
-			else
-			{
-				model.setMaximum( SwingNullableSpinner.MAX_INTEGER_VALUE_AS_BIG_DECIMAL );
-			}
-		}
-
-		if ( control instanceof DoubleSpinnerT )
-		{
-			BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jOptions(), digits );
-			if ( tempInnerIncrement != null )
-			{
-				// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
-				model.setStepSize( tempInnerIncrement );
-			}
-			
-			BigDecimal outerStepSize = new BigDecimal( "1" );
-			
-			BigDecimal tempOuterIncrement = ControlHelper.getOuterIncrementValue( control, getAtdl4jOptions() );
-			if ( tempOuterIncrement != null )
-			{
-				outerStepSize = tempOuterIncrement;
-			}
-
-			buttonUp.addActionListener( new DoubleSpinnerListener( spinner, outerStepSize ) );
-			buttonDown.addActionListener( new DoubleSpinnerListener( spinner, outerStepSize.negate() ) );
-		}
-		else if ( control instanceof SingleSpinnerT )
-		{
-			BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jOptions(), digits );
-			if ( tempIncrement != null )
-			{
-				// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
-				model.setStepSize( tempIncrement );
-			}
-			else  // tempIncrement is null
-			{
-				if ( digits != 0 )
-				{
-					// -- Set the increment to the precision associated with digits (eg ".01" when digits=2, ".001" when digits=3) --
-					model.setStepSize( new BigDecimal( Math.pow( 10, -digits ) ).setScale( digits, RoundingMode.HALF_UP ) );
-				}
-				else
-				{
-					model.setStepSize( new BigDecimal( "1" ) );
-				}
-			}
 				
-		}
-
-		spinner.setPreferredSize(new Dimension(100, 22));
-		spinner.revalidate();
-		
-		applyInitialValue();		
 	}
 
 
@@ -386,4 +217,190 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
       return new Dimension(16, 9);
     }
   }
+  
+  @Override
+  public List< ? extends Component> createBrickComponents() {
+    
+    List<Component> components = new ArrayList<Component>();
+    
+    String tooltip = getTooltip();
+    
+    // label
+    if (control.getLabel() != null) {
+        label = new JLabel();
+        label.setName(getName()+"/label");
+        label.setText(control.getLabel());
+        if (tooltip != null) label.setToolTipText(tooltip);
+        
+        components.add(label);
+    }
+    
+    Component comp = null;
+    
+    if (control instanceof SingleSpinnerT)
+    {
+        // spinner
+        spinner = new SwingNullableSpinner();           
+        spinner.setName(getName()+"/spinner");
+        
+        // tooltip
+        if (tooltip != null) spinner.setToolTipText(tooltip);
+        
+        comp = spinner;
+    }
+    else if (control instanceof DoubleSpinnerT)
+    {
+        // doubleSpinnerGrid
+        JPanel w = new JPanel(new GridBagLayout());
+
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.fill = GridBagConstraints.HORIZONTAL;
+        gc.weightx = 1;
+        gc.gridx = 0;
+        gc.gridy = 0;
+        
+        // doubleSpinner
+        spinner = new SwingNullableSpinner();
+        
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        doButtonsLayout(buttonPanel);
+        
+        // tooltip
+        if (tooltip != null)
+        {
+            spinner.setToolTipText(tooltip);
+            buttonUp.setToolTipText(tooltip);
+            buttonDown.setToolTipText(tooltip);
+        }
+        
+        // layout
+        w.add(spinner, gc);
+        
+        gc.weightx = 0;
+        gc.gridx = 1;
+        gc.gridy = 0;
+        
+        
+        w.add(buttonPanel, gc);
+
+        comp = w;
+    }
+    components.add(comp);
+    
+    
+    // number model
+    SpinnerNumberModelNull model = (SpinnerNumberModelNull)spinner.getModel();
+    
+    // Set min/max/precision if a parameter is attached
+    if ( parameterConverter != null && parameterConverter instanceof DecimalConverter )
+    {
+        DecimalConverter tempDecimalConverter = (DecimalConverter) parameterConverter;
+        
+        if ( tempDecimalConverter.getPrecision() != null )
+        {
+            digits = tempDecimalConverter.getPrecision().intValue();
+        }
+        else
+        {
+            digits = ControlHelper.getDefaultDigitsForSpinnerControl( parameterConverter.getParameter(), getAtdl4jOptions());
+        }
+
+        if ( tempDecimalConverter.getMinValue() != null )
+        {
+            // -- need to handle Percentage ("control value" representation) --
+            BigDecimal tempParameterMin = tempDecimalConverter.getMinValue();
+            BigDecimal tempControlMin = tempDecimalConverter.convertParameterValueToControlValue( tempParameterMin );
+            model.setMinimum( tempControlMin.setScale( digits, RoundingMode.HALF_UP )  );
+        }
+        
+        if ( tempDecimalConverter.getMaxValue() != null )
+        {
+            // -- need to handle Percentage ("control value" representation) --
+            BigDecimal tempParameterMax = tempDecimalConverter.getMaxValue();
+            BigDecimal tempControlMax = tempDecimalConverter.convertParameterValueToControlValue( tempParameterMax );
+            model.setMaximum( tempControlMax.setScale( digits, RoundingMode.HALF_UP )  );
+        }
+    }
+    else if ( parameterConverter != null && parameterConverter instanceof IntegerConverter )
+    {
+        IntegerConverter tempIntegerConverter = (IntegerConverter) parameterConverter;
+        
+        // -- Integer always has 0 digits --
+        digits = 0;
+
+        if ( tempIntegerConverter.getMinValue() != null )
+        {
+            BigInteger tempParameterMin = tempIntegerConverter.getMinValue();
+            BigInteger tempControlMin = tempIntegerConverter.convertParameterValueToControlValue( tempParameterMin );
+            model.setMinimum( new BigDecimal( tempControlMin ) );
+        }
+        else
+        {
+            model.setMinimum( SwingNullableSpinner.MIN_INTEGER_VALUE_AS_BIG_DECIMAL );
+        }
+        
+        if ( tempIntegerConverter.getMaxValue() != null )
+        {
+            BigInteger tempParameterMax = tempIntegerConverter.getMaxValue();
+            BigInteger tempControlMax = tempIntegerConverter.convertParameterValueToControlValue( tempParameterMax );
+            model.setMaximum( new BigDecimal( tempControlMax ) );
+        }
+        else
+        {
+            model.setMaximum( SwingNullableSpinner.MAX_INTEGER_VALUE_AS_BIG_DECIMAL );
+        }
+    }
+
+    if ( control instanceof DoubleSpinnerT )
+    {
+        BigDecimal tempInnerIncrement = ControlHelper.getInnerIncrementValue( control, getAtdl4jOptions(), digits );
+        if ( tempInnerIncrement != null )
+        {
+            // -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
+            model.setStepSize( tempInnerIncrement );
+        }
+        
+        BigDecimal outerStepSize = new BigDecimal( "1" );
+        
+        BigDecimal tempOuterIncrement = ControlHelper.getOuterIncrementValue( control, getAtdl4jOptions() );
+        if ( tempOuterIncrement != null )
+        {
+            outerStepSize = tempOuterIncrement;
+        }
+
+        buttonUp.addActionListener( new DoubleSpinnerListener( spinner, outerStepSize ) );
+        buttonDown.addActionListener( new DoubleSpinnerListener( spinner, outerStepSize.negate() ) );
+    }
+    else if ( control instanceof SingleSpinnerT )
+    {
+        BigDecimal tempIncrement = ControlHelper.getIncrementValue( control, getAtdl4jOptions(), digits );
+        if ( tempIncrement != null )
+        {
+            // -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
+            model.setStepSize( tempIncrement );
+        }
+        else  // tempIncrement is null
+        {
+            if ( digits != 0 )
+            {
+                // -- Set the increment to the precision associated with digits (eg ".01" when digits=2, ".001" when digits=3) --
+                model.setStepSize( new BigDecimal( Math.pow( 10, -digits ) ).setScale( digits, RoundingMode.HALF_UP ) );
+            }
+            else
+            {
+                model.setStepSize( new BigDecimal( "1" ) );
+            }
+        }
+            
+    }
+
+    spinner.setPreferredSize(new Dimension(100, 22));
+    spinner.revalidate();
+    
+    applyInitialValue();
+    
+    return components;
+  }
+
+
 }

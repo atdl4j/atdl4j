@@ -55,7 +55,8 @@ public class SwingAtdl4jCompositePanel
       panel.add(strategySelectionPanel, gbc);
       
       
-      gbc.weightx = 1;
+      gbc.weightx = 0;
+      gbc.weighty = 0;
       gbc.gridy = 1;
       gbc.gridwidth = GridBagConstraints.REMAINDER;
       gbc.fill = GridBagConstraints.BOTH;
@@ -66,11 +67,19 @@ public class SwingAtdl4jCompositePanel
       
       JPanel descrPanel = (JPanel)getStrategyDescriptionPanel().buildStrategyDescriptionPanel( getParentOrShell(), getAtdl4jOptions() );
       gbc.weightx = 0;
+      gbc.weighty = 0;
       gbc.gridy = 2;
       gbc.gridwidth = 1;
       descrPanel.setPreferredSize(new Dimension((int) strPanel.getPreferredSize().getWidth(), 120)); 
       panel.add(descrPanel, gbc);
       descrPanel.setVisible( false );  // hide until there is data to populate it with
+      
+      
+      // Empty filling component
+      gbc.gridy = 3;
+      gbc.weightx = 1;
+      gbc.weighty = 1;
+      panel.add(new JPanel(), gbc);
       
       return panel;
 	}
@@ -92,7 +101,7 @@ public class SwingAtdl4jCompositePanel
 					strPanel.repaint();
 				}
 				if (parentComposite != null) {
-					parentComposite.pack();
+				  // parentComposite.pack();
 				}
 			}
 		});

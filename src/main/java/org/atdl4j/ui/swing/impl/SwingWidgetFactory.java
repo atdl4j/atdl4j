@@ -20,7 +20,7 @@ public class SwingWidgetFactory
 	protected static final Logger logger = Logger.getLogger( SwingWidgetFactory.class );
 
 	// Used to create a single parameter widget
-	public static SwingWidget<?> createWidget(JPanel parent, ControlT control, ParameterT parameter, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory)
+	public SwingWidget<?> createWidget(JPanel parent, ControlT control, ParameterT parameter, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory)
 	{
 		SwingWidget<?> parameterWidget = null;
 	
@@ -38,4 +38,5 @@ public class SwingWidgetFactory
 	
 		return parameterWidget;
 	}
+	
 }

@@ -59,7 +59,7 @@ public class SwingStrategyDescriptionPanel
   protected void setStrategyDescriptionText(String aText) {
     if (strategyDescription != null) {
       String newText = aText.replaceAll("&apos;", "&#39;");
-      String htmlText = "<html>" + newText + "</html>";
+      String htmlText = "<html><body face=\"arial\">" + newText + "</body></html>";
       strategyDescription.setText(htmlText);
       strategyDescription.setSelectionStart(0);
       strategyDescription.setSelectionEnd(0);

@@ -150,4 +150,42 @@ public class SwingTextFieldWidget
 			textField.setText( (aControlInitValue != null ) ? (String) aControlInitValue : "" );
 		}
 	}
+	
+	
+	@Override
+	public List< ? extends Component> createBrickComponents() {
+	  
+	  List<Component> components = new ArrayList<Component>();
+	  
+	// tooltip
+      String tooltip = control.getTooltip();
+      
+      // label        
+      if ( control.getLabel() != null ) {
+          label = new JLabel();
+          label.setName(getName()+"/label");
+          label.setText(control.getLabel());
+          if ( tooltip != null ) label.setToolTipText( tooltip );
+      }
+              
+      // textField
+      textField = new JFormattedTextField();
+      textField.setName(getName()+"/text");
+      
+      // init value
+      if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
+          textField.setText( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ) );
+
+      // tooltip
+      if (tooltip != null) textField.setToolTipText(tooltip);
+
+      if (label != null){
+        components.add( label);
+      }
+      components.add( textField);
+
+      textField.setPreferredSize(new Dimension(100, textField.getPreferredSize().height));
+      
+	  return components;
+	}
 }

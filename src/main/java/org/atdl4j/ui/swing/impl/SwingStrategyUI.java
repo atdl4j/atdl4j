@@ -1,5 +1,7 @@
 package org.atdl4j.ui.swing.impl;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +49,8 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	
 	protected Map<String, ButtonGroup> radioGroupMap;
 	
+	private SwingStrategyPanelFactory strategyPanelFactory = new SwingStrategyPanelFactory();
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -63,16 +67,38 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#buildAtdl4jWidgetMap(java.util.List)
 	 */
 	@Override
-	protected void buildAtdl4jWidgetMap(List<StrategyPanelT> aStrategyPanelList) throws FIXatdlFormatException {
-		Map<String, SwingWidget<?>> tempSwingWidgetMap = new HashMap<String, SwingWidget<?>>();
-		// build panels and widgets recursively
-		for (StrategyPanelT panel : aStrategyPanelList) {
-			tempSwingWidgetMap.putAll(SwingStrategyPanelFactory.createStrategyPanelAndWidgets(parentComponent, panel,
-					getParameterMap(), 0, getAtdl4jWidgetFactory()));
-		}
-		swingWidgetMap = tempSwingWidgetMap;
-	}
-	
+  protected void buildAtdl4jWidgetMap(List<StrategyPanelT> aStrategyPanelList)
+      throws FIXatdlFormatException
+  {
+
+    parentComponent.setLayout(new GridBagLayout());
+
+    GridBagConstraints gc = new GridBagConstraints();
+    gc.gridx = 0;
+    int row = 0;
+
+    JPanel tmp = new JPanel();
+    
+    Map<String, SwingWidget< ? >> tempSwingWidgetMap = new HashMap<String, SwingWidget< ? >>();
+    // build panels and widgets recursively
+    for (StrategyPanelT panel : aStrategyPanelList) {
+      Map<String, SwingWidget< ? >> strategyPanelAndWidgets = strategyPanelFactory
+          .createStrategyPanelAndWidgets(tmp, panel,
+                                         getParameterMap(), 0,
+                                         getAtdl4jWidgetFactory());
+      tempSwingWidgetMap.putAll(strategyPanelAndWidgets);
+      
+      JPanel container = strategyPanelFactory.createStrategyPanel(new JPanel(new GridBagLayout()), panel,  0, strategyPanelAndWidgets, 0);
+      gc.gridy = row;
+      gc.weightx = 1;
+      gc.fill = GridBagConstraints.HORIZONTAL;
+      gc.gridwidth = GridBagConstraints.REMAINDER;
+      parentComponent.add(container, gc);
+      row++;
+    }
+    swingWidgetMap = tempSwingWidgetMap;
+  }
+
 	/*
 	 * (non-Javadoc)
 	 * 

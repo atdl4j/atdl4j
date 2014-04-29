@@ -17,6 +17,7 @@ public class SwingLabelWidget
 		implements SwingWidget<String>
 {
 
+    private List<Component> brickComponents;
 	private JLabel label;
 
 	/**
@@ -27,27 +28,8 @@ public class SwingLabelWidget
 
 	public void createWidget(JPanel parent)
 	{
-		// label
-		label = new JLabel();
-		label.setName(getName()+"/label");
-
-		if ( control.getLabel() != null )
-		{
-			label.setText( control.getLabel() );
-		}
-		else if ( ControlHelper.getInitValue(control, getAtdl4jOptions()) != null )
-		{
-			label.setText( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ));
-		}
-		else
-		{
-			label.setText( "" );
-		}
-		
-		// tooltip
-		if (getTooltip() != null) label.setToolTipText(getTooltip());
-
-		parent.add(label);
+	    List< ? extends Component> components = getBrickComponents();
+		parent.add(components.get(0));
 	}
 
 	public void generateStateRuleListener(SwingListener listener)
@@ -122,4 +104,44 @@ public class SwingLabelWidget
 			label.setText( (aControlInitValue != null ) ? (String) aControlInitValue : "" );
 		}
 	}
+	
+	@Override
+    public List< ? extends Component> getBrickComponents() {
+      if (brickComponents == null)
+      {
+        brickComponents = createBrickComponents();
+      }
+      return brickComponents;
+    }
+
+  private List<Component> createBrickComponents() {
+    List<Component> components = new ArrayList<Component>();
+    
+    // label
+    label = new JLabel();
+    label.setName(getName()+"/label");
+
+    if ( control.getLabel() != null )
+    {
+        label.setText( control.getLabel() );
+    }
+    else if ( ControlHelper.getInitValue(control, getAtdl4jOptions()) != null )
+    {
+        label.setText( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ));
+    }
+    else
+    {
+        label.setText( "" );
+    }
+    
+    // tooltip
+    if (getTooltip() != null) label.setToolTipText(getTooltip());
+
+    components.add(label);
+    
+    return components;
+  }
+	
+	
+	
 }

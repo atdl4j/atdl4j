@@ -22,67 +22,6 @@ public class SwingRadioButtonListWidget
 	private ButtonGroup group = new ButtonGroup();	
 	private JLabel label;
 
-	public void createWidget(JPanel parent)
-	{		
-		JPanel wrapper = new JPanel();
-	    String tooltip = getTooltip();
-	        	    
-		// label
-		if ( control.getLabel() != null ) {
-			label = new JLabel();
-			label.setName(getName()+"/label");
-			label.setText( control.getLabel() );
-			if ( tooltip != null ) label.setToolTipText( tooltip );
-			parent.add(label);
-		}	
-		
-		/*
-		 //TODO: implement horiz/vert orientation for Swing
-		if ( ((RadioButtonListT) control).getOrientation() != null &&
-			 PanelOrientationT.VERTICAL.equals( ((RadioButtonListT) control).getOrientation() ) )
-		{
-			c.setLayout( new GridLayout( 1, false ) );
-		} else {
-			RowLayout rl = new RowLayout();
-			rl.wrap = false;
-			c.setLayout( rl );
-		}
-		 */
-		
-		// radioButton
-		for ( ListItemT listItem : ( (RadioButtonListT) control ).getListItem() )
-		{
-			JRadioButton radioElement = new JRadioButton();
-			radioElement.setName(getName()+"/button/"+listItem.getEnumID());
-			radioElement.setText( listItem.getUiRep() );
-			if ( parameter != null )
-			{
-				for ( EnumPairT enumPair : parameter.getEnumPair() )
-				{
-					if ( enumPair.getEnumID() == listItem.getEnumID() )
-					{
-						radioElement.setToolTipText( enumPair.getDescription() );
-						break;
-					}
-				}
-			}
-			else
-			{
-				radioElement.setToolTipText( tooltip );
-			}
-			group.add( radioElement );
-			buttons.add( radioElement );
-			wrapper.add( radioElement );
-		}
-
-		// set initValue (Note that this has to be the enumID, not the
-		// wireValue)
-		// set initValue
-		if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
-			setValue( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ), true );
-		
-		parent.add(wrapper);
-	}
 
 	public String getControlValueRaw()
 	{
@@ -178,5 +117,70 @@ public class SwingRadioButtonListWidget
 	protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd)
 	{
 		// TODO ?? adjust the visual appearance of the control ??
+	}
+	
+	@Override
+	protected List< ? extends Component> createBrickComponents() {
+	  List<Component> components = new ArrayList<Component>();
+	  
+	  JPanel wrapper = new JPanel();
+      String tooltip = getTooltip();
+                  
+      // label
+      if ( control.getLabel() != null ) {
+          label = new JLabel();
+          label.setName(getName()+"/label");
+          label.setText( control.getLabel() );
+          if ( tooltip != null ) label.setToolTipText( tooltip );
+          components.add(label);
+      }   
+      
+      /*
+       //TODO: implement horiz/vert orientation for Swing
+      if ( ((RadioButtonListT) control).getOrientation() != null &&
+           PanelOrientationT.VERTICAL.equals( ((RadioButtonListT) control).getOrientation() ) )
+      {
+          c.setLayout( new GridLayout( 1, false ) );
+      } else {
+          RowLayout rl = new RowLayout();
+          rl.wrap = false;
+          c.setLayout( rl );
+      }
+       */
+      
+      // radioButton
+      for ( ListItemT listItem : ( (RadioButtonListT) control ).getListItem() )
+      {
+          JRadioButton radioElement = new JRadioButton();
+          radioElement.setName(getName()+"/button/"+listItem.getEnumID());
+          radioElement.setText( listItem.getUiRep() );
+          if ( parameter != null )
+          {
+              for ( EnumPairT enumPair : parameter.getEnumPair() )
+              {
+                  if ( enumPair.getEnumID() == listItem.getEnumID() )
+                  {
+                      radioElement.setToolTipText( enumPair.getDescription() );
+                      break;
+                  }
+              }
+          }
+          else
+          {
+              radioElement.setToolTipText( tooltip );
+          }
+          group.add( radioElement );
+          buttons.add( radioElement );
+          wrapper.add( radioElement );
+      }
+
+      // set initValue (Note that this has to be the enumID, not the
+      // wireValue)
+      // set initValue
+      if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
+          setValue( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ), true );
+      
+      components.add(wrapper);
+      return components;
 	}
 }
