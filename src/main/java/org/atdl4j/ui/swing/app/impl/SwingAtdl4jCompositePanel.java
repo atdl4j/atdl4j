@@ -70,7 +70,7 @@ public class SwingAtdl4jCompositePanel
       gbc.weighty = 0;
       gbc.gridy = 2;
       gbc.gridwidth = 1;
-      descrPanel.setPreferredSize(new Dimension((int) strPanel.getPreferredSize().getWidth(), 120)); 
+      descrPanel.setPreferredSize(new Dimension((int) strPanel.getPreferredSize().getWidth(), 120)); // FIXME ugly magic number
       panel.add(descrPanel, gbc);
       descrPanel.setVisible( false );  // hide until there is data to populate it with
       
