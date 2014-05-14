@@ -221,6 +221,13 @@ public class SwingStrategyPanelFactory
         rowIndex++;
       }
     }
+    gc.fill = GridBagConstraints.BOTH;
+    gc.weightx = 1;
+    gc.weighty = 1;
+    
+    gc = gcUpdater.panel(rowIndex, gc);
+    gc = gcUpdater.remainder(gc);
+    parent.add(new JPanel(), gc);
 
     return parent;
   }

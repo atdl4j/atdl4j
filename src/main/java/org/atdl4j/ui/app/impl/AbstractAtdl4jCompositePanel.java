@@ -861,5 +861,6 @@ public abstract class AbstractAtdl4jCompositePanel
 	protected void setLastFilteredStrategyList(List<StrategyT> aLastFilteredStrategyList)
 	{
 		this.lastFilteredStrategyList = aLastFilteredStrategyList;
-	}		
+	}
+	
 }
