@@ -11,6 +11,9 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.fixatdl.core.StrategyT;
+import org.atdl4j.ui.Atdl4jWidget;
+import org.atdl4j.ui.StrategiesUI;
+import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.StrategySelectionEvent;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jCompositePanel;
 
@@ -134,5 +137,30 @@ public class SwingAtdl4jCompositePanel
   @Override
   public void beforeStrategyIsSelected(StrategySelectionEvent event) {
     fireStrategyEventListenerBeforeStrategySelected();
+  }
+
+  @Override
+  public void setEditable(boolean b) {
+    setEnabled(b);
+  }
+  
+  public void setEnabled(boolean enable) {
+    setStrategySelectionEnabled(enable);
+    StrategiesUI strategiesUI = getStrategiesUI();
+    StrategyT selectedStrategy = getSelectedStrategy();
+    if (selectedStrategy != null) {
+
+      StrategyUI ui = strategiesUI.getStrategyUI(selectedStrategy, false);
+      if (ui != null) {
+        for (Atdl4jWidget< ? > widget : ui.getAtdl4jWidgetMap().values()) {
+          widget.setEnabled(enable);
+        }
+      }
+    }
+  }
+  
+  public void setStrategySelectionEnabled(boolean enable)
+  {
+    ((SwingStrategySelectionPanel) getStrategySelectionPanel()).setEnabled(enable);
   }
 }

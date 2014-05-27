@@ -150,4 +150,9 @@ public class SWTAtdl4jCompositePanel
   @Override
   public void beforeStrategyIsSelected(StrategySelectionEvent event) {
   }
+
+  @Override
+  public void setEditable(boolean editable) {
+    // TODO implement setEditable(boolean editable) 
+  }
 }

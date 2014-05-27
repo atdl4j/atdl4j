@@ -58,6 +58,17 @@ public class SwingJideClockWidget
 	public static boolean showEnabledButton = false;
 	public static boolean show24HourClock = true;
 	
+	// model attributes
+	/**
+	 * true is a value was set either by user input or programmatically, other than a processReinit
+	 */
+	private boolean valueFilledIn;
+	/**
+	 * Default is true, but can be disabled after a call to setEnabled 
+	 */
+	private boolean enabled = true;
+	
+	
 	public boolean hasLabelOrCheckbox = false;
 	private JCheckBox enabledButton;
 	
@@ -71,6 +82,7 @@ public class SwingJideClockWidget
 	private boolean showTime;
 	private boolean useNowAsDate = false;
 
+
 	public DateTimeZone getLocalMktTz() 
 		throws IllegalArgumentException
 	{
@@ -83,6 +95,11 @@ public class SwingJideClockWidget
 		if ((dateClock == null) && (timeClock == null))
 		{
 			return null; // disabled, no value to use
+		}
+		
+		if (!valueFilledIn)
+		{
+		  return null;
 		}
 				
 		DateTime now = null; 
@@ -128,24 +145,10 @@ public class SwingJideClockWidget
 		
 		if (showMonthYear) dateClock.setValue(tempLocalTzDateTime.toDate());
 		if (showTime) timeClock.setValue(tempLocalTzDateTime.toDate());
+		valueFilledIn = true;
+		updateFromModel();
 	}
 
-	private void applyEnabledSetting()
-	{
-		if ( enabledButton != null )
-		{
-			if ( ( dateClock != null ) && ( dateClock.isVisible() ) )
-			{
-				dateClock.setEnabled( enabledButton.isSelected() );
-			}
-
-			if ( ( timeClock != null ) && ( timeClock.isVisible() ) )
-			{
-				timeClock.setEnabled( enabledButton.isSelected() );
-			}
-		}
-	}
-	
 	public List<Component> getComponents() {
 		List<Component> widgets = new ArrayList<Component>();
 		if (enabledButton != null) widgets.add(enabledButton);
@@ -162,9 +165,10 @@ public class SwingJideClockWidget
 		return widgets;
 	}
 	
-	public void addListener(SwingListener listener) {
+	public void addListener(final SwingListener listener) {
 		if (showMonthYear) dateClock.addChangeListener(listener);
 		if (showTime) timeClock.addChangeListener(listener);
+		if (enabledButton != null) enabledButton.addActionListener(listener);
 	}
 
 	public void removeListener(SwingListener listener) {
@@ -232,6 +236,9 @@ public class SwingJideClockWidget
 		{
 			// -- reinit the time to present time --
 			setValue( new DateTime() );
+			valueFilledIn = (enabledButton!=null?false:true); // the editor requires a value but until the 
+			// enabledButton is checked, considere that no value is filled 
+			updateFromModel();
 		}
 	}
 
@@ -336,7 +343,7 @@ public class SwingJideClockWidget
           enabledButton.setSelected(false);
           enabledButton.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
-                  applyEnabledSetting();                  
+                updateFromView();                  
               }
           });
           components.add(enabledButton);
@@ -370,10 +377,53 @@ public class SwingJideClockWidget
       // init value, if applicable
       setAndRenderInitValue( (XMLGregorianCalendar ) ControlHelper.getInitValue( control, getAtdl4jOptions() ), ((ClockT) control).getInitValueMode() );
       
-      if ( enabledButton != null )
-      {
-          applyEnabledSetting();
-      }
-	return components;
+      updateFromModel();
+      return components;
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+	  this.enabled = enabled;
+      updateFromModel();
+	}
+	
+	@Override
+	public boolean isNullValue() {
+	  if (!valueFilledIn)
+	  {
+	    return true;
+	  } else {
+	    return super.isNullValue();
+	  }
+	}
+	
+	private void updateFromView()
+	{
+	  if (enabledButton!=null)
+	  {
+	    valueFilledIn = enabledButton.isSelected();
+	  } else {
+	    valueFilledIn = true;
+	  }
+	  if ((timeClock != null) && (timeClock.isVisible())) {
+	    timeClock.setEnabled(valueFilledIn && enabled);
+	  }
+	  if ((dateClock != null) && (dateClock.isVisible())) {
+	    dateClock.setEnabled(valueFilledIn && enabled);
+	  }
+	}
+	
+	private void updateFromModel()
+	{
+	  if (enabledButton != null) {
+        enabledButton.setSelected(valueFilledIn);
+        enabledButton.setEnabled(enabled);
+      }	  
+	  if ((timeClock != null) && (timeClock.isVisible())) {
+	    timeClock.setEnabled(valueFilledIn && enabled);
+	  }
+	  if ((dateClock != null) && (dateClock.isVisible())) {
+	    dateClock.setEnabled(valueFilledIn && enabled);
+	  }
 	}
 }

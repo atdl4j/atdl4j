@@ -1,13 +1,19 @@
 package org.atdl4j.ui.swing.app.impl;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -60,7 +66,14 @@ public class SwingAtdl4jTesterPanel
 		frame.getContentPane().add(mainPanel);
 
 		parentComposite = frame;
-
+		parentComposite.setLayout(new GridBagLayout());
+		
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.gridx = 0;
+		gc.fill = GridBagConstraints.BOTH;
+		gc.weightx = 0;
+		gc.weighty = 0;
+		
 		// -- Delegate back to AbstractAtdl4jTesterPanel -- 
 		init( parentComposite, aAtdl4jOptions );
 		inputAndFilterDataAndLoadMessageComposite = new JPanel(new BorderLayout());
@@ -75,7 +88,9 @@ public class SwingAtdl4jTesterPanel
 		// -- Build the Swing.JPanel from FixMsgLoadPanel ("Load FIX Message" button) --
 		JPanel loadPanel = (JPanel)getFixMsgLoadPanel().buildFixMsgLoadPanel( inputAndFilterDataAndLoadMessageComposite, getAtdl4jOptions() );
 		inputAndFilterDataAndLoadMessageComposite.add(loadPanel, BorderLayout.CENTER);		
-		parentComposite.add(inputAndFilterDataAndLoadMessageComposite, BorderLayout.NORTH);
+		parentComposite.add(inputAndFilterDataAndLoadMessageComposite, gc);
+		
+		parentComposite.add(getEnableDisablePanel(atdl4jCompositePanel), gc);
 		
 		JPanel internalPanel = new JPanel(new BorderLayout());
 		
@@ -91,11 +106,15 @@ public class SwingAtdl4jTesterPanel
 		JPanel validatePanel = createValidateOutputSection();
 		internalPanel.add(validatePanel, BorderLayout.SOUTH);	
 
-		parentComposite.add(internalPanel, BorderLayout.CENTER);
+		gc.weightx = 1;
+        gc.weighty = 1;
+		parentComposite.add(internalPanel, gc);
 		
 		// -- Build the Swing.JPanel containing "OK" and "Cancel" buttons --
 		JPanel buttonsPanel = createOkCancelButtonSection();
-		parentComposite.add(buttonsPanel, BorderLayout.SOUTH);
+		gc.weightx = 0;
+        gc.weighty = 0;
+		parentComposite.add(buttonsPanel, gc);
 
 		// -- Build the Swing JMenuItems --
 		
@@ -105,6 +124,25 @@ public class SwingAtdl4jTesterPanel
 		
 		return parentComposite;
 	}
+
+  private Component getEnableDisablePanel(final Atdl4jCompositePanel atdl4jCompositePanel) {
+    JPanel panel = new JPanel(new GridBagLayout());
+    
+    JCheckBox enableCheckbox = new JCheckBox("Enable/disable");
+    enableCheckbox.addItemListener(new ItemListener() {
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+        atdl4jCompositePanel.setEditable(e.getStateChange() != ItemEvent.SELECTED);
+      }
+    });
+
+    GridBagConstraints gc = new GridBagConstraints();
+    gc.fill = GridBagConstraints.HORIZONTAL;
+    gc.weightx = 1;
+    panel.add(enableCheckbox, gc);
+    
+    return panel;
+  }
 
   private void addListeners(Atdl4jCompositePanel atdl4jCompositePanel) {
     atdl4jCompositePanel.getStrategiesUI().addWidgetListener(new AtdlWidgetListener() {
