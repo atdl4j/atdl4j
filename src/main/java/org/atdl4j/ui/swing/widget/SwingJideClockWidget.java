@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -59,6 +58,17 @@ public class SwingJideClockWidget
 	public static boolean showEnabledButton = false;
 	public static boolean show24HourClock = true;
 	
+	// model attributes
+	/**
+	 * true is a value was set either by user input or programmatically, other than a processReinit
+	 */
+	private boolean valueFilledIn;
+	/**
+	 * Default is true, but can be disabled after a call to setEnabled 
+	 */
+	private boolean enabled = true;
+	
+	
 	public boolean hasLabelOrCheckbox = false;
 	private JCheckBox enabledButton;
 	
@@ -72,97 +82,6 @@ public class SwingJideClockWidget
 	private boolean showTime;
 	private boolean useNowAsDate = false;
 
-	public void createWidget(JPanel parent)
-	{
-		// tooltip
-		String tooltip = control.getTooltip();		
-		
-		if ( parameter instanceof UTCTimestampT || parameter instanceof TZTimestampT )
-		{
-		    	if (getAtdl4jOptions()==null||getAtdl4jOptions().isShowDateInputOnTimestampClockControl())
-		    	{
-        			showMonthYear = true;
-        			showDay = true;
-		    	} else {
-        			showMonthYear = false;
-        			showDay = false;
-        			useNowAsDate = true;
-		    	}
-			showTime = true;
-		}
-		else if ( parameter instanceof UTCDateOnlyT || parameter instanceof LocalMktDateT )
-		{
-			showMonthYear = true;
-			showDay = true;
-			showTime = false;
-		}
-		else if ( parameter instanceof MonthYearT )
-		{
-			showMonthYear = true;
-			showDay = false;
-			showTime = false;
-		}
-		else if ( parameter == null || parameter instanceof UTCTimeOnlyT || parameter instanceof TZTimeOnlyT )
-		{
-			showMonthYear = false;
-			showDay = false;
-			showTime = true;
-		}
-		
-		if ( getAtdl4jOptions() != null && 
-			getAtdl4jOptions().isShowEnabledCheckboxOnOptionalClockControl() && 
-			parameter != null && 
-			UseT.OPTIONAL.equals( parameter.getUse() ) )
-		{
-			hasLabelOrCheckbox = true;
-			enabledButton = new JCheckBox();
-			enabledButton.setName(getName()+"/enablebutton");
-			if (control.getLabel() != null) {
-				enabledButton.setText(control.getLabel());
-			}
-			enabledButton.setToolTipText("Click to enable optional parameter");
-			enabledButton.setSelected(false);
-			enabledButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					applyEnabledSetting();					
-				}
-			});
-			parent.add(enabledButton);
-		}		
-		else if (control.getLabel() != null)
-		{
-			// add label
-			hasLabelOrCheckbox = true;
-			label = new JLabel();
-			label.setName(getName()+"/label");
-			label.setText(control.getLabel());
-			if (tooltip != null) label.setToolTipText(tooltip);
-			parent.add(label);
-		}
-		
-		// date clock
-		if (showMonthYear) {
-			dateClock = new DateSpinner(showDay ? "dd.MM.yyyy" : "MM.yyyy");
-			dateClock.setName(getName()+"/dateclock");
-			if (tooltip != null) dateClock.setToolTipText(tooltip);
-			parent.add(dateClock);
-		}
-		// time clock
-		if (showTime) {
-			timeClock = new DateSpinner(show24HourClock ? "HH:mm:ss" : "hh:mm:ss");
-			timeClock.setName(getName()+"/timeclock");
-			if (tooltip != null) timeClock.setToolTipText(tooltip);
-			parent.add(timeClock);
-		}
-
-		// init value, if applicable
-		setAndRenderInitValue( (XMLGregorianCalendar ) ControlHelper.getInitValue( control, getAtdl4jOptions() ), ((ClockT) control).getInitValueMode() );
-		
-		if ( enabledButton != null )
-		{
-			applyEnabledSetting();
-		}
-	}
 
 	public DateTimeZone getLocalMktTz() 
 		throws IllegalArgumentException
@@ -176,6 +95,11 @@ public class SwingJideClockWidget
 		if ((dateClock == null) && (timeClock == null))
 		{
 			return null; // disabled, no value to use
+		}
+		
+		if (!valueFilledIn)
+		{
+		  return null;
 		}
 				
 		DateTime now = null; 
@@ -221,24 +145,10 @@ public class SwingJideClockWidget
 		
 		if (showMonthYear) dateClock.setValue(tempLocalTzDateTime.toDate());
 		if (showTime) timeClock.setValue(tempLocalTzDateTime.toDate());
+		valueFilledIn = true;
+		updateFromModel();
 	}
 
-	private void applyEnabledSetting()
-	{
-		if ( enabledButton != null )
-		{
-			if ( ( dateClock != null ) && ( dateClock.isVisible() ) )
-			{
-				dateClock.setEnabled( enabledButton.isSelected() );
-			}
-
-			if ( ( timeClock != null ) && ( timeClock.isVisible() ) )
-			{
-				timeClock.setEnabled( enabledButton.isSelected() );
-			}
-		}
-	}
-	
 	public List<Component> getComponents() {
 		List<Component> widgets = new ArrayList<Component>();
 		if (enabledButton != null) widgets.add(enabledButton);
@@ -255,9 +165,10 @@ public class SwingJideClockWidget
 		return widgets;
 	}
 	
-	public void addListener(SwingListener listener) {
+	public void addListener(final SwingListener listener) {
 		if (showMonthYear) dateClock.addChangeListener(listener);
 		if (showTime) timeClock.addChangeListener(listener);
+		if (enabledButton != null) enabledButton.addActionListener(listener);
 	}
 
 	public void removeListener(SwingListener listener) {
@@ -325,6 +236,9 @@ public class SwingJideClockWidget
 		{
 			// -- reinit the time to present time --
 			setValue( new DateTime() );
+			valueFilledIn = (enabledButton!=null?false:true); // the editor requires a value but until the 
+			// enabledButton is checked, considere that no value is filled 
+			updateFromModel();
 		}
 	}
 
@@ -371,5 +285,145 @@ public class SwingJideClockWidget
 				setValueAsString( Atdl4jConstants.VALUE_NULL_INDICATOR );
 			} 
 		}
+	}
+	
+	
+	@Override
+	protected List< ? extends Component> createBrickComponents() {
+	  
+	  List<Component> components = new ArrayList<Component>();
+	  
+	  // tooltip
+      String tooltip = control.getTooltip();      
+      
+      if ( parameter instanceof UTCTimestampT || parameter instanceof TZTimestampT )
+      {
+              if (getAtdl4jOptions()==null||getAtdl4jOptions().isShowDateInputOnTimestampClockControl())
+              {
+                  showMonthYear = true;
+                  showDay = true;
+              } else {
+                  showMonthYear = false;
+                  showDay = false;
+                  useNowAsDate = true;
+              }
+          showTime = true;
+      }
+      else if ( parameter instanceof UTCDateOnlyT || parameter instanceof LocalMktDateT )
+      {
+          showMonthYear = true;
+          showDay = true;
+          showTime = false;
+      }
+      else if ( parameter instanceof MonthYearT )
+      {
+          showMonthYear = true;
+          showDay = false;
+          showTime = false;
+      }
+      else if ( parameter == null || parameter instanceof UTCTimeOnlyT || parameter instanceof TZTimeOnlyT )
+      {
+          showMonthYear = false;
+          showDay = false;
+          showTime = true;
+      }
+      
+      if ( getAtdl4jOptions() != null && 
+          getAtdl4jOptions().isShowEnabledCheckboxOnOptionalClockControl() && 
+          parameter != null && 
+          UseT.OPTIONAL.equals( parameter.getUse() ) )
+      {
+          hasLabelOrCheckbox = true;
+          enabledButton = new JCheckBox();
+          enabledButton.setName(getName()+"/enablebutton");
+          if (control.getLabel() != null) {
+              enabledButton.setText(control.getLabel());
+          }
+          enabledButton.setToolTipText("Click to enable optional parameter");
+          enabledButton.setSelected(false);
+          enabledButton.addActionListener(new ActionListener() {
+              public void actionPerformed(ActionEvent e) {
+                updateFromView();                  
+              }
+          });
+          components.add(enabledButton);
+      }       
+      else if (control.getLabel() != null)
+      {
+          // add label
+          hasLabelOrCheckbox = true;
+          label = new JLabel();
+          label.setName(getName()+"/label");
+          label.setText(control.getLabel());
+          if (tooltip != null) label.setToolTipText(tooltip);
+          components.add(label);
+      }
+      
+      // date clock
+      if (showMonthYear) {
+          dateClock = new DateSpinner(showDay ? "dd.MM.yyyy" : "MM.yyyy");
+          dateClock.setName(getName()+"/dateclock");
+          if (tooltip != null) dateClock.setToolTipText(tooltip);
+          components.add(dateClock);
+      }
+      // time clock
+      if (showTime) {
+          timeClock = new DateSpinner(show24HourClock ? "HH:mm:ss" : "hh:mm:ss");
+          timeClock.setName(getName()+"/timeclock");
+          if (tooltip != null) timeClock.setToolTipText(tooltip);
+          components.add(timeClock);
+      }
+
+      // init value, if applicable
+      setAndRenderInitValue( (XMLGregorianCalendar ) ControlHelper.getInitValue( control, getAtdl4jOptions() ), ((ClockT) control).getInitValueMode() );
+      
+      updateFromModel();
+      return components;
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+	  this.enabled = enabled;
+      updateFromModel();
+	}
+	
+	@Override
+	public boolean isNullValue() {
+	  if (!valueFilledIn)
+	  {
+	    return true;
+	  } else {
+	    return super.isNullValue();
+	  }
+	}
+	
+	private void updateFromView()
+	{
+	  if (enabledButton!=null)
+	  {
+	    valueFilledIn = enabledButton.isSelected();
+	  } else {
+	    valueFilledIn = true;
+	  }
+	  if ((timeClock != null) && (timeClock.isVisible())) {
+	    timeClock.setEnabled(valueFilledIn && enabled);
+	  }
+	  if ((dateClock != null) && (dateClock.isVisible())) {
+	    dateClock.setEnabled(valueFilledIn && enabled);
+	  }
+	}
+	
+	private void updateFromModel()
+	{
+	  if (enabledButton != null) {
+        enabledButton.setSelected(valueFilledIn);
+        enabledButton.setEnabled(enabled);
+      }	  
+	  if ((timeClock != null) && (timeClock.isVisible())) {
+	    timeClock.setEnabled(valueFilledIn && enabled);
+	  }
+	  if ((dateClock != null) && (dateClock.isVisible())) {
+	    dateClock.setEnabled(valueFilledIn && enabled);
+	  }
 	}
 }

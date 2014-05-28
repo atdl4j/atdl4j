@@ -2,10 +2,10 @@ package org.atdl4j.ui.swing.widget;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JCheckBox;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
@@ -25,30 +25,6 @@ public class SwingButtonWidget
 	private JToggleButton button;
 	//private SwingRadioButtonListener radioButtonListener;
 
-	public void createWidget(JPanel parent) 
-	{
-		// button
-		if (control instanceof RadioButtonT) {
-			button = new JRadioButton();
-		} else {
-			button = new JCheckBox();
-		}
-		button.setName(getName()+"/button");
-		
-		// set label and tooltips
-		if ( control.getLabel() != null ) button.setText( control.getLabel() );
-		if ( getTooltip() != null ) button.setToolTipText( getTooltip() );
-		// if (control.getTooltip() != null) button.setToolTipText(control.getTooltip());
-				
-		Boolean tempInitValue = (Boolean) ControlHelper.getInitValue( control, getAtdl4jOptions() );
-		if ( tempInitValue != null )
-		{
-			setValue( tempInitValue );
-		}
-		
-		parent.add(button);
-	}
-	
 	public void setValue(Boolean value)
 	{
 		if (control instanceof CheckBoxT) 
@@ -161,4 +137,29 @@ public class SwingButtonWidget
 			button.setSelected( (aControlInitValue != null ) ? ((Boolean) aControlInitValue).booleanValue() : false );
 		}
 	}
+
+  @Override
+  public List<? extends Component> createBrickComponents() {
+    // button
+    if (control instanceof RadioButtonT) {
+        button = new JRadioButton();
+    } else {
+        button = new JCheckBox();
+    }
+    button.setName(getName()+"/button");
+    
+    // set label and tooltips
+    if ( control.getLabel() != null ) button.setText( control.getLabel() );
+    if ( getTooltip() != null ) button.setToolTipText( getTooltip() );
+    // if (control.getTooltip() != null) button.setToolTipText(control.getTooltip());
+            
+    Boolean tempInitValue = (Boolean) ControlHelper.getInitValue( control, getAtdl4jOptions() );
+    if ( tempInitValue != null )
+    {
+        setValue( tempInitValue );
+    }
+    return Collections.singletonList(button);
+  }
+  
+  
 }

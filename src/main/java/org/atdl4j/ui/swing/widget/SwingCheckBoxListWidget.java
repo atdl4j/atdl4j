@@ -30,68 +30,6 @@ public class SwingCheckBoxListWidget
 					+ "\" are not equal in number." );
 	}
 
-	public void createWidget(JPanel parent)
-	{
-		// wrapper
-		JPanel wrapper = new JPanel();
-		
-		// tooltip
-		String tooltip = control.getTooltip();
-				
-		// label
-		if (control.getLabel() != null)
-		{
-			label = new JLabel();
-			label.setName(getName()+"/label");
-			label.setText(control.getLabel());
-			if (tooltip != null) label.setToolTipText(tooltip);
-			wrapper.add(label);
-		}
-		
-		if ( ((CheckBoxListT) control).getOrientation() != null &&
-				 PanelOrientationT.VERTICAL.equals( ((CheckBoxListT) control).getOrientation() ) )
-		{
-			// TODO: NOT IMPLEMENTED
-		} 
-		else 
-		{
-			// TODO: NOT IMPLEMENTED
-		}
-		
-		// checkBoxes
-		List<ListItemT> listItems = ((CheckBoxListT)control).getListItem();
-		for (ListItemT listItem : listItems) {
-		
-			JCheckBox checkBox = new JCheckBox();
-			checkBox.setName(getName()+"/button/"+listItem.getEnumID());
-			
-			if (listItem.getUiRep() != null) checkBox.setText(listItem.getUiRep());
-			
-			if (parameter != null) {
-				for (EnumPairT enumPair :  parameter.getEnumPair()) {
-					if (enumPair.getEnumID() == listItem.getEnumID()) {
-						
-						// set tooltip
-						if (enumPair.getDescription() != null)
-							checkBox.setToolTipText(enumPair.getDescription());
-						else if (tooltip != null)
-							checkBox.setToolTipText(tooltip);
-						break;
-					}
-				}
-			} else {
-				if (tooltip != null) checkBox.setToolTipText(tooltip);
-			}
-			multiCheckBox.add(checkBox);
-			wrapper.add(checkBox);
-		}
-		
-		// set initValue
-		if  (((CheckBoxListT)control).getInitValue() != null)
-			setValue(((CheckBoxListT)control).getInitValue(), true);
-		
-		parent.add(wrapper);
-	}
 
 	public String getControlValueRaw()
 	{
@@ -203,4 +141,71 @@ public class SwingCheckBoxListWidget
 	{
 		// TODO ?? adjust the visual appearance of the control ??
 	}
+	
+    @Override
+    public List< ? extends Component> createBrickComponents() {
+  
+      List<Component> components = new ArrayList<Component>();
+      // wrapper
+      JPanel wrapper = new JPanel();
+  
+      // tooltip
+      String tooltip = control.getTooltip();
+  
+      // label
+      if (control.getLabel() != null) {
+        label = new JLabel();
+        label.setName(getName() + "/label");
+        label.setText(control.getLabel());
+        if (tooltip != null)
+          label.setToolTipText(tooltip);
+        components.add(label);
+      }
+  
+      if (((CheckBoxListT) control).getOrientation() != null
+          && PanelOrientationT.VERTICAL.equals(((CheckBoxListT) control)
+              .getOrientation())) {
+        // TODO: NOT IMPLEMENTED
+      }
+      else {
+        // TODO: NOT IMPLEMENTED
+      }
+  
+      // checkBoxes
+      List<ListItemT> listItems = ((CheckBoxListT) control).getListItem();
+      for (ListItemT listItem : listItems) {
+  
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setName(getName() + "/button/" + listItem.getEnumID());
+  
+        if (listItem.getUiRep() != null)
+          checkBox.setText(listItem.getUiRep());
+  
+        if (parameter != null) {
+          for (EnumPairT enumPair : parameter.getEnumPair()) {
+            if (enumPair.getEnumID() == listItem.getEnumID()) {
+  
+              // set tooltip
+              if (enumPair.getDescription() != null)
+                checkBox.setToolTipText(enumPair.getDescription());
+              else if (tooltip != null)
+                checkBox.setToolTipText(tooltip);
+              break;
+            }
+          }
+        }
+        else {
+          if (tooltip != null)
+            checkBox.setToolTipText(tooltip);
+        }
+        multiCheckBox.add(checkBox);
+        components.add(checkBox);
+      }
+  
+      // set initValue
+      if (((CheckBoxListT) control).getInitValue() != null)
+        setValue(((CheckBoxListT) control).getInitValue(), true);
+  
+      return components;
+    }
 }

@@ -63,6 +63,7 @@ public class SwingStrategySelectionPanel
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
+				    firePreStrategySelectedEvent();
 					int index = strategiesDropDown.getSelectedIndex();
 					selectDropDownStrategy( index );
 				}
@@ -73,7 +74,8 @@ public class SwingStrategySelectionPanel
 	}
 
 
-	public void loadStrategyList( List<StrategyT> aStrategyList )
+
+  public void loadStrategyList( List<StrategyT> aStrategyList )
 	{
 		strategiesDropDown.removeAllItems();
 
@@ -167,5 +169,10 @@ public class SwingStrategySelectionPanel
 			logger.debug( "selectFirstDropDownStrategy() invoking selectDropDownStrategy( 0 )" );
 			selectDropDownStrategy( 0 );
 		}
+	}
+	
+	public void setEnabled(boolean enable)
+	{
+	    strategiesDropDown.setEnabled(enable);
 	}
 }

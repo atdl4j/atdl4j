@@ -43,7 +43,6 @@ public class SwingStrategyDescriptionPanel
     strategyDescription.setContentType("text/html");
     strategyDescription.setFont(new JLabel().getFont());
     strategyDescription.setEditable(false);
-    strategyDescription.setFont(new JLabel().getFont());
 
     JScrollPane tempScrollPane = new JScrollPane(strategyDescription);
     container.add(tempScrollPane, BorderLayout.CENTER);
@@ -60,7 +59,7 @@ public class SwingStrategyDescriptionPanel
   protected void setStrategyDescriptionText(String aText) {
     if (strategyDescription != null) {
       String newText = aText.replaceAll("&apos;", "&#39;");
-      String htmlText = "<html>" + newText + "</html>";
+      String htmlText = "<html><body face=\"arial\">" + newText + "</body></html>";
       strategyDescription.setText(htmlText);
       strategyDescription.setSelectionStart(0);
       strategyDescription.setSelectionEnd(0);

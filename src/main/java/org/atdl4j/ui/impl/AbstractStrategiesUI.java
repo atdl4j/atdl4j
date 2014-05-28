@@ -4,6 +4,7 @@
  */
 package org.atdl4j.ui.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -13,6 +14,8 @@ import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
+import org.atdl4j.ui.Atdl4jWidget;
+import org.atdl4j.ui.AtdlWidgetListener;
 import org.atdl4j.ui.StrategiesUI;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
@@ -33,6 +36,8 @@ public abstract class AbstractStrategiesUI
 	private Atdl4jOptions atdl4jOptions = null;
 
 	private List<StrategiesUIListener> listenerList = new Vector<StrategiesUIListener>();
+	
+	private List<AtdlWidgetListener> widgetListeners = new ArrayList<AtdlWidgetListener>();
 
 	private boolean preCached = false;
 	
@@ -63,7 +68,7 @@ public abstract class AbstractStrategiesUI
 	{
 		listenerList.add( aStrategiesUIListener );
 	}
-
+	
 	public void removeListener( StrategiesUIListener aStrategiesUIListener )
 	{
 		listenerList.remove( aStrategiesUIListener );
@@ -179,5 +184,25 @@ public abstract class AbstractStrategiesUI
 	{
 		this.strategies = aStrategies;
 	}
+	
+	@Override
+	public void addWidgetListener(AtdlWidgetListener listener) {
+	  widgetListeners.add(listener);
+	}
+	
+	@Override
+	public void removeWidgetListener(AtdlWidgetListener listener) {
+	  widgetListeners.remove(listener);
+	}
+	
+	protected void fireWidgetChanged(Atdl4jWidget w)
+	{
+	  for (AtdlWidgetListener listener: widgetListeners)
+	  {
+	    listener.widgetChanged(w);
+	  }
+	}
+	
+	
 	
 }

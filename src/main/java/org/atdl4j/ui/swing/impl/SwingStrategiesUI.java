@@ -1,12 +1,15 @@
 package org.atdl4j.ui.swing.impl;
 
 import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.data.ValidationRule;
@@ -15,23 +18,30 @@ import org.atdl4j.data.validation.ValidationRuleFactory;
 import org.atdl4j.fixatdl.core.StrategiesT;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.fixatdl.validation.EditT;
+import org.atdl4j.ui.Atdl4jWidget;
 import org.atdl4j.ui.StrategyUI;
 import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 import org.atdl4j.ui.impl.AbstractStrategiesUI;
+import org.atdl4j.ui.swing.SwingListener;
+import org.atdl4j.ui.swing.SwingWidget;
 
 public class SwingStrategiesUI
 	extends AbstractStrategiesUI
 {
-	private final Logger logger = Logger.getLogger( SwingStrategiesUI.class );
 	private Window parentFrame;
 	
 	private JPanel strategiesPanel;
+	
+	private Map<String, SwingWidgetListener> swingWidgetListeners;
+  
+	private int pendingNotifications;
 	
 	/*
 	 * Call init() after invoking the no arg constructor
 	 */
 	public SwingStrategiesUI()
 	{
+	  this.swingWidgetListeners = new HashMap<String, SwingWidgetListener>(); 
 	}
 
 	public SwingStrategiesUI(Atdl4jOptions aAtdl4jOptions)
@@ -88,27 +98,24 @@ public class SwingStrategiesUI
 			}
 		}
 				
+		
 		setPreCached( false );
 		setCurrentlyDisplayedStrategyUI( null );
-		for ( StrategyT strategy : aFilteredStrategyList )
-		{
-			removeAllStrategyPanels();
-			StrategyUI ui = SwingStrategyUIFactory.createStrategyUIAndContainer( this, strategy );
-			setCurrentlyDisplayedStrategyUI( ui );
-			
-			if ( ui == null )
-			{
-				// skip to next strategy
-				continue;
-			}
-		}
-		setPreCached( true );
+        if (getAtdl4jOptions().isPreloadPanels()) {
+          for (StrategyT strategy : aFilteredStrategyList) {
+            removeAllStrategyPanels();
+            StrategyUI ui = SwingStrategyUIFactory
+                .createStrategyUIAndContainer(this, strategy);
+            setCurrentlyDisplayedStrategyUI(ui);
+          }
+          setPreCached(true);
+        }
 	}  
 	
 	
 	public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
 	{
-		
+		muteWidgetNotification();
 		if ( strategiesPanel != null )
 		{
 			// -- (aReinitPanelFlag=true) --
@@ -120,13 +127,26 @@ public class SwingStrategiesUI
 				return;
 			}
 	
-			logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );								
+			logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
 			tempStrategyUI.reinitStrategyPanel();
 		}
+		allowWidgetNotification();
 	}
 	
 	
-	/* 
+  private void muteWidgetNotification() {
+    pendingNotifications++;
+  }
+  
+  private void allowWidgetNotification() {
+    pendingNotifications--;
+  }
+  
+  
+  
+  
+
+  /* 
 	 * (non-Javadoc)
 	 * @see org.atdl4j.ui.app.StrategiesPanel#setVisible(boolean)
 	 */
@@ -150,6 +170,7 @@ public class SwingStrategiesUI
 			if ( aReinitPanelFlag )
 			{
 				getCurrentlyDisplayedStrategyUI().reinitStrategyPanel();
+				setWidgetListeners(getCurrentlyDisplayedStrategyUI());
 			}
 			
 			return getCurrentlyDisplayedStrategyUI();
@@ -164,10 +185,26 @@ public class SwingStrategiesUI
 			
 			logger.debug("Invoking relayoutCollapsibleStrategyPanels() for: " + aStrategy.getName() );
 			tempStrategyUI.relayoutCollapsibleStrategyPanels();
+			setWidgetListeners(getCurrentlyDisplayedStrategyUI());
 			
 			return tempStrategyUI;
 		}
 	}
+
+  private void setWidgetListeners(StrategyUI strategyUI) {
+    for (SwingWidgetListener l :  swingWidgetListeners.values()) {
+      l.dispose();
+    }
+    swingWidgetListeners.clear();
+    for (Atdl4jWidget< ? > widget : strategyUI.getAtdl4jWidgetMap().values()) {
+      if (logger.isDebugEnabled()) {
+        logger.debug("Adding listener on "
+            + strategyUI.getStrategy().getName() + " "
+            + widget.getParameter().getName() + " widget " + widget);
+      }
+      swingWidgetListeners.put(widget.getParameter().getName(), new SwingWidgetListener((SwingWidget) widget));
+    }
+  }
 	
 	/**
 	 * @return the strategiesPanel
@@ -184,5 +221,80 @@ public class SwingStrategiesUI
 	{
 		this.strategiesPanel = aStrategiesPanel;
 	}
+	
+	
+	private boolean isWidgetNotificationsAllowed() {
+	  return pendingNotifications == 0;
+	}
+	
+  public class SwingWidgetListener
+      implements SwingListener
+  {
+
+    private String paramName;
+
+    private final SwingWidget swingWidget;
+
+    public SwingWidgetListener(SwingWidget swingWidget) {
+      super();
+      this.swingWidget = swingWidget;
+      paramName = swingWidget.getParameter().getName();
+      swingWidget.addListener(this);
+    }
+
+    public void dispose() {
+      swingWidget.removeListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      fireWidgetChangedEvent(paramName);
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+      fireWidgetChangedEvent(paramName);
+    }
+
+    private void fireWidgetChangedEvent(String aParamName) {
+      if (logger.isDebugEnabled()) {
+        logger.debug("Widget changed :" + aParamName);
+      }
+      if (isWidgetNotificationsAllowed()) {
+        fireWidgetChanged(swingWidget);
+      }
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+      fireWidgetChangedEvent(paramName);
+    }
+
+    @Override
+    public void handleEvent() {
+      fireWidgetChangedEvent(paramName);
+    }
+
+    @Override
+    public SwingWidget< ? > getAffectedWidget() {
+      return swingWidget;
+    }
+
+    @Override
+    public ValidationRule getRule() {
+      return null;
+    }
+
+    @Override
+    public void setCxlReplaceMode(boolean flag) {
+      // 
+    }
+
+    @Override
+    public void handleLoadFixMessageEvent() {
+      fireWidgetChangedEvent(paramName);
+    }
+
+  }
 
 }

@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
 import org.atdl4j.fixatdl.layout.ListItemT;
@@ -24,45 +23,6 @@ public class SwingListBoxWidget
 	private JLabel label;
 	private Vector<String> list = new Vector<String>();
 
-	public void createWidget(JPanel parent)
-	{
-		String tooltip = getTooltip();
-
-		// label
-		if ( control.getLabel() != null ) {
-			label = new JLabel();
-			label.setName(getName()+"/label");			
-			label.setText( control.getLabel() );
-			if ( tooltip != null ) label.setToolTipText( tooltip );
-			parent.add(label);
-		}
-
-		// listbox
-		listBox =  new JList(list);
-		if (control instanceof MultiSelectListT) {
-			listBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		} else if (control instanceof SingleSelectListT) {
-			listBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		}
-		listBox.setName(getName()+"/listbox");
-		
-		// listBox items
-		java.util.List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem()
-				: ( (SingleSelectListT) control ).getListItem();
-		for ( ListItemT listItem : listItems )
-		{
-			list.add(listItem.getUiRep() != null ? listItem.getUiRep() : "");
-		}
-
-		// tooltip
-		if ( tooltip != null ) listBox.setToolTipText( tooltip );
-
-		// init value
-		String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jOptions() );
-		if ( initValue != null ) setValue( initValue, true );
-
-	}
-	
 	public String getControlValueRaw()
 	{
 		String value = "";
@@ -182,5 +142,48 @@ public class SwingListBoxWidget
 	protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd)
 	{
 		// TODO ?? adjust the visual appearance of the control ??
+	}
+	
+	@Override
+	protected List< ? extends Component> createBrickComponents() {
+	  
+	  List<Component> components = new ArrayList<Component>();
+	  
+	  String tooltip = getTooltip();
+
+      // label
+      if ( control.getLabel() != null ) {
+          label = new JLabel();
+          label.setName(getName()+"/label");          
+          label.setText( control.getLabel() );
+          if ( tooltip != null ) label.setToolTipText( tooltip );
+          components.add(label);
+      }
+
+      // listbox
+      listBox =  new JList(list);
+      if (control instanceof MultiSelectListT) {
+          listBox.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+      } else if (control instanceof SingleSelectListT) {
+          listBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+      }
+      listBox.setName(getName()+"/listbox");
+      
+      // listBox items
+      java.util.List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem()
+              : ( (SingleSelectListT) control ).getListItem();
+      for ( ListItemT listItem : listItems )
+      {
+          list.add(listItem.getUiRep() != null ? listItem.getUiRep() : "");
+      }
+
+      // tooltip
+      if ( tooltip != null ) listBox.setToolTipText( tooltip );
+
+      // init value
+      String initValue = (String) ControlHelper.getInitValue( control, getAtdl4jOptions() );
+      if ( initValue != null ) setValue( initValue, true );
+      
+      return components;
 	}
 }

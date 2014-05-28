@@ -1,6 +1,7 @@
 package org.atdl4j.ui;
 
 import java.util.List;
+
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.fixatdl.core.StrategiesT;
@@ -30,6 +31,10 @@ public interface StrategiesUI {
 	public void addListener(StrategiesUIListener strategiesUIListener);
 	
 	public void removeListener(StrategiesUIListener strategiesUIListener);
+	
+	public void addWidgetListener(AtdlWidgetListener listener);
+	
+	public void removeWidgetListener(AtdlWidgetListener listener);
 
 	public void setVisible( boolean aVisible );
 	

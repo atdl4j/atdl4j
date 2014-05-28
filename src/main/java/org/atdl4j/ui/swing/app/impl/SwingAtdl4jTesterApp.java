@@ -53,7 +53,9 @@ public class SwingAtdl4jTesterApp extends AbstractAtdl4jTesterApp {
 		
 		// -- Delegate setup to AbstractAtdl4jTesterApp, construct a new
 		// Swing-specific Atdl4jOptions --
-		init(args, config, new Atdl4jOptions(), frame);
+		Atdl4jOptions atdl4jOptions = new Atdl4jOptions();
+		atdl4jOptions.setShowEnabledCheckboxOnOptionalClockControl(true);
+		init(args, config, atdl4jOptions, frame);
 		
 		// -- Build the Swing panel from Atdl4jTesterPanel (** core GUI component **) --
 		getAtdl4jTesterPanel().buildAtdl4jTesterPanel(frame, getAtdl4jOptions());

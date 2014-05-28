@@ -3,6 +3,7 @@ package org.atdl4j.ui.app;
 import java.util.List;
 
 import org.atdl4j.config.Atdl4jOptions;
+import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.core.StrategiesT;
@@ -135,4 +136,6 @@ public interface Atdl4jCompositePanel
 	
 	public SelectedStrategyDetails getSelectedStrategyDetails( boolean aPerformValidationFlag ) 
 	   throws ValidationException;
+
+    public void setEditable(boolean editable);
 }

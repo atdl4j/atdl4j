@@ -59,11 +59,15 @@ public class Atdl4jOptions
 	private String[] clockControlStartTimeIDValueFragmentList = new String[]{ "Start", "Effective", "Begin" };
 	private String[] clockControlEndTimeIDValueFragmentList = new String[]{ "End", "Expire", "Stop" };
 
+	// Used to turn on/off the precaching of panels  
+	private boolean preloadPanels;
+
 	/**
 	 * 
 	 */
 	public Atdl4jOptions()
 	{
+	  this.preloadPanels = true;
 	}
 	
 	/**
@@ -528,5 +532,13 @@ public class Atdl4jOptions
 	{
 		return accommodateMixOfStrategyPanelsAndControls;
 	}
+
+  public boolean isPreloadPanels() {
+    return preloadPanels;
+  }
+  
+  public void setPreloadPanels(boolean preloadPanels) {
+    this.preloadPanels = preloadPanels;
+  }
 
 }

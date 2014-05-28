@@ -1,14 +1,21 @@
 package org.atdl4j.ui.swing.impl;
 
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
+import org.atdl4j.fixatdl.layout.PanelOrientationT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
 import org.atdl4j.ui.Atdl4jWidgetFactory;
 import org.atdl4j.ui.swing.SwingWidget;
@@ -24,10 +31,12 @@ import org.atdl4j.ui.swing.SwingWidget;
 public class SwingStrategyPanelFactory
 {
 	protected static final Logger logger = Logger.getLogger( SwingStrategyPanelFactory.class );
+	
+	private static SwingWidgetFactory swingWidgetFactory = new SwingWidgetFactory();
 
 	// Given a panel, recursively populates a map of Panels and Parameter widgets
 	// Can also process options for a group frame instead of a single panel
-	public static Map<String, SwingWidget<?>> createStrategyPanelAndWidgets(JPanel parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory) throws FIXatdlFormatException
+	public Map<String, SwingWidget<?>> createStrategyPanelAndWidgets(JPanel parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory) throws FIXatdlFormatException
 	{
 		logger.debug( "createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style)" + " invoked with parms parent: "
 				+ parent + " panel: " + panel + " parameters: " + parameters + " style: " + style );
@@ -91,7 +100,7 @@ public class SwingStrategyPanelFactory
 				if ( parameter == null )
 					throw new FIXatdlFormatException( "Cannot find Parameter \"" + control.getParameterRef() + "\" for Control ID: \"" + control.getID() + "\"" );
 			}
-			SwingWidget<?> widget = SwingWidgetFactory.createWidget( c, control, parameter, style, aAtdl4jWidgetFactory );
+			SwingWidget<?> widget = swingWidgetFactory.createWidget( c, control, parameter, style, aAtdl4jWidgetFactory );
 			
 			widget.setParentStrategyPanel( panel );
 			widget.setParent( c );
@@ -113,9 +122,208 @@ public class SwingStrategyPanelFactory
 			}
 		}
 	
-		SwingStrategyPanelHelper.createStrategyPanelSpringLayout(panel, c);
-		
 		return controlWidgets;
 	}
+	
+	
+  /**
+   * Display panel's children inside the given parent
+   * @param parent
+   * @param panel
+   * @param parameters
+   * @param style
+   * @param aAtdl4jWidgetFactory
+   * @param widgets
+   * @param depth
+   * @return
+   * @throws FIXatdlFormatException
+   */
+  public JPanel layoutStrategyPanel(JPanel parent, StrategyPanelT panel,
+                                    int style,
+                                    Map<String, SwingWidget< ? >> widgets,
+                                    int depth, ConstraintsUpdater gcUpdater)
+      throws FIXatdlFormatException
+  {
+    GridBagConstraints gc = new GridBagConstraints();
+
+    // Pre-requisite : Given StrategyPanelT parameter should contain
+    // either child StrategyPanelTs OR child controls, not both
+    int rowIndex = 0;
+
+    // Call recursively on sub-panels
+    for (StrategyPanelT sp : panel.getStrategyPanel()) {
+      gc = gcUpdater.panel(rowIndex, gc);
+      gc.weightx = 1;
+      gc.weighty = 1;
+      gc.fill = GridBagConstraints.BOTH;
+      gc = gcUpdater.remainder(gc);
+
+      // create a container
+      JPanel c = SwingStrategyPanelHelper.createStrategyPanelContainer(sp,
+                                                                       parent,
+                                                                       style);
+      c.setLayout(new GridBagLayout());
+
+      // recursive call
+      JPanel childPanel = layoutStrategyPanel(c,
+                                              sp,
+                                              style,
+                                              widgets,
+                                              depth + 1,
+                                              new ConstraintsUpdater(sp
+                                                  .getOrientation()));
+      parent.add(childPanel, gc);
+      rowIndex++;
+    }
+
+    gc = gcUpdater.size(1, gc);
+    for (ControlT c : panel.getControl()) {
+      gc = gcUpdater.panel(rowIndex, gc);
+      if (logger.isDebugEnabled()) {
+        logger.debug("Control :" + c.getLabel() + " rowIndex=" + rowIndex);
+      }
+
+      SwingWidget< ? > swingWidget = widgets.get(c.getID());
+
+      List< ? extends Component> brickComponents = swingWidget
+          .getBrickComponents();
+
+      if (!brickComponents.isEmpty()) {
+
+        gc.insets = new Insets(1, 2, 1, 3);
+
+        gc = gcUpdater.fill(gc);
+        int size = brickComponents.size();
+        int compIndex = 0;
+
+        for (Component comp : brickComponents) {
+          if (logger.isDebugEnabled()) {
+            if (comp instanceof JLabel) {
+              logger.debug("Label " + ((JLabel) comp).getText());
+            }
+          }
+        
+          if (compIndex == (size - 1)) {
+            // last component : use remainder space
+            gc = gcUpdater.weight(1, gc);
+            gc = gcUpdater.remainder(gc);
+          }
+          else {
+            gc = gcUpdater.weight(0, gc);
+            gc = gcUpdater.size(1, gc);
+          }
+          
+          gc = gcUpdater.widget(compIndex, gc);
+          parent.add(comp, gc);
+          compIndex++;
+          gc = gcUpdater.relative(gc);
+        }
+        rowIndex++;
+      }
+    }
+    gc.fill = GridBagConstraints.BOTH;
+    gc.weightx = 1;
+    gc.weighty = 1;
+    
+    gc = gcUpdater.panel(rowIndex, gc);
+    gc = gcUpdater.remainder(gc);
+    parent.add(new JPanel(), gc);
+
+    return parent;
+  }
+	
+  public JPanel createStrategyPanel(JPanel parent, StrategyPanelT panel,
+                                    int style,
+                                    Map<String, SwingWidget< ? >> widgets,
+                                    int depth)
+      throws FIXatdlFormatException
+  {
+    return layoutStrategyPanel(parent, panel, style, widgets, depth, new ConstraintsUpdater(panel.getOrientation()));
+  }
+	
+
+  static class ConstraintsUpdater
+  {
+
+    PanelOrientationT orientation;
+
+    public ConstraintsUpdater(PanelOrientationT orientation) {
+      super();
+      this.orientation = orientation;
+    }
+
+    public GridBagConstraints fill(GridBagConstraints gc) {
+      if (orientation == PanelOrientationT.VERTICAL) {
+        gc.fill = GridBagConstraints.HORIZONTAL;
+      }
+      else {
+        gc.gridheight = GridBagConstraints.VERTICAL;
+      }
+      return gc;
+    }
+
+    public GridBagConstraints size(int i, GridBagConstraints gc) {
+      
+      if (orientation == PanelOrientationT.VERTICAL) {
+        gc.gridwidth = i;
+      }
+      else {
+        gc.gridheight = i;
+      }
+      return gc;
+    }
+
+    public GridBagConstraints remainder(GridBagConstraints gc) {
+      if (orientation == PanelOrientationT.VERTICAL) {
+        gc.gridwidth = GridBagConstraints.REMAINDER;
+      }
+      else {
+        gc.gridheight = GridBagConstraints.REMAINDER;
+      }
+      return gc;
+    }
+
+    public GridBagConstraints weight(double w, GridBagConstraints gc) {
+      if (orientation == PanelOrientationT.VERTICAL) {
+        gc.weightx = w;
+      }
+      else {
+        gc.weighty = w;
+      }
+      return gc;
+    }
+
+    public GridBagConstraints relative(GridBagConstraints gc) {
+      if (orientation == PanelOrientationT.VERTICAL) {
+        gc.gridy = GridBagConstraints.RELATIVE;
+      }
+      else {
+        gc.gridx = GridBagConstraints.RELATIVE;
+      }
+      return gc;
+    }
+
+    GridBagConstraints panel(int i, GridBagConstraints gc) {
+      if (orientation == PanelOrientationT.VERTICAL) {
+        gc.gridy = i;
+      }
+      else {
+        gc.gridx = i;
+      }
+      return gc;
+    }
+
+    GridBagConstraints widget(int i, GridBagConstraints gc) {
+      if (orientation == PanelOrientationT.VERTICAL) {
+        gc.gridx = i;
+      }
+      else {
+        gc.gridy = i;
+      }
+      return gc;
+    }
+
+  }
+
 
 }

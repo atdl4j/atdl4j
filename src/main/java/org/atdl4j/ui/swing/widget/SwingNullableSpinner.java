@@ -309,4 +309,6 @@ public class SwingNullableSpinner extends JSpinner {
 			return retVal; 
 		}
 	}
+	
+	
 }

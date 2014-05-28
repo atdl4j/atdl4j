@@ -484,18 +484,21 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 		{
 			// -- Special logic to treat non-visible and/or non-enabled as "null"
 			// if nullValue is false --
+		    
 			if ( getAtdl4jOptions() != null )
 			{
-				if ( ( ( getAtdl4jOptions().isTreatControlVisibleFalseAsNull() ) && ( !isVisible() ) )
-						|| ( ( getAtdl4jOptions().isTreatControlEnabledFalseAsNull() ) && ( !isControlExcludingLabelEnabled() ) ) )
-				{
-					return false;
-				}
-				else if ( ( ( getAtdl4jOptions().isTreatControlVisibleFalseAsNull() ) && ( isVisible() ) )
-						|| ( ( getAtdl4jOptions().isTreatControlEnabledFalseAsNull() ) && ( isControlExcludingLabelEnabled() ) ) )
-				{
-					return true;
-				}
+			    if (isVisible())
+			    {
+			      if (isControlExcludingLabelEnabled()){
+			        return false;
+			      } else if (getAtdl4jOptions().isTreatControlEnabledFalseAsNull())
+			      {
+			        return true;
+			      }
+			    } else if (getAtdl4jOptions().isTreatControlVisibleFalseAsNull())
+			    {
+			      return true;
+			    }
 			}
 
 			// -- Treat getNullValue() == null as FALSE --
