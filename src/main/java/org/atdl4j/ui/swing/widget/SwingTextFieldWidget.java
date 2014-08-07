@@ -113,11 +113,11 @@ public class SwingTextFieldWidget
 	}	
 	
 	public void addListener(SwingListener listener) {
-		textField.addActionListener(listener);
+		textField.getDocument().addDocumentListener(listener);
 	}
 
 	public void removeListener(SwingListener listener) {
-		textField.addActionListener(listener);
+	   textField.getDocument().removeDocumentListener(listener);
 	}
 
 	/**

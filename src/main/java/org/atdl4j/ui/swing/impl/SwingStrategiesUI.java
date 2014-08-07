@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 
 import org.atdl4j.config.Atdl4jOptions;
@@ -293,6 +294,21 @@ public class SwingStrategiesUI
     @Override
     public void handleLoadFixMessageEvent() {
       fireWidgetChangedEvent(paramName);
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+      fireWidgetChangedEvent(paramName);      
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+      fireWidgetChangedEvent(paramName);
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+      fireWidgetChangedEvent(paramName);      
     }
 
   }
