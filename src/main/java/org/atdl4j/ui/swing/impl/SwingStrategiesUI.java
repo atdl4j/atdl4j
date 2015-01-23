@@ -198,12 +198,16 @@ public class SwingStrategiesUI
     }
     swingWidgetListeners.clear();
     for (Atdl4jWidget< ? > widget : strategyUI.getAtdl4jWidgetMap().values()) {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Adding listener on "
-            + strategyUI.getStrategy().getName() + " "
-            + widget.getParameter().getName() + " widget " + widget);
+      // some widgets don't have a parameter reference, they are for control only (eg. radio buttons)
+      if (widget.getParameter() != null)
+      {
+        if (logger.isDebugEnabled()) {
+          logger.debug("Adding listener on "
+              + strategyUI.getStrategy().getName() + " "
+              + widget.getParameter().getName() + " widget " + widget);
+        }
+        swingWidgetListeners.put(widget.getParameter().getName(), new SwingWidgetListener((SwingWidget) widget));
       }
-      swingWidgetListeners.put(widget.getParameter().getName(), new SwingWidgetListener((SwingWidget) widget));
     }
   }
 	
