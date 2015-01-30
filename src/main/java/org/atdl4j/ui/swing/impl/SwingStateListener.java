@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 
 import org.atdl4j.data.Atdl4jConstants;
@@ -209,4 +210,19 @@ public class SwingStateListener implements SwingListener {
 	public void valueChanged(ListSelectionEvent e) {
 		handleEvent();
 	}
+
+  @Override
+  public void insertUpdate(DocumentEvent e) {
+    handleEvent();
+  }
+
+  @Override
+  public void removeUpdate(DocumentEvent e) {
+    handleEvent();    
+  }
+
+  @Override
+  public void changedUpdate(DocumentEvent e) {
+    handleEvent();    
+  }
 }

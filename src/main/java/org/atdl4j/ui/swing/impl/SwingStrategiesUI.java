@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 
 import org.atdl4j.config.Atdl4jOptions;
@@ -197,12 +198,16 @@ public class SwingStrategiesUI
     }
     swingWidgetListeners.clear();
     for (Atdl4jWidget< ? > widget : strategyUI.getAtdl4jWidgetMap().values()) {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Adding listener on "
-            + strategyUI.getStrategy().getName() + " "
-            + widget.getParameter().getName() + " widget " + widget);
+      // some widgets don't have a parameter reference, they are for control only (eg. radio buttons)
+      if (widget.getParameter() != null)
+      {
+        if (logger.isDebugEnabled()) {
+          logger.debug("Adding listener on "
+              + strategyUI.getStrategy().getName() + " "
+              + widget.getParameter().getName() + " widget " + widget);
+        }
+        swingWidgetListeners.put(widget.getParameter().getName(), new SwingWidgetListener((SwingWidget) widget));
       }
-      swingWidgetListeners.put(widget.getParameter().getName(), new SwingWidgetListener((SwingWidget) widget));
     }
   }
 	
@@ -292,6 +297,21 @@ public class SwingStrategiesUI
 
     @Override
     public void handleLoadFixMessageEvent() {
+      fireWidgetChangedEvent(paramName);
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+      fireWidgetChangedEvent(paramName);
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+      fireWidgetChangedEvent(paramName);
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
       fireWidgetChangedEvent(paramName);
     }
 
