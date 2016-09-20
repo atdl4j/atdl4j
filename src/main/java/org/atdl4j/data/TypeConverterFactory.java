@@ -70,7 +70,7 @@ public class TypeConverterFactory
 	/*
 	 * Create adapter based on ParameterT
 	 */
-	public static ParameterTypeConverter<?> createParameterTypeConverter(ParameterT parameter)
+	public ParameterTypeConverter<?> createParameterTypeConverter(ParameterT parameter)
 	{
 		if ( parameter instanceof StringT || parameter instanceof CharT || parameter instanceof MultipleCharValueT
 				|| parameter instanceof MultipleStringValueT || parameter instanceof CurrencyT || parameter instanceof ExchangeT
@@ -105,7 +105,7 @@ public class TypeConverterFactory
 	/*
 	 * Create adapter based on ControlT (native type for each control)
 	 */
-	public static ControlTypeConverter<?> createControlTypeConverter(ControlT control, ParameterTypeConverter<?> aParameterTypeConverter)
+	public ControlTypeConverter<?> createControlTypeConverter(ControlT control, ParameterTypeConverter<?> aParameterTypeConverter)
 	{
 		if ( control instanceof TextFieldT || control instanceof SingleSelectListT || control instanceof MultiSelectListT
 				|| control instanceof CheckBoxListT || control instanceof DropDownListT || control instanceof EditableDropDownListT
@@ -141,7 +141,7 @@ public class TypeConverterFactory
      * (eg String, BigDecimal, DateTime, etc)
      */
     // 3/12/2010 Scott Atwell added
-    public static Class<?> getParameterDatatype(ParameterT aParameter) {
+    public Class<?> getParameterDatatype(ParameterT aParameter) {
 	if (aParameter instanceof StringT || aParameter instanceof CharT
 		|| aParameter instanceof MultipleCharValueT
 		|| aParameter instanceof MultipleStringValueT

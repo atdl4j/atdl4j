@@ -5,6 +5,7 @@ import org.atdl4j.data.ControlTypeConverter;
 import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.data.ParameterTypeConverter;
 import org.atdl4j.data.TypeConverterFactory;
+import org.atdl4j.data.TypeConverterFactoryConfig;
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.core.PercentageT;
@@ -179,7 +180,7 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 		
 		if ( tempParameter != null )
 		{
-			return TypeConverterFactory.getParameterDatatype( tempParameter );
+			return TypeConverterFactoryConfig.getTypeConverterFactory().getParameterDatatype( tempParameter );
 		}
 		else
 		{
