@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="https://github.com/atdl4j/atdl4j/" href="Test.jnlp">
+  <information>
+    <title>atdl4j - SWT</title>
+    <vendor>atdl4j</vendor>
+    <homepage href="http://www.atdl4j.org/" />
+    <description>The Open Source Java solution for FIXatdl</description>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.6+" />
+    <jar href="https://github.com/atdl4j/atdl4j/releases/download/3.0.3/atdl4j-ui-3.0.3.jar" />
+  </resources>
+  <application-desc main-class="org.atdl4j.ui.swt.app.impl.SWTAtdl4jTesterApp" />
+</jnlp>
