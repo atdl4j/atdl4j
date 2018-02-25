@@ -34,6 +34,8 @@ public class SwingFixatdlFileSelectionPanel
 	
 	JTextField filepathText;
 	JButton browseButton;
+	JButton refreshButton;
+	private String filepath = null;
 	
 	public Object buildFixatdlFileSelectionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
@@ -101,15 +103,28 @@ public class SwingFixatdlFileSelectionPanel
 				int returnVal = fc.showOpenDialog(parentComposite);
 				if (returnVal == JFileChooser.APPROVE_OPTION){
 					File f = fc.getSelectedFile();
+					filepath = f.getPath();
 					filepathText.setText(f.getPath());
 					fireFixatdlFileSelectedEvent( f.getPath() );
 				}
 			}
 		});
 
+		refreshButton = new JButton("refresh");
+		refreshButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (filepath != null) {
+					fireFixatdlFileSelectedEvent( filepath );
+				}
+			}
+		});
+
+		composite.add(refreshButton, BorderLayout.WEST);
 		composite.add(filepathText, BorderLayout.CENTER);
 		composite.add(browseButton, BorderLayout.EAST);
-	
+
 		return composite;
 	}
 
