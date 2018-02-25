@@ -31,6 +31,8 @@ public class SWTFixatdlFileSelectionPanel
 	
 	Text filepathText;
 	Button browseButton;
+	Button refreshButton;
+	private String filepath = null;
 	
 	public Object buildFixatdlFileSelectionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{
@@ -74,7 +76,7 @@ public class SWTFixatdlFileSelectionPanel
 				FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
 				dialog.setFilterExtensions( new String[] { "*.xml", "*.*" } );
 				dialog.setFilterNames( new String[] { "XML Files (*.xml)", "All Files (*.*)" } );
-				String filepath = dialog.open();
+				filepath = dialog.open();
 				if (filepath != null) 
 				{
 					filepathText.setText(filepath);
@@ -83,7 +85,19 @@ public class SWTFixatdlFileSelectionPanel
 			}
 		});
 
-	
+		refreshButton = new Button(composite, SWT.NONE);
+		refreshButton.setText("refresh");
+		refreshButton.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				if (filepath != null) {
+					fireFixatdlFileSelectedEvent(filepath);
+				}
+			}
+		});
+		
 		return composite;
 	}
 
