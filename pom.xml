@@ -145,9 +145,9 @@
 				</os>
 			</activation>
 			<properties>
-				<swt.native.groupId>org.eclipse.swt.cocoa.macosx</swt.native.groupId>
-				<swt.native.artifactId>x86_64</swt.native.artifactId>
-				<swt.native.version>3.5.1-v3555a</swt.native.version>
+				<swt.native.groupId>org.eclipse.swt</swt.native.groupId>
+				<swt.native.artifactId>org.eclipse.swt.cocoa.macosx.x864_64</swt.native.artifactId>
+				<swt.native.version>4.3</swt.native.version>
 			</properties>
 		</profile>
 		<profile>
