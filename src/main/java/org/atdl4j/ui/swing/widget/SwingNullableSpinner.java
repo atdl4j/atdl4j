@@ -8,29 +8,24 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
-import javax.swing.AbstractSpinnerModel;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
 
-public class SwingNullableSpinner extends JSpinner {
-	
+public class SwingNullableSpinner extends JSpinner
+{
 	private static final long			serialVersionUID	= 2947835451995064559L;
-	public static BigDecimal MIN_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( -Integer.MAX_VALUE );
-	public static BigDecimal MAX_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( Integer.MAX_VALUE );
+	public static final BigDecimal MIN_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( -Integer.MAX_VALUE );
+	public static final BigDecimal MAX_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( Integer.MAX_VALUE );
 	
 	public SwingNullableSpinner() {
 		super();
 		setModel(new SpinnerNumberModelNull());
 		setValue(null);
 	}
-	
+
+	@Override
 	protected JComponent createEditor(SpinnerModel model) {
 		return new NumberEditorNull(this);
 	}
@@ -48,15 +43,16 @@ public class SwingNullableSpinner extends JSpinner {
 		}
 		
 		public SpinnerNumberModelNull(int value, int minimum, int maximum, int stepSize) {
-			this(new Integer(value), new Integer(minimum), new Integer(maximum), new Integer(stepSize));
+			this(Integer.valueOf(value), Integer.valueOf(minimum), Integer.valueOf(maximum), Integer.valueOf(stepSize));
 		}
 		
-		public SpinnerNumberModelNull(double value, double minimum, double maximum, double stepSize) {
-			this(new BigDecimal(value), new BigDecimal(minimum), new BigDecimal(maximum), new BigDecimal(stepSize));
+		public SpinnerNumberModelNull(double value, double minimum, double maximum, double stepSize)
+		{
+			this( BigDecimal.valueOf(value), BigDecimal.valueOf(minimum), BigDecimal.valueOf(maximum), BigDecimal.valueOf(stepSize));
 		}
 		
 		public SpinnerNumberModelNull() {
-			this(new BigDecimal(0), null, null, new BigDecimal(1.00));
+			this(BigDecimal.ZERO, null, null, BigDecimal.ONE);
 		}
 		
 		public void setMinimum(Comparable minimum) {
@@ -97,39 +93,40 @@ public class SwingNullableSpinner extends JSpinner {
 		
 		private Number incrValue(int dir) {
 			Number newValue;
-			if ((value instanceof Long) || (value instanceof Integer) || (value instanceof Short) || (value instanceof Byte)) {
-				if (value == null) value = 0;
-				
+			if ((value instanceof Long) || (value instanceof Integer) || (value instanceof Short) || (value instanceof Byte))
+			{
 				long v = value.longValue() + (stepSize.longValue() * (long) dir);
 				
 				if (value instanceof Long) {
-					newValue = new Long(v);
+					newValue = Long.valueOf(v);
 				}
 				else if (value instanceof Integer) {
-					newValue = new Integer((int) v);
+					newValue = Integer.valueOf((int) v);
 				}
 				else if (value instanceof Short) {
-					newValue = new Short((short) v);
+					newValue = Short.valueOf((short) v);
 				}
 				else {
-					newValue = new Byte((byte) v);
+					newValue = Byte.valueOf((byte) v);
 				}
 			}
-			else {
-				if (value instanceof Float) {
-					if (value == null) value = 0.;
+			else
+			{
+				if (value instanceof Float)
+				{
 					double v = value.doubleValue() + (stepSize.doubleValue() * (double) dir);
-					newValue = new Float(v);
+					newValue = Float.valueOf(Double.valueOf(v).floatValue());
 				}
-				else if (value instanceof Double) {
-					if (value == null) value = 0.;
+				else if (value instanceof Double)
+				{
 					double v = value.doubleValue() + (stepSize.doubleValue() * (double) dir);
-					newValue = new Double(v);
+					newValue = Double.valueOf(v);
 				}
-				else {
+				else
+				{
 					if (value == null) value = 0.;
 					double v = value.doubleValue() + (stepSize.doubleValue() * (double) dir);
-					newValue = new BigDecimal(v);
+					newValue = BigDecimal.valueOf(v);
 				}
 			}
 			
@@ -185,8 +182,8 @@ public class SwingNullableSpinner extends JSpinner {
 			this(spinner, getDefaultPattern(spinner.getLocale()));
 		}
 		
-		public NumberEditorNull(JSpinner spinner, String decimalFormatPattern) {
-//			this(spinner, new DecimalFormat(decimalFormatPattern));
+		public NumberEditorNull(JSpinner spinner, String decimalFormatPattern)
+		{
 			this(spinner, new DecimalFormat("0.######"));
 		}
 		
@@ -202,7 +199,7 @@ public class SwingNullableSpinner extends JSpinner {
 			JFormattedTextField ftf = getTextField();
 			ftf.setEditable(true);
 			ftf.setFormatterFactory(factory);
-			ftf.setHorizontalAlignment(JTextField.RIGHT);
+			ftf.setHorizontalAlignment(SwingConstants.RIGHT);
 			
 			try {
 				String maxString = formatter.valueToString(model.getMinimum());
@@ -234,20 +231,28 @@ public class SwingNullableSpinner extends JSpinner {
 			
 			setCommitsOnValidEdit(true);
 		}
-		
-		public void setMinimum(Comparable min) {
+
+		@Override
+		public void setMinimum(Comparable min)
+		{
 			model.setMinimum(min);
 		}
-		
-		public Comparable getMinimum() {
+
+		@Override
+		public Comparable getMinimum()
+		{
 			return model.getMinimum();
 		}
-		
-		public void setMaximum(Comparable max) {
+
+		@Override
+		public void setMaximum(Comparable max)
+		{
 			model.setMaximum(max);
 		}
-		
-		public Comparable getMaximum() {
+
+		@Override
+		public Comparable getMaximum()
+		{
 			return model.getMaximum();
 		}
 

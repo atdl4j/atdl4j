@@ -4,10 +4,11 @@
  */
 package org.atdl4j.ui.app.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.app.StrategySelectionPanel;
@@ -23,11 +24,11 @@ import org.atdl4j.ui.app.StrategySelectionPanelListener;
 public abstract class AbstractStrategySelectionPanel
 		implements StrategySelectionPanel
 {
-	public final Logger logger = Logger.getLogger(AbstractStrategySelectionPanel.class);
+	public static final Logger logger = LoggerFactory.getLogger(AbstractStrategySelectionPanel.class);
 
 	private Atdl4jOptions atdl4jOptions = null;
 	
-	private List<StrategySelectionPanelListener> listenerList = new Vector<StrategySelectionPanelListener>();
+	private List<StrategySelectionPanelListener> listenerList = new ArrayList<>();
 
 	private List<StrategyT> strategiesList;
 

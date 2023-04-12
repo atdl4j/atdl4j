@@ -2,6 +2,7 @@ package org.atdl4j.ui.swt.widget;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.layout.ListItemT;
@@ -22,7 +23,7 @@ import org.eclipse.swt.widgets.Widget;
 public class SWTRadioButtonListWidget
 		extends AbstractSWTWidget<String>
 {
-	private List<Button> buttons = new ArrayList<Button>();
+	private List<Button> buttons = new ArrayList<>();
 	private Label label;
 
 
@@ -64,7 +65,7 @@ public class SWTRadioButtonListWidget
 			{
 				for ( EnumPairT enumPair : parameter.getEnumPair() )
 				{
-					if ( enumPair.getEnumID() == listItem.getEnumID() )
+					if (Objects.equals(enumPair.getEnumID(), listItem.getEnumID()))
 					{
 						radioElement.setToolTipText( enumPair.getDescription() );
 						break;
@@ -98,6 +99,7 @@ public class SWTRadioButtonListWidget
 		return null;
 	}
 
+	@Override
 	public String getParameterValue()
 	{
 		return getParameterValueAsEnumWireValue();
@@ -126,7 +128,7 @@ public class SWTRadioButtonListWidget
 
 	public List<Control> getControls()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		if (label != null) widgets.add( label );
 		widgets.addAll( buttons );
 		return widgets;
@@ -134,9 +136,7 @@ public class SWTRadioButtonListWidget
 
 	public List<Control> getControlsExcludingLabel()
 	{
-		List<Control> widgets = new ArrayList<Control>();
-		widgets.addAll( buttons );
-		return widgets;
+		return new ArrayList<>(buttons);
 	}
 
 	public void addListener(Listener listener)

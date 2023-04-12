@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
@@ -49,13 +50,11 @@ import org.atdl4j.ui.StrategyUI;
 
 /**
  * Base class for ValidationRule.
- * 
- * @param <E>
  */
 public abstract class AbstractStrategyUI 
 	implements StrategyUI 
 {
-	protected static final Logger logger = Logger.getLogger( AbstractStrategyUI.class );
+	protected static final Logger logger = LoggerFactory.getLogger( AbstractStrategyUI.class );
 	
 	protected Map<String, ParameterT> parameterMap;
 	
@@ -73,53 +72,39 @@ public abstract class AbstractStrategyUI
 	Atdl4jWidgetFactory atdl4jWidgetFactory;
 	StrategyPanelHelper strategyPanelHelper;
 	
-	abstract protected void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList ) throws FIXatdlFormatException;
-	
-	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of Atdl4jWidget<?> --
-	abstract public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetMap();
-	
-	// -- Note invoking this method may result in object construction as a result of down-casting its own map of a specific templatized instance of Atdl4jWidget<?> --
-	abstract public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetWithParameterMap();
+	protected abstract void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList ) throws FIXatdlFormatException;
 
 	// -- Used by init() --
-	abstract protected void initBegin(Object parentContainer);
-	abstract protected void buildAtdl4jWidgetMap() throws FIXatdlFormatException;
-	abstract protected void createRadioGroups();
-	abstract protected void buildAtdl4jWidgetWithParameterMap();
-	abstract protected void attachGlobalStateRulesToControls() throws FIXatdlFormatException;
-	abstract protected void attachStateListenersToAllAtdl4jWidgets();
-	abstract protected void initEnd();
+	protected abstract void initBegin(Object parentContainer);
+	protected abstract void buildAtdl4jWidgetMap() throws FIXatdlFormatException;
+	protected abstract void createRadioGroups();
+	protected abstract void buildAtdl4jWidgetWithParameterMap();
+	protected abstract void attachGlobalStateRulesToControls() throws FIXatdlFormatException;
+	protected abstract void attachStateListenersToAllAtdl4jWidgets();
+	protected abstract void initEnd();
 
-	abstract protected void addToAtdl4jWidgetMap( String aName, Atdl4jWidget<?> aAtdl4jWidget );
-	abstract protected void addToAtdl4jWidgetWithParameterMap( String aName, Atdl4jWidget<?> aAtdl4jWidget );
-	abstract protected void removeFromAtdl4jWidgetMap( String aName );
-	abstract protected void removeFromAtdl4jWidgetWithParameterMap( String aName );
-	abstract public void setCxlReplaceMode(boolean cxlReplaceMode);
-	abstract protected void fireStateListeners();
-	abstract protected void fireStateListenersForAtdl4jWidget( Atdl4jWidget<?> aAtdl4jWidget );
-	abstract protected void fireLoadFixMessageStateListenersForAtdl4jWidget( Atdl4jWidget<?> aAtdl4jWidget );
+	protected abstract void addToAtdl4jWidgetMap( String aName, Atdl4jWidget<?> aAtdl4jWidget );
+	protected abstract void addToAtdl4jWidgetWithParameterMap( String aName, Atdl4jWidget<?> aAtdl4jWidget );
+	protected abstract void removeFromAtdl4jWidgetMap( String aName );
+	protected abstract void removeFromAtdl4jWidgetWithParameterMap( String aName );
+	protected abstract void fireStateListeners();
+	protected abstract void fireStateListenersForAtdl4jWidget( Atdl4jWidget<?> aAtdl4jWidget );
+	protected abstract void fireLoadFixMessageStateListenersForAtdl4jWidget( Atdl4jWidget<?> aAtdl4jWidget );
 
 
-	abstract protected void applyRadioGroupRules();
+	protected abstract void applyRadioGroupRules();
 	
 	/**
 	 * Standalone intializer
 	 * 
 	 * @param strategy
-	 * @param aStrategies
-	 * @param aAtdl4jOptions (contains getStrategies())
-	 * @param strategiesRules
+	 * @param options (contains getStrategies())
 	 * @param parentContainer (should be swt.Composite)
 	 * @throws FIXatdlFormatException 
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public void init(StrategyT strategy, Atdl4jOptions options, Object parentContainer) throws FIXatdlFormatException
 	{
-	    init(strategy,
-		 new StrategiesT(),
-		 options,
-		 new HashMap<String, ValidationRule>(),
-		 parentContainer);
+	    init(strategy, new StrategiesT(), options, new HashMap<>(), parentContainer);
 	}	
 	
 	/**
@@ -257,7 +242,7 @@ public abstract class AbstractStrategyUI
 	 */
 	protected Map<String, ParameterT> buildParameters(StrategyT strategy) throws FIXatdlFormatException
 	{
-		Map<String, ParameterT> tempParameters = new HashMap<String, ParameterT>();
+		Map<String, ParameterT> tempParameters = new HashMap<>();
 		
 		// build parameters
 		for ( ParameterT parameter : strategy.getParameter() )
@@ -410,7 +395,7 @@ public abstract class AbstractStrategyUI
 	 */
 	protected Map<String, ValidationRule> buildGlobalAndLocalRuleMap(StrategyT strategy, Map<String, ValidationRule> strategiesRules) throws FIXatdlFormatException
 	{
-		Map<String, ValidationRule> tempRuleMap = new HashMap<String, ValidationRule>( strategiesRules );
+		Map<String, ValidationRule> tempRuleMap = new HashMap<>( strategiesRules );
 
 		// and add local rules
 		for ( EditT edit : strategy.getEdit() )
@@ -445,14 +430,8 @@ public abstract class AbstractStrategyUI
 			{
 				EditRefT editRef = se.getEditRef();
 				String id = editRef.getId();
-				getStrategyRuleset().putRefRule( se, new ReferencedValidationRule( id ) ); // TODO:
-				// this
-				// line
-				// should
-				// be
-				// moved
-				// to
-				// RuleFactory?
+				// TODO: this line should be moved to RuleFactory?
+				getStrategyRuleset().putRefRule( se, new ReferencedValidationRule( id ) );
 			}
 		}
 
@@ -462,7 +441,7 @@ public abstract class AbstractStrategyUI
 	protected void checkForDuplicateControlIDs() throws FIXatdlFormatException
 	{
 		// -- Note getAtdl4jWidgetMap() constructs a new Map --
-		Collection<Atdl4jWidget<?>> tempAtdl4jWidgetMapValues = (Collection<Atdl4jWidget<?>>) getAtdl4jWidgetMap().values();
+		Collection<Atdl4jWidget<?>> tempAtdl4jWidgetMapValues = getAtdl4jWidgetMap().values();
 		
 		for ( Atdl4jWidget<?> widget : tempAtdl4jWidgetMapValues )
 		{
@@ -478,7 +457,7 @@ public abstract class AbstractStrategyUI
 	{
 		if ( ( aParameterRef != null ) && ( getAtdl4jWidgetWithParameterMap() != null ) )
 		{
-			Collection<Atdl4jWidget<?>> tempAtdl4jWidgetWithParameterMapValues = (Collection<Atdl4jWidget<?>>) getAtdl4jWidgetWithParameterMap().values();
+			Collection<Atdl4jWidget<?>> tempAtdl4jWidgetWithParameterMapValues = getAtdl4jWidgetWithParameterMap().values();
 			
 			for ( Atdl4jWidget<?> widget : tempAtdl4jWidgetWithParameterMapValues )
 			{
@@ -581,7 +560,7 @@ public abstract class AbstractStrategyUI
 		}
 		else
 		{
-			logger.info( "No validation rule defined for strategy " + getStrategy().getName() );
+			logger.info( "No validation rule defined for strategy {}", getStrategy().getName() );
 		}
 	}
 
@@ -605,7 +584,7 @@ public abstract class AbstractStrategyUI
 			{
 				if ( getStrategies().getStrategyIdentifierTag() != null )
 				{
-					builder.onField( getStrategies().getStrategyIdentifierTag().intValue(), strategyIdentifier.toString() );
+					builder.onField( getStrategies().getStrategyIdentifierTag().intValue(), strategyIdentifier );
 				}
 				else
 				{
@@ -620,21 +599,10 @@ public abstract class AbstractStrategyUI
 			{
 				if ( getStrategies().getVersionIdentifierTag() != null )
 				{
-					builder.onField( getStrategies().getVersionIdentifierTag().intValue(), strategyVersion.toString() );
+					builder.onField( getStrategies().getVersionIdentifierTag().intValue(), strategyVersion );
 				}
 			}
 		}
-
-		/*
-		 * TODO 2/1/2010 John Shields added Beginning of Repeating Group
-		 * implementation. Currently there is an error in ATDL I believe where
-		 * StrategyT can only have one RepeatingGroupT HashMap<String,
-		 * RepeatingGroupT> rgroups = new HashMap<String, RepeatingGroupT>(); for
-		 * (RepeatingGroupT rg : strategy.getRepeatingGroup()) { for (ParameterT
-		 * rg : strategy.getRepeatingGroup()) {
-		 * 
-		 * } }
-		 */
 
 		// -- Note that getAtdl4jWidgetMap() constructs a new Map --
 		for ( Atdl4jWidget<?> control : getAtdl4jWidgetMap().values() )
@@ -661,7 +629,7 @@ public abstract class AbstractStrategyUI
 			int tag = Integer.parseInt( pair[ 0 ] );
 			String value = pair[ 1 ];
 
-			logger.debug("setFIXMessage() i: " + i + " extracted tag: " + tag + " value: " + value );
+			logger.debug("setFIXMessage() i: {} extracted tag: {} value: {}", i, tag, value );
 
 			// not repeating group
 			if ( tag < Atdl4jConstants.TAG_NO_STRATEGY_PARAMETERS || tag > Atdl4jConstants.TAG_STRATEGY_PARAMETER_VALUE )
@@ -731,13 +699,13 @@ public abstract class AbstractStrategyUI
 		
 		for ( Atdl4jWidget<?> tempAtdl4jWidget : getAtdl4jWidgetMap().values() )
 		{
-			logger.debug( "Invoking Atdl4jWidget.reinit() for: " + tempAtdl4jWidget.getControl().getID() );
+			logger.debug( "Invoking Atdl4jWidget.reinit() for: {}", tempAtdl4jWidget.getControl().getID() );
 
 			tempAtdl4jWidget.reinit();
 		}
 
 		// -- Set Strategy's CxlReplaceMode --
-		setCxlReplaceMode( getAtdl4jOptions().getInputAndFilterData().getInputCxlReplaceMode() );;
+		setCxlReplaceMode( getAtdl4jOptions().getInputAndFilterData().getInputCxlReplaceMode() );
 		
 		// -- Execute StateRules --
 		fireStateListeners();

@@ -8,13 +8,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.core.PercentageT;
 import org.atdl4j.fixatdl.core.QtyT;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.fixatdl.layout.ClockT;
 import org.atdl4j.fixatdl.layout.ControlT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class contains the data associated with the <code>Atdl4jOptions</code>.
@@ -25,7 +26,7 @@ import org.atdl4j.fixatdl.layout.ControlT;
  */
 public class Atdl4jOptions
 {
-	private final Logger logger = Logger.getLogger(Atdl4jOptions.class);
+	private final Logger logger = LoggerFactory.getLogger(Atdl4jOptions.class);
 
 	private InputAndFilterData inputAndFilterData;
 	
@@ -41,14 +42,17 @@ public class Atdl4jOptions
 	private int defaultDigitsForSpinnerControlForQty = 0;
 	private int defaultDigitsForSpinnerControl = 2;
 
+	public static final BigDecimal SYSTEM_DEFAULT_LOT_SIZE_INCREMENT_VALUE = new BigDecimal( "1.0" );
+	public static final BigDecimal SYSTEM_DEFAULT_TICK_INCREMENT_VALUE = new BigDecimal( "0.0001" );
+
 	private BigDecimal defaultIncrementValue = null;
-	private BigDecimal defaultLotSizeIncrementValue = new BigDecimal( "1.0" );
-	private BigDecimal defaultTickIncrementValue = new BigDecimal( "0.0001" );
+	private BigDecimal defaultLotSizeIncrementValue = SYSTEM_DEFAULT_LOT_SIZE_INCREMENT_VALUE;
+	private BigDecimal defaultTickIncrementValue = SYSTEM_DEFAULT_TICK_INCREMENT_VALUE;
 
 	// -- Controls Clock control's behavior when FIX message timestamp (eg "StartTime" or "EffectiveTime") is older than current time --
-	public static final Integer CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS = new Integer( 0 );
-	public static final Integer CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT = new Integer( 1 );
-	public static final Integer CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL = new Integer( 2 );
+	public static final Integer CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS = Integer.valueOf( 0 );
+	public static final Integer CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT = Integer.valueOf( 1 );
+	public static final Integer CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL = Integer.valueOf( 2 );
 
 	
 	// -- Controls Clock control's behavior when FIX message timestamp (eg "StartTime" or "EffectiveTime") is older than current time --
@@ -238,9 +242,9 @@ public class Atdl4jOptions
 
 		if ( ( getInputAndFilterData() != null ) &&
 			  ( getInputAndFilterData().getInputStrategyNameList() != null ) && 
-			  ( getInputAndFilterData().getInputStrategyNameList().size() > 0  ) )
+			  ( !getInputAndFilterData().getInputStrategyNameList().isEmpty()  ) )
 		{
-			List<StrategyT> tempAvailableStrategyList = new ArrayList<StrategyT>();
+			List<StrategyT> tempAvailableStrategyList = new ArrayList<>();
 
 			// -- Add the strategies according to their order in the specified InputStrategyNameList --
 			for ( String tempStrategyName : getInputAndFilterData().getInputStrategyNameList() )
@@ -267,7 +271,7 @@ public class Atdl4jOptions
 				}
 			}
 			
-			logger.debug("getStrategyListUsingInputStrategyNameListFilter() returning: " + tempAvailableStrategyList);
+			logger.debug("getStrategyListUsingInputStrategyNameListFilter() returning: {}", tempAvailableStrategyList);
 			return tempAvailableStrategyList;
 		}
 		else
@@ -326,7 +330,7 @@ public class Atdl4jOptions
 	}
 
 	/**
-	 * @param clockStartTimeSetFIXValueWithPastTimeRule the clockStartTimeSetFIXValueWithPastTimeRule to set
+	 * @param aClockPastTimeSetFIXValueRule the clockStartTimeSetFIXValueWithPastTimeRule to set
 	 */
 	public void setClockStartTimeSetFIXValueWithPastTimeRule(Integer aClockPastTimeSetFIXValueRule)
 	{
@@ -342,7 +346,7 @@ public class Atdl4jOptions
 	}
 
 	/**
-	 * @param clockEndTimeSetFIXValueWithPastTimeRule the clockEndTimeSetFIXValueWithPastTimeRule to set
+	 * @param aClockPastTimeSetFIXValueRule the clockEndTimeSetFIXValueWithPastTimeRule to set
 	 */
 	public void setClockEndTimeSetFIXValueWithPastTimeRule(Integer aClockPastTimeSetFIXValueRule)
 	{
@@ -358,7 +362,7 @@ public class Atdl4jOptions
 	}
 
 	/**
-	 * @param clockUnknownSetFIXValueWithPastTimeRule the clockUnknownSetFIXValueWithPastTimeRule to set
+	 * @param aClockPastTimeSetFIXValueRule the clockUnknownSetFIXValueWithPastTimeRule to set
 	 */
 	public void setClockUnknownSetFIXValueWithPastTimeRule(Integer aClockPastTimeSetFIXValueRule)
 	{
@@ -386,24 +390,24 @@ public class Atdl4jOptions
 			throw new IllegalStateException( "aControl provided was null.");
 		}
 		
-		if ( ( aControl instanceof ClockT ) == false )
+		if (!(aControl instanceof ClockT))
 		{
 			throw new IllegalStateException( "aControl: " + aControl + " ID: " + aControl.getID() + " was not a ClockT" );
 		}
 		
 		if ( isClockControlStartTime( aControl ) )
 		{
-			logger.debug( "aControl: " + aControl.getID() + " identified as 'StartTime'.  Returning: " + getClockStartTimeSetFIXValueWithPastTimeRule() );
+			logger.debug( "aControl: {} identified as 'StartTime'.  Returning: {}", aControl.getID(), getClockStartTimeSetFIXValueWithPastTimeRule() );
 			return getClockStartTimeSetFIXValueWithPastTimeRule();
 		}
 		else if ( isClockControlEndTime( aControl ) )
 		{
-			logger.debug( "aControl: " + aControl.getID() + " identified as 'EndTime'.  Returning: " + getClockEndTimeSetFIXValueWithPastTimeRule() );
+			logger.debug( "aControl: {} identified as 'EndTime'.  Returning: {}", aControl.getID(), getClockEndTimeSetFIXValueWithPastTimeRule() );
 			return getClockEndTimeSetFIXValueWithPastTimeRule();
 		}
 		else
 		{
-			logger.debug( "aControl: " + aControl.getID() + " WAS NOT identified as either 'StartTime' or 'EndTime'.  Returning: " + getClockUnknownSetFIXValueWithPastTimeRule() );
+			logger.debug( "aControl: {} WAS NOT identified as either 'StartTime' or 'EndTime'.  Returning: {}", aControl.getID(), getClockUnknownSetFIXValueWithPastTimeRule() );
 			return getClockUnknownSetFIXValueWithPastTimeRule();
 		}
 	}
@@ -447,7 +451,7 @@ public class Atdl4jOptions
 	 */
 	protected boolean isClockControlStartTime( ControlT aControl )
 	{
-		if ( ( aControl != null ) && ( aControl instanceof ClockT ) )
+		if ( aControl instanceof ClockT )
 		{
 			String tempControlID = aControl.getID();
 			
@@ -457,7 +461,7 @@ public class Atdl4jOptions
 				{
 					if ( tempControlID.contains( tempIDValueFragment ) )
 					{
-						logger.debug( "aControl: " + aControl.getID() + " identified as 'StartTime' via IDValueFragment: " + tempIDValueFragment );
+						logger.debug( "aControl: {} identified as 'StartTime' via IDValueFragment: {}", aControl.getID(), tempIDValueFragment );
 						return true;
 					}
 				}
@@ -474,7 +478,7 @@ public class Atdl4jOptions
 	 */
 	protected boolean isClockControlEndTime( ControlT aControl )
 	{
-		if ( ( aControl != null ) && ( aControl instanceof ClockT ) )
+		if ( aControl instanceof ClockT )
 		{
 			String tempControlID = aControl.getID();
 			
@@ -484,7 +488,7 @@ public class Atdl4jOptions
 				{
 					if ( tempControlID.contains( tempIDValueFragment ) )
 					{
-						logger.debug( "aControl: " + aControl.getID() + " identified as 'EndTime' via IDValueFragment: " + tempIDValueFragment );
+						logger.debug( "aControl: {} identified as 'EndTime' via IDValueFragment: {}", aControl.getID(), tempIDValueFragment );
 						return true;
 					}
 				}

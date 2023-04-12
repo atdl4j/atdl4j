@@ -61,7 +61,7 @@ public class SwingHiddenFieldWidget
 	}
 
     public List< ? extends Component> createBrickComponents() {
-      return new ArrayList<Component>();
+      return new ArrayList<>();
     }
   
     @Override

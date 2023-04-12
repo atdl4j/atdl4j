@@ -1,6 +1,5 @@
 package org.atdl4j.ui.swt.app.impl;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.StrategySelectionEvent;
@@ -24,7 +23,6 @@ import org.eclipse.swt.widgets.Shell;
 public class SWTAtdl4jCompositePanel
 		extends AbstractAtdl4jCompositePanel
 {
-	public final Logger logger = Logger.getLogger(SWTAtdl4jCompositePanel.class);
 	private Composite parentComposite;
 	
 	private Composite okCancelButtonSection;
@@ -71,7 +69,8 @@ public class SWTAtdl4jCompositePanel
 		okButton.setToolTipText( "Validate and accept the specified strategy and parameters" );
 		okButton.addSelectionListener(new SelectionAdapter() 
 		{
-			public void widgetSelected(SelectionEvent e) 
+			@Override
+			public void widgetSelected(SelectionEvent e)
 			{
 				okButtonSelected();
 			}
@@ -84,7 +83,8 @@ public class SWTAtdl4jCompositePanel
 		cancelButton.setToolTipText( "Cancel ignoring any specified changes" );
 		cancelButton.addSelectionListener(new SelectionAdapter() 
 		{
-			public void widgetSelected(SelectionEvent e) 
+			@Override
+			public void widgetSelected(SelectionEvent e)
 			{
 				cancelButtonSelected();
 			}
@@ -111,8 +111,12 @@ public class SWTAtdl4jCompositePanel
 
 	protected void packLayout()
 	{
-		getShell().layout();
-		getShell().pack();
+		Shell tmpShell = getShell();
+		if ( tmpShell != null )
+		{
+			tmpShell.layout();
+			tmpShell.pack();
+		}
 	}
 	
 	/**

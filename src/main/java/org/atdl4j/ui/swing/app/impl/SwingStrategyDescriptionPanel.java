@@ -20,7 +20,6 @@ import org.atdl4j.ui.app.impl.AbstractStrategyDescriptionPanel;
 public class SwingStrategyDescriptionPanel
     extends AbstractStrategyDescriptionPanel
 {
-  // JPanel as we need TitledBorder private Container container;
   private JPanel container;
 
   private JTextPane strategyDescription;
@@ -58,7 +57,7 @@ public class SwingStrategyDescriptionPanel
    */
   protected void setStrategyDescriptionText(String aText) {
     if (strategyDescription != null) {
-      String newText = aText.replaceAll("&apos;", "&#39;");
+      String newText = aText.replace("&apos;", "&#39;");
       String htmlText = "<html><body face=\"arial\">" + newText + "</body></html>";
       strategyDescription.setText(htmlText);
       strategyDescription.setSelectionStart(0);

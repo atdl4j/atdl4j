@@ -3,7 +3,8 @@ package org.atdl4j.data.validation;
 import java.math.BigInteger;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.validation.OperatorT;
@@ -17,7 +18,7 @@ import org.atdl4j.ui.Atdl4jWidget;
 public class LengthValidationRule
 	implements ValidationRule
 {
-	private static final Logger logger = Logger.getLogger( LengthValidationRule.class );
+	private static final Logger logger = LoggerFactory.getLogger( LengthValidationRule.class );
 
 	private String field;
 

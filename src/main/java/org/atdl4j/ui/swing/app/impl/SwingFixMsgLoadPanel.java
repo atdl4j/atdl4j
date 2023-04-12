@@ -26,8 +26,7 @@ import org.atdl4j.ui.app.impl.AbstractFixMsgLoadPanel;
 public class SwingFixMsgLoadPanel extends AbstractFixMsgLoadPanel
 {
 	Container parentContainer;
-// JPanel as we need TitledBorder	private Container container;
-	
+
 	JTextField fixMsgText;
 	JButton loadFixMsgButton;
 	

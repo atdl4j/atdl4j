@@ -203,7 +203,7 @@ public class SecurityTypesT {
      */
     public List<SecurityTypesT.SecurityType> getSecurityType() {
         if (securityType == null) {
-            securityType = new ArrayList<SecurityTypesT.SecurityType>();
+            securityType = new ArrayList<>();
         }
         return this.securityType;
     }

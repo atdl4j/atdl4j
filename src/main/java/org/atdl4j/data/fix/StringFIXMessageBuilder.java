@@ -1,21 +1,15 @@
 package org.atdl4j.data.fix;
 
-/*import java.util.HashMap;
- import java.util.List;
- import java.util.Map;*/
-
 import org.atdl4j.data.Atdl4jConstants;
 
 // TODO: Change to handle generic repeating groups
 public class StringFIXMessageBuilder
 		implements FIXMessageBuilder
 {
-
 	private static char delimiter = '\001';
 
 	private StringBuffer sb;
 	private StringBuffer repeating;
-	// private Map<Integer,List<List<StringBuffer>>> repeating;
 
 	private int repeatingCount;
 
@@ -32,8 +26,7 @@ public class StringFIXMessageBuilder
 		if ( field == Atdl4jConstants.TAG_STRATEGY_PARAMETER_NAME || field == Atdl4jConstants.TAG_STRATEGY_PARAMETER_TYPE
 				|| field == Atdl4jConstants.TAG_STRATEGY_PARAMETER_VALUE )
 		{
-			// if (repeating.get(Atdl4jConstants.TAG_NO_STRATEGY_PARAMETERS) ==
-			// null)
+			// if (repeating.get(Atdl4jConstants.TAG_NO_STRATEGY_PARAMETERS) == null)
 			repeating.append( field ).append( '=' ).append( value ).append( delimiter );
 			if ( field == Atdl4jConstants.TAG_STRATEGY_PARAMETER_NAME )
 			{

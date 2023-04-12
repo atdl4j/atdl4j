@@ -1,13 +1,13 @@
 package org.atdl4j.ui.app.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.fixatdl.core.StrategyT;
@@ -41,7 +41,7 @@ public abstract class AbstractAtdl4jTesterPanel
 			FixatdlFileSelectionPanelListener,
 			StrategyEventListener
 { 
-	private final Logger logger = Logger.getLogger(AbstractAtdl4jTesterPanel.class);
+	private final Logger logger = LoggerFactory.getLogger(AbstractAtdl4jTesterPanel.class);
 	
 	Atdl4jOptions atdl4jOptions;
 	Object parentOrShell;  // SWT: Shell, Swing: JFrame, JDialog, etc
@@ -51,14 +51,14 @@ public abstract class AbstractAtdl4jTesterPanel
 	private FixatdlFileSelectionPanel fixatdlFileSelectionPanel;
 	private FixMsgLoadPanel fixMsgLoadPanel;
 
-	abstract protected Object createValidateOutputSection();
-	abstract protected void setValidateOutputText(String aText);
+	protected abstract Object createValidateOutputSection();
+	protected abstract void setValidateOutputText(String aText);
 
 	private Atdl4jCompositePanel atdl4jCompositePanel;
-	abstract public void setVisibleValidateOutputSection( boolean aVisible );
-	abstract public void setVisibleFileSelectionSection( boolean aVisible );
-	abstract public void setVisibleTestingInputSection( boolean aVisible );
-	private List<Atdl4jTesterPanelListener> listenerList = new Vector<Atdl4jTesterPanelListener>();
+	public abstract void setVisibleValidateOutputSection( boolean aVisible );
+	public abstract void setVisibleFileSelectionSection( boolean aVisible );
+	public abstract void setVisibleTestingInputSection( boolean aVisible );
+	private List<Atdl4jTesterPanelListener> listenerList = new ArrayList<>();
 
 	
 	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions )
@@ -124,7 +124,7 @@ public abstract class AbstractAtdl4jTesterPanel
 	}
 
 	/**
-	 * @param atdl4jInputAndFilterDataSelectionPanel the atdl4jInputAndFilterDataSelectionPanel to set
+	 * @param aAtdl4jInputAndFilterDataSelectionPanel the atdl4jInputAndFilterDataSelectionPanel to set
 	 */
 	private void setAtdl4jInputAndFilterDataSelectionPanel(Atdl4jInputAndFilterDataSelectionPanel aAtdl4jInputAndFilterDataSelectionPanel)
 	{
@@ -198,7 +198,6 @@ public abstract class AbstractAtdl4jTesterPanel
 
 	/**
 	 * @return the Atdl4jInputAndFilterDataSelectionPanel
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jInputAndFilterDataSelectionPanel getAtdl4jInputAndFilterDataSelectionPanel() 
 	{
@@ -225,7 +224,6 @@ public abstract class AbstractAtdl4jTesterPanel
 	
 	/**
 	 * @return the FixMsgLoadPanel
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public FixMsgLoadPanel getFixMsgLoadPanel() 
 	{
@@ -275,7 +273,6 @@ public abstract class AbstractAtdl4jTesterPanel
 
 	/**
 	 * @return the FixatdlFileSelectionPanel
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public FixatdlFileSelectionPanel getFixatdlFileSelectionPanel() 
 	{
@@ -288,7 +285,6 @@ public abstract class AbstractAtdl4jTesterPanel
 	
 	/**
 	 * @return the Atdl4jUserMessageHandler
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler() 
 	{

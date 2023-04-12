@@ -1,6 +1,7 @@
 package org.atdl4j.ui.swt.impl;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.fixatdl.layout.BorderT;
 import org.atdl4j.fixatdl.layout.PanelOrientationT;
 import org.atdl4j.fixatdl.layout.StrategyPanelT;
@@ -30,13 +31,13 @@ import org.eclipse.swt.widgets.Layout;
 public class SWTStrategyPanelHelper
 	implements StrategyPanelHelper
 {
-	private static final Logger logger = Logger.getLogger( SWTStrategyPanelHelper.class );
+	private static final Logger logger = LoggerFactory.getLogger( SWTStrategyPanelHelper.class );
 
 	/**
 	 * Invokes revalidateLayout() within Display.getCurrent().asyncExec(new
 	 * Runnable() ... )
 	 * 
-	 * @param aControl
+	 * @param anExpandBar
 	 */
 	public static void revalidateLayoutAsync(ExpandBar anExpandBar)
 	{
@@ -51,7 +52,7 @@ public class SWTStrategyPanelHelper
 	 * -require-a-call-to-resize-to-layout-correctl
 	 * 
 	 * @author http://stackoverflow.com/users/63293/peter-walser
-	 * @param control
+	 * @param expandBar
 	 */
 	// 3/13/2010 John Shields
 	// streamlined method to increase speed; previously was doing too much
@@ -67,22 +68,22 @@ public class SWTStrategyPanelHelper
 		Composite c = expandBar;
 		int tempMaxControlX = 0;
 		
-		logger.debug( "----- relayoutExpandBar (relayoutParents: " + relayoutParents + " expandBar: " + expandBar + " -----" );
+		logger.debug( "----- relayoutExpandBar (relayoutParents: {} expandBar: {} -----", relayoutParents, expandBar );
 		
 		do
 		{
-			logger.debug( "c: " + c.getClass() + " c.getParent(): " + c.getParent().getClass() );
+			logger.debug( "c: {} c.getParent(): {}", c.getClass(), c.getParent().getClass() );
 			
 			if ( c instanceof ExpandBar )
 			{
 				ExpandBar eb = (ExpandBar) c;
 				
-				logger.debug( "ExpandBar.getSize(): " + eb.getSize() );
+				logger.debug( "ExpandBar.getSize(): {}", eb.getSize() );
 				
 				for ( ExpandItem expandItem : eb.getItems() )
 				{
-					logger.debug( "expandItem: " + expandItem + " text: " + expandItem.getText() + " control: " + expandItem.getControl() + " controlLocation: " + expandItem.getControl().getLocation());					
-					logger.debug( "before pack(): expandItem.getControl().getSize(): " + expandItem.getControl().getSize() );
+					logger.debug( "expandItem: {} text: {} control: {} controlLocation: {}", expandItem, expandItem.getText(), expandItem.getControl(), expandItem.getControl().getLocation() );
+					logger.debug( "before pack(): expandItem.getControl().getSize(): {}", expandItem.getControl().getSize() );
 
 					expandItem.getControl().pack();
 					
@@ -91,7 +92,7 @@ public class SWTStrategyPanelHelper
 						tempMaxControlX = expandItem.getControl().getSize().x;
 					}
 
-					logger.debug( "before: expandItem.getHeight(): " + expandItem.getHeight() + " expandItem.getControl().getSize(): " + expandItem.getControl().getSize() );
+					logger.debug( "before: expandItem.getHeight(): {} expandItem.getControl().getSize(): {}", expandItem.getHeight(), expandItem.getControl().getSize() );
 
 					expandItem.setHeight( expandItem.getControl().computeSize( eb.getSize().x, SWT.DEFAULT, true ).y );
 				}
@@ -99,7 +100,6 @@ public class SWTStrategyPanelHelper
 				// -- Need to set ExpandBar's GridData.widthHint to the width of the widest control within it -- 
 				GridData tempGridData2 = (GridData) expandBar.getLayoutData();
 				tempGridData2.widthHint = tempMaxControlX;
-				// do not set height as ExpandBar handles this tempGridData2.heightHint = expandBar.getSize().y;
 				expandBar.setLayoutData( tempGridData2 );
 				
  				
@@ -166,8 +166,6 @@ public class SWTStrategyPanelHelper
 		{
 			ExpandBar tempExpandBar = new ExpandBar( aParent, SWT.NONE );
 			tempExpandBar.setSpacing( 1 );
-//TODO if want to get rid of white background, likely want a border around whole thing...
-//TODO tempExpandBar.setBackground( aParent.getBackground() );
 
 			if ( aParent.getLayout() instanceof GridLayout )
 			{
@@ -232,7 +230,7 @@ public class SWTStrategyPanelHelper
 	/**
 	 * Creates the layout for the SWT Composite containing the set of FIXatdl Controls
 	 * 
-	 * @param c
+	 * @param panel
 	 * @return
 	 */
 	protected static Layout createStrategyPanelLayout(StrategyPanelT panel)
@@ -244,15 +242,11 @@ public class SWTStrategyPanelHelper
 			int panelCount = panel.getStrategyPanel() != null ? panel.getStrategyPanel().size() : 0;
 
 			// make 2 columns for each parameter and 1 column for each sub-panel
-			GridLayout l = new GridLayout( parameterCount * 2 + panelCount, false );
-			return l;
+			return new GridLayout( parameterCount * 2 + panelCount, false );
 		}
 		else if ( orientation == PanelOrientationT.VERTICAL )
 		{
-// TODO ???? WHY TWO VS. ONE ?????			GridLayout l = new GridLayout( 2, false );
-			// GridLayout l = new GridLayout( 1, false );
-			GridLayout l = new GridLayout( 2, false );
-			return l;
+			return new GridLayout( 2, false );
 		}
 		else
 		{
@@ -306,7 +300,7 @@ public class SWTStrategyPanelHelper
 	public boolean expandAtdl4jWidgetParentStrategyPanel( Atdl4jWidget<?> aWidget )
 	{
 		boolean tempAdjustedFlag = false;
-		if ( ( aWidget.getParent() != null ) && ( aWidget.getParent() instanceof Composite ) )
+		if ( aWidget.getParent() instanceof Composite )
 		{
 			Composite tempParent = (Composite) aWidget.getParent();
 			
@@ -329,9 +323,9 @@ public class SWTStrategyPanelHelper
 				}
 
 				// -- Iterate to next parent --
-				if ( ( tempParent.getParent() != null ) && ( ( tempParent.getParent() instanceof Composite ) ) )
+				if (  tempParent.getParent() instanceof Composite )
 				{
-					tempParent = (Composite) tempParent.getParent();
+					tempParent = tempParent.getParent();
 				}
 				else
 				{

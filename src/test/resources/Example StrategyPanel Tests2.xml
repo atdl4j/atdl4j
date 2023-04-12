@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+
+	 <Strategy name="StrategyPanelTests" uiRep="Strategy Panel Tests" wireValue="3" providerID="TEST">
+
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+		
+	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL"/>
+	              <lay:Control ID="c_Label_1a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	          </lay:StrategyPanel>
+
+			   <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+	              <lay:Control ID="c_Label_2" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=HORIZONTAL"/>
+	              <lay:Control ID="c_Label_2a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	          </lay:StrategyPanel>
+
+	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL" border="Line">
+	              <lay:Control ID="c_Label_3" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL border=Line"/>
+	              <lay:Control ID="c_Label_3a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	          </lay:StrategyPanel>
+
+			   <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" border="Line">
+	              <lay:Control ID="c_Label_4" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=HORIZONTAL border=Line"/>
+	              <lay:Control ID="c_Label_4a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	          </lay:StrategyPanel>
+
+	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="Border Title">
+	              <lay:Control ID="c_Label_5" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL title=Border Title"/>
+	              <lay:Control ID="c_Label_5a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	          </lay:StrategyPanel>
+
+			   <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="Border Title">
+	              <lay:Control ID="c_Label_6" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=HORIZONTAL title=Border Title"/>
+	              <lay:Control ID="c_Label_6a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	          </lay:StrategyPanel>
+	          
+	          <lay:StrategyPanel collapsible="true" collapsed="false" orientation="VERTICAL" title="Collapsible (Vert)">
+	              <lay:Control ID="c_Label_7" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=VERTICAL title=Collapsible"/>
+	              <lay:Control ID="c_Label_7a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	          </lay:StrategyPanel>
+
+			   <lay:StrategyPanel collapsible="true" collapsed="false" orientation="HORIZONTAL" title="Collapsible (Horiz)">
+	              <lay:Control ID="c_Label_8" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=HORIZONTAL title=Collapsible"/>
+	              <lay:Control ID="c_Label_8a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	          </lay:StrategyPanel>
+
+	          <lay:StrategyPanel collapsible="true" collapsed="true" orientation="VERTICAL" title="Collapsible (Vert) - Collapsed">
+	              <lay:Control ID="c_Label_9" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=VERTICAL title=Collapsible"/>
+	              <lay:Control ID="c_Label_9a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	          </lay:StrategyPanel>
+
+			   <lay:StrategyPanel collapsible="true" collapsed="true" orientation="HORIZONTAL" title="Collapsible (Horiz) - Collapsed">
+	              <lay:Control ID="c_Label_10" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=HORIZONTAL title=Collapsible"/>
+	              <lay:Control ID="c_Label_10a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	          </lay:StrategyPanel>
+
+		
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+
+	</Strategy>
+	
+	
+	
+	<Strategy name="Nested2ColumnStrategyPanelTests" uiRep="Nested 2 Column Strategy Panel Tests" wireValue="4" providerID="TEST">
+
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+	
+   			<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+   		
+   	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+   	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL"/>
+   	              <lay:Control ID="c_Label_1a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   			   <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+   	              <lay:Control ID="c_Label_2" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=HORIZONTAL"/>
+   	              <lay:Control ID="c_Label_2a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL" border="Line">
+   	              <lay:Control ID="c_Label_3" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL border=Line"/>
+   	              <lay:Control ID="c_Label_3a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   			   <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" border="Line">
+   	              <lay:Control ID="c_Label_4" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=HORIZONTAL border=Line"/>
+   	              <lay:Control ID="c_Label_4a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="Border Title">
+   	              <lay:Control ID="c_Label_5" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL title=Border Title"/>
+   	              <lay:Control ID="c_Label_5a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   			   <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="Border Title">
+   	              <lay:Control ID="c_Label_6" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=HORIZONTAL title=Border Title"/>
+   	              <lay:Control ID="c_Label_6a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   	          
+   	          <lay:StrategyPanel collapsible="true" collapsed="false" orientation="VERTICAL" title="Collapsible (Vert)">
+   	              <lay:Control ID="c_Label_7" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=VERTICAL title=Collapsible"/>
+   	              <lay:Control ID="c_Label_7a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   			   <lay:StrategyPanel collapsible="true" collapsed="false" orientation="HORIZONTAL" title="Collapsible (Horiz)">
+   	              <lay:Control ID="c_Label_8" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=HORIZONTAL title=Collapsible"/>
+   	              <lay:Control ID="c_Label_8a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   	          <lay:StrategyPanel collapsible="true" collapsed="true" orientation="VERTICAL" title="Collapsible (Vert) - Collapsed">
+   	              <lay:Control ID="c_Label_9" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=VERTICAL title=Collapsible"/>
+   	              <lay:Control ID="c_Label_9a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   			   <lay:StrategyPanel collapsible="true" collapsed="true" orientation="HORIZONTAL" title="Collapsible (Horiz) - Collapsed">
+   	              <lay:Control ID="c_Label_10" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=HORIZONTAL title=Collapsible"/>
+   	              <lay:Control ID="c_Label_10a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   		
+   		   </lay:StrategyPanel>  <!-- End of first column -->
+   		   
+<!-- Second column -->
+	
+   			<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+   		
+   	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+   	              <lay:Control ID="c_Label2_1" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL"/>
+   	              <lay:Control ID="c_Label2_1a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   			   <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+   	              <lay:Control ID="c_Label2_2" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=HORIZONTAL"/>
+   	              <lay:Control ID="c_Label2_2a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL" border="Line">
+   	              <lay:Control ID="c_Label2_3" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL border=Line"/>
+   	              <lay:Control ID="c_Label2_3a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   			   <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" border="Line">
+   	              <lay:Control ID="c_Label2_4" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=HORIZONTAL border=Line"/>
+   	              <lay:Control ID="c_Label2_4a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="Border Title">
+   	              <lay:Control ID="c_Label2_5" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL title=Border Title"/>
+   	              <lay:Control ID="c_Label2_5a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   			   <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="Border Title">
+   	              <lay:Control ID="c_Label2_6" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=HORIZONTAL title=Border Title"/>
+   	              <lay:Control ID="c_Label2_6a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   	          
+   	          <lay:StrategyPanel collapsible="true" collapsed="false" orientation="VERTICAL" title="Collapsible (Vert)">
+   	              <lay:Control ID="c_Label2_7" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=VERTICAL title=Collapsible"/>
+   	              <lay:Control ID="c_Label2_7a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   			   <lay:StrategyPanel collapsible="true" collapsed="false" orientation="HORIZONTAL" title="Collapsible (Horiz)">
+   	              <lay:Control ID="c_Label2_8" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=HORIZONTAL title=Collapsible"/>
+   	              <lay:Control ID="c_Label2_8a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   	          <lay:StrategyPanel collapsible="true" collapsed="true" orientation="VERTICAL" title="Collapsible (Vert) - Collapsed">
+   	              <lay:Control ID="c_Label2_9" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=VERTICAL title=Collapsible"/>
+   	              <lay:Control ID="c_Label2_9a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   			   <lay:StrategyPanel collapsible="true" collapsed="true" orientation="HORIZONTAL" title="Collapsible (Horiz) - Collapsed">
+   	              <lay:Control ID="c_Label2_10" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=HORIZONTAL title=Collapsible"/>
+   	              <lay:Control ID="c_Label2_10a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+   	          </lay:StrategyPanel>
+   
+   		
+   		   </lay:StrategyPanel>  <!-- End of second column -->
+
+   			
+ 			</lay:StrategyPanel> 			
+
+		</lay:StrategyLayout>
+
+	</Strategy>
+	
+
+	<Strategy name="NestedStrategyPanelTests" uiRep="Nested Strategy Panel Tests" wireValue="4" providerID="TEST">
+
+		<lay:StrategyLayout>
+
+<!-- Outer container -->
+ 			<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	
+<!-- Single Horiz Panel - Full Width -->	
+   			<lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+                 <lay:Control ID="c_Label_5" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL title=Border Title"/>
+                 <lay:Control ID="c_Label_5a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+            </lay:StrategyPanel>
+
+<!-- Single Horiz Panel Collapsible (non-Collapsed) - Full Width -->	
+			   <lay:StrategyPanel collapsible="true" collapsed="false" orientation="HORIZONTAL" title="Collapsible (Horiz)">
+	              <lay:Control ID="c_Label_8" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=HORIZONTAL title=Collapsible"/>
+	              <lay:Control ID="c_Label_8a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+	         </lay:StrategyPanel>
+
+<!-- 2 column grid -->
+    			<lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+<!-- Column 1 - with line border --> 			
+   	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL" border="Line">
+   	          
+       	          <lay:StrategyPanel collapsible="true" collapsed="true" orientation="VERTICAL" title="Collapsible (Vert) - Collapsed">
+      	              <lay:Control ID="c_CheckBox_1" 	   xsi:type="lay:CheckBox_t" label="CheckBox #1"/>
+      	              <lay:Control ID="c_CheckBox_2" 	   xsi:type="lay:CheckBox_t" label="CheckBox #2"/>
+      	              <lay:Control ID="c_CheckBox_3" 	   xsi:type="lay:CheckBox_t" label="CheckBox #3"/>
+      	              <lay:Control ID="c_CheckBox_4" 	   xsi:type="lay:CheckBox_t" label="CheckBox #4"/>
+      	          </lay:StrategyPanel>
+
+<!-- End of Column 1 -->            
+                </lay:StrategyPanel>
+ 			
+<!-- Column 2 - with line border --> 			
+   	         <lay:StrategyPanel collapsible="false" orientation="VERTICAL" border="Line">
+   	              <lay:Control ID="c_CheckBox_1a" 	   xsi:type="lay:CheckBox_t" label="CheckBox #1"/>
+   	              <lay:Control ID="c_CheckBox_2a" 	   xsi:type="lay:CheckBox_t" label="CheckBox #2"/>
+   	              <lay:Control ID="c_CheckBox_3a" 	   xsi:type="lay:CheckBox_t" label="CheckBox #3"/>
+   	              <lay:Control ID="c_CheckBox_4a" 	   xsi:type="lay:CheckBox_t" label="CheckBox #4"/>
+
+<!-- End of Column 2 -->            
+               </lay:StrategyPanel>
+
+<!-- End of 2 column grid -->
+            </lay:StrategyPanel>
+
+
+
+<!-- 2 column grid -->
+    			<lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+<!-- Column 1 - with line border --> 			
+   	          <lay:StrategyPanel collapsible="false" orientation="VERTICAL" border="Line">
+   	          
+       	          <lay:StrategyPanel collapsible="true" collapsed="true" orientation="HORIZONTAL" title="Collapsible (Horiz) - Collapsed">
+      	              <lay:Control ID="c_CheckBox_1b" 	   xsi:type="lay:CheckBox_t" label="CheckBox #1"/>
+      	              <lay:Control ID="c_CheckBox_2b" 	   xsi:type="lay:CheckBox_t" label="CheckBox #2"/>
+<!-- 
+??? note that the four checkboxes did not cause shell/outermost container to adjust width enough to see them all      	              
+      	              <lay:Control ID="c_CheckBox_3b" 	   xsi:type="lay:CheckBox_t" label="CheckBox #3"/>
+      	              <lay:Control ID="c_CheckBox_4b" 	   xsi:type="lay:CheckBox_t" label="CheckBox #4"/>
+??? -->      	              
+      	          </lay:StrategyPanel>
+
+<!-- End of Column 1 -->            
+                </lay:StrategyPanel>
+ 			
+<!-- Column 2 - with line border --> 			
+   	         <lay:StrategyPanel collapsible="false" orientation="VERTICAL" border="Line">
+   	              <lay:Control ID="c_CheckBox_1d" 	   xsi:type="lay:CheckBox_t" label="CheckBox #1"/>
+   	              <lay:Control ID="c_CheckBox_2d" 	   xsi:type="lay:CheckBox_t" label="CheckBox #2"/>
+   	              <lay:Control ID="c_CheckBox_3d" 	   xsi:type="lay:CheckBox_t" label="CheckBox #3"/>
+   	              <lay:Control ID="c_CheckBox_4d" 	   xsi:type="lay:CheckBox_t" label="CheckBox #4"/>
+
+<!-- End of Column 2 -->            
+               </lay:StrategyPanel>
+
+<!-- End of 2 column grid -->
+            </lay:StrategyPanel>
+
+
+
+<!-- Single Vertical Panel - Full Width -->	
+          <lay:StrategyPanel collapsible="false" orientation="VERTICAL" border="Line">
+              <lay:Control ID="c_Label_3" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=false orientation=VERTICAL border=Line"/>
+              <lay:Control ID="c_Label_3a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+          </lay:StrategyPanel>
+          
+<!-- Single Vertical Panel Collapsed - Full Width -->	
+          <lay:StrategyPanel collapsible="true" collapsed="true" orientation="VERTICAL" title="Collapsible (Vert) - Collapsed">
+              <lay:Control ID="c_Label_9" 	   xsi:type="lay:Label_t" label="StrategyPanel collapsible=true orientation=VERTICAL title=Collapsible"/>
+              <lay:Control ID="c_Label_9a" 	   xsi:type="lay:Label_t" label="[Other label]"/>
+          </lay:StrategyPanel>
+
+	
+<!-- End of Outer container -->
+       </lay:StrategyPanel>
+	
+
+		</lay:StrategyLayout>
+
+	</Strategy>
+	
+
+</Strategies>

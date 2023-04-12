@@ -74,20 +74,20 @@ public class SWTListBoxWidget
 
 	public String getControlValueRaw()
 	{
-		String value = "";
-		java.util.List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem()
-				: ( (SingleSelectListT) control ).getListItem();
+		StringBuilder tmpStringBuilder = new StringBuilder("");
+		java.util.List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem() : ( (SingleSelectListT) control ).getListItem();
 		int[] selection = listBox.getSelectionIndices();
 
 		for ( int i = 0; i < selection.length; i++ )
 		{
-			value += listItems.get( selection[ i ] ).getEnumID();
+			tmpStringBuilder.append( listItems.get( selection[ i ] ).getEnumID() );
 			if ( i + 1 != selection.length )
-				value += " ";
+				tmpStringBuilder.append( " " );
 		}
-		return "".equals( value ) ? null : value;
+		return tmpStringBuilder.toString().isEmpty() ? null : tmpStringBuilder.toString();
 	}
 
+	@Override
 	public String getParameterValue()
 	{
 		// Helper method from AbstractAtdl4jWidget
@@ -129,7 +129,7 @@ public class SWTListBoxWidget
 
 	public java.util.List<Control> getControls()
 	{
-		java.util.List<Control> widgets = new ArrayList<Control>();
+		java.util.List<Control> widgets = new ArrayList<>();
 		if (label != null) widgets.add( label );
 		widgets.add( listBox );
 		return widgets;
@@ -137,7 +137,7 @@ public class SWTListBoxWidget
 
 	public java.util.List<Control> getControlsExcludingLabel()
 	{
-		java.util.List<Control> widgets = new ArrayList<Control>();
+		java.util.List<Control> widgets = new ArrayList<>();
 		widgets.add( listBox );
 		return widgets;
 	}

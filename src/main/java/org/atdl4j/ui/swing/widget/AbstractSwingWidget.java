@@ -99,8 +99,9 @@ public abstract class AbstractSwingWidget<E extends Comparable<?>>
 	  return brickComponents;
 	}
 
-    protected List< ? extends Component> createBrickComponents() {
-      return new ArrayList<Component>();
+    protected List< ? extends Component> createBrickComponents()
+    {
+      return new ArrayList<>();
     }
     
     @Override

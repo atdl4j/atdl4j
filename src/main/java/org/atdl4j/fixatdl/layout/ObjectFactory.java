@@ -31,7 +31,7 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _StrategyLayout_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Layout", "StrategyLayout");
+    private static final QName _StrategyLayout_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Layout", "StrategyLayout");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.atdl4j.fixatdl.layout
@@ -190,7 +190,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://www.fixprotocol.org/FIXatdl-1-1/Layout", name = "StrategyLayout")
     public JAXBElement<StrategyLayoutT> createStrategyLayout(StrategyLayoutT value) {
-        return new JAXBElement<StrategyLayoutT>(_StrategyLayout_QNAME, StrategyLayoutT.class, null, value);
+        return new JAXBElement<>(_StrategyLayout_QNAME, StrategyLayoutT.class, null, value);
     }
 
 }

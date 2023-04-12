@@ -22,7 +22,7 @@ public class StringConverter
 	
 	private static String invertOnWire(String text)
 	{
-		StringBuffer invertedString = new StringBuffer();
+		StringBuilder invertedString = new StringBuilder();
 
 		int startIndex = text.lastIndexOf( " " );
 		int endIndex = text.length();
@@ -59,11 +59,8 @@ public class StringConverter
 	{
 		String str = convertStringToParameterValue( aFixWireValue );
 		
-		if ( getParameter() instanceof MultipleCharValueT && ( (MultipleCharValueT) getParameter() ).isInvertOnWire() )
-		{
-			return invertOnWire( str );
-		}
-		else if ( getParameter() instanceof MultipleStringValueT && ( (MultipleStringValueT) getParameter() ).isInvertOnWire() )
+		if ( ( getParameter() instanceof MultipleCharValueT && ( (MultipleCharValueT) getParameter() ).isInvertOnWire() )
+		|| ( getParameter() instanceof MultipleStringValueT && ( (MultipleStringValueT) getParameter() ).isInvertOnWire() ) )
 		{
 			return invertOnWire( str );
 		}
@@ -89,7 +86,7 @@ public class StringConverter
 	{
 		if ( ( aValue != null ) && ( ! "".equals( aValue ) ) )
 		{
-			return aValue.toString();
+			return aValue;
 		}
 		else
 		{
@@ -187,7 +184,7 @@ public class StringConverter
 			return null;
 		}
 		// -- handle PercentageT getParameter() coming through with BigDecial (eg from Load FIX Message) --
-		else if ( ( aValue != null ) && ( isControlMultiplyBy100() ) )
+		else if ( isControlMultiplyBy100() )
 		{
 			BigDecimal tempBigDecimal;
 			try

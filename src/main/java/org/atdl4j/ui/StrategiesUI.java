@@ -18,7 +18,7 @@ public interface StrategiesUI {
 	
 	public Object buildStrategiesPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler);
 
-	public void createStrategyPanels(StrategiesT strategies, List<StrategyT> aFilteredStrategyList) throws FIXatdlFormatException; // throws Exception;
+	public void createStrategyPanels(StrategiesT strategies, List<StrategyT> aFilteredStrategyList) throws FIXatdlFormatException;
 	 
 	public void removeAllStrategyPanels();
 	
@@ -37,10 +37,9 @@ public interface StrategiesUI {
 	public void removeWidgetListener(AtdlWidgetListener listener);
 
 	public void setVisible( boolean aVisible );
-	
-// 12/15/2010 Scott Atwell	public StrategyUI getStrategyUI( StrategyT aStrategy );
+
 	public StrategyUI getStrategyUI( StrategyT aStrategy, boolean aReinitPanelFlag );
-	  
+
 	public StrategyUI getCurrentlyDisplayedStrategyUI();
 	public StrategyT getCurrentlyDisplayedStrategy();
 }

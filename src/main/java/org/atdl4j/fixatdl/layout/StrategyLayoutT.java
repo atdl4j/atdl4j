@@ -68,7 +68,7 @@ public class StrategyLayoutT {
      */
     public List<StrategyPanelT> getStrategyPanel() {
         if (strategyPanel == null) {
-            strategyPanel = new ArrayList<StrategyPanelT>();
+            strategyPanel = new ArrayList<>();
         }
         return this.strategyPanel;
     }

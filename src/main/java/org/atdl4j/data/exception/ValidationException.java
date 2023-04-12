@@ -7,8 +7,9 @@ import org.atdl4j.ui.Atdl4jWidget;
  * fails during a user-initiated validation event (e.g. when 
  * outputting a FIX message from the screen.)
  */
-public class ValidationException extends Exception {
-    	private static final long serialVersionUID = -156407004102010541L;
+public class ValidationException extends Exception
+{
+	private static final long serialVersionUID = -156407004102010541L;
 	private Atdl4jWidget<?> target;
 
 	public ValidationException(Atdl4jWidget<?> target) {

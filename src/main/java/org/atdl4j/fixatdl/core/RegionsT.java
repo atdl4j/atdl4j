@@ -70,7 +70,7 @@ public class RegionsT {
      */
     public List<RegionT> getRegion() {
         if (region == null) {
-            region = new ArrayList<RegionT>();
+            region = new ArrayList<>();
         }
         return this.region;
     }

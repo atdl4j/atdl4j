@@ -22,8 +22,7 @@ public class SWTStrategyDescriptionPanel
 	private Composite composite;
 	private Text strategyDescription;
 
-	private int DEFAULT_COMPOSITE_HEIGHT_HINT = 45;
-	private int DEFAULT_STRATEGY_DESCRIPTION_HEIGHT_HINT = 35;
+	private static final int DEFAULT_STRATEGY_DESCRIPTION_HEIGHT_HINT = 35;
 
 	public Object buildStrategyDescriptionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
 	{

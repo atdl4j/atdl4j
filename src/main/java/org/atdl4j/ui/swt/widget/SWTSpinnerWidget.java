@@ -76,11 +76,6 @@ public class SWTSpinnerWidget
 
 		if ( control instanceof SingleSpinnerT )
 		{
-/*** 12/8/2010 Scott Atwell -- before border consumed space 'to the right' of the spinner box and buttons			
-			// spinner
-			spinner = new SWTNullableSpinner( parent, style | SWT.BORDER );
-			spinner.setLayoutData( controlGD );
-***/
 			Composite tempSpinnerComposite = new Composite( parent, SWT.NONE );
 			GridLayout gridLayout = new GridLayout();
 			gridLayout.numColumns = 2;
@@ -122,7 +117,7 @@ public class SWTSpinnerWidget
 		if ( tooltip != null ) spinner.setToolTipText( tooltip );
 
 		// Set min/max/precision if a parameter is attached
-		if ( parameterConverter != null && parameterConverter instanceof DecimalConverter )
+		if ( parameterConverter instanceof DecimalConverter )
 		{
 			DecimalConverter tempDecimalConverter = (DecimalConverter) parameterConverter;
 			
@@ -151,7 +146,7 @@ public class SWTSpinnerWidget
 				spinner.setMaximum( tempControlMax.setScale( spinner.getDigits(), RoundingMode.HALF_UP )  );
 			}
 		}
-		else if ( parameterConverter != null && parameterConverter instanceof IntegerConverter )
+		else if ( parameterConverter instanceof IntegerConverter )
 		{
 			IntegerConverter tempIntegerConverter = (IntegerConverter) parameterConverter;
 			
@@ -214,11 +209,11 @@ public class SWTSpinnerWidget
 				if ( spinner.getDigits() != 0 )
 				{
 					// -- Set the increment to the precision associated with digits (eg ".01" when digits=2, ".001" when digits=3) --
-					spinner.setIncrement( new BigDecimal( Math.pow( 10, -spinner.getDigits() ) ).setScale( spinner.getDigits(), RoundingMode.HALF_UP ) );
+					spinner.setIncrement( BigDecimal.valueOf( Math.pow( 10, -spinner.getDigits() ) ).setScale( spinner.getDigits(), RoundingMode.HALF_UP ) );
 				}
 				else
 				{
-					spinner.setIncrement( new BigDecimal( "1" ) );
+					spinner.setIncrement( BigDecimal.ONE );
 				}
 			}
 				
@@ -248,7 +243,7 @@ public class SWTSpinnerWidget
 
 	public List<Control> getControls()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		if (label != null) widgets.add( label );
 		widgets.add( spinner );
 		if ( control instanceof DoubleSpinnerT )
@@ -261,7 +256,7 @@ public class SWTSpinnerWidget
 
 	public List<Control> getControlsExcludingLabel()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		widgets.add( spinner );
 		if ( control instanceof DoubleSpinnerT )
 		{
@@ -316,9 +311,8 @@ public class SWTSpinnerWidget
 		if ( initValue != null )
 		{
 			// -- Handle initValue="2.5" and ensure that we don't wind up using BigDecimal unscaled and end up with "25" --
-			setValue( new BigDecimal( initValue ) );
+			setValue( BigDecimal.valueOf( initValue ) );
 		}
-//TODO 12/15/2010 Scott Atwell added
 		else
 		{
 			setValue( null );

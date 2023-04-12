@@ -82,7 +82,7 @@ public class ListItemT {
      */
     public List<StateRuleT> getStateRule() {
         if (stateRule == null) {
-            stateRule = new ArrayList<StateRuleT>();
+            stateRule = new ArrayList<>();
         }
         return this.stateRule;
     }

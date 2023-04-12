@@ -2,8 +2,10 @@ package org.atdl4j.ui.swing.app.impl;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jConfiguration;
 import org.atdl4j.config.Atdl4jOptions;
@@ -17,8 +19,9 @@ import org.atdl4j.ui.swing.config.SwingAtdl4jConfiguration;
  *      ->AbstractAtdl4jCompositePanel layering structure. *
  * 
  */
-public class SwingAtdl4jTesterApp extends AbstractAtdl4jTesterApp {
-	public final Logger logger = Logger.getLogger(SwingAtdl4jTesterApp.class);
+public class SwingAtdl4jTesterApp extends AbstractAtdl4jTesterApp
+{
+	public static final Logger logger = LoggerFactory.getLogger(SwingAtdl4jTesterApp.class);
 	
 	/**
 	 * @param args
@@ -48,7 +51,7 @@ public class SwingAtdl4jTesterApp extends AbstractAtdl4jTesterApp {
 	
 	public void mainLine(String[] args, Atdl4jConfiguration config) throws Exception {
 		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setTitle("atdl4j - The Open-Source Java Solution for FIXatdl (Swing)");
 		
 		// -- Delegate setup to AbstractAtdl4jTesterApp, construct a new

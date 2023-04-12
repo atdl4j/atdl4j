@@ -31,9 +31,9 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _StrategyEdit_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Validation", "StrategyEdit");
-    private final static QName _EditRef_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Validation", "EditRef");
-    private final static QName _Edit_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Validation", "Edit");
+    private static final QName _StrategyEdit_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Validation", "StrategyEdit");
+    private static final QName _EditRef_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Validation", "EditRef");
+    private static final QName _Edit_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Validation", "Edit");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.atdl4j.fixatdl.validation
@@ -72,7 +72,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://www.fixprotocol.org/FIXatdl-1-1/Validation", name = "StrategyEdit")
     public JAXBElement<StrategyEditT> createStrategyEdit(StrategyEditT value) {
-        return new JAXBElement<StrategyEditT>(_StrategyEdit_QNAME, StrategyEditT.class, null, value);
+        return new JAXBElement<>(_StrategyEdit_QNAME, StrategyEditT.class, null, value);
     }
 
     /**
@@ -81,7 +81,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://www.fixprotocol.org/FIXatdl-1-1/Validation", name = "EditRef")
     public JAXBElement<EditRefT> createEditRef(EditRefT value) {
-        return new JAXBElement<EditRefT>(_EditRef_QNAME, EditRefT.class, null, value);
+        return new JAXBElement<>(_EditRef_QNAME, EditRefT.class, null, value);
     }
 
     /**
@@ -90,7 +90,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://www.fixprotocol.org/FIXatdl-1-1/Validation", name = "Edit")
     public JAXBElement<EditT> createEdit(EditT value) {
-        return new JAXBElement<EditT>(_Edit_QNAME, EditT.class, null, value);
+        return new JAXBElement<>(_Edit_QNAME, EditT.class, null, value);
     }
 
 }

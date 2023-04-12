@@ -31,8 +31,8 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _Strategies_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Core", "Strategies");
-    private final static QName _Description_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Core", "Description");
+    private static final QName _Strategies_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Core", "Strategies");
+    private static final QName _Description_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Core", "Description");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.atdl4j.fixatdl.core
@@ -375,7 +375,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://www.fixprotocol.org/FIXatdl-1-1/Core", name = "Strategies")
     public JAXBElement<StrategiesT> createStrategies(StrategiesT value) {
-        return new JAXBElement<StrategiesT>(_Strategies_QNAME, StrategiesT.class, null, value);
+        return new JAXBElement<>(_Strategies_QNAME, StrategiesT.class, null, value);
     }
 
     /**
@@ -384,7 +384,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://www.fixprotocol.org/FIXatdl-1-1/Core", name = "Description")
     public JAXBElement<String> createDescription(String value) {
-        return new JAXBElement<String>(_Description_QNAME, String.class, null, value);
+        return new JAXBElement<>(_Description_QNAME, String.class, null, value);
     }
 
 }

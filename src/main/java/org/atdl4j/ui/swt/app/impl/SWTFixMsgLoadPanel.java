@@ -48,6 +48,7 @@ public class SWTFixMsgLoadPanel
 		loadFixMsgButton.setText("Load Message");
 		loadFixMsgButton.addSelectionListener(new SelectionAdapter() 
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				loadFixMessage();

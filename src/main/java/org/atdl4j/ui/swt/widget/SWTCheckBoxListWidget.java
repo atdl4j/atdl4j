@@ -24,10 +24,10 @@ public class SWTCheckBoxListWidget
 		extends AbstractSWTWidget<String>
 {
 
-	private List<Button> multiCheckBox = new ArrayList<Button>();
+	private List<Button> multiCheckBox = new ArrayList<>();
 	private Label label;
 
-	// -- Overriden --
+	@Override
 	protected void initPreCheck()
 	{
 		// validate ListItems and EnumPairs
@@ -106,25 +106,26 @@ public class SWTCheckBoxListWidget
 
 	public String getControlValueRaw()
 	{
-		String value = "";
+		StringBuilder tmpStringBuilder = new StringBuilder("");
 		for ( int i = 0; i < multiCheckBox.size(); i++ )
 		{
 			Button b = multiCheckBox.get( i );
 			if ( b.getSelection() )
 			{
-				if ( "".equals( value ) )
+				if ( tmpStringBuilder.toString().isEmpty() )
 				{
-					value += ( (CheckBoxListT) control ).getListItem().get( i ).getEnumID();
+					tmpStringBuilder.append( ( (CheckBoxListT) control ).getListItem().get( i ).getEnumID() );
 				}
 				else
 				{
-					value += " " + ( (CheckBoxListT) control ).getListItem().get( i ).getEnumID();
+					tmpStringBuilder.append( " " ).append( ( (CheckBoxListT) control ).getListItem().get( i ).getEnumID() );
 				}
 			}
 		}
-		return "".equals( value ) ? null : value;
+		return tmpStringBuilder.toString().isEmpty() ? null : tmpStringBuilder.toString();
 	}
 
+	@Override
 	public String getParameterValue()
 	{
 		// Helper method from AbstractAtdl4jWidget
@@ -157,7 +158,7 @@ public class SWTCheckBoxListWidget
 
 	public List<Control> getControls()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		if (label != null) widgets.add( label );
 		widgets.addAll( multiCheckBox );
 		return widgets;
@@ -165,9 +166,7 @@ public class SWTCheckBoxListWidget
 
 	public List<Control> getControlsExcludingLabel()
 	{
-		List<Control> widgets = new ArrayList<Control>();
-		widgets.addAll( multiCheckBox );
-		return widgets;
+		return new ArrayList<>(multiCheckBox);
 	}
 
 	public void addListener(Listener listener)

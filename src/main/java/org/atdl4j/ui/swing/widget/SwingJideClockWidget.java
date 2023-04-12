@@ -3,7 +3,11 @@ package org.atdl4j.ui.swing.widget;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JCheckBox;
@@ -11,7 +15,9 @@ import javax.swing.JLabel;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.log4j.Logger;
+import org.atdl4j.config.Atdl4jOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.converter.DateTimeConverter;
 import org.atdl4j.fixatdl.core.LocalMktDateT;
@@ -25,8 +31,6 @@ import org.atdl4j.fixatdl.core.UseT;
 import org.atdl4j.fixatdl.layout.ClockT;
 import org.atdl4j.ui.impl.ControlHelper;
 import org.atdl4j.ui.swing.SwingListener;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 
 import com.jidesoft.spinner.DateSpinner;
 
@@ -50,10 +54,10 @@ import com.jidesoft.spinner.DateSpinner;
  */
 public class SwingJideClockWidget
 //3/18/2010 Scott Atwell avoid compile error "type parameter org.joda.time.DateTime is not within its bound"		extends AbstractSwingWidget<DateTime>
-	extends AbstractSwingWidget<Comparable<DateTime>>
+	extends AbstractSwingWidget<Comparable<Instant>>
 {
 
-	private static final Logger logger = Logger.getLogger( SwingJideClockWidget.class );
+	private static final Logger logger = LoggerFactory.getLogger( SwingJideClockWidget.class );
 
 	public static boolean showEnabledButton = false;
 	public static boolean show24HourClock = true;
@@ -83,74 +87,85 @@ public class SwingJideClockWidget
 	private boolean useNowAsDate = false;
 
 
-	public DateTimeZone getLocalMktTz() 
+	public ZoneId getLocalMktTz() 
 		throws IllegalArgumentException
 	{
 		// This will throw IllegalArgumentException if ID cannot be resolved
-		return DateTimeConverter.convertTimezoneToDateTimeZone( ((ClockT) control).getLocalMktTz() );
+		return DateTimeConverter.convertTimezoneToZoneId( ((ClockT) control).getLocalMktTz() );
 	}
 	
-	public DateTime getControlValueRaw()
+	public Instant getControlValueRaw()
 	{
-		if ((dateClock == null) && (timeClock == null))
+		if ( ( (dateClock == null)
+			&& ( (showMonthYear) || (showDay) ) )
+		|| ( (timeClock == null)
+			&& (showTime) ) )
 		{
 			return null; // disabled, no value to use
 		}
-		
 		if (!valueFilledIn)
 		{
 		  return null;
 		}
-				
-		DateTime now = null; 
-		DateTime date = null;
-		DateTime time = null;
-		if (useNowAsDate) now = new DateTime( DateTimeZone.getDefault() );
-		if (showMonthYear) date = new DateTime(dateClock.getValue()); 
-		if (showTime) time = new DateTime(timeClock.getValue());
-		DateTime result = new DateTime(useNowAsDate ? now.getYear() : showMonthYear ? date.getYear() : 1970,
-					        useNowAsDate ? now.getMonthOfYear() : showMonthYear ? date.getMonthOfYear() : 1,
-					        useNowAsDate ? now.getDayOfMonth() : showDay ? date.getDayOfMonth() : 1, 
-						showTime ? time.getHourOfDay() : 0,
-						showTime ? time.getMinuteOfHour() : 0,
-						showTime ? time.getSecondOfMinute() : 0,
-						0,
-						DateTimeZone.getDefault() );
-		
+
+		ZonedDateTime now = null;
+		ZonedDateTime date = null;
+		ZonedDateTime time = null;
+		if (useNowAsDate)
+		{
+			now = ZonedDateTime.now( ZoneId.systemDefault() );
+		}
+		else if ( (showMonthYear) || (showDay) )
+		{
+			date = ZonedDateTime.ofInstant( ((Date) dateClock.getValue()).toInstant(), ZoneId.systemDefault());
+		}
+		if (showTime)
+		{
+			time = ZonedDateTime.ofInstant( ((Date) timeClock.getValue()).toInstant(), ZoneId.systemDefault());
+		}
+		ZonedDateTime result = ZonedDateTime.of( useNowAsDate ? now.getYear() : showMonthYear ? date.getYear() : 1970
+		                                       , useNowAsDate ? now.getMonthValue() : showMonthYear ? date.getMonthValue() : 1
+		                                       , useNowAsDate ? now.getDayOfMonth() : showDay ? date.getDayOfMonth() : 1
+		                                       , showTime ? time.getHour() : 0
+		                                       , showTime ? time.getMinute() : 0
+		                                       , showTime ? time.getSecond() : 0
+		                                       , 0
+		                                       , ZoneId.systemDefault()
+		                                       );
 
 		// Convert to UTC time for UTCTimestampT and UTCTimeOnlyT.
 		// Performing UTCDateT and MonthYearT coversion could produce an unexpected result.
 		// No conversion is needed for LocalMktTimeT, TZTimestampT, and TZTimeOnlyT.
 		if ( parameter == null || parameter instanceof UTCTimestampT || parameter instanceof UTCTimeOnlyT )
 		{
-			result = result.withZone( DateTimeZone.UTC );
-			logger.debug( "getControlValue() parameter: " + parameter + " result: " + result );
+			result = result.withZoneSameInstant( ZoneId.of("UTC") );
+			logger.debug( "getControlValue() parameter: {} result: {}", parameter, result );
 		}
-		return result;
+		return result.toInstant();
 	}
 	
-	public void setValue(Comparable<DateTime> value)
+	public void setValue(Comparable<Instant> value)
 	{
 		// Convert to UTC time for UTCTimestampT and UTCTimeOnlyT.
 		// Performing UTCDateT and MonthYearT coversion could produce an unexpected result.
 		// No conversion is needed for LocalMktTimeT, TZTimestampT, and TZTimeOnlyT.
 		if ( parameter == null || parameter instanceof UTCTimestampT || parameter instanceof UTCTimeOnlyT )
 		{
-			logger.debug( "setValue() parameter: " + parameter + " value: " + value );
+			logger.debug( "setValue() parameter: {} value: {}", parameter, value );
 			// -- no need to adjust DateTime --
 		}
 		
 		// -- Force control to display time portion in local
-		DateTime tempLocalTzDateTime = ((DateTime)value).withZone( DateTimeZone.getDefault() );
+		ZonedDateTime tempLocalTzDateTime = ZonedDateTime.ofInstant((Instant)value, ZoneId.systemDefault());
 		
-		if (showMonthYear) dateClock.setValue(tempLocalTzDateTime.toDate());
-		if (showTime) timeClock.setValue(tempLocalTzDateTime.toDate());
+		if (showMonthYear) dateClock.setValue( Date.from( tempLocalTzDateTime.toInstant() ) );
+		if (showTime) timeClock.setValue( Date.from( tempLocalTzDateTime.toInstant() ) );
 		valueFilledIn = true;
 		updateFromModel();
 	}
 
 	public List<Component> getComponents() {
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		if (enabledButton != null) widgets.add(enabledButton);
 		if (label != null) widgets.add(label);
 		if (showMonthYear) widgets.add(dateClock);
@@ -159,7 +174,7 @@ public class SwingJideClockWidget
 	}
 	
 	public List<Component> getComponentsExcludingLabel() {
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		if (showMonthYear) widgets.add(dateClock);
 		if (showTime) widgets.add(timeClock);
 		return widgets;
@@ -187,8 +202,8 @@ public class SwingJideClockWidget
 		{
 			// -- Note that this will throw IllegalArgumentException if timezone ID
 			// specified cannot be resolved --
-			DateTimeZone tempLocalMktTz = getLocalMktTz();
-			logger.debug( "control.getID(): " + control.getID() + " aValue: " + aValue + " getLocalMktTz(): " + tempLocalMktTz );
+			ZoneId tempLocalMktTz = getLocalMktTz();
+			logger.debug( "control.getID(): {} aValue: {} getLocalMktTz(): {}", control.getID(), aValue, tempLocalMktTz );
 
 			// -- localMktTz is required when using/interpreting aValue --
 			if ( tempLocalMktTz == null )
@@ -197,11 +212,11 @@ public class SwingJideClockWidget
 						+ control.getID() + ")" );
 			}
 
-			DateTime tempNow = new DateTime( tempLocalMktTz );
+			ZonedDateTime tempNow = ZonedDateTime.now( tempLocalMktTz );
 
-			DateTime tempInit = new DateTime( 
+			ZonedDateTime tempInit = ZonedDateTime.of( 
 					( showMonthYear && aValue.getYear() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getYear() : tempNow.getYear(), 
-					( showMonthYear && aValue.getMonth() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getMonth() : tempNow.getMonthOfYear(), 
+					( showMonthYear && aValue.getMonth() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getMonth() : tempNow.getMonthValue(), 
 					( showMonthYear && aValue.getDay() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getDay() : tempNow.getDayOfMonth(), 
 					( showTime && aValue.getHour() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getHour() : 0,
 					( showTime && aValue.getMinute() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getMinute() : 0,
@@ -217,7 +232,7 @@ public class SwingJideClockWidget
 			}
 			
 			// -- Make sure that the value is rendered on the display in local timezone --
-			setValue( tempInit.withZone( DateTimeZone.getDefault() ) );
+			setValue( tempInit.withZoneSameInstant( ZoneId.systemDefault() ).toInstant() );
 		}
 	}
 	
@@ -235,8 +250,8 @@ public class SwingJideClockWidget
 		else
 		{
 			// -- reinit the time to present time --
-			setValue( new DateTime() );
-			valueFilledIn = (enabledButton!=null?false:true); // the editor requires a value but until the 
+			setValue( Instant.now() );
+			valueFilledIn = ( enabledButton == null ); // the editor requires a value but until the
 			// enabledButton is checked, considere that no value is filled 
 			updateFromModel();
 		}
@@ -247,7 +262,7 @@ public class SwingJideClockWidget
 	 */
 	protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd)
 	{
-		// TODO ?? adjust the visual appearance of the control ??
+		// ?? adjust the visual appearance of the control ??
 	}
 
 	/* (non-Javadoc)
@@ -258,30 +273,30 @@ public class SwingJideClockWidget
 	{
 		super.setFIXValue( aFIXValue );
 		
-		DateTime tempFIXValueTime = getControlValueRaw();
-		DateTime tempCurrentTime = new DateTime();
+		Instant tempFIXValueTime = getControlValueRaw();		
+		Instant tempCurrentTime = Instant.now();
 		
 		// -- Check to see if the time set is < current time --
 		if ( tempCurrentTime.isAfter( tempFIXValueTime ) )
 		{
-			logger.debug( "setFIXValue(" + aFIXValue + ") resulted in time < present (" + tempFIXValueTime + " < " + tempCurrentTime + ")" );
+			logger.debug( "setFIXValue({}) resulted in time < present ({} < {})", aFIXValue, tempFIXValueTime, tempCurrentTime );
 		
 			Integer tempClockPastTimeSetFIXValueRule = getAtdl4jOptions().getClockPastTimeSetFIXValueRule( getControl() );
-			logger.debug( "Control: " + getControl().getID() + " tempClockPastTimeSetFIXValueRule: " + tempClockPastTimeSetFIXValueRule );
+			logger.debug( "Control: {} tempClockPastTimeSetFIXValueRule: {}", getControl().getID(), tempClockPastTimeSetFIXValueRule );
 			
-			if ( getAtdl4jOptions().CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS.equals( tempClockPastTimeSetFIXValueRule ) )
+			if ( Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS.equals( tempClockPastTimeSetFIXValueRule ) )
 			{
 				// -- keep as-is --
-				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS rule -- Retaining: " + tempFIXValueTime );
+				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS rule -- Retaining: {}", tempFIXValueTime );
 			}
-			else if ( getAtdl4jOptions().CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT.equals( tempClockPastTimeSetFIXValueRule ) )
+			else if ( Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT.equals( tempClockPastTimeSetFIXValueRule ) )
 			{
-				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT rule -- Setting: " + tempCurrentTime + " ( vs. " + tempFIXValueTime + ")" );
+				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT rule -- Setting: {} ( vs. {})", tempCurrentTime, tempFIXValueTime );
 				setValue( tempCurrentTime );
 			} 
-			else if ( getAtdl4jOptions().CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL.equals( tempClockPastTimeSetFIXValueRule ) )
+			else if ( Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL.equals( tempClockPastTimeSetFIXValueRule ) )
 			{
-				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL rule -- Setting control to 'null value' ( vs. " + tempFIXValueTime + ")" );
+				logger.debug("Per Atdl4jConfig.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL rule -- Setting control to 'null value' ( vs. {})", tempFIXValueTime );
 				setValueAsString( Atdl4jConstants.VALUE_NULL_INDICATOR );
 			} 
 		}
@@ -291,7 +306,7 @@ public class SwingJideClockWidget
 	@Override
 	protected List< ? extends Component> createBrickComponents() {
 	  
-	  List<Component> components = new ArrayList<Component>();
+	  List<Component> components = new ArrayList<>();
 	  
 	  // tooltip
       String tooltip = control.getTooltip();      

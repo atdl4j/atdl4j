@@ -151,7 +151,7 @@ public abstract class ParameterT {
      */
     public List<EnumPairT> getEnumPair() {
         if (enumPair == null) {
-            enumPair = new ArrayList<EnumPairT>();
+            enumPair = new ArrayList<>();
         }
         return this.enumPair;
     }

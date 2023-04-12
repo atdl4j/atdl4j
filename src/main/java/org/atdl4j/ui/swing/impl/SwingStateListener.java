@@ -51,7 +51,7 @@ public class SwingStateListener implements SwingListener {
 	{
 
 		// Create a casted map so that Validatable<?> can be used
-		Map<String, Atdl4jWidget<?>> targets = new HashMap<String, Atdl4jWidget<?>>( controls );
+		Map<String, Atdl4jWidget<?>> targets = new HashMap<>( controls );
 
 		try
 		{
@@ -95,7 +95,7 @@ public class SwingStateListener implements SwingListener {
 			// set value
 			if ( stateRule.getValue() != null )
 			{
-				if ( state )
+				if (  Boolean.TRUE.equals(state) )
 				{
 					String value = stateRule.getValue();
 					affectedWidget.setValueAsString( value );
@@ -129,14 +129,12 @@ public class SwingStateListener implements SwingListener {
 	 */
 	public boolean hasSetValueNullStateRule()
 	{
-		if ( stateRule != null )
+		if ( ( stateRule != null )
+		&& ( Atdl4jConstants.VALUE_NULL_INDICATOR.equals( stateRule.getValue() ) ) )
 		{
-			if ( Atdl4jConstants.VALUE_NULL_INDICATOR.equals( stateRule.getValue() ) )
-			{
-				return true;
-			}
+			return true;
 		}
-		
+
 		return false;
 	}
 	
@@ -144,43 +142,40 @@ public class SwingStateListener implements SwingListener {
 	 * Used when panel is initially loaded with a FIX Message.
 	 * Effectively fires the StateRule in reverse (eg selects radio button or checkbox that normally
 	 * nulls the control's value to be selected when control has a value set)
-	 * @param event
 	 */
 	public void handleLoadFixMessageEvent()
 	{
 		// -- If the StateRule sets value to VALUE_NULL_INDICATOR, however, the Control has 'externally' had 
 		// -- its value set to non-null value, then 'toggle' the state of the control (eg checkbox or radio button)
 		// -- associated with this StateRule
-		if ( ( getAffectedWidget() != null ) &&
-			  ( ! getAffectedWidget().isNullValue() ) &&
-			  ( hasSetValueNullStateRule() ) )
+		if ( ( ( getAffectedWidget() != null )
+			  && ( ! getAffectedWidget().isNullValue() )
+			  && ( hasSetValueNullStateRule() ) )
+			&& ( getRule() instanceof ValueOperatorValidationRule ) )
 		{
-			if ( getRule() instanceof ValueOperatorValidationRule )
+			ValueOperatorValidationRule tempValueOperatorValidationRule = (ValueOperatorValidationRule) getRule();
+
+			Atdl4jWidget<?> tempAssociatedControl = controls.get( tempValueOperatorValidationRule.getField() );
+
+			if ( ( tempAssociatedControl != null ) &&
+				  ( ControlHelper.isControlToggleable( tempAssociatedControl.getControl() ) ) )
 			{
-				ValueOperatorValidationRule tempValueOperatorValidationRule = (ValueOperatorValidationRule) getRule();
-				
-				Atdl4jWidget<?> tempAssociatedControl = controls.get( tempValueOperatorValidationRule.getField() );
-				
-				if ( ( tempAssociatedControl != null ) &&
-					  ( ControlHelper.isControlToggleable( tempAssociatedControl.getControl() ) ) ) 
+				String tempRuleNewValueAsString = null;
+				if ( "true".equals( tempValueOperatorValidationRule.getValue() ) )
 				{
-					String tempRuleNewValueAsString = null;
-					if ( "true".equals( tempValueOperatorValidationRule.getValue() ) )
+					tempRuleNewValueAsString = "false";
+				}
+				else if ( "false".equals( tempValueOperatorValidationRule.getValue() ) )
+				{
+					tempRuleNewValueAsString = "true";
+				}
+
+				if ( tempRuleNewValueAsString != null )
+				{
+					// -- Toggle the value --
+					if ( ( OperatorT.EQ.equals( tempValueOperatorValidationRule.getOperator() ) ) )
 					{
-						tempRuleNewValueAsString = "false";
-					}
-					else if ( "false".equals( tempValueOperatorValidationRule.getValue() ) )
-					{
-						tempRuleNewValueAsString = "true";
-					}
-					
-					if ( tempRuleNewValueAsString != null )
-					{
-						// -- Toggle the value --
-						if ( ( OperatorT.EQ.equals( tempValueOperatorValidationRule.getOperator() ) ) )
-						{
-							tempAssociatedControl.setValueAsString( tempRuleNewValueAsString );
-						}
+						tempAssociatedControl.setValueAsString( tempRuleNewValueAsString );
 					}
 				}
 			}

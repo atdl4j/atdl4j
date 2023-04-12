@@ -29,9 +29,6 @@ import org.atdl4j.ui.app.StrategySelectionPanel;
  */
 public interface Atdl4jConfiguration
 {
-	public void setDebugLoggingLevel( boolean aDebugLevelFlag );
-	public boolean isDebugLoggingLevel();
-	
 	public String getClassNameAtdl4jWidgetForCheckBoxListT();
 	public String getClassNameAtdl4jWidgetForCheckBoxT();
 	public String getClassNameAtdl4jWidgetForClockT();
@@ -63,7 +60,7 @@ public interface Atdl4jConfiguration
 	public String getClassNameTypeConverterFactory();
 	
 	public boolean isCatchAllMainlineExceptions();
-	public boolean isCatchAllRuntimeExceptions();;
+	public boolean isCatchAllRuntimeExceptions();
 	public boolean isCatchAllStrategyLoadExceptions();
 	public boolean isCatchAllValidationExceptions();
 	public boolean isThrowEventRuntimeExceptions();

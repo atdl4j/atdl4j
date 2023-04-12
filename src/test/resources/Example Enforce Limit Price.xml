@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+  <!-- Enforce Limit Price Sample -->
+  <Strategy name="EnforceLimitPrice" uiRep="Enforce Limit Price Sample" wireValue="1" providerID="ABC">
+
+<!-- OrdType=Limit and Limit Price (Price=99) orders s/b defined outside of algo parameters panel
+		<  Parameter name="Price" xsi:type="Price_t" fixTag="44" use="optional" minValue="0"/  >
+-->
+
+
+    <lay:StrategyLayout>
+
+        <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="Externally fed FIX_Price value">
+            <!-- Non-editable (always diabled), helper control to display Limit Price (tag 44) if available 
+                  (Label_t for "Limit Price" used to ensure that label text does not appear disabled)--> 
+            <lay:Control ID="PriceFieldLabel" xsi:type="lay:Label_t" label="Limit Price"/>
+            <lay:Control ID="PriceField" xsi:type="lay:TextField_t" initValue="" initFixField="FIX_Price" initPolicy="UseFixField">
+            	<!-- Force TextField to always be disabled (Not_Null *OR* Null)-->
+		<flow:StateRule enabled="false">
+                    	<val:Edit logicOperator="OR">
+                        <val:Edit field="PriceField" operator="NX"/>
+                        <val:Edit field="PriceField" operator="EX"/>
+                      </val:Edit>
+		</flow:StateRule>
+            </lay:Control>
+                
+        </lay:StrategyPanel>
+
+    </lay:StrategyLayout>
+
+	<val:StrategyEdit errorMessage="FIX Limit Price is required.">
+		<val:Edit field="FIX_Price" operator="EX" />
+	</val:StrategyEdit>
+
+  </Strategy>
+
+</Strategies>

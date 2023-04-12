@@ -5,7 +5,8 @@ import java.awt.Window;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jUserMessageHandler;
 
@@ -19,7 +20,7 @@ import org.atdl4j.ui.app.impl.AbstractAtdl4jUserMessageHandler;
 public class SwingAtdl4jUserMessageHandler 
 	extends AbstractAtdl4jUserMessageHandler
 {
-	private final Logger logger = Logger.getLogger(SwingAtdl4jUserMessageHandler.class);
+	private final Logger logger = LoggerFactory.getLogger(SwingAtdl4jUserMessageHandler.class);
 	
 	private Window parentComposite;
 	
@@ -41,9 +42,7 @@ public class SwingAtdl4jUserMessageHandler
 	public void displayException(String aTitle, String aMsgText, Throwable e)
 	{
 		String txt = "";
-		//TODO: remove
-		e.printStackTrace();
-		
+
 		if ( aTitle != null )
 		{
 			txt += aTitle;

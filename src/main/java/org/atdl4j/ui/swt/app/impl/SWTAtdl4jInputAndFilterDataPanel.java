@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.StrategyFilterInputData;
@@ -32,7 +33,7 @@ import org.eclipse.swt.widgets.Text;
 public class SWTAtdl4jInputAndFilterDataPanel
 		extends AbstractAtdl4jInputAndFilterDataPanel
 {
-	public final Logger logger = Logger.getLogger(SWTAtdl4jInputAndFilterDataPanel.class);
+	public final Logger logger = LoggerFactory.getLogger(SWTAtdl4jInputAndFilterDataPanel.class);
 	private Composite parentComposite;
 	
 	private Combo dropDownListStrategyFilterFixMsgType; 
@@ -71,7 +72,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 	
 	public Composite buildAtdl4jInputAndFilterDataPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions)
 	{
-		parentComposite = (Composite) aParentOrShell;
+		parentComposite = aParentOrShell;
 
 		// -- Delegate back to AbstractAtdl4jInputAndFilterDataPanel -- 
 		init( aParentOrShell, aAtdl4jOptions );
@@ -123,7 +124,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		Label tempLabelStrategyFilterFixMsgType = new Label( tempRowOne, SWT.NONE );
 		tempLabelStrategyFilterFixMsgType.setText( "FixMsgType:" );
 		dropDownListStrategyFilterFixMsgType = new Combo( tempRowOne, SWT.READ_ONLY );
-		List<String> tempFixMsgTypeList = new ArrayList<String>();
+		List<String> tempFixMsgTypeList = new ArrayList<>();
 		tempFixMsgTypeList.add( "" ); // add empty string at top
 		tempFixMsgTypeList.addAll( Arrays.asList( Atdl4jConstants.STRATEGY_FILTER_FIX_MSG_TYPES ) );
 		dropDownListStrategyFilterFixMsgType.setItems( tempFixMsgTypeList.toArray( new String[0] ) );
@@ -139,7 +140,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		Label tempLabelStrategyFilterRegion = new Label( tempRowTwo, SWT.NONE );
 		tempLabelStrategyFilterRegion.setText( "Region:" );
 		dropDownListStrategyFilterRegion = new Combo( tempRowTwo, SWT.READ_ONLY );
-		List<String> tempRegionList = new ArrayList<String>();
+		List<String> tempRegionList = new ArrayList<>();
 		tempRegionList.add( "" ); // add empty string at top
 		tempRegionList.addAll( Arrays.asList( Atdl4jConstants.STRATEGY_FILTER_REGIONS ) );
 		dropDownListStrategyFilterRegion.setItems( tempRegionList.toArray( new String[0] ) );
@@ -162,7 +163,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		Label tempLabelStrategyFilterSecurityType = new Label( tempRowTwo, SWT.NONE );
 		tempLabelStrategyFilterSecurityType.setText( "Security Type:" );
 		dropDownListStrategyFilterSecurityType = new Combo( tempRowTwo, SWT.NONE );
-		List<String> tempSecurityTypeList = new ArrayList<String>();
+		List<String> tempSecurityTypeList = new ArrayList<>();
 		tempSecurityTypeList.add( "" ); // add empty string at top
 		tempSecurityTypeList.addAll( Arrays.asList( Atdl4jConstants.STRATEGY_FILTER_SECURITY_TYPES ) );
 		dropDownListStrategyFilterSecurityType.setItems( tempSecurityTypeList.toArray( new String[0] ) );
@@ -329,14 +330,14 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		textIncrementPolicyLotSize = new Text( tempIncrementPolicyGroup, SWT.NONE );
 		textIncrementPolicyLotSize.setToolTipText( "May be used in conjunction with Control/@incrementPolicy on spinner controls" );
 		textIncrementPolicyLotSize.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false ));
-		setTextValue( textIncrementPolicyLotSize, getAtdl4jOptions().getInputAndFilterData().getInputIncrementPolicy_LotSize() );
+		setTextValue( textIncrementPolicyLotSize, getAtdl4jOptions().getInputAndFilterData().getInputIncrementPolicyLotSize() );
 			  
 		Label tempLabelIncrementPolicyTick = new Label( tempIncrementPolicyGroup, SWT.NONE );
 		tempLabelIncrementPolicyTick.setText( "Tick Size:" );
 		textIncrementPolicyTick = new Text( tempIncrementPolicyGroup, SWT.NONE );
 		textIncrementPolicyTick.setToolTipText( "May be used in conjunction with Control/@incrementPolicy on spinner controls" );
 		textIncrementPolicyTick.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false ));
-		setTextValue( textIncrementPolicyTick, getAtdl4jOptions().getInputAndFilterData().getInputIncrementPolicy_Tick() );
+		setTextValue( textIncrementPolicyTick, getAtdl4jOptions().getInputAndFilterData().getInputIncrementPolicyTick() );
 			  
 		return tempIncrementPolicyGroup;
 	}
@@ -382,8 +383,8 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		Atdl4jConfig.getConfig().setShowTesterPanelOkCancelButtonSection( getCheckboxValue( checkboxAtd4ljShowTesterPanelOkCancelButtonSection, null ).booleanValue() );
 		getAtdl4jOptions().setAccommodateMixOfStrategyPanelsAndControls( getCheckboxValue( checkboxAtd4ljAccommodateMixOfStrategyPanelsAndControls, null ).booleanValue() );
 
-		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_LotSize( getTextValueAsBigDecimal( textIncrementPolicyLotSize ) );
-		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicy_Tick( getTextValueAsBigDecimal( textIncrementPolicyTick ) );
+		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicyLotSize( getTextValueAsBigDecimal( textIncrementPolicyLotSize ) );
+		getAtdl4jOptions().getInputAndFilterData().setInputIncrementPolicyTick( getTextValueAsBigDecimal( textIncrementPolicyTick ) );
 		
 		return true;
 	}
@@ -396,31 +397,31 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		{
 			StrategyFilterInputData tempStrategyFilterInputData = null;
 			if ( ( getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList() != null ) &&
-				  ( getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList().size() > 0 ) )
+				  ( ! getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList().isEmpty() ) )
 			{
 				tempStrategyFilterInputData = getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList().get( 0 );
 			}
 
 			String tempFixMsgType = null;
-			String tempRegion_name = null;
-			String tempCountry_CountryCode = null;
-			String tempMarket_MICCode = null;
-			String tempSecurityType_name = null;
+			String tempRegionName = null;
+			String tempCountryCountryCode = null;
+			String tempMarketMicCode = null;
+			String tempSecurityTypeName = null;
 			
 			if ( tempStrategyFilterInputData != null )
 			{
 				tempFixMsgType = tempStrategyFilterInputData.getFixMsgType();
-				tempRegion_name = tempStrategyFilterInputData.getRegion_name();
-				tempCountry_CountryCode = tempStrategyFilterInputData.getCountry_CountryCode();
-				tempMarket_MICCode = tempStrategyFilterInputData.getMarket_MICCode();
-				tempSecurityType_name = tempStrategyFilterInputData.getSecurityType_name();
+				tempRegionName = tempStrategyFilterInputData.getRegion_name();
+				tempCountryCountryCode = tempStrategyFilterInputData.getCountry_CountryCode();
+				tempMarketMicCode = tempStrategyFilterInputData.getMarket_MICCode();
+				tempSecurityTypeName = tempStrategyFilterInputData.getSecurityType_name();
 			}
 
 			selectDropDownItem( dropDownListStrategyFilterFixMsgType, tempFixMsgType );
-			selectDropDownItem( dropDownListStrategyFilterRegion, tempRegion_name );
-			selectDropDownItem( dropDownListStrategyFilterCountry, tempCountry_CountryCode );
-			selectDropDownItem( dropDownListStrategyFilterMICCode, tempMarket_MICCode );
-			selectDropDownItem( dropDownListStrategyFilterSecurityType, tempSecurityType_name );
+			selectDropDownItem( dropDownListStrategyFilterRegion, tempRegionName );
+			selectDropDownItem( dropDownListStrategyFilterCountry, tempCountryCountryCode );
+			selectDropDownItem( dropDownListStrategyFilterMICCode, tempMarketMicCode );
+			selectDropDownItem( dropDownListStrategyFilterSecurityType, tempSecurityTypeName );
 
 
 			setCheckboxValue( checkboxInputCxlReplaceMode, getAtdl4jOptions().getInputAndFilterData().getInputCxlReplaceMode(), Boolean.FALSE );
@@ -468,18 +469,18 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		}
 		else
 		{
-			StringBuffer tempBuffer = new StringBuffer();
+			StringBuilder tmpStringBuilder = new StringBuilder();
 			for (String tempString : aList )
 			{
-				if ( tempBuffer.length() > 0 )
+				if ( tmpStringBuilder.length() > 0 )
 				{
-					tempBuffer.append( '\n' );
+					tmpStringBuilder.append( '\n' );
 				}
-				
-				tempBuffer.append( tempString );
+
+				tmpStringBuilder.append( tempString );
 			}
 			
-			aText.setText( tempBuffer.toString() );
+			aText.setText( tmpStringBuilder.toString() );
 		}
 	}
 	
@@ -568,7 +569,7 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		}
 		else
 		{
-			return new Boolean( tempBool );
+			return Boolean.valueOf( tempBool );
 		}
 	}
 	

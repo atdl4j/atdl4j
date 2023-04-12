@@ -1,7 +1,8 @@
 package org.atdl4j.ui.swt.impl;
 
 import org.eclipse.swt.widgets.Composite;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
 import org.atdl4j.ui.Atdl4jWidgetFactory;
@@ -16,22 +17,21 @@ import org.atdl4j.ui.swt.SWTWidget;
  */
 public class SWTWidgetFactory
 {
-	protected static final Logger logger = Logger.getLogger( SWTWidgetFactory.class );
+	protected static final Logger logger = LoggerFactory.getLogger( SWTWidgetFactory.class );
 
 	// Used to create a single parameter widget
 	public static SWTWidget<?> createWidget(Composite parent, ControlT control, ParameterT parameter, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory)
 	{
 		SWTWidget<?> parameterWidget = null;
 	
-		logger.debug( "createWidget() invoked " + "with parms parent: " + parent
-				+ " control: " + control + " parameter: " + parameter + " style: " + style );
+		logger.debug( "createWidget() invoked " + "with parms parent: {} control: {} parameter: {} style: {}", parent, control, parameter, style );
 	
 		parameterWidget = (SWTWidget<?>) aAtdl4jWidgetFactory.create( control, parameter );
 	
-		logger.debug( "createWidget() returned parameterWidget: " + parameterWidget );
+		logger.debug( "createWidget() returned parameterWidget: {}", parameterWidget );
 	
 		parameterWidget.createWidget( parent, style );
-		logger.debug( "createWidget() completed.  parameterWidget: " + parameterWidget );
+		logger.debug( "createWidget() completed.  parameterWidget: {}", parameterWidget );
 	
 		parameterWidget.applyConstOrInitValues();
 	

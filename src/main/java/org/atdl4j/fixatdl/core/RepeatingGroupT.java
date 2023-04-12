@@ -114,7 +114,7 @@ public class RepeatingGroupT {
      */
     public List<ParameterT> getParameter() {
         if (parameter == null) {
-            parameter = new ArrayList<ParameterT>();
+            parameter = new ArrayList<>();
         }
         return this.parameter;
     }

@@ -16,7 +16,7 @@ public abstract class AbstractHiddenFieldWidget
 	 * JAXBException { this.control = control; this.parameter = parameter;
 	 * this.setValue(getConstInitValue()); init(); }
 	 **/
-	// -- Overriden --
+	@Override
 	protected void initPreCheck()
 	{
 		this.setValue( getConstInitValue() );
@@ -32,6 +32,7 @@ public abstract class AbstractHiddenFieldWidget
 		return value;
 	}
 
+	@Override
 	public Object getParameterValue()
 	{
 		if ( ParameterHelper.getConstValue( parameter ) != null )
@@ -80,6 +81,7 @@ public abstract class AbstractHiddenFieldWidget
 	/**
 	 * 
 	 */
+	@Override
 	public void processConstValueHasBeenSet()
 	{
 		// -- no operation -- 

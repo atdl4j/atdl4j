@@ -29,8 +29,6 @@ import org.atdl4j.ui.swing.SwingWidget;
 public class SwingStrategiesUI
 	extends AbstractStrategiesUI
 {
-	private Window parentFrame;
-	
 	private JPanel strategiesPanel;
 	
 	private Map<String, SwingWidgetListener> swingWidgetListeners;
@@ -42,7 +40,7 @@ public class SwingStrategiesUI
 	 */
 	public SwingStrategiesUI()
 	{
-	  this.swingWidgetListeners = new HashMap<String, SwingWidgetListener>(); 
+	  this.swingWidgetListeners = new HashMap<>();
 	}
 
 	public SwingStrategiesUI(Atdl4jOptions aAtdl4jOptions)
@@ -62,8 +60,6 @@ public class SwingStrategiesUI
 	
 	public JPanel buildStrategiesPanel(Window aParentComposite, Atdl4jOptions atdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
 	{
-		parentFrame = aParentComposite;
-		
 		setAtdl4jOptions( atdl4jOptions );
 	
 		setAtdl4jUserMessageHandler( aAtdl4jUserMessageHandler );
@@ -86,14 +82,17 @@ public class SwingStrategiesUI
 		{
 			setStrategies( aStrategies );
 			
-			setStrategiesRules( new HashMap<String, ValidationRule>() );
-			for (EditT edit : getStrategies().getEdit()) {
+			setStrategiesRules( new HashMap<>() );
+			for (EditT edit : getStrategies().getEdit())
+			{
 				String id = edit.getId();
-				if (id != null) {
-					ValidationRule rule = ValidationRuleFactory.createRule(edit,
-							getStrategiesRules(), getStrategies());
+				if (id != null)
+				{
+					ValidationRule rule = ValidationRuleFactory.createRule(edit, getStrategiesRules(), getStrategies());
 					getStrategiesRules().put(id, rule);
-				} else {
+				}
+				else
+				{
 					throw new IllegalArgumentException("Strategies-scoped edit without id");
 				}
 			}
@@ -124,11 +123,11 @@ public class SwingStrategiesUI
 			
 			if ( tempStrategyUI == null  )
 			{
-				logger.info("ERROR:  Strategy name: " + aStrategy.getName() + " was not found.  (aStrategy: " + aStrategy + ")" );
+				logger.info("ERROR:  Strategy name: {} was not found.  (aStrategy: {})", aStrategy.getName(), aStrategy );
 				return;
 			}
 	
-			logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
+			logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: {}", Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
 			tempStrategyUI.reinitStrategyPanel();
 		}
 		allowWidgetNotification();
@@ -161,13 +160,11 @@ public class SwingStrategiesUI
 	}
 	
 	
-	// 12/15/2010 Scott Atwell public StrategyUI getStrategyUI( StrategyT aStrategy )
 	public StrategyUI getStrategyUI( StrategyT aStrategy, boolean aReinitPanelFlag )
 	{
 		if ( aStrategy.equals( getCurrentlyDisplayedStrategy() ) )
 		{
-			logger.debug("Strategy name: " + aStrategy.getName() + " is currently being displayed.  Returning getCurrentlyDisplayedStrategyUI()" );
-	// 12/15/2010 Scott Atwell return getCurrentlyDisplayedStrategyUI();
+			logger.debug("Strategy name: {} is currently being displayed.  Returning getCurrentlyDisplayedStrategyUI()", aStrategy.getName() );
 			if ( aReinitPanelFlag )
 			{
 				getCurrentlyDisplayedStrategyUI().reinitStrategyPanel();
@@ -178,13 +175,13 @@ public class SwingStrategiesUI
 		}
 		else
 		{
-			logger.debug("Strategy name: " + aStrategy.getName() + " is not currently displayed.  Invoking removeAllStrategyPanels() and returning createStrategyPanel()" );
+			logger.debug("Strategy name: {} is not currently displayed.  Invoking removeAllStrategyPanels() and returning createStrategyPanel()", aStrategy.getName() );
 			removeAllStrategyPanels();
 	
 			StrategyUI tempStrategyUI = SwingStrategyUIFactory.createStrategyUIAndContainer( this, aStrategy );
 			setCurrentlyDisplayedStrategyUI( tempStrategyUI );
 			
-			logger.debug("Invoking relayoutCollapsibleStrategyPanels() for: " + aStrategy.getName() );
+			logger.debug("Invoking relayoutCollapsibleStrategyPanels() for: {}", aStrategy.getName() );
 			tempStrategyUI.relayoutCollapsibleStrategyPanels();
 			setWidgetListeners(getCurrentlyDisplayedStrategyUI());
 			
@@ -201,10 +198,9 @@ public class SwingStrategiesUI
       // some widgets don't have a parameter reference, they are for control only (eg. radio buttons)
       if (widget.getParameter() != null)
       {
-        if (logger.isDebugEnabled()) {
-          logger.debug("Adding listener on "
-              + strategyUI.getStrategy().getName() + " "
-              + widget.getParameter().getName() + " widget " + widget);
+        if (logger.isDebugEnabled())
+        {
+          logger.debug("Adding listener on {} {} widget {}", strategyUI.getStrategy().getName(), widget.getParameter().getName(), widget );
         }
         swingWidgetListeners.put(widget.getParameter().getName(), new SwingWidgetListener((SwingWidget) widget));
       }
@@ -262,10 +258,12 @@ public class SwingStrategiesUI
     }
 
     private void fireWidgetChangedEvent(String aParamName) {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Widget changed :" + aParamName);
+      if (logger.isDebugEnabled())
+      {
+        logger.debug("Widget changed :{}", aParamName);
       }
-      if (isWidgetNotificationsAllowed()) {
+      if (isWidgetNotificationsAllowed())
+      {
         fireWidgetChanged(swingWidget);
       }
     }

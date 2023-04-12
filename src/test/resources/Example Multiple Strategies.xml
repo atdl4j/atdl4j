@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+  <Strategy name="Strategy_1" uiRep="Strategy #1" wireValue="1" providerID="TEST">
+		<Description>This is Strategy number one and a very long-winded description of this not so impressive strategy.  To support further testing, this description is extra long and thus likely to generate the need to scroll vertically when one keeps the display screen relatively narrow in width.
+		</Description>
+
+		<Parameter name="BoundedInt" xsi:type="Int_t" fixTag="9999" use="optional" minValue="0" maxValue="99"/>
+	
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel title="Strategy Parameters #1" collapsible="false" orientation="VERTICAL">
+		
+          <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+              <lay:Control ID="c_BoundedInt" 	   xsi:type="lay:TextField_t"
+                  label="Int (Range 0-99)"   parameterRef="BoundedInt"/>
+          </lay:StrategyPanel>
+		          
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+
+	</Strategy>
+
+
+  <Strategy name="Strategy_2" uiRep="Strategy #2" wireValue="2" providerID="TEST">
+
+		<Parameter name="BoundedInt" xsi:type="Int_t" fixTag="9999" use="optional" minValue="0" maxValue="99"/>
+	
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel title="Strategy Parameters #2" collapsible="false" orientation="VERTICAL">
+		
+          <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+              <lay:Control ID="c_BoundedInt" 	   xsi:type="lay:TextField_t"
+                  label="Int (Range 0-99)"   parameterRef="BoundedInt"/>
+          </lay:StrategyPanel>
+		          
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+
+	</Strategy>
+
+
+  <Strategy name="Strategy_3" uiRep="Strategy #3" wireValue="3" providerID="TEST">
+
+		<Parameter name="BoundedInt" xsi:type="Int_t" fixTag="9999" use="optional" minValue="0" maxValue="99"/>
+	
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel title="Strategy Parameters #3" collapsible="false" orientation="VERTICAL">
+		
+          <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+              <lay:Control ID="c_BoundedInt" 	   xsi:type="lay:TextField_t"
+                  label="Int (Range 0-99)"   parameterRef="BoundedInt"/>
+          </lay:StrategyPanel>
+		          
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+
+	</Strategy>
+
+
+  <Strategy name="Strategy_4" uiRep="Strategy #4" wireValue="4" providerID="TEST">
+		<Description>This is Strategy number four.
+		</Description>
+		
+		<Parameter name="BoundedInt" xsi:type="Int_t" fixTag="9999" use="optional" minValue="0" maxValue="99"/>
+	
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel title="Strategy Parameters #4" collapsible="false" orientation="VERTICAL">
+		
+          <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+              <lay:Control ID="c_BoundedInt" 	   xsi:type="lay:TextField_t"
+                  label="Int (Range 0-99)"   parameterRef="BoundedInt"/>
+          </lay:StrategyPanel>
+		          
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+
+	</Strategy>
+
+
+			
+</Strategies>

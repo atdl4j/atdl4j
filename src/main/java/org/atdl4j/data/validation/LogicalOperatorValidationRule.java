@@ -27,7 +27,7 @@ public class LogicalOperatorValidationRule
 	public LogicalOperatorValidationRule(LogicOperatorT operator, Object parent)
 	{
 		this.operator = operator;
-		this.rules = new ArrayList<ValidationRule>();
+		this.rules = new ArrayList<>();
 	}
 
 	public List<ValidationRule> getRules()

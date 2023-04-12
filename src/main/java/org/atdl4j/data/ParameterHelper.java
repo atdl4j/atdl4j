@@ -114,10 +114,7 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof UTCTimestampT )
 		{
-			if ( parameter != null )
-			{
-				return DateTimeConverter.convertDailyValueToValue( ( (UTCTimestampT) parameter ).getConstValue(), getLocalMktTz( parameter) );
-			}
+			return DateTimeConverter.convertDailyValueToValue( ( (UTCTimestampT) parameter ).getConstValue(), getLocalMktTz( parameter) );
 		}
 		else if ( parameter instanceof UTCTimeOnlyT )
 		{
@@ -153,10 +150,7 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof TZTimestampT )
 		{
-			if ( parameter != null )
-			{
-				return DateTimeConverter.convertDailyValueToValue( ( (TZTimestampT) parameter ).getConstValue(), null );
-			}
+			return DateTimeConverter.convertDailyValueToValue( ( (TZTimestampT) parameter ).getConstValue(), null );
 		}
 		else if ( parameter instanceof TenorT )
 		{
@@ -242,10 +236,7 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof UTCTimestampT )
 		{
-			if ( parameter != null )
-			{
-				return DateTimeConverter.convertDailyValueToValue( ( (UTCTimestampT) parameter ).getMaxValue(), getLocalMktTz( parameter) );
-			}
+			return DateTimeConverter.convertDailyValueToValue( ( (UTCTimestampT) parameter ).getMaxValue(), getLocalMktTz( parameter) );
 		}
 		else if ( parameter instanceof UTCTimeOnlyT )
 		{
@@ -281,10 +272,7 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof TZTimestampT )
 		{
-			if ( parameter != null )
-			{
-				return DateTimeConverter.convertDailyValueToValue( ( (TZTimestampT) parameter ).getMaxValue(), null );
-			}
+			return DateTimeConverter.convertDailyValueToValue( ( (TZTimestampT) parameter ).getMaxValue(), null );
 		}
 		else if ( parameter instanceof TenorT )
 		{
@@ -371,10 +359,7 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof UTCTimestampT )
 		{
-			if ( parameter != null )
-			{
-				return DateTimeConverter.convertDailyValueToValue( ( (UTCTimestampT) parameter ).getMinValue(), getLocalMktTz( parameter) );
-			}
+			return DateTimeConverter.convertDailyValueToValue( ( (UTCTimestampT) parameter ).getMinValue(), getLocalMktTz( parameter) );
 		}
 		else if ( parameter instanceof UTCTimeOnlyT )
 		{
@@ -410,10 +395,7 @@ public class ParameterHelper
 		}
 		else if ( parameter instanceof TZTimestampT )
 		{
-			if ( parameter != null )
-			{
-				return DateTimeConverter.convertDailyValueToValue( ( (TZTimestampT) parameter ).getMinValue(), null );
-			}
+			return DateTimeConverter.convertDailyValueToValue( ( (TZTimestampT) parameter ).getMinValue(), null );
 		}
 		else if ( parameter instanceof TenorT )
 		{

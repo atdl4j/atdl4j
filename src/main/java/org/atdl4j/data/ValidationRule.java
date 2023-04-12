@@ -17,7 +17,8 @@ public interface ValidationRule {
 	 * Called by the application to validate the user input. Throws a
 	 * ValidationException if input is not valid according to the rules.
 	 * 
-	 * @param rules
+	 * @param refRules
+	 * @param targets
 	 * @throws ValidationException
 	 */
 	public void validate(Map<String, ValidationRule> refRules, Map<String, Atdl4jWidget<?>> targets) 

@@ -17,6 +17,8 @@ import org.atdl4j.fixatdl.layout.StrategyPanelT;
 import org.atdl4j.ui.Atdl4jWidget;
 import org.atdl4j.ui.StrategyPanelHelper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -27,8 +29,8 @@ import org.atdl4j.ui.StrategyPanelHelper;
 public class SwingStrategyPanelHelper
 	implements StrategyPanelHelper
 {
-	
-	
+	private static final Logger logger = LoggerFactory.getLogger(SwingStrategyPanelHelper.class);
+
 	/**
 	 * Builds the appropriate 'container' JPanel for aStrategyPanel.
 	 * 
@@ -47,12 +49,6 @@ public class SwingStrategyPanelHelper
 	{
 		JPanel c = new JPanel();
 
-/*		if ( aStrategyPanel.isCollapsible() ){
-			c = new CollapsiblePanel(aStrategyPanel.getTitle() );
-		}
-		// -- Check for titled border --
-		else 
-*/		
 		if ( aStrategyPanel.getTitle() != null ){
 			c.setBorder( BorderFactory.createTitledBorder(aStrategyPanel.getTitle()));
 		}
@@ -68,26 +64,26 @@ public class SwingStrategyPanelHelper
 		return c;
 	}
 
-	public static void createStrategyPanelSpringLayout(StrategyPanelT _panelT, JPanel _panel) throws FIXatdlFormatException {
-		
-		PanelOrientationT orientation = _panelT.getOrientation();
+	public static void createStrategyPanelSpringLayout(StrategyPanelT aPanelT, JPanel aPanel) throws FIXatdlFormatException
+	{
+		PanelOrientationT orientation = aPanelT.getOrientation();
 		if ( orientation == PanelOrientationT.HORIZONTAL )
 		{
 			// Lay out the panel.
-			makeCompactGrid(_panel, 1, _panel.getComponentCount(), // rows, cols
+			makeCompactGrid(aPanel, 1, aPanel.getComponentCount(), // rows, cols
 				5, 2, // initX, initY
 				5, 2); // xPad, yPad
 		}
 		else if ( orientation == PanelOrientationT.VERTICAL )
 		{
 			// Lay out the panel.
-			makeCompactGrid(_panel, _panel.getComponentCount(), 1,// rows, cols
+			makeCompactGrid(aPanel, aPanel.getComponentCount(), 1,// rows, cols
 				5, 2, // initX, initY
 				5, 2); // xPad, yPad
 		}
 		else
 		{
-			throw new FIXatdlFormatException( "StrategyPanel (" + _panelT.getTitle() + ") is missing orientation attribute." );
+			throw new FIXatdlFormatException( "StrategyPanel (" + aPanelT.getTitle() + ") is missing orientation attribute." );
 		}
 	}
 
@@ -130,7 +126,7 @@ public class SwingStrategyPanelHelper
 			layout = (SpringLayout) parent.getLayout();
 		}
 		catch (ClassCastException exc) {
-			System.err.println("The first argument to makeCompactGrid must use SpringLayout.");
+			logger.error("The first argument to makeCompactGrid must use SpringLayout.");
 			return;
 		}
 		

@@ -1,7 +1,8 @@
 package org.atdl4j.ui.swt.app.impl;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jUserMessageHandler;
 import org.eclipse.swt.SWT;
@@ -19,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 public class SWTAtdl4jUserMessageHandler 
 	extends AbstractAtdl4jUserMessageHandler
 {
-	private final Logger logger = Logger.getLogger(SWTAtdl4jUserMessageHandler.class);
+	private final Logger logger = LoggerFactory.getLogger(SWTAtdl4jUserMessageHandler.class);
 	
 	private Composite parentComposite;
 	

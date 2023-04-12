@@ -9,8 +9,8 @@ public class SWTControlEvent extends Event {
 
 	private SWTWidget<?> widget;
 
-	public SWTControlEvent(SWTWidget<?> widget) {
-		this.widget = widget;
+	public SWTControlEvent(SWTWidget<?> aWidget) {
+		this.widget = aWidget;
 	}
 
 	public SWTWidget<?> getWidget() {

@@ -4,8 +4,8 @@
  */
 package org.atdl4j.ui.app.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
@@ -58,7 +58,7 @@ public abstract class AbstractAtdl4jInputAndFilterDataPanel
 	Atdl4jOptions atdl4jOptions;
 	Object parentOrShell;  // SWT: Shell, Swing: JFrame, JDialog, etc
 	
-	private List<Atdl4jInputAndFilterDataPanelListener> listenerList = new Vector<Atdl4jInputAndFilterDataPanelListener>();
+	private List<Atdl4jInputAndFilterDataPanelListener> listenerList = new ArrayList<>();
 
 	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions )
 	{

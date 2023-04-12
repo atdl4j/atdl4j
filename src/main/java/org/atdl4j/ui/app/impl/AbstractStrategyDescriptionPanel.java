@@ -17,7 +17,7 @@ public abstract class AbstractStrategyDescriptionPanel
 {
 	private Atdl4jOptions atdl4jOptions = null;
 
-	abstract protected void setStrategyDescriptionText( String aText );
+	protected abstract void setStrategyDescriptionText( String aText );
 
 	/* 
 	 * Loads aStrategy.getDescription() if populated and if Atdl4jOptions.isShowStrategyDescription(), 

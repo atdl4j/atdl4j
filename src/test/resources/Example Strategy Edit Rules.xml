@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+  <Strategy name="Strategy_1" uiRep="Strategy #1" wireValue="1" providerID="TEST">
+		<Description>This strategy contains only Parameter-Control pairs
+		</Description>
+
+		<Parameter name="BoundedInt" xsi:type="Int_t" fixTag="9999" use="optional" minValue="0" maxValue="99"/>
+		<Parameter name="BoundedInt2" xsi:type="Int_t" fixTag="9998" use="optional" minValue="0" maxValue="99"/>
+	
+    <Parameter name="EffectiveTime" xsi:type="UTCTimestamp_t" fixTag="168" use="optional"/>
+
+		<Parameter name="ExpireTime" xsi:type="UTCTimestamp_t" fixTag="126" use="optional"/>
+
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel title="Strategy Parameters #1" collapsible="false" orientation="VERTICAL">
+		
+          <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+              <lay:Control ID="c_BoundedInt" 	   xsi:type="lay:TextField_t"
+                  label="Int (Range 0-99)"   parameterRef="BoundedInt"/>
+              <lay:Control ID="c_BoundedInt2" 	   xsi:type="lay:TextField_t"
+                  label="Int (Must be &gt; Other Int)"   parameterRef="BoundedInt2"/>
+          </lay:StrategyPanel>
+	
+          <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+		                <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="Start Time">
+   	                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_NoStartTime" xsi:type="lay:RadioButton_t" label="Now" initValue="true" radioGroup="StartTimeRB"/>
+   	                </lay:StrategyPanel>
+   	                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_EnableStartTime" xsi:type="lay:RadioButton_t" label="" radioGroup="StartTimeRB"/>
+					            <lay:Control ID="StartTimeClock" xsi:type="lay:Clock_t" label="" parameterRef="EffectiveTime">
+												<flow:StateRule enabled="false" value="{NULL}">
+													<val:Edit field="c_EnableStartTime" operator="EQ" value="false"/>
+												</flow:StateRule>
+											</lay:Control>
+		                </lay:StrategyPanel>
+                  </lay:StrategyPanel>
+										
+	                <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="End Time">
+   	                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_NoEndTime" xsi:type="lay:RadioButton_t" label="End of Day" initValue="true" radioGroup="EndTimeRB"/>
+   	                </lay:StrategyPanel>
+   	                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_EnableEndTime" xsi:type="lay:RadioButton_t" label="" radioGroup="EndTimeRB"/>
+					            <lay:Control ID="EndTimeClock" xsi:type="lay:Clock_t" label="" parameterRef="ExpireTime">
+												<flow:StateRule enabled="false" value="{NULL}">
+													<val:Edit field="c_EnableEndTime" operator="EQ" value="false"/>
+												</flow:StateRule>
+											</lay:Control>
+                  </lay:StrategyPanel>
+                  
+                </lay:StrategyPanel>
+          </lay:StrategyPanel>
+	          
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+		
+        <val:StrategyEdit errorMessage="Start time must be less than end time.">
+        	<val:Edit logicOperator="OR">
+            <val:Edit field="ExpireTime" operator="NX"/>
+            <val:Edit field="EffectiveTime" operator="NX"/>
+            <val:Edit field="ExpireTime" operator="GT" field2="EffectiveTime"/>
+          </val:Edit>
+        </val:StrategyEdit>
+
+        <val:StrategyEdit errorMessage="Second Int Parm must be greater than First.">
+        	<val:Edit logicOperator="OR">
+            <val:Edit field="BoundedInt" operator="NX"/>
+            <val:Edit field="BoundedInt2" operator="NX"/>
+            <val:Edit field="BoundedInt2" operator="GT" field2="BoundedInt"/>
+          </val:Edit>
+        </val:StrategyEdit>
+
+	</Strategy>
+
+
+  <Strategy name="Strategy_2" uiRep="Strategy #2" wireValue="2" providerID="TEST">
+		<Description>This strategy contains Parameter-Control pairs and contains a rule using const Parameter without Control. The  value must be less than Parameter/@constValue="50"
+		</Description>
+
+		<Parameter name="BoundedInt" xsi:type="Int_t" fixTag="9999" use="optional" minValue="0" maxValue="99"/>
+		<Parameter name="BoundedInt2" xsi:type="Int_t" fixTag="9998" use="optional" minValue="0" maxValue="99"/>
+		<Parameter name="ConstInt_50" xsi:type="Int_t" fixTag="9997" use="optional" constValue="50"/>
+	
+    <Parameter name="EffectiveTime" xsi:type="UTCTimestamp_t" fixTag="168" use="optional"/>
+
+		<Parameter name="ExpireTime" xsi:type="UTCTimestamp_t" fixTag="126" use="optional"/>
+
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel title="Strategy Parameters #2" collapsible="false" orientation="VERTICAL">
+		
+          <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="Must be less than constant parameter 50">
+              <lay:Control ID="c_BoundedInt" 	   xsi:type="lay:TextField_t"
+                  label="Int (Range 0-99)"   parameterRef="BoundedInt"/>
+          </lay:StrategyPanel>
+	
+          <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+		                <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="Start Time">
+   	                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_NoStartTime" xsi:type="lay:RadioButton_t" label="Now" initValue="true" radioGroup="StartTimeRB"/>
+   	                </lay:StrategyPanel>
+   	                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_EnableStartTime" xsi:type="lay:RadioButton_t" label="" radioGroup="StartTimeRB"/>
+					            <lay:Control ID="StartTimeClock" xsi:type="lay:Clock_t" label="" parameterRef="EffectiveTime">
+												<flow:StateRule enabled="false" value="{NULL}">
+													<val:Edit field="c_EnableStartTime" operator="EQ" value="false"/>
+												</flow:StateRule>
+											</lay:Control>
+		                </lay:StrategyPanel>
+                  </lay:StrategyPanel>
+										
+	                <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="End Time">
+   	                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_NoEndTime" xsi:type="lay:RadioButton_t" label="End of Day" initValue="true" radioGroup="EndTimeRB"/>
+   	                </lay:StrategyPanel>
+   	                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_EnableEndTime" xsi:type="lay:RadioButton_t" label="" radioGroup="EndTimeRB"/>
+					            <lay:Control ID="EndTimeClock" xsi:type="lay:Clock_t" label="" parameterRef="ExpireTime">
+												<flow:StateRule enabled="false" value="{NULL}">
+													<val:Edit field="c_EnableEndTime" operator="EQ" value="false"/>
+												</flow:StateRule>
+											</lay:Control>
+                  </lay:StrategyPanel>
+                  
+                </lay:StrategyPanel>
+          </lay:StrategyPanel>
+	          
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+		
+        <val:StrategyEdit errorMessage="Start time must be less than end time.">
+        	<val:Edit logicOperator="OR">
+            <val:Edit field="ExpireTime" operator="NX"/>
+            <val:Edit field="EffectiveTime" operator="NX"/>
+            <val:Edit field="ExpireTime" operator="GT" field2="EffectiveTime"/>
+          </val:Edit>
+        </val:StrategyEdit>
+
+        <val:StrategyEdit errorMessage="Second Int Parm must be greater than First.">
+        	<val:Edit logicOperator="OR">
+            <val:Edit field="BoundedInt" operator="NX"/>
+            <val:Edit field="BoundedInt2" operator="NX"/>
+            <val:Edit field="BoundedInt2" operator="GT" field2="BoundedInt"/>
+          </val:Edit>
+        </val:StrategyEdit>
+
+        <val:StrategyEdit errorMessage="First Int Parm must be less than constant parm of 50.">
+        	<val:Edit logicOperator="OR">
+            <val:Edit field="BoundedInt" operator="NX"/>
+            <val:Edit field="BoundedInt" operator="LT" field2="ConstInt_50"/>
+          </val:Edit>
+        </val:StrategyEdit>
+
+	</Strategy>
+
+			
+</Strategies>

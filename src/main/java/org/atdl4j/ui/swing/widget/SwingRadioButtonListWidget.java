@@ -3,6 +3,7 @@ package org.atdl4j.ui.swing.widget;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -18,7 +19,7 @@ import org.atdl4j.ui.swing.SwingListener;
 public class SwingRadioButtonListWidget
 		extends AbstractSwingWidget<String>
 {
-	private List<JRadioButton> buttons = new ArrayList<JRadioButton>();
+	private List<JRadioButton> buttons = new ArrayList<>();
 	private ButtonGroup group = new ButtonGroup();	
 	private JLabel label;
 
@@ -36,6 +37,7 @@ public class SwingRadioButtonListWidget
 		return null;
 	}
 
+	@Override
 	public String getParameterValue()
 	{
 		return getParameterValueAsEnumWireValue();
@@ -61,18 +63,17 @@ public class SwingRadioButtonListWidget
 	
 	public List<Component> getComponents()
 	{
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		if (label != null) widgets.add( label );
 		widgets.addAll( buttons );
 		return widgets;
 	}
 
-	public List<Component> getComponentsExcludingLabel() {
-		List<Component> widgets = new ArrayList<Component>();
-		widgets.addAll( buttons );
-		return widgets;
-	}	
-	
+	public List<Component> getComponentsExcludingLabel()
+	{
+		return new ArrayList<>(buttons);
+	}
+
 	public void addListener(SwingListener listener) {
 		for ( JRadioButton b : buttons )
 		{
@@ -116,12 +117,11 @@ public class SwingRadioButtonListWidget
 	 */
 	protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd)
 	{
-		// TODO ?? adjust the visual appearance of the control ??
 	}
-	
+
 	@Override
 	protected List< ? extends Component> createBrickComponents() {
-	  List<Component> components = new ArrayList<Component>();
+	  List<Component> components = new ArrayList<>();
 	  
 	  JPanel wrapper = new JPanel();
       String tooltip = getTooltip();
@@ -134,20 +134,7 @@ public class SwingRadioButtonListWidget
           if ( tooltip != null ) label.setToolTipText( tooltip );
           components.add(label);
       }   
-      
-      /*
-       //TODO: implement horiz/vert orientation for Swing
-      if ( ((RadioButtonListT) control).getOrientation() != null &&
-           PanelOrientationT.VERTICAL.equals( ((RadioButtonListT) control).getOrientation() ) )
-      {
-          c.setLayout( new GridLayout( 1, false ) );
-      } else {
-          RowLayout rl = new RowLayout();
-          rl.wrap = false;
-          c.setLayout( rl );
-      }
-       */
-      
+
       // radioButton
       for ( ListItemT listItem : ( (RadioButtonListT) control ).getListItem() )
       {
@@ -158,7 +145,7 @@ public class SwingRadioButtonListWidget
           {
               for ( EnumPairT enumPair : parameter.getEnumPair() )
               {
-                  if ( enumPair.getEnumID() == listItem.getEnumID() )
+                  if (Objects.equals(enumPair.getEnumID(), listItem.getEnumID()))
                   {
                       radioElement.setToolTipText( enumPair.getDescription() );
                       break;

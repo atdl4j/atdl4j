@@ -6,10 +6,11 @@ package org.atdl4j.data.converter;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.joda.time.DateTime;
 
 /**
  * 
@@ -21,15 +22,6 @@ import org.joda.time.DateTime;
  */
 public class DatatypeConverter
 {
-	// -- Object that is an instanceof the Parameter's base data type (eg String, BigDecimal, DateTime, etc) --
-	// -- @see ParameterTypeConverter.getParameterDatatype() and DatatypeConverter
-//	public static String DATATYPE_STRING = new String();
-//	public static Boolean DATATYPE_BOOLEAN = new Boolean( false );
-//	public static DateTime DATATYPE_DATE_TIME = new DateTime();
-//	public static XMLGregorianCalendar DATATYPE_XML_GREGORIAN_CALENDAR = DateTimeConverter.constructNewXmlGregorianCalendar();
-//	public static BigDecimal DATATYPE_BIG_DECIMAL = new BigDecimal( "0" );
-//	public static BigInteger DATATYPE_BIG_INTEGER = new BigInteger( "0" );
-
 	/**
 	 * Convert from one datatype to another (eg ParameterConverter's type to ControlConverter's type and vice-versa)
 	 * @param aValue
@@ -53,22 +45,33 @@ public class DatatypeConverter
 		{
 			return convertValueToBooleanDatatype( aValue );
 		}
-		else if ( klass == DateTime.class )
+		else if ( klass == ZonedDateTime.class )
 		{
 			if ( aValue == null )
 			{
-				return (DateTime) null;
+				return null;
 			}
 			else
 			{
-				throw new IllegalArgumentException( "DateTime datatype conversion is not supported (due to timezone offests).  [aValue: " + aValue + "]" );
+				throw new IllegalArgumentException( "ZonedDateTime datatype conversion is not supported (due to timezone offests).  [aValue: " + aValue + "]" );
+			}
+		}
+		else if ( klass == Instant.class )
+		{
+			if ( aValue == null )
+			{
+				return null;
+			}
+			else
+			{
+				throw new IllegalArgumentException( "Instant datatype conversion is not supported (due to timezone offests).  [aValue: " + aValue + "]" );
 			}
 		}
 		else if ( klass == XMLGregorianCalendar.class )
 		{
 			if ( aValue == null )
 			{
-				return (XMLGregorianCalendar) null;
+				return null;
 			}
 			else
 			{
@@ -85,7 +88,7 @@ public class DatatypeConverter
 		}
 		else
 		{
-			throw new IllegalArgumentException( "Unsupported aToDatatypeObject type: " + klass.getClass() + " [aValue: " + aValue + "]" );
+			throw new IllegalArgumentException( "Unsupported aToDatatypeObject type: " + klass + " [aValue: " + aValue + "]" );
 		}
 	}
 
@@ -128,11 +131,11 @@ public class DatatypeConverter
 			String str = (String) aValue;
 			if ( str.equalsIgnoreCase( "true" ) || str.equals( "1" ) || str.equals( BooleanConverter.BOOLEAN_TRUE ) )
 			{
-				return new Boolean( true );
+				return Boolean.TRUE;
 			}
 			else if ( str.equalsIgnoreCase( "false" ) || str.equals( "0" ) || str.equals( BooleanConverter.BOOLEAN_FALSE ) )
 			{
-				return new Boolean( false );
+				return Boolean.FALSE;
 			}
 			else if ( str.equals( "" ) )
 			{
@@ -148,11 +151,11 @@ public class DatatypeConverter
 			Number num = (Number) aValue;
 			if ( num.intValue() == 1 )
 			{
-				return new Boolean( true );
+				return Boolean.TRUE;
 			}
 			else if ( num.intValue() == 0 )
 			{
-				return new Boolean( false );
+				return Boolean.FALSE;
 			}
 			else
 			{
@@ -247,9 +250,9 @@ public class DatatypeConverter
 		{
 			Boolean bool = (Boolean) aValue;
 			if ( Boolean.TRUE.equals( bool ) )
-				return new BigInteger( "1" );
+				return BigInteger.ONE;
 			else
-				return new BigInteger( "0" );
+				return BigInteger.ZERO;
 		}
 		else
 		{

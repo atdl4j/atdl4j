@@ -32,7 +32,7 @@ public class SWTNumberFormatVerifyListener implements VerifyListener {
 
 	/**
 	 * 
-	 * @param formatter
+	 * @param format
 	 *            Format used to validate the text entered by the user.
 	 * @param allowEmpty
 	 *            Flag which indicates whether an empty field is valid.
@@ -69,8 +69,7 @@ public class SWTNumberFormatVerifyListener implements VerifyListener {
 			String old = text.getText();
 			String start = old.substring(0, e.start);
 			String end = old.substring(e.end);
-			String value = start + e.text + end;
-			return value;
+			return start + e.text + end;
 		}
 		return "";
 	}

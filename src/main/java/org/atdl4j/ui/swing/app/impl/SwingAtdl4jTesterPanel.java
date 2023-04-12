@@ -21,7 +21,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.exception.ValidationException;
@@ -41,7 +42,7 @@ import org.atdl4j.ui.app.impl.AbstractAtdl4jTesterPanel;
 public class SwingAtdl4jTesterPanel
 		extends AbstractAtdl4jTesterPanel
 {
-	public final Logger logger = Logger.getLogger(SwingAtdl4jTesterPanel.class);
+	public final Logger logger = LoggerFactory.getLogger(SwingAtdl4jTesterPanel.class);
 	private JFrame parentComposite;
 	
 	private JPanel inputAndFilterDataAndLoadMessageComposite;
@@ -149,7 +150,7 @@ public class SwingAtdl4jTesterPanel
       @Override
       public void widgetChanged(Atdl4jWidget widget) {
         if (logger.isDebugEnabled()) {
-          logger.debug("Widget changed notification :" + widget);
+          logger.debug("Widget changed notification :{}", widget);
         }
       }
     });
@@ -176,7 +177,7 @@ public class SwingAtdl4jTesterPanel
 		 }
 	}
 	
-	protected void createPopupMenuForPanel(JPanel _panel)
+	protected void createPopupMenuForPanel(JPanel aPanel)
 	{
 		final JPopupMenu menu = new JPopupMenu();
 		
@@ -209,7 +210,7 @@ public class SwingAtdl4jTesterPanel
 		menu.add(showValidateOutputMenuItem);
 		
 		
-		_panel.addMouseListener(new MouseAdapter() {
+		aPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON3) {
@@ -261,18 +262,6 @@ public class SwingAtdl4jTesterPanel
 	
 	public void setVisibleTestingInputSection( boolean aVisible )
 	{
-		/*
-		 if ( ( inputAndFilterDataAndLoadMessageComposite != null ) && ( ! inputAndFilterDataAndLoadMessageComposite.isDisposed() ) )
-		 {
-			 inputAndFilterDataAndLoadMessageComposite.setVisible( aVisible );
-			 if ( inputAndFilterDataAndLoadMessageComposite.getLayoutData() instanceof GridData )
-			 {
-				((GridData) inputAndFilterDataAndLoadMessageComposite.getLayoutData()).exclude = !aVisible;
-			 }
-
-			 packLayout();
-		 }
-		 */
 	}
 
 	protected JPanel createOkCancelButtonSection()
@@ -319,7 +308,11 @@ public class SwingAtdl4jTesterPanel
 
 	protected void packLayout()
 	{
-		getShell().pack();
+		JFrame tmpJFrame = getShell();
+		if ( tmpJFrame != null )
+		{
+			tmpJFrame.pack();
+		}
 	}
 	
 	

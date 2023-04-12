@@ -3,7 +3,8 @@ package org.atdl4j.ui.swt.widget;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
@@ -20,13 +21,13 @@ import org.eclipse.swt.widgets.Listener;
 public class SWTRadioButtonListener
 		implements Listener
 {
-	private static final Logger logger = Logger.getLogger( SWTRadioButtonListener.class );
+	private static final Logger logger = LoggerFactory.getLogger( SWTRadioButtonListener.class );
 
 	private List<Button> buttons;
 
 	public SWTRadioButtonListener()
 	{
-		buttons = new Vector<Button>();
+		buttons = new Vector<>();
 	}
 
 	public void addButton(Button button)
@@ -40,9 +41,9 @@ public class SWTRadioButtonListener
 		addButton( sWTButtonWidget.getButton() );
 	}
 
-	public void handleEvent(Event p_event)
+	public void handleEvent(Event pEvent)
 	{
-		handleEvent( (Button) p_event.widget );
+		handleEvent( (Button) pEvent.widget );
 	}
 
 	public void handleEvent(Button aButton)
@@ -80,7 +81,7 @@ public class SWTRadioButtonListener
 		// -- Select first in list if no buttons are selected --
 		if ( tempSelectedButton == null )
 		{
-			logger.info("Warning: no buttons were selected for SWTRadioButtonListener.  Selecting first button in list: " + buttons.get(0) );
+			logger.info("Warning: no buttons were selected for SWTRadioButtonListener.  Selecting first button in list: {}", buttons.get(0) );
 			buttons.get( 0 ).setSelection( true );
 		}
 	}

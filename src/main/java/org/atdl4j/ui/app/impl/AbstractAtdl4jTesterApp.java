@@ -3,7 +3,6 @@ package org.atdl4j.ui.app.impl;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jConfiguration;
 import org.atdl4j.config.Atdl4jOptions;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.data.exception.ValidationException;
 import org.atdl4j.ui.app.Atdl4jTesterPanel;
 import org.atdl4j.ui.app.Atdl4jTesterPanelListener;
@@ -25,59 +24,12 @@ public abstract class AbstractAtdl4jTesterApp
 	
 	Atdl4jTesterPanel atdl4jTesterPanel;
 
-	private void parseMainLineArgs( String[] args )
-	{
-//TODO		
-/***
-		// Load in a file if passed into the app arguments
-		if (args.length > 0) {
-			try {
-//TODO 1/18/2010 Scott Atwell added BELOW
-//				getAtdl4jOptions().getInputAndFilterData().init();
-				
-				if (args.length >= 2)
-				{
-					// -- InputCxlReplaceMode = args[1] (eg "true" or "false")
-					logger.info("args[1]: " + args[1] + " Boolean.parseBoolean() as inputCxlReplaceMode");
-					getAtdl4jOptions().getInputAndFilterData().setInputCxlReplaceMode( Boolean.parseBoolean( args[1] ) );
-				}
-				
-				if ( args.length >= 3)
-				{
-					// -- InputHiddenFieldNameValueMap = args[2] (eg "FIX_OrderQty=10000|FIX_Side=1|FIX_OrdType=1") 
-					String tempStringToParse = args[2];
-					logger.info("args[2]: " + tempStringToParse + " parse as InputHiddenFieldNameValueMap (eg \"FIX_OrderQty=10000|FIX_Side=1|FIX_OrdType=1\")");
-					String[] tempFieldAndValuesArray = tempStringToParse.split( "\\|" );
-					if ( tempFieldAndValuesArray != null )
-					{
-						Map<String, String> tempInputHiddenFieldNameValueMap = new HashMap<String, String>();
-						for (String tempFieldAndValue : tempFieldAndValuesArray )
-						{
-							String[] tempCombo = tempFieldAndValue.split( "=" );
-							if ( ( tempCombo != null ) && ( tempCombo.length == 2 ) )
-							{
-								tempInputHiddenFieldNameValueMap.put( tempCombo[0], tempCombo[1] );
-							}
-						}
-						
-						logger.info("InputHiddenFieldNameValueMap: " + tempInputHiddenFieldNameValueMap);
-						getAtdl4jOptions().getInputAndFilterData().addMapToInputHiddenFieldNameValueMap( tempInputHiddenFieldNameValueMap );
-					}
-				}
-//TODO 1/18/2010 Scott Atwell added ABOVE
-		
-****/
-	}
-	
-
 	protected void init( String[] args, Atdl4jConfiguration aAtdl4jConfiguration, Atdl4jOptions aAtdl4jOptions, Object aParentOrShell )
 	{
 		Atdl4jConfig.setConfig( aAtdl4jConfiguration );
 		
 		setAtdl4jOptions( aAtdl4jOptions );
 		setParentOrShell( aParentOrShell );
-		
-		parseMainLineArgs( args );
 		
 		// -- ** Construct the core GUI component ** --
 		setAtdl4jTesterPanel( getAtdl4jTesterPanel() );
@@ -94,7 +46,7 @@ public abstract class AbstractAtdl4jTesterApp
 	/**
 	 * @param aAtdl4jOptions the atdl4jOptions to set
 	 */
-	private void setAtdl4jOptions(Atdl4jOptions aAtdl4jOptions)
+	private static void setAtdl4jOptions(Atdl4jOptions aAtdl4jOptions)
 	{
 		atdl4jOptions = aAtdl4jOptions;
 	}
@@ -126,7 +78,6 @@ public abstract class AbstractAtdl4jTesterApp
 
 	/**
 	 * @return the Atdl4jTesterPanel
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jTesterPanel getAtdl4jTesterPanel() 
 	{

@@ -1,15 +1,10 @@
 package org.atdl4j.ui.swt.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 import java.util.Map.Entry;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.validation.Field2OperatorValidationRule;
@@ -37,7 +32,7 @@ import org.eclipse.swt.widgets.ExpandBar;
 public class SWTStrategyUI
 		extends AbstractStrategyUI
 {
-	protected static final Logger logger = Logger.getLogger( SWTStrategyUI.class );
+	protected static final Logger logger = LoggerFactory.getLogger( SWTStrategyUI.class );
 
 	protected Map<String, SWTWidget<?>> swtWidgetMap;  
 	
@@ -68,10 +63,9 @@ public class SWTStrategyUI
 	{
 		setParent( (Composite) parentContainer );
 
-		setSWTWidgetWithParameterMap( new HashMap<String, SWTWidget<?>>() );
-		
-//TODO !!! verify, as it does not appear that getWidgetStateListenerMap() is ever being populated (though, is being initialized)		
-		setWidgetStateListenerMap( new HashMap<SWTWidget<?>, Set<SWTStateListener>>() );
+		setSWTWidgetWithParameterMap( new HashMap<>() );
+
+		setWidgetStateListenerMap( new HashMap<>() );
 	}
 
 	protected void buildAtdl4jWidgetMap()
@@ -86,7 +80,7 @@ public class SWTStrategyUI
 			throw new IllegalStateException("Unexpected error: getStrategy().getStrategyLayout() was null .  (verify  <lay:StrategyLayout>)");
 		}
 		
-		if ( getStrategy().getStrategyLayout() == null )
+		if ( getStrategy().getStrategyLayout().getStrategyPanel() == null )
 		{
 			throw new IllegalStateException("Unexpected error: getStrategy().getStrategyLayout().getStrategyPanel() was null .  (verify  <lay:StrategyLayout> <lay:StrategyPanel>)");
 		}
@@ -124,7 +118,7 @@ public class SWTStrategyUI
 	private void putStateListener(SWTWidget<?> widget, SWTStateListener stateListener)
 	{
 		if ( !getWidgetStateListenerMap().containsKey( widget ) )
-			getWidgetStateListenerMap().put( widget, new HashSet<SWTStateListener>() );
+			getWidgetStateListenerMap().put( widget, new HashSet<>() );
 		if ( !getWidgetStateListenerMap().get( widget ).contains( stateListener ) )
 			getWidgetStateListenerMap().get( widget ).add( stateListener );
 	}
@@ -166,10 +160,10 @@ public class SWTStrategyUI
 				String rg = ( (RadioButtonT) targetParameterWidget.getControl() ).getRadioGroup();
 				for ( SWTWidget<?> widget : getSWTWidgetMap().values() )
 				{
-					if ( widget.getControl() instanceof RadioButtonT && ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
-							&& ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
-							&& ( ! "".equals( ( (RadioButtonT) widget.getControl() ).getRadioGroup() ) )
-							&& ( (RadioButtonT) widget.getControl() ).getRadioGroup().equals( rg ) )
+					if ( widget.getControl() instanceof RadioButtonT
+					&& ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
+					&& ( ! "".equals( ( (RadioButtonT) widget.getControl() ).getRadioGroup() ) )
+					&& ( (RadioButtonT) widget.getControl() ).getRadioGroup().equals( rg ) )
 					{
 						putStateListener( widget, stateRuleListener );
 					}
@@ -188,7 +182,7 @@ public class SWTStrategyUI
 	{
 		if ( getSWTWidgetWithParameterMap() != null )
 		{
-			return new HashMap<String, Atdl4jWidget<?>>( getSWTWidgetWithParameterMap()  );
+			return new HashMap<>( getSWTWidgetWithParameterMap()  );
 		}
 		else
 		{
@@ -205,7 +199,7 @@ public class SWTStrategyUI
 	{
 		if ( getSWTWidgetMap() != null )
 		{
-			return new HashMap<String, Atdl4jWidget<?>>( getSWTWidgetMap()  );
+			return new HashMap<>( getSWTWidgetMap()  );
 		}
 		else
 		{
@@ -235,13 +229,12 @@ public class SWTStrategyUI
 	/**
 	 * @param aStrategyPanelList
 	 * @return
-	 * @throws Atdl4jClassLoadException 
 	 */
 	protected void buildAtdl4jWidgetMap( List<StrategyPanelT> aStrategyPanelList )
 	{
-		Map<String, SWTWidget<?>> tempSWTWidgetMap = new HashMap<String, SWTWidget<?>>();
+		Map<String, SWTWidget<?>> tempSWTWidgetMap = new HashMap<>();
 		
-		setExpandBarList( new ArrayList<ExpandBar>() );
+		setExpandBarList( new ArrayList<>() );
 
 		// build panels and widgets recursively
 		for ( StrategyPanelT panel : aStrategyPanelList )
@@ -278,12 +271,12 @@ public class SWTStrategyUI
 
 	protected void createRadioGroups()
 	{
-		Map<String, SWTRadioButtonListener> tempRadioGroupMap = new HashMap<String, SWTRadioButtonListener>();
+		Map<String, SWTRadioButtonListener> tempRadioGroupMap = new HashMap<>();
 		
 		for ( SWTWidget<?> widget : getSWTWidgetMap().values() )
 		{
 			if ( widget.getControl() instanceof RadioButtonT && ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
-					&& ( (RadioButtonT) widget.getControl() ).getRadioGroup() != "" )
+					&& !Objects.equals(((RadioButtonT) widget.getControl()).getRadioGroup(), ""))
 			{
 				String rg = ( (RadioButtonT) widget.getControl() ).getRadioGroup();
 				if ( !tempRadioGroupMap.containsKey( rg ) )
@@ -342,7 +335,7 @@ public class SWTStrategyUI
 	 */
 	protected void buildAtdl4jWidgetWithParameterMap()
 	{
-		Map<String, SWTWidget<?>> tempSWTWidgetWithParameterMap = new HashMap<String, SWTWidget<?>>();
+		Map<String, SWTWidget<?>> tempSWTWidgetWithParameterMap = new HashMap<>();
 		
 		// loop through all UI controls
 		for ( SWTWidget<?> widget : getSWTWidgetMap().values() )
@@ -368,7 +361,7 @@ public class SWTStrategyUI
 	 */
 	protected void attachGlobalStateRulesToControls() throws FIXatdlFormatException
 	{
-		List<SWTStateListener> tempStateListenerList = new Vector<SWTStateListener>();
+		List<SWTStateListener> tempStateListenerList = new ArrayList<>();
 		
 		// loop through all UI controls
 		for ( SWTWidget<?> widget : getSWTWidgetMap().values() )
@@ -454,7 +447,6 @@ public class SWTStrategyUI
 	 */
 	protected void	attachStateListenersToAllAtdl4jWidgets()
 	{
-//TODO !!! verify, as it does not appear that getWidgetStateListenerMap() is ever being populated (though, is being initialized)		
 		// add all StateListeners to the controls
 		for ( Entry<SWTWidget<?>, Set<SWTStateListener>> entry : getWidgetStateListenerMap().entrySet() )
 		{
