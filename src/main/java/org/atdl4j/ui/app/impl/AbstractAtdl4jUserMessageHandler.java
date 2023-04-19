@@ -27,14 +27,7 @@ public abstract class AbstractAtdl4jUserMessageHandler
 	 */
 	public boolean isInitReqd()
 	{
-		if ( atdl4jOptions != null )
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+		return atdl4jOptions == null;
 	}
 
 	/**
@@ -58,7 +51,7 @@ public abstract class AbstractAtdl4jUserMessageHandler
 	 * Extracts the "message" value from Throwable.  Handles JAXBException.getLinkedException().getMessage().
 	 * 
 	 * @param e
-	 * @return
+	 * @return String
 	 */
 	public static String extractExceptionMessage( Throwable e )
 	{

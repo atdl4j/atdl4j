@@ -47,16 +47,6 @@ import org.atdl4j.fixatdl.layout.SingleSpinnerT;
 import org.atdl4j.fixatdl.layout.SliderT;
 import org.atdl4j.fixatdl.layout.TextFieldT;
 
-/*
- * NumericT subclasses
- import org.atdl4j.fixatdl.core.AmtT;
- import org.atdl4j.fixatdl.core.FloatT;
- import org.atdl4j.fixatdl.core.PercentageT;
- import org.atdl4j.fixatdl.core.PriceT;
- import org.atdl4j.fixatdl.core.PriceOffsetT;
- import org.atdl4j.fixatdl.core.QtyT;
- */
-
 /**
  * Factory that creates the appropriate ParameterTypeConveter depending on the parameter
  * or creates the appropriate ControlTypeConveter depending upon the control type.

@@ -4,13 +4,12 @@
  */
 package org.atdl4j.ui.app.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
-import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanelListener;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataSelectionPanel;
@@ -31,7 +30,7 @@ public abstract class AbstractAtdl4jInputAndFilterDataSelectionPanel
 	
 	private Atdl4jInputAndFilterDataPanel atdl4jInputAndFilterDataPanel;
 
-	private List<Atdl4jInputAndFilterDataPanelListener> listenerList = new Vector<Atdl4jInputAndFilterDataPanelListener>();
+	private List<Atdl4jInputAndFilterDataPanelListener> listenerList = new ArrayList<>();
 
 	private Atdl4jUserMessageHandler atdl4jUserMessageHandler;
 	
@@ -117,7 +116,6 @@ public abstract class AbstractAtdl4jInputAndFilterDataSelectionPanel
 	
 	/**
 	 * @return the Atdl4jInputAndFilterDataPanel
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jInputAndFilterDataPanel getAtdl4jInputAndFilterDataPanel() 
 	{

@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Group;
 public class SWTVisibleGroup
 		extends Group
 {
-	public static Point POINT_0_0 = new Point( 0, 0 );
+	public static final Point POINT_0_0 = new Point( 0, 0 );
 
 	/**
 	 * @param aParent
@@ -38,6 +38,7 @@ public class SWTVisibleGroup
 	 * Override
 	 * @see org.eclipse.swt.widgets.Group#computeSize(int, int, boolean)
 	 */
+	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed)
 	{
 		if ( !isVisible() )
@@ -55,6 +56,7 @@ public class SWTVisibleGroup
 	 * @see http://www.eclipsezone.com/eclipse/forums/t88689.html
 	 * @see org.eclipse.swt.widgets.Group#computeSize(int, int, boolean)
 	 */
+	@Override
 	protected void checkSubclass()
 	{
 		// Disable the check that prevents subclassing of SWT components

@@ -21,24 +21,26 @@ public class SwingListBoxWidget
 {
 	private JList listBox;
 	private JLabel label;
-	private Vector<String> list = new Vector<String>();
+	private Vector<String> list = new Vector<>();
 
 	public String getControlValueRaw()
 	{
-		String value = "";
-		List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem()
-				: ( (SingleSelectListT) control ).getListItem();
+		List<ListItemT> listItems = control instanceof MultiSelectListT ? ( (MultiSelectListT) control ).getListItem() : ( (SingleSelectListT) control ).getListItem();
 		int[] selection = listBox.getSelectedIndices();
 
+		StringBuilder tmpStringBuilder = new StringBuilder("");
 		for ( int i = 0; i < selection.length; i++ )
 		{
-			value += listItems.get( selection[ i ] ).getEnumID();
+			tmpStringBuilder.append( listItems.get( selection[ i ] ).getEnumID() );
 			if ( i + 1 != selection.length )
-				value += " ";
+			{
+				tmpStringBuilder.append( " " );
+			}
 		}
-		return "".equals( value ) ? null : value;
+		return tmpStringBuilder.toString().isEmpty() ? null : tmpStringBuilder.toString();
 	}
 
+	@Override
 	public String getParameterValue()
 	{
 		// Helper method from AbstractControlUI
@@ -79,7 +81,7 @@ public class SwingListBoxWidget
 	}
 	
 	public List<Component> getComponents() {
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		if (label != null) widgets.add(label);
 		widgets.add(listBox);
 		return widgets;
@@ -87,7 +89,7 @@ public class SwingListBoxWidget
 
 	public List<Component> getComponentsExcludingLabel()
 	{
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		widgets.add( listBox );
 		return widgets;
 	}
@@ -117,7 +119,7 @@ public class SwingListBoxWidget
 			else
 			{
 				// -- set to first when no initValue exists --
-				if ( list.size() > 0 )
+				if ( !list.isEmpty() )
 				{
 					listBox.setSelectedIndex( 0 );
 				}
@@ -141,13 +143,13 @@ public class SwingListBoxWidget
 	 */
 	protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd)
 	{
-		// TODO ?? adjust the visual appearance of the control ??
+		// adjust the visual appearance of the control ??
 	}
 	
 	@Override
 	protected List< ? extends Component> createBrickComponents() {
 	  
-	  List<Component> components = new ArrayList<Component>();
+	  List<Component> components = new ArrayList<>();
 	  
 	  String tooltip = getTooltip();
 

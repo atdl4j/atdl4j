@@ -1,7 +1,7 @@
 package org.atdl4j.ui.app.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.FixMsgLoadPanel;
@@ -18,7 +18,7 @@ public abstract class AbstractFixMsgLoadPanel
 {
 	private Atdl4jOptions atdl4jOptions = null;
 	
-	private List<FixMsgLoadPanelListener> listenerList = new Vector<FixMsgLoadPanelListener>();
+	private List<FixMsgLoadPanelListener> listenerList = new ArrayList<>();
 
 	
 	/**

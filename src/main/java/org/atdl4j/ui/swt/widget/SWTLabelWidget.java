@@ -26,23 +26,12 @@ public class SWTLabelWidget
 	 * ParameterT aParameter, Atdl4jOptions aAtdl4jOptions) throws JAXBException
 	 * public SWTLabelWidget(LabelT control) { super(control); }
 	 **/
-
 	public Widget createWidget(Composite parent, int style)
 	{
 
 		// label
 		label = new Label( parent, SWT.NONE );
 
-/*** initValue should take precedence over label property on Label control per JIRA item ATDL-146 and FPL Algo Trading Working Group meeting held 10/13/2010 		
-		if ( control.getLabel() != null )
-		{
-			label.setText( control.getLabel() );
-		}
-		else if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
-		{
-			label.setText( (String) ControlHelper.getInitValue( control, getAtdl4jOptions() ) );
-		}
-***/
 		// -- initValue should take precedence over label property on Label control per JIRA item ATDL-146 and FPL Algo Trading Working Group meeting held 10/13/2010 --
 		if ( ControlHelper.getInitValue( control, getAtdl4jOptions() ) != null )
 		{
@@ -75,7 +64,7 @@ public class SWTLabelWidget
 
 	public List<Control> getControls()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		widgets.add( label );
 		return widgets;
 	}

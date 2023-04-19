@@ -4,7 +4,8 @@
  */
 package org.atdl4j.ui.swt.app.impl;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jConfiguration;
 import org.atdl4j.config.Atdl4jOptions;
@@ -28,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 public class SWTAtdl4jTesterApp
 		extends AbstractAtdl4jTesterApp
 {
-	public final Logger logger = Logger.getLogger( SWTAtdl4jTesterApp.class );
+	public final Logger logger = LoggerFactory.getLogger( SWTAtdl4jTesterApp.class );
 	private Shell shell;
 
 	/**
@@ -63,10 +64,6 @@ public class SWTAtdl4jTesterApp
 		shell = new Shell( display );
 		GridLayout shellLayout = new GridLayout( 1, true );
 		shell.setLayout( shellLayout );
-		// shell.setText(
-		// "atdl4j(sm)- The Open-Source Java Solution for FIXatdl(sm)" );
-		// \u2120 should work but just get square box shell.setText(
-		// "atdl4j\u2120 - The Open-Source Java Solution for FIXatdl\u2120" );
 		shell.setText( "atdl4j - The Open-Source Java Solution for FIXatdl" );
 
 		// -- Delegate setup to AbstractAtdl4jTesterApp, construct a new
@@ -77,7 +74,6 @@ public class SWTAtdl4jTesterApp
 		getAtdl4jTesterPanel().buildAtdl4jTesterPanel( shell, getAtdl4jOptions() );
 
 		// -- SWT-specific stuff to improve layout --
-		// screen sizing works better with pack() after open() shell.pack();
 		shell.open();
 		shell.pack();
 

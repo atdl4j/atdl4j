@@ -59,7 +59,7 @@ public class StringT
      */
     public BigInteger getMinLength() {
         if (minLength == null) {
-            return new BigInteger("0");
+            return BigInteger.ZERO;
         } else {
             return minLength;
         }

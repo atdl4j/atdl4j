@@ -121,7 +121,7 @@ public class EditT {
      */
     public List<EditT> getEdit() {
         if (edit == null) {
-            edit = new ArrayList<EditT>();
+            edit = new ArrayList<>();
         }
         return this.edit;
     }
@@ -150,7 +150,7 @@ public class EditT {
      */
     public List<EditRefT> getEditRef() {
         if (editRef == null) {
-            editRef = new ArrayList<EditRefT>();
+            editRef = new ArrayList<>();
         }
         return this.editRef;
     }

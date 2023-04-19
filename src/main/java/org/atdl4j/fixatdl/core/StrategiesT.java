@@ -127,7 +127,7 @@ public class StrategiesT {
      */
     public List<EditT> getEdit() {
         if (edit == null) {
-            edit = new ArrayList<EditT>();
+            edit = new ArrayList<>();
         }
         return this.edit;
     }
@@ -156,7 +156,7 @@ public class StrategiesT {
      */
     public List<StrategyT> getStrategy() {
         if (strategy == null) {
-            strategy = new ArrayList<StrategyT>();
+            strategy = new ArrayList<>();
         }
         return this.strategy;
     }

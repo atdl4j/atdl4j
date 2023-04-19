@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -23,6 +24,7 @@ public class SwingDropDownListWidget
 	private JLabel label;
 	private JPanel wrapper;
 
+	@Override
 	public void setVisible(boolean visible){
 		if (wrapper != null)
 			wrapper.setVisible(visible);
@@ -32,6 +34,7 @@ public class SwingDropDownListWidget
 	
 	
 	// Helper to get list items
+	@Override
 	protected List<ListItemT> getListItems()
 	{
 		return (control instanceof EditableDropDownListT) ? 
@@ -44,15 +47,15 @@ public class SwingDropDownListWidget
 		if (selection >= 0)
 			return getListItems().get(selection).getEnumID();
 		
-		else if (control instanceof EditableDropDownListT && 
-				dropDownList.getSelectedItem() != null && 
-				(String)dropDownList.getSelectedItem() != "")
+		else if ((control instanceof EditableDropDownListT) &&
+				(dropDownList.getSelectedItem() != null) &&
+				(!Objects.equals(dropDownList.getSelectedItem(),"")) )
 		{
 			// use the enumID if the text matches a combo box item,
 			// even if the dropdown was not used to select it
 			for (int i = 0; i <  dropDownList.getItemCount(); i++)
 			{
-				if (((String)dropDownList.getItemAt(i)).equals((String)dropDownList.getSelectedItem()))
+				if (((String)dropDownList.getItemAt(i)).equals(dropDownList.getSelectedItem()))
 					return getListItems().get(i+1).getEnumID();
 			}
 			// else use the manually entered text string
@@ -60,7 +63,8 @@ public class SwingDropDownListWidget
 		}
 		return null;
 	}
-	
+
+	@Override
 	public String getParameterValue()
 	{
 		int selection = dropDownList.getSelectedIndex();
@@ -74,7 +78,7 @@ public class SwingDropDownListWidget
 			// item, even if the dropdown was not used to select it
 			for (int i = 0; i < dropDownList.getItemCount(); i++)
 			{
-				if (dropDownList.getItemAt(i).equals((String)dropDownList.getSelectedItem()))
+				if (dropDownList.getItemAt(i).equals(dropDownList.getSelectedItem()))
 					return getEnumWireValue(getListItems().get(i+1).getEnumID());
 			}
 			// else use the manually entered text string
@@ -119,14 +123,14 @@ public class SwingDropDownListWidget
 
 	
 	public List<Component> getComponents() {
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		if (label != null) widgets.add(label);
 		widgets.add(dropDownList);
 		return widgets;
 	}
 
 	public List<Component> getComponentsExcludingLabel() {
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		widgets.add(dropDownList);
 		return widgets;
 	}
@@ -179,12 +183,12 @@ public class SwingDropDownListWidget
 	 */
 	protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd)
 	{
-		// TODO ?? adjust the visual appearance of the control ??
+		// ?? adjust the visual appearance of the control ??
 	}
 	
 	@Override
 	protected List< ? extends Component> createBrickComponents() {
-	  ArrayList<Component> components = new ArrayList<Component>();
+	  ArrayList<Component> components = new ArrayList<>();
 	  
 	  String tooltip = getTooltip();
       
@@ -206,7 +210,7 @@ public class SwingDropDownListWidget
       // dropDownList items
       List<ListItemT> listItems = ( control instanceof EditableDropDownListT ) ? ( (EditableDropDownListT) control ).getListItem()
               : ( (DropDownListT) control ).getListItem();
-      // TODO: throw error if there are no list items
+
       for ( ListItemT listItem : listItems )
           dropDownList.addItem(listItem.getUiRep() != null ? listItem.getUiRep() : "");
 

@@ -4,10 +4,10 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.layout.CheckBoxListT;
@@ -18,10 +18,10 @@ import org.atdl4j.ui.swing.SwingListener;
 public class SwingCheckBoxListWidget
 		extends AbstractSwingWidget<String>
 {
-	private List<JCheckBox> multiCheckBox = new ArrayList<JCheckBox>();
+	private List<JCheckBox> multiCheckBox = new ArrayList<>();
 	private JLabel label;
 
-	// -- Overriden --
+	@Override
 	protected void initPreCheck()
 	{
 		// validate ListItems and EnumPairs
@@ -33,25 +33,26 @@ public class SwingCheckBoxListWidget
 
 	public String getControlValueRaw()
 	{
-		String value = "";
+		StringBuilder tmpStringBuilder = new StringBuilder("");
 		for ( int i = 0; i < multiCheckBox.size(); i++ )
 		{
 			JCheckBox b = multiCheckBox.get( i );
 			if ( b.isSelected() )
 			{
-				if ( "".equals( value ) )
+				if ( tmpStringBuilder.toString().isEmpty() )
 				{
-					value += ( (CheckBoxListT) control ).getListItem().get( i ).getEnumID();
+					tmpStringBuilder.append( ( (CheckBoxListT) control ).getListItem().get( i ).getEnumID() );
 				}
 				else
 				{
-					value += " " + ( (CheckBoxListT) control ).getListItem().get( i ).getEnumID();
+					tmpStringBuilder.append( " " ).append( ( (CheckBoxListT) control ).getListItem().get( i ).getEnumID() );
 				}
 			}
 		}
-		return "".equals( value ) ? null : value;
+		return tmpStringBuilder.toString().isEmpty() ? null : tmpStringBuilder.toString();
 	}
 
+	@Override
 	public String getParameterValue()
 	{
 		// Helper method from AbstractControlUI
@@ -84,18 +85,17 @@ public class SwingCheckBoxListWidget
 	
 	public List<Component> getComponents()
 	{
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		if (label != null) widgets.add( label );
 		widgets.addAll( multiCheckBox );
 		return widgets;
 	}
 
-	public List<Component> getComponentsExcludingLabel() {
-		List<Component> widgets = new ArrayList<Component>();
-		widgets.addAll( multiCheckBox );
-		return widgets;
-	}	
-	
+	public List<Component> getComponentsExcludingLabel()
+	{
+		return new ArrayList<>(multiCheckBox);
+	}
+
 	public void addListener(SwingListener listener) {
 		for ( JCheckBox b : multiCheckBox )
 		{
@@ -139,16 +139,14 @@ public class SwingCheckBoxListWidget
 	 */
 	protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd)
 	{
-		// TODO ?? adjust the visual appearance of the control ??
+		// ?? adjust the visual appearance of the control ??
 	}
 	
     @Override
     public List< ? extends Component> createBrickComponents() {
   
-      List<Component> components = new ArrayList<Component>();
-      // wrapper
-      JPanel wrapper = new JPanel();
-  
+      List<Component> components = new ArrayList<>();
+
       // tooltip
       String tooltip = control.getTooltip();
   
@@ -183,8 +181,8 @@ public class SwingCheckBoxListWidget
   
         if (parameter != null) {
           for (EnumPairT enumPair : parameter.getEnumPair()) {
-            if (enumPair.getEnumID() == listItem.getEnumID()) {
-  
+            if (Objects.equals(enumPair.getEnumID(), listItem.getEnumID()))
+            {
               // set tooltip
               if (enumPair.getDescription() != null)
                 checkBox.setToolTipText(enumPair.getDescription());

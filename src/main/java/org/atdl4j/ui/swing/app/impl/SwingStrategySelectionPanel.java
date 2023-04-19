@@ -11,7 +11,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
@@ -28,7 +29,7 @@ import org.atdl4j.ui.app.impl.AbstractStrategySelectionPanel;
 public class SwingStrategySelectionPanel 
 	extends AbstractStrategySelectionPanel
 {
-	private final Logger logger = Logger.getLogger(SwingStrategySelectionPanel.class);
+	private static final Logger logger = LoggerFactory.getLogger(SwingStrategySelectionPanel.class);
 	
 	private JComboBox strategiesDropDown;
 	public Object buildStrategySelectionPanel(Object parentOrShell, Atdl4jOptions atdl4jOptions)
@@ -88,7 +89,7 @@ public class SwingStrategySelectionPanel
 
 		for (StrategyT tempStrategy : getStrategiesList()) 
 		{
-			logger.debug( "loadStrategyList() [" + strategiesDropDown.getItemCount() + "] strategiesDropDown.add: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
+			logger.debug( "loadStrategyList() [{}] strategiesDropDown.add: {}", strategiesDropDown.getItemCount(), Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
 			strategiesDropDown.addItem( Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
 		}
 	}
@@ -96,7 +97,7 @@ public class SwingStrategySelectionPanel
 
 	public void selectDropDownStrategy(int index)
 	{
-		logger.debug( "selectDropDownStrategy() index: " + index );
+		logger.debug( "selectDropDownStrategy() index: {}", index );
 		
 		if ( getStrategiesList().size() != strategiesDropDown.getItemCount() )
 		{
@@ -119,7 +120,7 @@ public class SwingStrategySelectionPanel
 // 4/16/2010 Scott Atwell	public void selectDropDownStrategy(String strategyName) 
 	public void selectDropDownStrategyByStrategyName(String aStrategyName) 
 	{
-		logger.debug( "selectDropDownStrategyByStrategyName() aStrategyName: " + aStrategyName );
+		logger.debug( "selectDropDownStrategyByStrategyName() aStrategyName: {}", aStrategyName );
 		
 		if ( getStrategiesList().size() != strategiesDropDown.getItemCount() )
 		{
@@ -132,7 +133,7 @@ public class SwingStrategySelectionPanel
 			
 			if ( aStrategyName.equals( tempStrategy.getName() ) )
 			{
-				logger.debug( "selectDropDownStrategyByStrategyName() invoking selectDropDownStrategy( " + i + " )" );
+				logger.debug( "selectDropDownStrategyByStrategyName() invoking selectDropDownStrategy( {} )", i );
 				selectDropDownStrategy( i );
 			}
 		}
@@ -141,7 +142,7 @@ public class SwingStrategySelectionPanel
 // 4/16/2010 Scott Atwell added	
 	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ) 
 	{
-		logger.debug( "selectDropDownStrategyByStrategyWireValue() aStrategyWireValue: " + aStrategyWireValue );
+		logger.debug( "selectDropDownStrategyByStrategyWireValue() aStrategyWireValue: {}", aStrategyWireValue );
 		
 		if ( getStrategiesList().size() != strategiesDropDown.getItemCount() )
 		{
@@ -154,7 +155,7 @@ public class SwingStrategySelectionPanel
 			
 			if ( aStrategyWireValue.equals( tempStrategy.getWireValue() ) )
 			{
-				logger.debug( "selectDropDownStrategyByStrategyWireValue() invoking selectDropDownStrategy( " + i + " )" );
+				logger.debug( "selectDropDownStrategyByStrategyWireValue() invoking selectDropDownStrategy( {} )", i );
 				selectDropDownStrategy( i );
 			}
 		}

@@ -20,10 +20,9 @@ import org.atdl4j.ui.swing.SwingListener;
  * Implements either a CheckBox or a RadioButton
  */
 public class SwingButtonWidget
-		extends AbstractSwingWidget<Boolean>
+	extends AbstractSwingWidget<Boolean>
 {
 	private JToggleButton button;
-	//private SwingRadioButtonListener radioButtonListener;
 
 	public void setValue(Boolean value)
 	{
@@ -49,7 +48,7 @@ public class SwingButtonWidget
 
 	public List<Component> getComponents()
 	{
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		widgets.add(button);
 		return widgets;
 	}
@@ -78,6 +77,7 @@ public class SwingButtonWidget
 	}
 
 	// Parameter value looks up checkedEnumRef and uncheckedEnumRef
+	@Override
 	public Object getParameterValue()
 	{
 		if ( getControlValue() == null )
@@ -134,7 +134,7 @@ public class SwingButtonWidget
 	{
 		if ( ( button != null ) )
 		{
-			button.setSelected( (aControlInitValue != null ) ? ((Boolean) aControlInitValue).booleanValue() : false );
+			button.setSelected( (aControlInitValue != null ) && ((Boolean) aControlInitValue).booleanValue()  );
 		}
 	}
 
@@ -151,8 +151,7 @@ public class SwingButtonWidget
     // set label and tooltips
     if ( control.getLabel() != null ) button.setText( control.getLabel() );
     if ( getTooltip() != null ) button.setToolTipText( getTooltip() );
-    // if (control.getTooltip() != null) button.setToolTipText(control.getTooltip());
-            
+
     Boolean tempInitValue = (Boolean) ControlHelper.getInitValue( control, getAtdl4jOptions() );
     if ( tempInitValue != null )
     {

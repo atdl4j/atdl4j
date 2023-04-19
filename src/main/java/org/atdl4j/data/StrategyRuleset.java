@@ -50,12 +50,12 @@ public class StrategyRuleset
 
 	public StrategyRuleset()
 	{
-		this.refRules = new HashMap<StrategyEditT, ValidationRule>();
-		this.requiredFieldRules = new ArrayList<ValidationRule>();
-		this.constFieldRules = new ArrayList<ValidationRule>();
-		this.rangeFieldRules = new ArrayList<ValidationRule>();
-		this.lengthFieldRules = new ArrayList<ValidationRule>();
-		this.patternRules = new ArrayList<ValidationRule>();
+		this.refRules = new HashMap<>();
+		this.requiredFieldRules = new ArrayList<>();
+		this.constFieldRules = new ArrayList<>();
+		this.rangeFieldRules = new ArrayList<>();
+		this.lengthFieldRules = new ArrayList<>();
+		this.patternRules = new ArrayList<>();
 	}
 
 	public void putRefRule(StrategyEditT strategyEdit, ValidationRule rule)
@@ -159,17 +159,17 @@ public class StrategyRuleset
 
 	protected String buildValidationExceptionText( ValidationException aOriginalValidationException, String aMsgText, Atdl4jWidget<?> aAtdl4jWidget )
 	{
-		StringBuffer tempStringBuffer = new StringBuffer();
-		
-		tempStringBuffer.append( "Parameter \"" + aAtdl4jWidget.getParameter().getName() + "\"" );
-		tempStringBuffer.append( " (\"" + ControlHelper.getLabelOrID( aAtdl4jWidget.getControl() ) + "\") " );
-		tempStringBuffer.append(  aMsgText );
+		StringBuilder tmpStringBuilder = new StringBuilder();
+
+		tmpStringBuilder.append("Parameter \"").append(aAtdl4jWidget.getParameter().getName()).append("\"");
+		tmpStringBuilder.append(" (\"").append(ControlHelper.getLabelOrID(aAtdl4jWidget.getControl())).append("\") ");
+		tmpStringBuilder.append(  aMsgText );
 		if ( aOriginalValidationException.getMessage() != null )
-		{ 
-			tempStringBuffer.append( "  " + aOriginalValidationException.getMessage() );
+		{
+			tmpStringBuilder.append("  ").append(aOriginalValidationException.getMessage());
 		}
 		
-		return tempStringBuffer.toString();
+		return tmpStringBuilder.toString();
 	}
 
 }

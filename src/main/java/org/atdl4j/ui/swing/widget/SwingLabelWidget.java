@@ -38,7 +38,7 @@ public class SwingLabelWidget
 	}
 
 	public List<Component> getComponents() {
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		widgets.add(label);
 		return widgets;
 	}
@@ -115,7 +115,7 @@ public class SwingLabelWidget
     }
 
   private List<Component> createBrickComponents() {
-    List<Component> components = new ArrayList<Component>();
+    List<Component> components = new ArrayList<>();
     
     // label
     label = new JLabel();

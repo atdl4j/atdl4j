@@ -1,7 +1,5 @@
 package org.atdl4j.config;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.atdl4j.data.TypeConverterFactory;
 import org.atdl4j.data.exception.Atdl4jClassLoadException;
 import org.atdl4j.ui.Atdl4jWidget;
@@ -18,13 +16,15 @@ import org.atdl4j.ui.app.FixMsgLoadPanel;
 import org.atdl4j.ui.app.FixatdlFileSelectionPanel;
 import org.atdl4j.ui.app.StrategyDescriptionPanel;
 import org.atdl4j.ui.app.StrategySelectionPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Typical setup (for class named XXX):
  * 	private String classNameXXX;
  * 	public void setClassNameXXX(String);
  * 	public String getClassNameXXX();
- *    abstract protected String getDefaultClassNameXXX();
+ *    protected abstract String getDefaultClassNameXXX();
  *    public XXX getXXX() throws ;
  * 	add to constructor:  setClassNameXXX( getDefaultClassNameXXX() );
  * 	NOTE:  add public XXX getXXX() to Atdl4jOptions
@@ -42,12 +42,11 @@ import org.atdl4j.ui.app.StrategySelectionPanel;
 public abstract class AbstractAtdl4jConfiguration
 	implements Atdl4jConfiguration
 {
-	private final Logger logger = Logger.getLogger(AbstractAtdl4jConfiguration.class);
+	private final Logger logger = LoggerFactory.getLogger(AbstractAtdl4jConfiguration.class);
 
-	public static String ATDL4J_PACKAGE_NAME_PATH_FOR_DEBUG_LOGGING = "org.atdl4j";
-//TODO 9/26/2010 Scott Atwell	public static String DEFAULT_CLASS_NAME_STRATEGIES_UI_FACTORY = "org.atdl4j.ui.impl.BaseStrategiesUIFactory";
-	public static String DEFAULT_CLASS_NAME_ATDL4j_WIDGET_FACTORY = "org.atdl4j.ui.impl.BaseAtdl4jWidgetFactory";
-	public static String DEFAULT_CLASS_NAME_TYPE_CONVERTER_FACTORY = "org.atdl4j.data.TypeConverterFactory";
+	public static final String ATDL4J_PACKAGE_NAME_PATH_FOR_DEBUG_LOGGING = "org.atdl4j";
+	public static final String DEFAULT_CLASS_NAME_ATDL4J_WIDGET_FACTORY = "org.atdl4j.ui.impl.BaseAtdl4jWidgetFactory";
+	public static final String DEFAULT_CLASS_NAME_TYPE_CONVERTER_FACTORY = "org.atdl4j.data.TypeConverterFactory";
 	
 	
 	private String classNameStrategiesUI;
@@ -99,12 +98,12 @@ public abstract class AbstractAtdl4jConfiguration
 	private boolean showValidateOutputSection = true;
 	private boolean showCompositePanelOkCancelButtonSection = true;
 	private boolean showTesterPanelOkCancelButtonSection = true;
-	private Integer strategyDropDownItemDepth = new Integer( 15 );  // ComboBox drop down 'depth' (aka VisibleItemCount)
+	private Integer strategyDropDownItemDepth = Integer.valueOf( 15 );  // ComboBox drop down 'depth' (aka VisibleItemCount)
 
 	
 	protected String getDefaultClassNameAtdl4jWidgetFactory()
 	{ 
-		return DEFAULT_CLASS_NAME_ATDL4j_WIDGET_FACTORY;
+		return DEFAULT_CLASS_NAME_ATDL4J_WIDGET_FACTORY;
 	}
 	
 	protected String getDefaultClassNameTypeConverterFactory()
@@ -112,43 +111,43 @@ public abstract class AbstractAtdl4jConfiguration
 		return DEFAULT_CLASS_NAME_TYPE_CONVERTER_FACTORY;
 	}
 	
-		// -- UI Infrastructure --
-	abstract protected String getDefaultClassNameStrategiesUI();
-	abstract protected String getDefaultClassNameStrategyUI();
-	abstract protected String getDefaultClassNameStrategyPanelHelper();
+	// -- UI Infrastructure --
+	protected abstract String getDefaultClassNameStrategiesUI();
+	protected abstract String getDefaultClassNameStrategyUI();
+	protected abstract String getDefaultClassNameStrategyPanelHelper();
 	
 	// -- Controls/Widgets -- 
-	abstract protected String getDefaultClassNameAtdl4jWidgetForCheckBoxT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForDropDownListT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForEditableDropDownListT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForRadioButtonListT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForTextFieldT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForSliderT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForCheckBoxListT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForClockT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForSingleSpinnerT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForDoubleSpinnerT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForSingleSelectListT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForMultiSelectListT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForHiddenFieldT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForLabelT();
-	abstract protected String getDefaultClassNameAtdl4jWidgetForRadioButtonT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForCheckBoxT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForDropDownListT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForEditableDropDownListT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForRadioButtonListT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForTextFieldT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForSliderT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForCheckBoxListT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForClockT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForSingleSpinnerT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForDoubleSpinnerT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForSingleSelectListT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForMultiSelectListT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForHiddenFieldT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForLabelT();
+	protected abstract String getDefaultClassNameAtdl4jWidgetForRadioButtonT();
 
 	// -- App Components --
-	abstract protected String getDefaultClassNameAtdl4jTesterPanel();
-	abstract protected String getDefaultClassNameAtdl4jInputAndFilterDataSelectionPanel();
-	abstract protected String getDefaultClassNameAtdl4jInputAndFilterDataPanel();
-	abstract protected String getDefaultClassNameAtdl4jCompositePanel();
-	abstract protected String getDefaultClassNameAtdl4jUserMessageHandler();
-	abstract protected String getDefaultClassNameFixatdlFileSelectionPanel();
-	abstract protected String getDefaultClassNameFixMsgLoadPanel();
-	abstract protected String getDefaultClassNameStrategySelectionPanel();
-	abstract protected String getDefaultClassNameStrategyDescriptionPanel();
+	protected abstract String getDefaultClassNameAtdl4jTesterPanel();
+	protected abstract String getDefaultClassNameAtdl4jInputAndFilterDataSelectionPanel();
+	protected abstract String getDefaultClassNameAtdl4jInputAndFilterDataPanel();
+	protected abstract String getDefaultClassNameAtdl4jCompositePanel();
+	protected abstract String getDefaultClassNameAtdl4jUserMessageHandler();
+	protected abstract String getDefaultClassNameFixatdlFileSelectionPanel();
+	protected abstract String getDefaultClassNameFixMsgLoadPanel();
+	protected abstract String getDefaultClassNameStrategySelectionPanel();
+	protected abstract String getDefaultClassNameStrategyDescriptionPanel();
 	
 	/** 
 	 * 
 	 */
-	public AbstractAtdl4jConfiguration()
+	protected AbstractAtdl4jConfiguration()
 	{
 		// -- UI Infrastructure
 		setClassNameStrategiesUI( getDefaultClassNameStrategiesUI() );
@@ -639,42 +638,6 @@ public abstract class AbstractAtdl4jConfiguration
 		return classNameAtdl4jCompositePanel;
 	}
 
-	/* 
-	 * Sets Logger's logging level to Level.DEBUG if aDebugLevelFlag is true, otherwise to Level.INFO.
-	 * Sets the logging level for ATDL4J_PACKAGE_NAME_PATH_FOR_DEBUG_LOGGING package/path.
-	 */
-	public void setDebugLoggingLevel( boolean aDebugLevelFlag )
-	{
-		Level tempLevel = Level.INFO; 
-		if ( aDebugLevelFlag )
-		{
-			tempLevel = Level.DEBUG;
-		}
-		
-		logger.info( "setDebugLoggingLevel( " + aDebugLevelFlag + " ) invoking org.apache.log4j.Logger.getLogger( " + ATDL4J_PACKAGE_NAME_PATH_FOR_DEBUG_LOGGING + " ).setLevel( " + tempLevel + " )" );
-		Logger.getLogger( ATDL4J_PACKAGE_NAME_PATH_FOR_DEBUG_LOGGING ).setLevel( tempLevel );
-		// -- explicitly set ourself, too --
-		logger.setLevel( tempLevel );
-	}
-
-	/* 
-	 * Returns true if this class' Logger's logging level is Level.DEBUG or higher, otherwise returns false.
-	 */
-	public boolean isDebugLoggingLevel()
-	{
-		// -- Use this class' own logger's level as guide --
-		Level tempLevel = logger.getLevel(); 
-		
-		if ( ( tempLevel != null ) && ( Level.DEBUG.isGreaterOrEqual( tempLevel ) ) )
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
 	/**
 	 * @return the classNameStrategyPanelHelper
 	 */
@@ -762,7 +725,7 @@ public abstract class AbstractAtdl4jConfiguration
 	}
 
 	/**
-	 * @param aCatchAllStrategyLoadExceptions the catchAllStrategyLoadExceptions to set
+	 * @param aCatchAllValidationExceptions the catchAllStrategyLoadExceptions to set
 	 */
 	public void setCatchAllValidationExceptions(boolean aCatchAllValidationExceptions)
 	{
@@ -902,15 +865,14 @@ public abstract class AbstractAtdl4jConfiguration
 	private <E> E createClass(String aClassName)
 	{
 	    if (aClassName==null) throw new Atdl4jClassLoadException(aClassName);
-	    logger.debug( "Loading class: " + aClassName );
-	    try {
-		    return ((Class<E>) Class.forName( aClassName ) ).newInstance();		    
-	    } catch (InstantiationException e) {
+	    logger.debug( "Loading class: {}", aClassName );
+	    try
+		{
+		    return ((Class<E>) Class.forName( aClassName ) ).newInstance();
+	    }
+	    catch (ClassNotFoundException|IllegalAccessException|InstantiationException e)
+		{
 		 throw new Atdl4jClassLoadException(aClassName, e);
-	    } catch (IllegalAccessException e) {
-		throw new Atdl4jClassLoadException(aClassName, e);
-	    } catch (ClassNotFoundException e) {
-		throw new Atdl4jClassLoadException(aClassName, e);
 	    }
 	}
 	

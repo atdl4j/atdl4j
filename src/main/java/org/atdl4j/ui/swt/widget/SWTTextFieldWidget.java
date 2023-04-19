@@ -68,12 +68,12 @@ public class SWTTextFieldWidget
 
 	public void setValue(String value)
 	{
-		textField.setText( ( value == null ) ? "" : value.toString() );
+		textField.setText( ( value == null ) ? "" : value );
 	}
 
 	public List<Control> getControls()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		if (label != null) widgets.add( label );
 		widgets.add( textField );
 		return widgets;
@@ -81,7 +81,7 @@ public class SWTTextFieldWidget
 
 	public List<Control> getControlsExcludingLabel()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		widgets.add( textField );
 		return widgets;
 	}
@@ -99,6 +99,7 @@ public class SWTTextFieldWidget
 	/**
 	 * Overridden -- makes the textField appear non-editable vs. the default of disabled.
 	 */
+	@Override
 	public void processConstValueHasBeenSet()
 	{
 		textField.setEditable( false );

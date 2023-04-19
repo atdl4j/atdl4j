@@ -48,7 +48,7 @@ public class SWTStateListener
 	{
 
 		// Create a casted map so that Validatable<?> can be used
-		Map<String, Atdl4jWidget<?>> targets = new HashMap<String, Atdl4jWidget<?>>( controls );
+		Map<String, Atdl4jWidget<?>> targets = new HashMap<>( controls );
 
 		try
 		{
@@ -88,7 +88,7 @@ public class SWTStateListener
 			// set value
 			if ( stateRule.getValue() != null )
 			{
-				if ( state )
+				if (Boolean.TRUE.equals(state) )
 				{
 					String value = stateRule.getValue();
 					affectedWidget.setValueAsString( value );

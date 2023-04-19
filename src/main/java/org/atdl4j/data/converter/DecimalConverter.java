@@ -182,17 +182,6 @@ public class DecimalConverter
 		{
 			return ( (QtyT) getParameter() ).getMinValue();
 		}
-//		else if ( getParameter() instanceof IntT )
-//		{
-//			
-//			IntT intT = (IntT) getParameter();
-//
-//			if ( intT.getMinValue() != null )
-//			{
-//				return intT.getMinValue();
-//			}
-//
-//		}
 		else
 		{
 			return null;
@@ -232,17 +221,6 @@ public class DecimalConverter
 		{
 			return ( (QtyT) getParameter() ).getMaxValue();
 		}
-//		else if ( getParameter() instanceof IntT )
-//		{
-//			
-//			IntT intT = (IntT) getParameter();
-//
-//			if ( intT.getMaxValue() != null )
-//			{
-//				return intT.getMinValue();
-//			}
-//
-//		}
 		else
 		{
 			return null;
@@ -297,13 +275,12 @@ public class DecimalConverter
 		
 		if ( aValue instanceof BigDecimal )
 		{
-		// 2/12/2010			return (BigDecimal) aValue;
 			tempBigDecimal = (BigDecimal) aValue;
 		}
 		else if ( aValue instanceof String )
 		{
 			String str = (String) aValue;
-			if ( ( str == null ) || ( str.trim().length() == 0 ) )
+			if ( str.trim().length() == 0 )
 			{
 				return null;
 			}
@@ -397,8 +374,8 @@ public class DecimalConverter
 		
 		if ( aFixWireValue != null )
 		{
-			String str = (String) aFixWireValue;
-			if ( ( str == null ) || ( str.trim().length() == 0 ) )
+			String str = aFixWireValue;
+			if ( str.trim().length() == 0 )
 			{
 				return null;
 			}
@@ -439,8 +416,8 @@ public class DecimalConverter
 		
 		if ( aParameterString != null )
 		{
-			String str = (String) aParameterString;
-			if ( ( str == null ) || ( str.trim().length() == 0 ) )
+			String str = aParameterString;
+			if ( str.trim().length() == 0 )
 			{
 				return null;
 			}
@@ -495,7 +472,7 @@ public class DecimalConverter
 		else if ( aParameterValue instanceof String )
 		{
 			String str = (String) aParameterValue;
-			if ( ( str == null ) || ( str.trim().length() == 0 ) )
+			if ( str.trim().length() == 0 )
 			{
 				return null;
 			}

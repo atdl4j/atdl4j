@@ -1,6 +1,7 @@
 package org.atdl4j.ui.swt.impl;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.StrategyUI;
@@ -21,7 +22,7 @@ import org.eclipse.swt.widgets.Label;
 public class SWTStrategyUIFactory
 	extends BaseStrategyUIFactory
 {
-	protected static final Logger logger = Logger.getLogger( SWTStrategyUIFactory.class );
+	protected static final Logger logger = LoggerFactory.getLogger( SWTStrategyUIFactory.class );
 
 	public static StrategyUI createStrategyUIAndContainer(SWTStrategiesUI aStrategiesUI, StrategyT aStrategy)
 	{

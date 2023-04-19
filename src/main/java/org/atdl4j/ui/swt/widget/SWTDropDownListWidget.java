@@ -2,6 +2,7 @@ package org.atdl4j.ui.swt.widget;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.atdl4j.fixatdl.layout.DropDownListT;
 import org.atdl4j.fixatdl.layout.EditableDropDownListT;
@@ -68,10 +69,10 @@ public class SWTDropDownListWidget
 	}
 
 	// Helper to get list items
+	@Override
 	protected List<ListItemT> getListItems()
 	{
-		return ( control instanceof EditableDropDownListT ) ? ( (EditableDropDownListT) control ).getListItem() : ( (DropDownListT) control )
-				.getListItem();
+		return ( control instanceof EditableDropDownListT ) ? ( (EditableDropDownListT) control ).getListItem() : ( (DropDownListT) control ).getListItem();
 	}
 
 
@@ -82,7 +83,7 @@ public class SWTDropDownListWidget
 		{
 			return getListItems().get( selection ).getEnumID();
 		}
-		else if ( control instanceof EditableDropDownListT && dropDownList.getText() != null && dropDownList.getText() != "" )
+		else if ( control instanceof EditableDropDownListT && dropDownList.getText() != null && !Objects.equals(dropDownList.getText(), ""))
 		{
 			// use the enumID if the text matches a combo box item,
 			// even if the dropdown was not used to select it
@@ -97,12 +98,13 @@ public class SWTDropDownListWidget
 		return null;
 	}
 
+	@Override
 	public String getParameterValue()
 	{
 		int selection = dropDownList.getSelectionIndex();
 		if ( selection >= 0 )
 			return getParameterValueAsEnumWireValue();
-		if ( control instanceof EditableDropDownListT && dropDownList.getText() != null && dropDownList.getText() != "" )
+		if ( control instanceof EditableDropDownListT && dropDownList.getText() != null && !Objects.equals(dropDownList.getText(), ""))
 		{
 			// use the Parameter's Enum wireValue if the text matches a combo box
 			// item, even if the dropdown was not used to select it
@@ -149,7 +151,7 @@ public class SWTDropDownListWidget
 
 	public List<Control> getControls()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		if (label != null) widgets.add( label );
 		widgets.add( dropDownList );
 		return widgets;
@@ -157,7 +159,7 @@ public class SWTDropDownListWidget
 
 	public List<Control> getControlsExcludingLabel()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		widgets.add( dropDownList );
 		return widgets;
 	}

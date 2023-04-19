@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+  <!-- Display Limit Price Sample -->
+  <Strategy name="LimitPriceSample" uiRep="Display Limit Price Sample" wireValue="1" providerID="ABC">
+
+<!-- OrdType=Limit and Limit Price (Price=99) orders s/b defined outside of algo parameters panel
+		<  Parameter name="Price" xsi:type="Price_t" fixTag="44" use="optional" minValue="0"/  >
+-->
+
+		<Parameter name="IWouldPrice" xsi:type="Price_t" fixTag="9999" use="optional" minValue="0"/>
+
+
+    <lay:StrategyLayout>
+
+        <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="Externally fed FIX_Price value">
+            <!-- Non-editable (always diabled), helper control to display Limit Price (tag 44) if available 
+                  (Label_t for "Limit Price" used to ensure that label text does not appear disabled)--> 
+            <lay:Control ID="PriceFieldLabel" xsi:type="lay:Label_t" label="Limit Price"/>
+            <lay:Control ID="PriceField" xsi:type="lay:TextField_t" initValue="" initFixField="FIX_Price" initPolicy="UseFixField">
+            	<!-- Force TextField to always be disabled (Not_Null *OR* Null)-->
+							<flow:StateRule enabled="false">
+                    	<val:Edit logicOperator="OR">
+                        <val:Edit field="PriceField" operator="NX"/>
+                        <val:Edit field="PriceField" operator="EX"/>
+                      </val:Edit>
+							</flow:StateRule>
+            </lay:Control>
+                
+            <lay:Control ID="IWouldPriceField" xsi:type="lay:TextField_t"
+                label="I Would Price" parameterRef="IWouldPrice"/>
+        </lay:StrategyPanel>
+
+    </lay:StrategyLayout>
+
+  </Strategy>
+
+  <!-- Display and Enforce Limit Price Sample -->
+  <Strategy name="LimitPriceEnforacedSample" uiRep="Display and Enforce Limit Price Sample" wireValue="2" providerID="ABC">
+
+<!-- OrdType=Limit and Limit Price (Price=99) orders s/b defined outside of algo parameters panel
+		<  Parameter name="Price" xsi:type="Price_t" fixTag="44" use="optional" minValue="0"/  >
+-->
+
+		<Parameter name="IWouldPrice" xsi:type="Price_t" fixTag="9999" use="optional" minValue="0"/>
+
+
+    <lay:StrategyLayout>
+
+        <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="Externally fed FIX_Side value">
+            <!-- Non-editable (always diabled), helper control to display Side (tag 34) if available 
+                  (Label_t for "Side Price" used to ensure that label text does not appear disabled)--> 
+            <lay:Control ID="SideFieldLabel" xsi:type="lay:Label_t" label="Side"/>
+            <lay:Control ID="SideField" xsi:type="lay:TextField_t" initValue="" initFixField="FIX_Side" initPolicy="UseFixField">
+            	<!-- Force TextField to always be disabled (Not_Null *OR* Null)-->
+							<flow:StateRule enabled="false">
+                    	<val:Edit logicOperator="OR">
+                        <val:Edit field="SideField" operator="NX"/>
+                        <val:Edit field="SideField" operator="EX"/>
+                      </val:Edit>
+							</flow:StateRule>
+            </lay:Control>
+        </lay:StrategyPanel>
+                
+       <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="Externally fed FIX_Price value">
+            <!-- Non-editable (always diabled), helper control to display Limit Price (tag 44) if available 
+                  (Label_t for "Limit Price" used to ensure that label text does not appear disabled)--> 
+            <lay:Control ID="PriceFieldLabel" xsi:type="lay:Label_t" label="Limit Price"/>
+            <lay:Control ID="PriceField" xsi:type="lay:TextField_t" initValue="" initFixField="FIX_Price" initPolicy="UseFixField">
+            	<!-- Force TextField to always be disabled (Not_Null *OR* Null)-->
+							<flow:StateRule enabled="false">
+                    	<val:Edit logicOperator="OR">
+                        <val:Edit field="PriceField" operator="NX"/>
+                        <val:Edit field="PriceField" operator="EX"/>
+                      </val:Edit>
+							</flow:StateRule>
+            </lay:Control>
+        </lay:StrategyPanel>
+                
+          <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="IWouldPrice checked against Limit Price">
+            <lay:Control ID="IWouldPriceField" xsi:type="lay:TextField_t"
+                label="I Would Price" parameterRef="IWouldPrice"/>
+        </lay:StrategyPanel>
+
+    </lay:StrategyLayout>
+
+<!-- problem is that when FIX_Side is "1" it **fails** the "FIX_Side" operator="EQ" value="2" check (though not a Sell order)
+       <val:StrategyEdit errorMessage="IWouldPrice must be less than Limit Price for Buy order.">
+        	<val:Edit logicOperator="OR">
+           	<val:Edit field="IWouldPrice" operator="NX"/>
+	        	<val:Edit logicOperator="AND">
+	            <val:Edit field="FIX_Side" operator="EQ" value="1"/>
+	            <val:Edit field="IWouldPrice" operator="LT" field2="FIX_Price"/>
+	          </val:Edit>
+          </val:Edit>
+        </val:StrategyEdit>
+
+       <val:StrategyEdit errorMessage="IWouldPrice must be greater than Limit Price for Sell order.">
+        	<val:Edit logicOperator="OR">
+           	<val:Edit field="IWouldPrice" operator="NX"/>
+	        	<val:Edit logicOperator="AND">
+	            <val:Edit field="FIX_Side" operator="EQ" value="2"/>
+	            <val:Edit field="IWouldPrice" operator="GT" field2="FIX_Price"/>
+	          </val:Edit>
+          </val:Edit>
+        </val:StrategyEdit>
+-->
+       <val:StrategyEdit errorMessage="IWouldPrice must be within Limit Price bounds.">
+        	<val:Edit logicOperator="OR">
+           	<val:Edit field="IWouldPrice" operator="NX"/>
+	        	<val:Edit logicOperator="AND">
+	            <val:Edit field="FIX_Side" operator="EQ" value="1"/>
+	            <val:Edit field="IWouldPrice" operator="LT" field2="FIX_Price"/>
+	          </val:Edit>
+	        	<val:Edit logicOperator="AND">
+	            <val:Edit field="FIX_Side" operator="EQ" value="2"/>
+	            <val:Edit field="IWouldPrice" operator="GT" field2="FIX_Price"/>
+	          </val:Edit>
+          </val:Edit>
+        </val:StrategyEdit>
+
+  </Strategy>
+
+</Strategies>

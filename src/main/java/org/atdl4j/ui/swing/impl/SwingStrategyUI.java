@@ -2,19 +2,15 @@ package org.atdl4j.ui.swing.impl;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.data.validation.Field2OperatorValidationRule;
@@ -35,7 +31,7 @@ import org.atdl4j.ui.swing.widget.SwingButtonWidget;
  * 
  */
 public class SwingStrategyUI extends AbstractStrategyUI {
-	protected static final Logger logger = Logger.getLogger(SwingStrategyUI.class);
+	protected static final Logger logger = LoggerFactory.getLogger(SwingStrategyUI.class);
 	
 	protected Map<String, SwingWidget<?>> swingWidgetMap;
 	
@@ -57,8 +53,8 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.StrategyUI#relayoutCollapsibleStrategyPanels()
 	 */
 	@Override
-	public void relayoutCollapsibleStrategyPanels() {
-		// TODO Auto-generated method stub
+	public void relayoutCollapsibleStrategyPanels()
+	{
 	}
 	
 	/*
@@ -79,7 +75,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 
     JPanel tmp = new JPanel();
     
-    Map<String, SwingWidget< ? >> tempSwingWidgetMap = new HashMap<String, SwingWidget< ? >>();
+    Map<String, SwingWidget< ? >> tempSwingWidgetMap = new HashMap<>();
     // build panels and widgets recursively
     for (StrategyPanelT panel : aStrategyPanelList) {
       Map<String, SwingWidget< ? >> strategyPanelAndWidgets = strategyPanelFactory
@@ -105,11 +101,14 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#getAtdl4jWidgetMap()
 	 */
 	@Override
-	public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetMap() {
-		if ( swingWidgetMap != null )	{
-			return new HashMap<String, Atdl4jWidget<?>>( swingWidgetMap  );
+	public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetMap()
+	{
+		if ( swingWidgetMap != null )
+		{
+			return new HashMap<>( swingWidgetMap  );
 		}
-		else {
+		else
+		{
 			return null;
 		}
 	}
@@ -120,10 +119,11 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#getAtdl4jWidgetWithParameterMap()
 	 */
 	@Override
-	public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetWithParameterMap() {
+	public Map<String, Atdl4jWidget<?>> getAtdl4jWidgetWithParameterMap()
+	{
 		if ( swingWidgetWithParameterMap != null )
 		{
-			return new HashMap<String, Atdl4jWidget<?>>( swingWidgetWithParameterMap  );
+			return new HashMap<>( swingWidgetWithParameterMap  );
 		}
 		else
 		{
@@ -139,8 +139,8 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	@Override
 	protected void initBegin(Object parentContainer) {
 		parentComponent = (JPanel) parentContainer;
-		swingWidgetWithParameterMap = new HashMap<String, SwingWidget<?>>();
-		widgetStateListenerMap = new HashMap<SwingWidget<?>, Set<SwingStateListener>>();
+		swingWidgetWithParameterMap = new HashMap<>();
+		widgetStateListenerMap = new HashMap<>();
 	}
 	
 	/*
@@ -158,7 +158,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 			throw new FIXatdlFormatException("getStrategy().getStrategyLayout() was null (verify <lay:StrategyLayout>)");
 		}
 		
-		if (getStrategy().getStrategyLayout() == null) {
+		if (getStrategy().getStrategyLayout().getStrategyPanel() == null) {
 			throw new FIXatdlFormatException("getStrategy().getStrategyLayout().getStrategyPanel() was null (verify <lay:StrategyLayout> <lay:StrategyPanel>)");
 		}
 		
@@ -173,12 +173,12 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 */
 	@Override
 	protected void createRadioGroups() {
-		Map<String, ButtonGroup> tempRadioGroupMap = new HashMap<String, ButtonGroup>();
+		Map<String, ButtonGroup> tempRadioGroupMap = new HashMap<>();
 		
 		for ( SwingWidget<?> widget : swingWidgetMap.values() )
 		{
 			if ( widget.getControl() instanceof RadioButtonT && ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
-					&& ( (RadioButtonT) widget.getControl() ).getRadioGroup() != "" )
+					&& !Objects.equals(((RadioButtonT) widget.getControl()).getRadioGroup(), ""))
 			{
 				String rg = ( (RadioButtonT) widget.getControl() ).getRadioGroup();
 				if ( !tempRadioGroupMap.containsKey( rg ) )
@@ -200,7 +200,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 */
 	@Override
 	protected void buildAtdl4jWidgetWithParameterMap() {
-		Map<String, SwingWidget<?>> tempSwingWidgetWithParameterMap = new HashMap<String, SwingWidget<?>>();
+		Map<String, SwingWidget<?>> tempSwingWidgetWithParameterMap = new HashMap<>();
 		// loop through all UI controls
 		for ( SwingWidget<?> widget : swingWidgetMap.values() )
 		{
@@ -226,7 +226,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 */
 	@Override
 	protected void attachGlobalStateRulesToControls() throws FIXatdlFormatException {
-		List<SwingStateListener> tempStateListenerList = new Vector<SwingStateListener>();
+		List<SwingStateListener> tempStateListenerList = new ArrayList<>();
 		
 		// loop through all UI controls
 		for ( SwingWidget<?> widget : swingWidgetMap.values() )
@@ -295,10 +295,10 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 				String rg = ( (RadioButtonT) targetParameterWidget.getControl() ).getRadioGroup();
 				for ( SwingWidget<?> widget : swingWidgetMap.values() )
 				{
-					if ( widget.getControl() instanceof RadioButtonT && ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
-							&& ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
-							&& ( ! "".equals( ( (RadioButtonT) widget.getControl() ).getRadioGroup() ) )
-							&& ( (RadioButtonT) widget.getControl() ).getRadioGroup().equals( rg ) )
+					if ( ( widget.getControl() instanceof RadioButtonT )
+					&& ( (RadioButtonT) widget.getControl() ).getRadioGroup() != null
+					&& ( ! "".equals( ( (RadioButtonT) widget.getControl() ).getRadioGroup() ) )
+					&& ( (RadioButtonT) widget.getControl() ).getRadioGroup().equals( rg ) )
 					{
 						putStateListener( widget, stateRuleListener );
 					}
@@ -310,7 +310,7 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	private void putStateListener(SwingWidget<?> widget, SwingStateListener stateListener)
 	{
 		if ( !widgetStateListenerMap.containsKey( widget ) )
-			widgetStateListenerMap.put( widget, new HashSet<SwingStateListener>() );
+			widgetStateListenerMap.put( widget, new HashSet<>() );
 		if ( !widgetStateListenerMap.get( widget ).contains( stateListener ) )
 			widgetStateListenerMap.get( widget ).add( stateListener );
 	}
@@ -335,7 +335,8 @@ public class SwingStrategyUI extends AbstractStrategyUI {
 	 * @see org.atdl4j.ui.impl.AbstractStrategyUI#initEnd()
 	 */
 	@Override
-	protected void initEnd() {
+	protected void initEnd()
+	{
 	}
 	
 	/*

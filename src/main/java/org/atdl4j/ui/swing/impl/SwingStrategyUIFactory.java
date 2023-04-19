@@ -2,7 +2,8 @@ package org.atdl4j.ui.swing.impl;
 
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.StrategyUI;
@@ -17,7 +18,7 @@ import org.atdl4j.ui.impl.BaseStrategyUIFactory;
  */
 public class SwingStrategyUIFactory extends BaseStrategyUIFactory
 {
-	protected static final Logger logger = Logger.getLogger( SwingStrategyUIFactory.class );
+	protected static final Logger logger = LoggerFactory.getLogger( SwingStrategyUIFactory.class );
 
 	public static StrategyUI createStrategyUIAndContainer(SwingStrategiesUI aStrategiesUI, StrategyT aStrategy)
 	{

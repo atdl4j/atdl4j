@@ -178,7 +178,6 @@ public class BaseAtdl4jWidgetFactory
 	 * @param control
 	 * @param parameter
 	 * @return
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jWidget<?> createCheckBoxListT(CheckBoxListT control, ParameterT parameter)
 	{
@@ -193,7 +192,6 @@ public class BaseAtdl4jWidgetFactory
 	 * @param control
 	 * @param parameter
 	 * @return
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jWidget<?> createCheckBoxT(CheckBoxT control, ParameterT parameter)
 	{
@@ -208,7 +206,6 @@ public class BaseAtdl4jWidgetFactory
 	 * @param control
 	 * @param parameter
 	 * @return
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jWidget<?> createClockT(ClockT control, ParameterT parameter)
 	{
@@ -223,7 +220,6 @@ public class BaseAtdl4jWidgetFactory
 	 * @param control
 	 * @param parameter
 	 * @return
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jWidget<?> createDoubleSpinnerT(DoubleSpinnerT control, ParameterT parameter)
 	{
@@ -238,7 +234,6 @@ public class BaseAtdl4jWidgetFactory
 	 * @param control
 	 * @param parameter
 	 * @return
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public Atdl4jWidget<?> createDropDownListT(DropDownListT control, ParameterT parameter)
 	{

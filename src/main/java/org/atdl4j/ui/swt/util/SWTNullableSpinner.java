@@ -5,7 +5,8 @@ package org.atdl4j.ui.swt.util;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.events.SelectionListener;
@@ -20,7 +21,7 @@ import org.eclipse.swt.widgets.TypedListener;
 
 public class SWTNullableSpinner extends Composite 
 {
-	private static final Logger logger = Logger.getLogger( SWTNullableSpinner.class );
+	private static final Logger logger = LoggerFactory.getLogger( SWTNullableSpinner.class );
 	
 	static final int BUTTON_WIDTH = 20;
 	Text text;
@@ -28,18 +29,13 @@ public class SWTNullableSpinner extends Composite
 	BigDecimal minimum, maximum;
 	BigDecimal increment = new BigDecimal( 1 );
 	int digits = 0;
-	public static BigDecimal MIN_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( -Integer.MAX_VALUE );
-	public static BigDecimal MAX_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( Integer.MAX_VALUE );
+	public static final BigDecimal MIN_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( -Integer.MAX_VALUE );
+	public static final BigDecimal MAX_INTEGER_VALUE_AS_BIG_DECIMAL = new BigDecimal( Integer.MAX_VALUE );
 	
 	public SWTNullableSpinner(Composite parent, int style) {
 		super(parent, style);
-		
-		/*
-		GridData gd = new GridData(GridData.FILL_VERTICAL | GridData.HORIZONTAL_ALIGN_BEGINNING);
-		gd.grabExcessHorizontalSpace = false;
-		this.setLayoutData(gd);*/
-		
-		text = new Text(this, SWT.SINGLE | SWT.NONE);    		
+
+		text = new Text(this, SWT.SINGLE | SWT.NONE);
 		up = new Button(this, SWT.ARROW | SWT.UP);
 		down = new Button(this, SWT.ARROW | SWT.DOWN);
 				
@@ -178,6 +174,7 @@ public class SWTNullableSpinner extends Composite
 		text.setFocus();
 	}
 
+	@Override
 	public void setFont(Font font) {
 		super.setFont(font);
 		text.setFont(font);
@@ -186,19 +183,16 @@ public class SWTNullableSpinner extends Composite
 	public void setValue(BigDecimal aValue) 
 	{
 		BigDecimal tempValue = aValue;
-		
-// 12/15/2010 Scott Atwell		if ( ( getMinimum() != null ) && ( tempValue.compareTo( getMinimum() ) < 0 ) )
+
 		if ( ( getMinimum() != null ) && ( tempValue != null ) && ( tempValue.compareTo( getMinimum() ) < 0 ) )
 		{
 			tempValue = getMinimum();
 		}
-// 12/15/2010 Scott Atwell		else if ( ( getMaximum() != null ) && ( tempValue.compareTo( getMaximum() ) > 0 ) )
 		else if ( ( getMaximum() != null ) && ( tempValue != null ) && ( tempValue.compareTo( getMaximum() ) > 0 ) )
 		{
 			tempValue = getMaximum();
 		} 
-			
-// 12/15/2010 Scott Atwell		text.setText( tempValue.toPlainString() );
+
 		if ( tempValue != null )
 		{
 			text.setText( tempValue.toPlainString() );
@@ -219,23 +213,21 @@ public class SWTNullableSpinner extends Composite
 		}
 		else
 		{
-// note this is what we had to use in SWTSpinnerWidget when getSelection() returned equiv of BigDecimal.unscaledValue()
-//	return BigDecimal.valueOf( spinner.getSelection(), spinner.getDigits() );
 			BigDecimal tempValue = new BigDecimal( text.getText() );
 			BigDecimal tempValueScaled = tempValue.setScale( getDigits(), RoundingMode.HALF_UP );			
 			if ( ! tempValue.equals( tempValueScaled ) )
 			{
 				String tempNewValueString = tempValueScaled.toPlainString();
-				logger.debug( "tempValue: " + tempValue + " tempValueScaled: " + tempValueScaled + " tempValueScaled.toPlainString(): " + tempNewValueString );				
+				logger.debug( "tempValue: {} tempValueScaled: {} tempValueScaled.toPlainString(): {}", tempValue, tempValueScaled, tempNewValueString );
 				int tempCaretPosition = text.getCaretPosition();
-				logger.debug( "getCaretPosition(): " + text.getCaretPosition() );
+				logger.debug( "getCaretPosition(): {}", text.getCaretPosition() );
 				// -- Handle user entering ".12" and formatter converting to "0.12" -- avoid result of "0.21") --
 				if ( ( tempCaretPosition == 2 ) && 
 					  ( text.getText().charAt(0) == '.' ) && 
 					  ( tempNewValueString.startsWith( "0." ) ) )
 				{
 					// -- we're notified at ".1" but formatted value is converting to "0.1" --
-					logger.debug("Incrementing CaretPosition (was " + tempCaretPosition + ") to account for formatted string having \".\" converted to \"0.\" automatically." );		
+					logger.debug("Incrementing CaretPosition (was {}) to account for formatted string having \".\" converted to \"0.\" automatically.", tempCaretPosition );
 					tempCaretPosition++;
 				}
 				
@@ -257,7 +249,8 @@ public class SWTNullableSpinner extends Composite
 		down.setBounds(textWidth, pt.y - buttonHeight - 3, BUTTON_WIDTH,
 				buttonHeight);
 	}
-	
+
+	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		int width = 100;
 		int height = 20;
@@ -381,9 +374,9 @@ public class SWTNullableSpinner extends Composite
 				int tempNextDecimalPoint = tempText.indexOf( '.', (tempFirstDecimalPoint + 1) );
 				if ( tempNextDecimalPoint >= 0 )
 				{
-					logger.debug(" Multiple decimal points...  tempText: " + tempText );					
+					logger.debug(" Multiple decimal points...  tempText: {}", tempText );
 					boolean tempDecimalPointFound = false;
-					StringBuffer tempStringBuffer = new StringBuffer();
+					StringBuilder tmpStringBuilder = new StringBuilder();
 					for ( int i=0; i < tempText.length(); i++ )
 					{
 						if ( tempText.charAt( i ) == '.' )
@@ -398,13 +391,12 @@ public class SWTNullableSpinner extends Composite
 								continue;
 							}
 						}
-						
-						tempStringBuffer.append( tempText.charAt( i ) );
+						tmpStringBuilder.append( tempText.charAt( i ) );
 					}
 					
-					logger.debug(" text.setText( tempStringBuffer.toString() ): " + tempStringBuffer.toString() );		
+					logger.debug(" text.setText( tempStringBuffer.toString() ): {}", tmpStringBuilder );
 					int tempCaretPosition = text.getCaretPosition();
-					text.setText( tempStringBuffer.toString() );
+					text.setText( tmpStringBuilder.toString() );
 					text.setSelection( tempCaretPosition, tempCaretPosition );
 					return true;
 				}

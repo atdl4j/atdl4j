@@ -155,38 +155,64 @@ public class ControlHelper
 
 		if ( Atdl4jConstants.INCREMENT_POLICY_LOT_SIZE.equals( aIncrementPolicy ) ) 
 		{
-			if ( ( aAtdl4jOptions != null ) &&
-				  ( aAtdl4jOptions.getInputAndFilterData() != null ) &&
-				  ( aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicy_LotSize() != null ) )
+			if ( aAtdl4jOptions != null )
 			{
-				return aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicy_LotSize();
-			}
-			else if ( aIncrement != null )
-			{
-				return new BigDecimal( aIncrement.toString() );
+				if ( ( aAtdl4jOptions.getInputAndFilterData() != null )
+				&& ( aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicyLotSize()!= null ) )
+				{
+					return aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicyLotSize();
+				}
+				else if ( aIncrement != null )
+				{
+					return new BigDecimal( aIncrement.toString() );
+				}
+				else
+				{
+					return aAtdl4jOptions.getDefaultLotSizeIncrementValue();
+				}
 			}
 			else
 			{
-				return aAtdl4jOptions.getDefaultLotSizeIncrementValue();
+				if ( aIncrement != null )
+				{
+					return new BigDecimal( aIncrement.toString() );
+				}
+				else
+				{
+					return Atdl4jOptions.SYSTEM_DEFAULT_LOT_SIZE_INCREMENT_VALUE;
+				}
 			}
 		}
 		else if ( Atdl4jConstants.INCREMENT_POLICY_TICK.equals( aIncrementPolicy ) ) 
 		{
-			if ( ( aAtdl4jOptions != null ) &&
-				  ( aAtdl4jOptions.getInputAndFilterData() != null ) &&
-				  ( aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicy_Tick() != null ) )
+			if ( aAtdl4jOptions != null )
 			{
-				return aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicy_Tick();
-			}
-			else if ( aIncrement != null )
-			{
-				return new BigDecimal( aIncrement.toString() );
+				if ( ( aAtdl4jOptions.getInputAndFilterData() != null )
+				&& ( aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicyTick() != null ) )
+				{
+					return aAtdl4jOptions.getInputAndFilterData().getInputIncrementPolicyTick();
+				}
+				else if ( aIncrement != null )
+				{
+					return new BigDecimal( aIncrement.toString() );
+				}
+				else
+				{
+					return aAtdl4jOptions.getDefaultTickIncrementValue();
+				}
 			}
 			else
 			{
-				return aAtdl4jOptions.getDefaultTickIncrementValue();
+				if ( aIncrement != null )
+				{
+					return new BigDecimal( aIncrement.toString() );
+				}
+				else
+				{
+					return Atdl4jOptions.SYSTEM_DEFAULT_TICK_INCREMENT_VALUE;
+				}
 			}
-		} 
+		}
 		else  // -- Use aIncrement value when aIncrementPolicy null or Atdl4jConstants.INCREMENT_POLICY_STATIC --
 		{
 			if ( aIncrement != null )
@@ -209,9 +235,6 @@ public class ControlHelper
 	 */
 	public static Object getInitValue( ControlT aControl, Atdl4jOptions aAtdl4jOptions )
 	{
-		// INIT_POLICY_USE_VALUE = "UseValue";  // -- use value from ControlT/@initValue --
-		// INIT_POLICY_USE_FIX_FIELD = "UseFixField";  // -- use value from ControlT/@initFixField if available, else ControlT/@initValue --		
-		
 		if ( Atdl4jConstants.INIT_POLICY_USE_FIX_FIELD.equals( aControl.getInitPolicy() ) )
 		{
 			if ( aControl.getInitFixField() == null )
@@ -224,7 +247,7 @@ public class ControlHelper
 				throw new IllegalArgumentException( "ERROR: Control: " + aControl.getID() + " has initPolicy=\"" + aControl.getInitPolicy() + "\" but Atdl4jOptions is null." );
 			}
 			
-			String tempFixFieldValue = aAtdl4jOptions.getInputAndFilterData().getInputHiddenFieldValue( aControl.getInitFixField().toString() );
+			String tempFixFieldValue = aAtdl4jOptions.getInputAndFilterData().getInputHiddenFieldValue( aControl.getInitFixField() );
 			
 			if ( tempFixFieldValue != null )
 			{

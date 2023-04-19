@@ -74,7 +74,7 @@ public class SliderT
      */
     public List<ListItemT> getListItem() {
         if (listItem == null) {
-            listItem = new ArrayList<ListItemT>();
+            listItem = new ArrayList<>();
         }
         return this.listItem;
     }

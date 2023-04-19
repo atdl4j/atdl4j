@@ -3,7 +3,8 @@ package org.atdl4j.ui.swt.impl;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
 import org.atdl4j.data.ValidationRule;
@@ -23,7 +24,7 @@ import org.eclipse.swt.widgets.Control;
 public class SWTStrategiesUI
 	extends AbstractStrategiesUI
 {
-	private final Logger logger = Logger.getLogger( SWTStrategiesUI.class );
+	private final Logger logger = LoggerFactory.getLogger( SWTStrategiesUI.class );
 
 	private Composite strategiesPanel;
 	
@@ -77,7 +78,7 @@ public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilte
 	{
 		setStrategies( aStrategies );
 		
-		setStrategiesRules( new HashMap<String, ValidationRule>() );
+		setStrategiesRules( new HashMap<>() );
 		for (EditT edit : getStrategies().getEdit()) {
 			String id = edit.getId();
 			if (id != null) {
@@ -95,23 +96,19 @@ public void createStrategyPanels(StrategiesT aStrategies, List<StrategyT> aFilte
 
 	for ( StrategyT strategy : aFilteredStrategyList )
 	{
-		/********************************************************************************************
+/*
+		 ********************************************************************************************
 		 * 6/23/2010 Scott Atwell
 		 * Note that we are creating the StrategyUI for each Strategy in the file, however, we are 
 		 * disposing/discarding the previously built StrategyUI instances.  
 		 * SWTStrategiesPanel will have at most only one StrategyUI that has not been disposed.
 		 * This is required to avoid very large FIXatdl instance files (or multiple instances of SWTAtdl4jCompositePanel with own file)
 		 * consuming tons of Windows USER Objects and generating "org.eclipse.swt.SWTError: No more handles"
-		 *********************************************************************************************/
+		 *********************************************************************************************
+*/
 		removeAllStrategyPanels();
 		StrategyUI ui = SWTStrategyUIFactory.createStrategyUIAndContainer( this, strategy );
 		setCurrentlyDisplayedStrategyUI( ui );
-
-		if ( ui == null )
-		{
-			// skip to next strategy
-			continue;
-		}
 	}
 	setPreCached( true );
 }  
@@ -126,11 +123,11 @@ public void adjustLayoutForSelectedStrategy( StrategyT aStrategy )
 		
 		if ( tempStrategyUI == null  )
 		{
-			logger.info("ERROR:  Strategy name: " + aStrategy.getName() + " was not found.  (aStrategy: " + aStrategy + ")" );
+			logger.info("ERROR:  Strategy name: {} was not found.  (aStrategy: {})", aStrategy.getName(), aStrategy );
 			return;
 		}
 		
-		logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );								
+		logger.debug( "Invoking  tempStrategyUI.reinitStrategyPanel() for: {}", Atdl4jHelper.getStrategyUiRepOrName( tempStrategyUI.getStrategy() ) );
 		tempStrategyUI.reinitStrategyPanel();
 
 		strategiesPanel.layout();
@@ -158,8 +155,7 @@ public StrategyUI getStrategyUI( StrategyT aStrategy, boolean aReinitPanelFlag )
 {
 	if ( aStrategy.equals( getCurrentlyDisplayedStrategy() ) )
 	{
-		logger.debug("Strategy name: " + aStrategy.getName() + " is currently being displayed.  Returning getCurrentlyDisplayedStrategyUI()" );
-// 12/15/2010 Scott Atwell return getCurrentlyDisplayedStrategyUI();
+		logger.debug("Strategy name: {} is currently being displayed.  Returning getCurrentlyDisplayedStrategyUI()", aStrategy.getName() );
 		if ( aReinitPanelFlag )
 		{
 			getCurrentlyDisplayedStrategyUI().reinitStrategyPanel();
@@ -169,13 +165,13 @@ public StrategyUI getStrategyUI( StrategyT aStrategy, boolean aReinitPanelFlag )
 	}
 	else
 	{
-		logger.debug("Strategy name: " + aStrategy.getName() + " is not currently displayed.  Invoking removeAllStrategyPanels() and returning createStrategyPanel()" );
+		logger.debug("Strategy name: {} is not currently displayed.  Invoking removeAllStrategyPanels() and returning createStrategyPanel()", aStrategy.getName() );
 		removeAllStrategyPanels();
 
 		StrategyUI tempStrategyUI = SWTStrategyUIFactory.createStrategyUIAndContainer( this, aStrategy );
 		setCurrentlyDisplayedStrategyUI( tempStrategyUI );
 		
-		logger.debug("Invoking relayoutCollapsibleStrategyPanels() for: " + aStrategy.getName() );
+		logger.debug("Invoking relayoutCollapsibleStrategyPanels() for: {}", aStrategy.getName() );
 		tempStrategyUI.relayoutCollapsibleStrategyPanels();
 		
 		return tempStrategyUI;

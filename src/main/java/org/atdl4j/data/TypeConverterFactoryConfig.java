@@ -1,7 +1,8 @@
 package org.atdl4j.data;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.config.Atdl4jConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -12,12 +13,11 @@ import org.atdl4j.config.Atdl4jConfig;
  */
 public class TypeConverterFactoryConfig
 {
-	protected static final Logger logger = Logger.getLogger( TypeConverterFactoryConfig.class );
+	protected static final Logger logger = LoggerFactory.getLogger( TypeConverterFactoryConfig.class );
 	private static TypeConverterFactory typeConverterFactory;
 	
 	/**
 	 * @return
-	 * @throws Atdl4jClassLoadException 
 	 */
 	public static TypeConverterFactory getTypeConverterFactory() 
 	{

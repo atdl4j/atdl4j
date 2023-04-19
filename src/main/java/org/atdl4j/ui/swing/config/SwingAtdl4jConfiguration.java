@@ -12,7 +12,7 @@ import org.atdl4j.config.AbstractAtdl4jConfiguration;
 public class SwingAtdl4jConfiguration
 		extends AbstractAtdl4jConfiguration
 {
-	private static String PACKAGE_PATH_ORG_ATDL4J_UI_SWING = "org.atdl4j.ui.swing.";
+	private static final String PACKAGE_PATH_ORG_ATDL4J_UI_SWING = "org.atdl4j.ui.swing.";
 	
 	public SwingAtdl4jConfiguration()
 	{
@@ -86,7 +86,6 @@ public class SwingAtdl4jConfiguration
 
 	protected String getDefaultClassNameAtdl4jWidgetForClockT()
 	{
-//		return PACKAGE_PATH_ORG_ATDL4J_UI_SWING + "widget.SwingClockWidget";
 		return PACKAGE_PATH_ORG_ATDL4J_UI_SWING + "widget.SwingJideClockWidget";
 	}
 

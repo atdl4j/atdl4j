@@ -70,7 +70,7 @@ public class MarketsT {
      */
     public List<MarketT> getMarket() {
         if (market == null) {
-            market = new ArrayList<MarketT>();
+            market = new ArrayList<>();
         }
         return this.market;
     }

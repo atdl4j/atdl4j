@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+  <Strategy name="CheckBoxListTests" uiRep="CheckBoxList Tests" wireValue="1" providerID="TEST">
+
+		<Parameter name="OpenClose" xsi:type="MultipleCharValue_t" fixTag="6408" use="optional">
+			<EnumPair enumID="e_Open" wireValue="1"/>
+			<EnumPair enumID="e_Close" wireValue="2"/>
+		</Parameter>
+
+		<Parameter name="OpenCloseHoriz" xsi:type="MultipleCharValue_t" fixTag="6407" use="optional">
+			<EnumPair enumID="e_Open" wireValue="1"/>
+			<EnumPair enumID="e_Close" wireValue="2"/>
+		</Parameter>
+	
+		<Parameter name="OpenCloseVert" xsi:type="MultipleCharValue_t" fixTag="6406" use="optional">
+			<EnumPair enumID="e_O" wireValue="1"/>
+			<EnumPair enumID="e_C" wireValue="2"/>
+		</Parameter>
+	
+		<Parameter name="OpenCloseHoriz_2" xsi:type="MultipleCharValue_t" fixTag="6405" use="optional">
+			<EnumPair enumID="e_Open" wireValue="1"/>
+			<EnumPair enumID="e_Close" wireValue="2"/>
+		</Parameter>
+	
+		<Parameter name="OpenCloseVert_2" xsi:type="MultipleCharValue_t" fixTag="6404" use="optional">
+			<EnumPair enumID="e_O" wireValue="1"/>
+			<EnumPair enumID="e_C" wireValue="2"/>
+		</Parameter>
+	
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel title="Strategy Parameters" collapsible="false" orientation="HORIZONTAL">
+		
+		      <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+   
+  		        <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="CheckBoxList controls with labels">
+		
+		          <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+		          
+   					<lay:Control ID="c_OpenClose" xsi:type="lay:CheckBoxList_t" label="Open/Close" initValue="e_Close" parameterRef="OpenClose">
+   						<lay:ListItem enumID="e_Open" uiRep="Open"/>
+   						<lay:ListItem enumID="e_Close" uiRep="Close"/>
+   					</lay:Control>
+		          
+   					<lay:Control ID="c_OpenCloseHoriz" xsi:type="lay:CheckBoxList_t" label="Open/Close (Horiz)" initValue="e_Close" parameterRef="OpenCloseHoriz" orientation="HORIZONTAL">
+   						<lay:ListItem enumID="e_Open" uiRep="Open"/>
+   						<lay:ListItem enumID="e_Close" uiRep="Close"/>
+   					</lay:Control>
+
+   					<lay:Control ID="c_OpenCloseVert" xsi:type="lay:CheckBoxList_t" label="Open/Close (Vert)" initValue="e_C" parameterRef="OpenCloseVert" orientation="VERTICAL">
+   						<lay:ListItem enumID="e_O" uiRep="Open"/>
+   						<lay:ListItem enumID="e_C" uiRep="Close"/>
+   					</lay:Control>
+
+		          </lay:StrategyPanel>
+		          
+		        </lay:StrategyPanel>
+		        
+  		     <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="StrategyPanels with title containing CheckBoxList controls without labels">
+  		     
+		      <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="Open/Close (Horiz #2)">
+   					<lay:Control ID="c_OpenCloseHoriz_2" xsi:type="lay:CheckBoxList_t" label="" initValue="e_Close" parameterRef="OpenCloseHoriz_2" orientation="HORIZONTAL">
+   						<lay:ListItem enumID="e_Open" uiRep="Open"/>
+   						<lay:ListItem enumID="e_Close" uiRep="Close"/>
+   					</lay:Control>
+		      </lay:StrategyPanel>
+		
+		      <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="Open/Close (Vert #2)">
+   					<lay:Control ID="c_OpenCloseVert_2" xsi:type="lay:CheckBoxList_t" label="" initValue="e_C" parameterRef="OpenCloseVert_2" orientation="VERTICAL">
+   						<lay:ListItem enumID="e_O" uiRep="Open"/>
+   						<lay:ListItem enumID="e_C" uiRep="Close"/>
+   					</lay:Control>
+		      </lay:StrategyPanel>
+		
+          </lay:StrategyPanel>
+		
+          </lay:StrategyPanel>
+          
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+
+	</Strategy>
+	
+</Strategies>

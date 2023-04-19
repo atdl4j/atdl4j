@@ -1,0 +1,75 @@
+"SWTApplication" refactoring - rename to "SWTAtdl4jTesterApp", overhaul, and layered
+
+Interfaces:
+-----------
+- org.atdl4j.ui.app.Atdl4jTesterPanel
+  - org.atdl4j.ui.app.Atdl4jInputAndFilterDataSelectionPanel
+    - org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel
+      - org.atdl4j.ui.app.FixMsgLoadPanel
+  - org.atdl4j.ui.app.Atdl4jCompositePanel
+    - org.atdl4j.ui.app.FixatdlFileSelectionPanel
+    - org.atdl4j.ui.app.StrategySelectionPanel
+    - org.atdl4j.ui.app.StrategyDescriptionPanel
+    - org.atdl4j.ui.app.StrategiesPanel
+
+Non-UI-specific abstract base implementation:
+---------------------------------------------
+org.atdl4j.ui.app.AbstractAtdl4jTesterApp
+- org.atdl4j.ui.app.AbstractAtdl4jTesterPanel
+  - org.atdl4j.ui.app.AbstractAtdl4jInputAndFilterDataSelectionPanel
+    - org.atdl4j.ui.app.AbstractAtdl4jInputAndFilterDataPanel
+      - org.atdl4j.ui.app.AbstractFixMsgLoadPanel
+  - org.atdl4j.ui.app.AbstractAtdl4jCompositePanel
+    - org.atdl4j.ui.app.AbstractFixatdlFileSelectionPanel
+    - org.atdl4j.ui.app.AbstractStrategySelectionPanel
+    - org.atdl4j.ui.app.AbstractStrategyDescriptionPanel
+    - org.atdl4j.ui.app.AbstractStrategiesPanel
+
+SWT-specific implementation:
+----------------------------  
+org.atdl4j.ui.swt.app.SWTAtdl4jTesterApp
+- org.atdl4j.ui.swt.app.SWTAtdl4jTesterPanel
+  - org.atdl4j.ui.swt.app.SWTAtdl4jInputAndFilterDataSelectionPanel
+    - org.atdl4j.ui.swt.app.SWTAtdl4jInputAndFilterDataPanel
+      - org.atdl4j.ui.swt.app.SWTFixMsgLoadPanel
+  - org.atdl4j.ui.swt.app.SWTAtdl4jCompositePanel
+    - org.atdl4j.ui.swt.app.SWTFixatdlFileSelectionPanel
+    - org.atdl4j.ui.swt.app.SWTStrategySelectionPanel
+    - org.atdl4j.ui.swt.app.SWTStrategyDescriptionPanel
+    - org.atdl4j.ui.swt.app.SWTStrategiesPanel
+
+Listeners:
+----------
+- org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanelListener
+- org.atdl4j.ui.app.FixMsgLoadPanelListener
+- org.atdl4j.ui.app.FixatdlFileSelectionPanelListener
+- org.atdl4j.ui.app.StrategySelectionPanelListener
+- org.atdl4j.ui.app.StrategiesPanelListener
+
+Pop-up message handler:
+-----------------------
+- org.atdl4j.ui.app.Atdl4jUserMessageHandler
+- org.atdl4j.ui.app.AbstractAtdl4jUserMessageHandler
+- org.atdl4j.ui.swt.app.SWTAtdl4jUserMessageHandler
+
+Config:
+-------
+- org.atdl4j.config.Atdl4jConfig
+- org.atdl4j.config.AbstractAtdl4jConfig
+- org.atdl4j.ui.swt.config.SWTAtdl4jConfig
+- org.atdl4j.config.InputAndFilterData 
+
+
+Tweaks:
+- InputAndFilterData - Added INPUT_FIELD_NAME_STRATEGY_FILTER_FIX_MSG_TYPE, getInputStrategyFilterFixMsgType(), setInputStrategyFilterFixMsgType(), and isFixMsgTypeSupportedForStrategy()
+- org.atdl4j.ui.ControlHelper
+- org.atdl4j.ui.impl.AbstractControlUI<E>
+- org.atdl4j.ui.impl.AbstractStrategyUI
+- org.atdl4j.ui.impl.BaseControlUIFactory
+- org.atdl4j.ui.impl.BaseStrategiesUIFactory
+- org.atdl4j.ui.swt.impl.SWTFactory
+- org.atdl4j.ui.swt.impl.SWTStrategiesUI
+
+
+
+

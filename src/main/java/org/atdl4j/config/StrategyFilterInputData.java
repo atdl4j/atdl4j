@@ -1,10 +1,11 @@
 package org.atdl4j.config;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.fixatdl.core.InclusionT;
 import org.atdl4j.fixatdl.core.MarketT;
 import org.atdl4j.fixatdl.core.RegionT;
 import org.atdl4j.fixatdl.core.StrategyT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.fixatdl.core.SecurityTypesT.SecurityType;
 
 /**
@@ -16,7 +17,7 @@ import org.atdl4j.fixatdl.core.SecurityTypesT.SecurityType;
  */
 public class StrategyFilterInputData
 {
-	private static final Logger logger = Logger.getLogger(StrategyFilterInputData.class);
+	private static final Logger logger = LoggerFactory.getLogger(StrategyFilterInputData.class);
 	
 	private String fixMsgType; 			// @see Strategy/@fixMsgType
 	private String region_name;			// @see Strategy/Regions/Region/@name
@@ -56,13 +57,13 @@ public class StrategyFilterInputData
 		}
 	}
 	/**
-	 * @param aMarket_MICCode  Market's MICCode attribute
+	 * @param aMarketMICCode  Market's MICCode attribute
 	 * @param aStrategy
 	 * @return
 	 */
-	public boolean isMarketSupportedForStrategy(String aMarket_MICCode, StrategyT aStrategy)
+	public boolean isMarketSupportedForStrategy(String aMarketMICCode, StrategyT aStrategy)
 	{
-		if ( ( aMarket_MICCode != null ) &&
+		if ( ( aMarketMICCode != null ) &&
 			  ( aStrategy.getMarkets() != null ) && 
 			  ( aStrategy.getMarkets().getMarket() != null ) )
 		{
@@ -74,9 +75,9 @@ public class StrategyFilterInputData
 				if ( InclusionT.EXCLUDE.equals( tempMarket.getInclusion() ) )
 				{
 					tempExcludesExist = true;
-					if ( aMarket_MICCode.equals( tempMarket.getMICCode() ) )
+					if ( aMarketMICCode.equals( tempMarket.getMICCode() ) )
 					{
-						logger.info("isMarketSupportedForStrategy(): strategy: " + aStrategy.getName() + " named exclusion for Market_CFICode: " + aMarket_MICCode );
+						logger.info("isMarketSupportedForStrategy(): strategy: {} named exclusion for Market_MICCode: {}", aStrategy.getName(), aMarketMICCode );
 						return false;  // -- named exclusion --
 					}
 				}
@@ -90,15 +91,15 @@ public class StrategyFilterInputData
 				{
 					tempIncludesExist = true;
 					
-					if ( aMarket_MICCode.equals( tempMarket.getMICCode() ) )
+					if ( aMarketMICCode.equals( tempMarket.getMICCode() ) )
 					{
-						logger.info("isMarketSupportedForStrategy(): strategy: " + aStrategy.getName() + " named inclusion for Market_MICCode: " + aMarket_MICCode );
+						logger.info("isMarketSupportedForStrategy(): strategy: {} named inclusion for Market_MICCode: {}", aStrategy.getName(), aMarketMICCode );
 						return true;  // -- named inclusion --
 					}
 				}
 			}
 			
-			if ( ( tempExcludesExist == false ) &&
+			if ( (!tempExcludesExist) &&
 				  ( tempIncludesExist ) )
 			{
 				return false;  // -- only inclusions exist and matching inclusion was not found above --
@@ -112,20 +113,20 @@ public class StrategyFilterInputData
 		return true;
 	}
 	/**
-	 * @param aRegion_name  Region's name attribute
-	 * @param aCountry_CountryCode  Country's countryCode attribute
+	 * @param aRegionName  Region's name attribute
+	 * @param aCountryCountryCode  Country's countryCode attribute
 	 * @param aStrategy
 	 * @return
 	 */
-	public boolean isRegionCountrySupportedForStrategy(String aRegion_name, String aCountry_CountryCode, StrategyT aStrategy)
+	public boolean isRegionCountrySupportedForStrategy(String aRegionName, String aCountryCountryCode, StrategyT aStrategy)
 	{
-		if ( ( aCountry_CountryCode != null ) && ( aRegion_name == null ) )
+		if ( ( aCountryCountryCode != null ) && ( aRegionName == null ) )
 		{
-			logger.warn( "ERROR: isRegionCountrySupportedForStrategy() received CountryCode: " + aCountry_CountryCode + ", however, Region was not specified." );
+			logger.warn( "ERROR: isRegionCountrySupportedForStrategy() received CountryCode: {}, however, Region was not specified.", aCountryCountryCode );
 			return true;
 		}
 		
-		if ( ( aRegion_name != null ) &&
+		if ( ( aRegionName != null ) &&
 			  ( aStrategy.getRegions() != null ) && 
 			  ( aStrategy.getRegions().getRegion() != null ) )
 		{
@@ -137,24 +138,24 @@ public class StrategyFilterInputData
 				if ( InclusionT.EXCLUDE.equals( tempRegion.getInclusion() ) )
 				{
 					tempExcludesExist = true;
-					if ( aRegion_name.equals( tempRegion.getName() ) )
+					if ( aRegionName.equals( tempRegion.getName() ) )
 					{
 						// -- Verify that the Country is not in the named Inclusion list for this Region --
-						if ( ( aCountry_CountryCode != null ) &&
+						if ( ( aCountryCountryCode != null ) &&
 							  ( tempRegion.getCountry() != null ) )
 						{
 							for ( RegionT.Country tempCountry : tempRegion.getCountry() )
 							{
 								if ( ( InclusionT.INCLUDE.equals( tempCountry.getInclusion() ) ) &&
-									  ( aCountry_CountryCode.equals( tempCountry.getCountryCode() ) ) )
+									  ( aCountryCountryCode.equals( tempCountry.getCountryCode() ) ) )
 								{
-									logger.info("isRegionCountrySupportedForStrategy(): strategy: " + aStrategy.getName() + " named inclusion for Country_CountryCode: " + aCountry_CountryCode + " despite Region_name: " + aRegion_name + " being excluded" );
+									logger.info("isRegionCountrySupportedForStrategy(): strategy: {} named inclusion for Country_CountryCode: {} despite Region_name: {} being excluded", aStrategy.getName(), aCountryCountryCode, aRegionName );
 									return true;   // Country Inclusion Exists
 								}
 							}
 						}
 						
-						logger.info("isRegionCountrySupportedForStrategy(): strategy: " + aStrategy.getName() + " named exclusion for Region_name: " + aRegion_name );
+						logger.info("isRegionCountrySupportedForStrategy(): strategy: {} named exclusion for Region_name: {}", aStrategy.getName(), aRegionName );
 						return false;  // -- named exclusion for Region --
 					}
 				}
@@ -167,28 +168,28 @@ public class StrategyFilterInputData
 				if ( InclusionT.INCLUDE.equals( tempRegion.getInclusion() ) )
 				{
 					tempIncludesExist = true;
-					if ( aRegion_name.equals( tempRegion.getName() ) )
+					if ( aRegionName.equals( tempRegion.getName() ) )
 					{
 						boolean tempCountryInclusionsForARegionInclusionExist = false;
 						
 						// -- Verify that the Country is not in the named Exclusion list for this Region --
-						if ( ( aCountry_CountryCode != null ) &&
+						if ( ( aCountryCountryCode != null ) &&
 							  ( tempRegion.getCountry() != null ) )
 						{
 							for ( RegionT.Country tempCountry : tempRegion.getCountry() )
 							{
 								if ( ( InclusionT.EXCLUDE.equals( tempCountry.getInclusion() ) ) &&
-									  ( aCountry_CountryCode.equals( tempCountry.getCountryCode() ) ) )
+									  ( aCountryCountryCode.equals( tempCountry.getCountryCode() ) ) )
 								{
-									logger.info("isRegionCountrySupportedForStrategy(): strategy: " + aStrategy.getName() + " named exclusion for Country_CountryCode: " + aCountry_CountryCode + " despite Region_name: " + aRegion_name + " being included" );
+									logger.info("isRegionCountrySupportedForStrategy(): strategy: {} named exclusion for Country_CountryCode: {} despite Region_name: {} being included", aStrategy.getName(), aCountryCountryCode, aRegionName );
 									return false;   // Country Exclusion Exists
 								}
 								else if ( InclusionT.INCLUDE.equals( tempCountry.getInclusion() ) )
 								{
 									tempCountryInclusionsForARegionInclusionExist = true;
-									if ( aCountry_CountryCode.equals( tempCountry.getCountryCode() ) )
+									if ( aCountryCountryCode.equals( tempCountry.getCountryCode() ) )
 									{
-										logger.info("isRegionCountrySupportedForStrategy(): strategy: " + aStrategy.getName() + " named inclusion for Country_CountryCode: " + aCountry_CountryCode + " for included Region_name: " + aRegion_name );
+										logger.info("isRegionCountrySupportedForStrategy(): strategy: {} named inclusion for Country_CountryCode: {} for included Region_name: {}", aStrategy.getName(), aCountryCountryCode, aRegionName );
 										return true; // Country named as Inclusion
 									}
 								}
@@ -197,19 +198,19 @@ public class StrategyFilterInputData
 						
 						if ( tempCountryInclusionsForARegionInclusionExist )
 						{
-							logger.info("isRegionCountrySupportedForStrategy(): strategy: " + aStrategy.getName() + " Country_CountryCode: " + aCountry_CountryCode + " was not part of included Countries for named inclusion for Region_name: " + aRegion_name );
+							logger.info("isRegionCountrySupportedForStrategy(): strategy: {} Country_CountryCode: {} was not part of included Countries for named inclusion for Region_name: {}", aStrategy.getName(), aCountryCountryCode, aRegionName );
 							return false;  // -- Country not named as inclusion for included Region --
 						}
 						else
 						{
-							logger.info("isRegionCountrySupportedForStrategy(): strategy: " + aStrategy.getName() + " named inclusion for Region_name: " + aRegion_name );
+							logger.info("isRegionCountrySupportedForStrategy(): strategy: {} named inclusion for Region_name: {}", aStrategy.getName(), aRegionName );
 							return true;  // -- named inclusion for Region --
 						}
 					}
 				}
 			}
 			
-			if ( ( tempExcludesExist == false ) &&
+			if ( (!tempExcludesExist) &&
 				  ( tempIncludesExist ) )
 			{
 				return false;  // -- only inclusions exist and matching inclusion was not found above --
@@ -223,13 +224,13 @@ public class StrategyFilterInputData
 		return true;
 	}
 	/**
-	 * @param aSecurityType_name  SecurityType's name attribute
+	 * @param aSecurityTypeName  SecurityType's name attribute
 	 * @param aStrategy
 	 * @return
 	 */
-	public boolean isSecurityTypeSupportedForStrategy(String aSecurityType_name, StrategyT aStrategy)
+	public boolean isSecurityTypeSupportedForStrategy(String aSecurityTypeName, StrategyT aStrategy)
 	{
-		if ( ( aSecurityType_name != null ) &&
+		if ( ( aSecurityTypeName != null ) &&
 			  ( aStrategy.getSecurityTypes() != null ) && 
 			  ( aStrategy.getSecurityTypes().getSecurityType() != null ) )
 		{
@@ -241,9 +242,9 @@ public class StrategyFilterInputData
 				if ( InclusionT.EXCLUDE.equals( tempSecurityType.getInclusion() ) )
 				{
 					tempExcludesExist = true;
-					if ( aSecurityType_name.equals( tempSecurityType.getName() ) )
+					if ( aSecurityTypeName.equals( tempSecurityType.getName() ) )
 					{
-						logger.info("isSecurityTypeSupportedForStrategy(): strategy: " + aStrategy.getName() + " named exclusion for SecurityType_name: " + aSecurityType_name );
+						logger.info("isSecurityTypeSupportedForStrategy(): strategy: {} named exclusion for SecurityType_name: {}", aStrategy.getName(), aSecurityTypeName );
 						return false;  // -- named exclusion --
 					}
 				}
@@ -257,15 +258,15 @@ public class StrategyFilterInputData
 				{
 					tempIncludesExist = true;
 					
-					if ( aSecurityType_name.equals( tempSecurityType.getName() ) )
+					if ( aSecurityTypeName.equals( tempSecurityType.getName() ) )
 					{
-						logger.info("isSecurityTypeSupportedForStrategy(): strategy: " + aStrategy.getName() + " named inclusion for SecurityType_name: " + aSecurityType_name );
+						logger.info("isSecurityTypeSupportedForStrategy(): strategy: {} named inclusion for SecurityType_name: {}", aStrategy.getName(), aSecurityTypeName );
 						return true;  // -- named inclusion --
 					}
 				}
 			}
 			
-			if ( ( tempExcludesExist == false ) &&
+			if ( (!tempExcludesExist) &&
 				  ( tempIncludesExist ) )
 			{
 				return false;  // -- only inclusions exist and matching inclusion was not found above --
@@ -281,7 +282,7 @@ public class StrategyFilterInputData
 	
 	
 	/**
-	 * @param strategy
+	 * @param aStrategy
 	 * @return
 	 */
 	public boolean isStrategySupported(StrategyT aStrategy)
@@ -292,32 +293,32 @@ public class StrategyFilterInputData
 		}
 		
 		String tempFixMsgType = getFixMsgType();
-		String tempSecurityType_name = getSecurityType_name();
-		String tempMarket_MICCode = getMarket_MICCode();
-		String tempRegion_name = getRegion_name();
-		String tempCountry_CountryCode = getCountry_CountryCode();
+		String tmpSecurityTypeName = getSecurityType_name();
+		String tmpMarketMicCode = getMarket_MICCode();
+		String tmpRegionName = getRegion_name();
+		String tmpCountryCode = getCountry_CountryCode();
 
-		if ( isFixMsgTypeSupportedForStrategy( tempFixMsgType, aStrategy ) == false )
+		if (!isFixMsgTypeSupportedForStrategy(tempFixMsgType, aStrategy))
 		{
-			logger.info("Excluding strategy: " + aStrategy.getName() + " as isFixMsgTypeSupportedForStrategy() returned false for tempFixMsgType: " + tempFixMsgType );
+			logger.info("Excluding strategy: {} as isFixMsgTypeSupportedForStrategy() returned false for tempFixMsgType: {}", aStrategy.getName(), tempFixMsgType );
 			return false;
 		}
 		
-		if ( isSecurityTypeSupportedForStrategy( tempSecurityType_name, aStrategy ) == false )
+		if (!isSecurityTypeSupportedForStrategy(tmpSecurityTypeName, aStrategy))
 		{
-			logger.info("Excluding strategy: " + aStrategy.getName() + " as isSecurityTypeSupportedForStrategy() returned false for tempSecurityType_name: " + tempSecurityType_name );
+			logger.info("Excluding strategy: {} as isSecurityTypeSupportedForStrategy() returned false for tempSecurityType_name: {}", aStrategy.getName(), tmpSecurityTypeName );
 			return false;
 		}
 		
-		if ( isMarketSupportedForStrategy( tempMarket_MICCode, aStrategy ) == false )
+		if (!isMarketSupportedForStrategy(tmpMarketMicCode, aStrategy))
 		{
-			logger.info("Excluding strategy: " + aStrategy.getName() + " as isMarketSupportedForStrategy() returned false for tempMarket_MICCode: " + tempMarket_MICCode );
+			logger.info("Excluding strategy: {} as isMarketSupportedForStrategy() returned false for tempMarket_MICCode: {}", aStrategy.getName(), tmpMarketMicCode );
 			return false;
 		}
 		
-		if ( isRegionCountrySupportedForStrategy( tempRegion_name, tempCountry_CountryCode, aStrategy ) == false )
+		if (!isRegionCountrySupportedForStrategy(tmpRegionName, tmpCountryCode, aStrategy))
 		{
-			logger.info("Excluding strategy: " + aStrategy.getName() + " as isRegionCountrySupportedForStrategy() returned false for tempRegion: " + tempRegion_name + " tempCountry_CountryCode: " + tempCountry_CountryCode );
+			logger.info("Excluding strategy: {} as isRegionCountrySupportedForStrategy() returned false for tempRegion: {} tempCountry_CountryCode: {}", aStrategy.getName(), tmpRegionName, tmpCountryCode );
 			return false;
 		}
 

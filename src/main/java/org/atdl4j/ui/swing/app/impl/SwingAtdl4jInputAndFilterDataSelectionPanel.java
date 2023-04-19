@@ -5,11 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jInputAndFilterDataSelectionPanel;
@@ -24,9 +22,7 @@ public class SwingAtdl4jInputAndFilterDataSelectionPanel
 	private JPanel parentPanel;
 	private JButton atdl4jInputAndFilterDataPanelButton;
 	private JDialog atdl4jInputAndFilterDataPanelDialog;
-	
-	private JCheckBox debugModeButton;
-	
+
 	/* (non-Javadoc)
 	 * @see org.atdl4j.ui.app.Atdl4jInputAndFilterDataSelectionPanel#buildAtdl4jInputAndFilterDataSelectionPanel(java.lang.Object, org.atdl4j.config.Atdl4jOptions, org.atdl4j.ui.app.Atdl4jUserMessageHandler)
 	 */
@@ -78,8 +74,7 @@ public class SwingAtdl4jInputAndFilterDataSelectionPanel
 		}
 		
 		getAtdl4jInputAndFilterDataPanel().loadScreenWithAtdl4jOptions();
-		getDebugModeButton().setSelected( Atdl4jConfig.getConfig().isDebugLoggingLevel() );
-		
+
 		atdl4jInputAndFilterDataPanelDialog.setVisible(true);
 	}
 	
@@ -133,29 +128,9 @@ public class SwingAtdl4jInputAndFilterDataSelectionPanel
 			}
 		} );
 		footerPanel.add(cancelButton);
-		
-		setDebugModeButton(new JCheckBox("Debug Mode"));
-		getDebugModeButton().addActionListener( new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Atdl4jConfig.getConfig().setDebugLoggingLevel( getDebugModeButton().isSelected() );
-			}
-		} );
-		footerPanel.add(getDebugModeButton());
-		
+
 		tempDialog.pack();
 		return tempDialog;
 	}
 
-	public JCheckBox getDebugModeButton()
-	{
-		return debugModeButton;
-	}
-
-	public void setDebugModeButton(JCheckBox debugModeButton)
-	{
-		this.debugModeButton = debugModeButton;
-	}
 }

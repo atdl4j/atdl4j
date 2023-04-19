@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+  <Strategy name="NumericTests" uiRep="Numeric Tests" wireValue="1" providerID="TEST">
+
+		<Parameter name="BoundedInt" xsi:type="Int_t" fixTag="9999" use="optional" minValue="0" maxValue="99"/>
+		<Parameter name="BoundedQty" xsi:type="Qty_t" fixTag="9998" use="optional" minValue="0.25" maxValue="1.99"/>
+		<Parameter name="ConstantInt" xsi:type="Int_t" fixTag="9997" use="optional" const="true" constValue="5"/>
+		
+		<Parameter name="PercentRaw" xsi:type="Percentage_t" fixTag="9996" use="optional" minValue="0.25" maxValue="0.99"/>
+<!-- minValue and maxValue should be expressed according to Percentage data type raw value (not wire value) and thus be "0.01" for 1% and "0.99" for 99% eventhough FIX wire value will be 1 and 99 due to  multiplyBy100="true" -->
+		<Parameter name="PercentX100" xsi:type="Percentage_t" fixTag="9995" use="optional" multiplyBy100="true" minValue="0.01" maxValue="0.99"/>
+	
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel title="Strategy Parameters" collapsible="false" orientation="VERTICAL">
+		
+		      <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+		
+		          <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+		              <lay:Control ID="c_BoundedInt" 	   xsi:type="lay:TextField_t"
+		                  label="Int (Range 0-99)"   parameterRef="BoundedInt"/>
+		              <lay:Control ID="c_BoundedQty" 	   xsi:type="lay:TextField_t"
+		                  label="Qty (Range 0.25-1.99)"   parameterRef="BoundedQty"/>
+		              <lay:Control ID="c_ConstantInt" 	   xsi:type="lay:TextField_t"
+		                  label="Int (Constant=5)"   parameterRef="ConstantInt"/>
+
+		              <lay:Control ID="c_PercentRawCheckBox" 	   xsi:type="lay:CheckBox_t"
+		                  label="Set Percent Raw to 45%)"  />
+		              <lay:Control ID="c_PercentRaw" 	   xsi:type="lay:TextField_t"
+		                  label="Percent Raw on Wire (Range 25-99, init 25)"  initValue="25"  parameterRef="PercentRaw">
+						<flow:StateRule value="45">
+							<val:Edit field="c_PercentRawCheckBox" operator="EQ" value="true"/>
+						</flow:StateRule>
+		              </lay:Control>
+		              
+		              <lay:Control ID="c_PercentX100CheckBox" 	   xsi:type="lay:CheckBox_t"
+		                  label="Set Percent x100 to 45%)"  />
+		              <lay:Control ID="c_PercentX100" 	   xsi:type="lay:TextField_t"
+		                  label="Percent x100 on Wire (Range 1-99, init 25)"  initValue="25"   parameterRef="PercentX100">
+						<flow:StateRule value="45">
+							<val:Edit field="c_PercentX100CheckBox" operator="EQ" value="true"/>
+						</flow:StateRule>
+		              </lay:Control>
+		                  
+		          </lay:StrategyPanel>
+		          
+		      </lay:StrategyPanel>
+		
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+
+        <val:StrategyEdit errorMessage="Percent Raw cannot exceed 75% when BoundedInt is set.">
+        	<val:Edit logicOperator="OR">
+            <val:Edit field="BoundedInt" operator="NX"/>
+            <val:Edit field="PercentRaw" operator="NX"/>
+            <val:Edit field="PercentRaw" operator="LT" value="0.75"/>
+          </val:Edit>
+        </val:StrategyEdit>
+
+	</Strategy>
+	
+</Strategies>

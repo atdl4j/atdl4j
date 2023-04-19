@@ -130,9 +130,11 @@ public abstract class ControlT {
      * 
      * 
      */
-    public List<StateRuleT> getStateRule() {
-        if (stateRule == null) {
-            stateRule = new ArrayList<StateRuleT>();
+    public List<StateRuleT> getStateRule()
+    {
+        if (stateRule == null)
+        {
+            stateRule = new ArrayList<>();
         }
         return this.stateRule;
     }

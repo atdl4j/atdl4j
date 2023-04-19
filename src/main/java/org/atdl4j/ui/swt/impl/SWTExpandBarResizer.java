@@ -21,12 +21,14 @@ public class SWTExpandBarResizer
 	{
 		composite = aComposite;
 	}
-	
+
+	@Override
 	public void itemCollapsed(ExpandEvent aE)
 	{
 		SWTStrategyPanelHelper.revalidateLayoutAsync( (ExpandBar)composite.getParent() );
 	}
 	
+	@Override
 	public void itemExpanded(ExpandEvent aE)
 	{
 		SWTStrategyPanelHelper.revalidateLayoutAsync( (ExpandBar)composite.getParent() );

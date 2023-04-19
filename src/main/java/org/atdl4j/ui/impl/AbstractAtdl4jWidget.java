@@ -2,7 +2,8 @@ package org.atdl4j.ui.impl;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.Atdl4jConstants;
@@ -37,7 +38,7 @@ import org.atdl4j.ui.Atdl4jWidget;
 public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 		implements Atdl4jWidget<E>
 {
-	private final Logger logger = Logger.getLogger( AbstractAtdl4jWidget.class );
+	private final Logger logger = LoggerFactory.getLogger( AbstractAtdl4jWidget.class );
 
 	protected ParameterT parameter;
 	protected ControlT control;
@@ -66,7 +67,7 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 
 		if ( parameter != null )
 		{
-			parameterConverter = (ParameterTypeConverter<?>) TypeConverterFactoryConfig.getTypeConverterFactory().createParameterTypeConverter( parameter );
+			parameterConverter = TypeConverterFactoryConfig.getTypeConverterFactory().createParameterTypeConverter( parameter );
 		}
 
 		// -- Pass parameterConverter (which may be null if parameter is null) --
@@ -285,7 +286,7 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 				    && getParameter().getFixTag().intValue()!= Atdl4jConstants.TAG_STRATEGY_PARAMETER_TYPE
 				    && getParameter().getFixTag().intValue()!= Atdl4jConstants.TAG_STRATEGY_PARAMETER_VALUE)
 			{
-					builder.onField( getParameter().getFixTag().intValue(), value.toString() );
+					builder.onField( getParameter().getFixTag().intValue(), value );
 			}
 			else
 			{
@@ -299,7 +300,7 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 					String type = Integer.toString( getFIXType() );
 					builder.onField( Atdl4jConstants.TAG_STRATEGY_PARAMETER_NAME, name );
 					builder.onField( Atdl4jConstants.TAG_STRATEGY_PARAMETER_TYPE, type );
-					builder.onField( Atdl4jConstants.TAG_STRATEGY_PARAMETER_VALUE, value.toString() );
+					builder.onField( Atdl4jConstants.TAG_STRATEGY_PARAMETER_VALUE, value );
 				}
 			}
 		}
@@ -322,9 +323,9 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 			{
 				// validate checkedEnumRef and uncheckedEnumRef
 			}
-			else if ( listItems == null || listItems.size() == 0 )
+			else if ( listItems == null || listItems.isEmpty() )
 			{
-				if ( enumPairs != null && enumPairs.size() > 0 )
+				if ( enumPairs != null && !enumPairs.isEmpty() )
 				{
 					throw new IllegalArgumentException( "Parameter \"" + parameter.getName() + "\" has EnumPairs but Control \"" + control.getID()
 							+ "\" does not have ListItems." );
@@ -385,7 +386,7 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 	// values to ParameterValues
 	protected String getParameterValueAsMultipleValueString()
 	{
-		String value = "";
+		StringBuilder tmpStringBuilder = new StringBuilder("");
 		if ( getControlValue() != null )
 		{
 			String enumIDs = getControlValue().toString();
@@ -393,18 +394,18 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 			{
 				for ( String enumID : enumIDs.split( "\\s" ) )
 				{
-					if ( "".equals( value ) )
+					if ( tmpStringBuilder.toString().isEmpty() )
 					{
-						value += getEnumWireValue( enumID );
+						tmpStringBuilder.append( getEnumWireValue( enumID ) );
 					}
 					else
 					{
-						value += " " + getEnumWireValue( enumID );
+						tmpStringBuilder.append( " " ).append( getEnumWireValue( enumID ) );
 					}
 				}
 			}
 		}
-		return "".equals( value ) ? null : value;
+		return tmpStringBuilder.toString().isEmpty() ? null : tmpStringBuilder.toString();
 	}
 
 	// Helper method to get control ListItems
@@ -440,9 +441,6 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 		}
 		else
 		{
-			// TODO: this should maybe throw a runtime error???
-			// return an empty list
-			// return new Vector<ListItemT>();
 			return null;
 		}
 	}
@@ -484,18 +482,19 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 		{
 			// -- Special logic to treat non-visible and/or non-enabled as "null"
 			// if nullValue is false --
-		    
 			if ( getAtdl4jOptions() != null )
 			{
 			    if (isVisible())
 			    {
 			      if (isControlExcludingLabelEnabled()){
 			        return false;
-			      } else if (getAtdl4jOptions().isTreatControlEnabledFalseAsNull())
+			      }
+			      else if (getAtdl4jOptions().isTreatControlEnabledFalseAsNull())
 			      {
 			        return true;
 			      }
-			    } else if (getAtdl4jOptions().isTreatControlVisibleFalseAsNull())
+			    }
+			    else if (getAtdl4jOptions().isTreatControlVisibleFalseAsNull())
 			    {
 			      return true;
 			    }
@@ -517,7 +516,7 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 	/**
 	 * 
 	 */
-	abstract protected void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd);
+	protected abstract void processNullValueIndicatorChange(Boolean aOldNullValueInd, Boolean aNewNullValueInd);
 
 
 	/**
@@ -531,8 +530,8 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 		// -- Assign the value --
 		this.nullValue = aNullValue;
 
-		logger.debug( "setNullValue() control ID:" + getControl().getID() + " tempPreExistingNullValue: " + tempPreExistingNullValue + " aNullValue: "
-				+ aNullValue );
+		logger.debug( "setNullValue() control ID:  {} tempPreExistingNullValue: {} aNullValue: {}"
+		              , getControl().getID(), tempPreExistingNullValue, aNullValue );
 
 		// -- Check to see if aNullValue provided is different than the
 		// pre-existing value --
@@ -544,8 +543,8 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 			if ( ( ( tempPreExistingNullValue == null ) || ( Boolean.FALSE.equals( tempPreExistingNullValue ) ) )
 					&& ( Boolean.TRUE.equals( aNullValue ) ) )
 			{
-				logger.debug( "setNullValue() control ID:" + getControl().getID() + " tempPreExistingNullValue: " + tempPreExistingNullValue
-						+ " aNullValue: " + aNullValue + " invoking setLastNonNullStateControlValueRaw( " + getControlValueRaw() + " )" );
+				logger.debug( "setNullValue() control ID: {} tempPreExistingNullValue: {} aNullValue: {} invoking setLastNonNullStateControlValueRaw( {} )"
+				              , getControl().getID(), tempPreExistingNullValue, aNullValue, getControlValueRaw() );
 				setLastNonNullStateControlValueRaw( getControlValueRaw() );
 			}
 
@@ -554,16 +553,13 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 
 			// -- "restore" the Control's raw value if so configured when going
 			// from aNullValue of true to non-null --
-			if ( ( Boolean.FALSE.equals( aNullValue ) ) && ( getLastNonNullStateControlValueRaw() != null ) )
+			if ( ( Boolean.FALSE.equals( aNullValue ) )
+			&& ( getLastNonNullStateControlValueRaw() != null )
+			&& ( getAtdl4jOptions().isRestoreLastNonNullStateControlValueBehavior() ) )
 			{
-				if ( getAtdl4jOptions().isRestoreLastNonNullStateControlValueBehavior() )
-				{
-					logger
-							.debug( "setNullValue() control ID:" + getControl().getID() + " tempPreExistingNullValue: " + tempPreExistingNullValue
-									+ " aNullValue: " + aNullValue + " invoking restoreLastNonNullStateControlValue( " + getLastNonNullStateControlValueRaw()
-									+ " )" );
-					restoreLastNonNullStateControlValue( getLastNonNullStateControlValueRaw() );
-				}
+				logger.debug( "setNullValue() control ID: {} tempPreExistingNullValue: {} aNullValue: {} invoking restoreLastNonNullStateControlValue( {} )"
+				              , getControl().getID(), tempPreExistingNullValue, aNullValue, getControlValueRaw() );
+				restoreLastNonNullStateControlValue( getLastNonNullStateControlValueRaw() );
 			}
 		}
 	}
@@ -608,12 +604,12 @@ public abstract class AbstractAtdl4jWidget<E extends Comparable<?>>
 		
 		if ( ( tempValue == null ) && ( getNullValue() != null ) )
 		{
-			logger.debug( "setFIXValue: " + aFIXValue + " Parameter value: " + tempParameterValue + " Control value: " + tempValue + ".  Setting Control.nullValue=TRUE." );
+			logger.debug( "setFIXValue: {} Parameter value: {} Control value: {}.  Setting Control.nullValue=TRUE.", aFIXValue, tempParameterValue, tempValue );
 			setNullValue( Boolean.TRUE );
 		}
 		else
 		{
-			logger.debug( "setFIXValue: " + aFIXValue + " Parameter value: " + tempParameterValue + " Control value: " + tempValue );
+			logger.debug( "setFIXValue: {} Parameter value: {} Control value: {}", aFIXValue, tempParameterValue, tempValue );
 			setNullValue( Boolean.FALSE );
 		}
 		

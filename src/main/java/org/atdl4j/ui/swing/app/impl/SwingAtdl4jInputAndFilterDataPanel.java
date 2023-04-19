@@ -11,7 +11,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.StrategyFilterInputData;
 import org.atdl4j.data.Atdl4jConstants;
@@ -26,7 +27,7 @@ import org.atdl4j.ui.app.impl.AbstractAtdl4jInputAndFilterDataPanel;
 public class SwingAtdl4jInputAndFilterDataPanel
 		extends AbstractAtdl4jInputAndFilterDataPanel
 {
-	public final Logger logger = Logger.getLogger(SwingAtdl4jInputAndFilterDataPanel.class);
+	public final Logger logger = LoggerFactory.getLogger(SwingAtdl4jInputAndFilterDataPanel.class);
 	
 	private JDialog parentDialog;
 	
@@ -89,7 +90,7 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		
 		JPanel panel1 = new JPanel();
 		panel1.add(new JLabel("FixMsgType:"));
-		strategyFilterFixMsgTypeCombo = new JComboBox<String>(prepareContantsForGUI(Atdl4jConstants.STRATEGY_FILTER_FIX_MSG_TYPES));
+		strategyFilterFixMsgTypeCombo = new JComboBox<>(prepareContantsForGUI(Atdl4jConstants.STRATEGY_FILTER_FIX_MSG_TYPES));
 		strategyFilterFixMsgTypeCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		panel1.add(strategyFilterFixMsgTypeCombo);
 		
@@ -98,24 +99,24 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		
 		JPanel panel2 = new JPanel();
 		panel2.add(new JLabel("Region:"));
-		strategyFilterRegionCombo = new JComboBox<String>(prepareContantsForGUI(Atdl4jConstants.STRATEGY_FILTER_REGIONS));
+		strategyFilterRegionCombo = new JComboBox<>(prepareContantsForGUI(Atdl4jConstants.STRATEGY_FILTER_REGIONS));
 		strategyFilterRegionCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		panel2.add(strategyFilterRegionCombo);
 		
 		panel2.add(new JLabel("Country:"));
-		strategyFilterCountryCombo = new JComboBox<String>(DEFAULT_STRATEGY_FILTER_COUNTRY_SUBSET_LIST);
+		strategyFilterCountryCombo = new JComboBox<>(DEFAULT_STRATEGY_FILTER_COUNTRY_SUBSET_LIST);
 		strategyFilterCountryCombo.setEditable(true);
 		strategyFilterCountryCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		panel2.add(strategyFilterCountryCombo);
 		
 		panel2.add(new JLabel("MIC Code:"));
-		strategyFilterMICCodeCombo = new JComboBox<String>(DEFAULT_STRATEGY_FILTER_MIC_CODE_SUBSET_LIST);
+		strategyFilterMICCodeCombo = new JComboBox<>(DEFAULT_STRATEGY_FILTER_MIC_CODE_SUBSET_LIST);
 		strategyFilterMICCodeCombo.setEditable(true);
 		strategyFilterMICCodeCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		panel2.add(strategyFilterMICCodeCombo);
 		
 		panel2.add(new JLabel("Security Type:"));
-		strategyFilterSecurityTypeCombo = new JComboBox<String>(prepareContantsForGUI(Atdl4jConstants.STRATEGY_FILTER_SECURITY_TYPES));
+		strategyFilterSecurityTypeCombo = new JComboBox<>(prepareContantsForGUI(Atdl4jConstants.STRATEGY_FILTER_SECURITY_TYPES));
 		strategyFilterSecurityTypeCombo.setEditable(true);
 		strategyFilterSecurityTypeCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		panel2.add(strategyFilterSecurityTypeCombo);
@@ -133,49 +134,49 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		
 		
 		standardFixFieldsPanel.add(new JLabel("OrdType:"));
-		fixFieldOrdTypeCombo = new JComboBox<String>(DEFAULT_FIX_FIELD_ORD_TYPE_SUBSET_LIST);
+		fixFieldOrdTypeCombo = new JComboBox<>(DEFAULT_FIX_FIELD_ORD_TYPE_SUBSET_LIST);
 		fixFieldOrdTypeCombo.setEditable(true);
 		fixFieldOrdTypeCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		standardFixFieldsPanel.add(fixFieldOrdTypeCombo);
 		
 		standardFixFieldsPanel.add(new JLabel("Side:"));
-		fixFieldSideCombo = new JComboBox<String>(DEFAULT_FIX_FIELD_SIDE_SUBSET_LIST);
+		fixFieldSideCombo = new JComboBox<>(DEFAULT_FIX_FIELD_SIDE_SUBSET_LIST);
 		fixFieldSideCombo.setEditable(true);
 		fixFieldSideCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		standardFixFieldsPanel.add(fixFieldSideCombo);
 		
 		standardFixFieldsPanel.add(new JLabel("OrderQty:"));
-		fixFieldOrderQtyCombo = new JComboBox<String>(DEFAULT_FIX_FIELD_ORDER_QTY_SUBSET_LIST);
+		fixFieldOrderQtyCombo = new JComboBox<>(DEFAULT_FIX_FIELD_ORDER_QTY_SUBSET_LIST);
 		fixFieldOrderQtyCombo.setEditable(true);
 		fixFieldOrderQtyCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		standardFixFieldsPanel.add(fixFieldOrderQtyCombo);
 		
 		standardFixFieldsPanel.add(new JLabel("Price:"));
-		fixFieldPriceCombo = new JComboBox<String>(DEFAULT_FIX_FIELD_PRICE_SUBSET_LIST);
+		fixFieldPriceCombo = new JComboBox<>(DEFAULT_FIX_FIELD_PRICE_SUBSET_LIST);
 		fixFieldPriceCombo.setEditable(true);
 		fixFieldPriceCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		standardFixFieldsPanel.add(fixFieldPriceCombo);
 		
 		standardFixFieldsPanel.add(new JLabel("HandlInst:"));
-		fixFieldHandlInstCombo = new JComboBox<String>(DEFAULT_FIX_FIELD_HANDL_INST_SUBSET_LIST);
+		fixFieldHandlInstCombo = new JComboBox<>(DEFAULT_FIX_FIELD_HANDL_INST_SUBSET_LIST);
 		fixFieldHandlInstCombo.setEditable(true);
 		fixFieldHandlInstCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		standardFixFieldsPanel.add(fixFieldHandlInstCombo);
 
 		standardFixFieldsPanel.add(new JLabel("ExecInst:"));
-		fixFieldExecCombo = new JComboBox<String>(DEFAULT_FIX_FIELD_EXEC_INST_SUBSET_LIST);
+		fixFieldExecCombo = new JComboBox<>(DEFAULT_FIX_FIELD_EXEC_INST_SUBSET_LIST);
 		fixFieldExecCombo.setEditable(true);
 		fixFieldExecCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		standardFixFieldsPanel.add(fixFieldExecCombo);
 		
 		standardFixFieldsPanel.add(new JLabel("TimeInForce:"));
-		fixFieldTimeInForceCombo = new JComboBox<String>(DEFAULT_FIX_FIELD_TIME_IN_FORCE_SUBSET_LIST);
+		fixFieldTimeInForceCombo = new JComboBox<>(DEFAULT_FIX_FIELD_TIME_IN_FORCE_SUBSET_LIST);
 		fixFieldTimeInForceCombo.setEditable(true);
 		fixFieldTimeInForceCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		standardFixFieldsPanel.add(fixFieldTimeInForceCombo);
 		
 		standardFixFieldsPanel.add(new JLabel("ClOrdLinkID:"));
-		fixFieldClOrdLinkIDCombo = new JComboBox<String>(DEFAULT_FIX_FIELD_CL_ORD_LINK_ID_SUBSET_LIST);
+		fixFieldClOrdLinkIDCombo = new JComboBox<>(DEFAULT_FIX_FIELD_CL_ORD_LINK_ID_SUBSET_LIST);
 		fixFieldClOrdLinkIDCombo.setEditable(true);
 		fixFieldClOrdLinkIDCombo.setMaximumRowCount(DEFAULT_DROP_DOWN_VISIBLE_ITEM_COUNT);
 		standardFixFieldsPanel.add(fixFieldClOrdLinkIDCombo);
@@ -231,31 +232,31 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		{
 			StrategyFilterInputData tempStrategyFilterInputData = null;
 			if ( ( getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList() != null ) &&
-				  ( getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList().size() > 0 ) )
+				  ( !getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList().isEmpty() ) )
 			{
 				tempStrategyFilterInputData = getAtdl4jOptions().getInputAndFilterData().getStrategyFilterInputDataList().get( 0 );
 			}
 
 			String tempFixMsgType = null;
-			String tempRegion_name = null;
-			String tempCountry_CountryCode = null;
-			String tempMarket_MICCode = null;
-			String tempSecurityType_name = null;
+			String tmpRegionName = null;
+			String tmpCountryCode = null;
+			String tmpMarketMicCode = null;
+			String tmpSecurityTypeName = null;
 			
 			if ( tempStrategyFilterInputData != null )
 			{
 				tempFixMsgType = tempStrategyFilterInputData.getFixMsgType();
-				tempRegion_name = tempStrategyFilterInputData.getRegion_name();
-				tempCountry_CountryCode = tempStrategyFilterInputData.getCountry_CountryCode();
-				tempMarket_MICCode = tempStrategyFilterInputData.getMarket_MICCode();
-				tempSecurityType_name = tempStrategyFilterInputData.getSecurityType_name();
+				tmpRegionName = tempStrategyFilterInputData.getRegion_name();
+				tmpCountryCode = tempStrategyFilterInputData.getCountry_CountryCode();
+				tmpMarketMicCode = tempStrategyFilterInputData.getMarket_MICCode();
+				tmpSecurityTypeName = tempStrategyFilterInputData.getSecurityType_name();
 			}
 			
 			selectDropDownItem( strategyFilterFixMsgTypeCombo, tempFixMsgType );
-			selectDropDownItem( strategyFilterRegionCombo, tempRegion_name );
-			selectDropDownItem( strategyFilterCountryCombo, tempCountry_CountryCode );
-			selectDropDownItem( strategyFilterMICCodeCombo, tempMarket_MICCode );
-			selectDropDownItem( strategyFilterSecurityTypeCombo, tempSecurityType_name );
+			selectDropDownItem( strategyFilterRegionCombo, tmpRegionName );
+			selectDropDownItem( strategyFilterCountryCombo, tmpCountryCode );
+			selectDropDownItem( strategyFilterMICCodeCombo, tmpMarketMicCode );
+			selectDropDownItem( strategyFilterSecurityTypeCombo, tmpSecurityTypeName );
 			
 			setCheckboxValue( checkboxInputCxlReplaceMode, getAtdl4jOptions().getInputAndFilterData().getInputCxlReplaceMode(), Boolean.FALSE );
 			

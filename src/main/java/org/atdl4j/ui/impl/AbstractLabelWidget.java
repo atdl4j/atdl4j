@@ -10,7 +10,7 @@ package org.atdl4j.ui.impl;
 
 public abstract class AbstractLabelWidget extends AbstractAtdl4jWidget<String> 
 {
-	// -- Overriden --
+	@Override
 	protected void initPreCheck()
 	{
 		this.parameter = null;
@@ -26,6 +26,7 @@ public abstract class AbstractLabelWidget extends AbstractAtdl4jWidget<String>
 		return null; // Labels cannot store values
 	}
 
+	@Override
 	public Object getParameterValue() {
 		return null; // Labels cannot store values
 	}
@@ -41,6 +42,7 @@ public abstract class AbstractLabelWidget extends AbstractAtdl4jWidget<String>
 	/**
 	 * 
 	 */
+	@Override
 	public void processConstValueHasBeenSet()
 	{
 		// -- no operation -- 

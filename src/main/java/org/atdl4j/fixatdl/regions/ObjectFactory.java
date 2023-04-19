@@ -31,9 +31,9 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _TheAmericas_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Regions", "TheAmericas");
-    private final static QName _AsiaPacificJapan_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Regions", "AsiaPacificJapan");
-    private final static QName _EuropeMiddleEastAfrica_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Regions", "EuropeMiddleEastAfrica");
+    private static final QName _TheAmericas_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Regions", "TheAmericas");
+    private static final QName _AsiaPacificJapan_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Regions", "AsiaPacificJapan");
+    private static final QName _EuropeMiddleEastAfrica_QNAME = new QName("http://www.fixprotocol.org/FIXatdl-1-1/Regions", "EuropeMiddleEastAfrica");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.atdl4j.fixatdl.regions
@@ -48,7 +48,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://www.fixprotocol.org/FIXatdl-1-1/Regions", name = "TheAmericas")
     public JAXBElement<TheAmericas> createTheAmericas(TheAmericas value) {
-        return new JAXBElement<TheAmericas>(_TheAmericas_QNAME, TheAmericas.class, null, value);
+        return new JAXBElement<>(_TheAmericas_QNAME, TheAmericas.class, null, value);
     }
 
     /**
@@ -57,7 +57,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://www.fixprotocol.org/FIXatdl-1-1/Regions", name = "AsiaPacificJapan")
     public JAXBElement<AsiaPacificJapan> createAsiaPacificJapan(AsiaPacificJapan value) {
-        return new JAXBElement<AsiaPacificJapan>(_AsiaPacificJapan_QNAME, AsiaPacificJapan.class, null, value);
+        return new JAXBElement<>(_AsiaPacificJapan_QNAME, AsiaPacificJapan.class, null, value);
     }
 
     /**
@@ -66,7 +66,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://www.fixprotocol.org/FIXatdl-1-1/Regions", name = "EuropeMiddleEastAfrica")
     public JAXBElement<EuropeMiddleEastAfrica> createEuropeMiddleEastAfrica(EuropeMiddleEastAfrica value) {
-        return new JAXBElement<EuropeMiddleEastAfrica>(_EuropeMiddleEastAfrica_QNAME, EuropeMiddleEastAfrica.class, null, value);
+        return new JAXBElement<>(_EuropeMiddleEastAfrica_QNAME, EuropeMiddleEastAfrica.class, null, value);
     }
 
 }

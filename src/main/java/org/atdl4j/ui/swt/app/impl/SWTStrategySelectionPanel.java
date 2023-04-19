@@ -3,7 +3,8 @@ package org.atdl4j.ui.swt.app.impl;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jHelper;
@@ -32,7 +33,7 @@ import org.eclipse.swt.widgets.Label;
 public class SWTStrategySelectionPanel 
 	extends AbstractStrategySelectionPanel
 {
-	private final Logger logger = Logger.getLogger(SWTStrategySelectionPanel.class);
+	private static final Logger logger = LoggerFactory.getLogger(SWTStrategySelectionPanel.class);
 	
 	private Composite dropdownComposite;
 	private Combo strategiesDropDown;
@@ -76,9 +77,7 @@ public class SWTStrategySelectionPanel
 		        newFont.dispose(); 
 		    } 
 		}); 
-		
-// TODO wish to avoid issue with changing the font causes the initial combo box display to be very narrow 
-	
+
 		if ( Atdl4jConfig.getConfig().getStrategyDropDownItemDepth() != null )
 		{
 			strategiesDropDown.setVisibleItemCount( Atdl4jConfig.getConfig().getStrategyDropDownItemDepth().intValue() );
@@ -92,7 +91,7 @@ public class SWTStrategySelectionPanel
 				public void widgetSelected(SelectionEvent event) 
 				{
 					int index = strategiesDropDown.getSelectionIndex();
-					logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelectionIndex(): " + index );					
+					logger.debug( "strategiesDropDown.widgetSelected.  strategiesDropDown.getSelectionIndex(): {}", index );
 					selectDropDownStrategy( index );
 				}
 			} 
@@ -115,7 +114,7 @@ public class SWTStrategySelectionPanel
 
 		for (StrategyT tempStrategy : getStrategiesList()) 
 		{
-			logger.debug( "loadStrategyList() [" + strategiesDropDown.getItemCount() + "] strategiesDropDown.add: " + Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
+			logger.debug( "loadStrategyList() [{}] strategiesDropDown.add: {}", strategiesDropDown.getItemCount(), Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
 			
 			// create dropdown item for strategy
 			strategiesDropDown.add( Atdl4jHelper.getStrategyUiRepOrName( tempStrategy ) );
@@ -127,7 +126,7 @@ public class SWTStrategySelectionPanel
 
 	public void selectDropDownStrategy(int index) 
 	{
-		logger.debug( "selectDropDownStrategy() index: " + index );
+		logger.debug( "selectDropDownStrategy() index: {}", index );
 		
 		if ( getStrategiesList().size() != strategiesDropDown.getItemCount() )
 		{
@@ -149,7 +148,7 @@ public class SWTStrategySelectionPanel
 	
 	public void selectDropDownStrategyByStrategyName(String aStrategyName)
 	{
-		logger.debug( "selectDropDownStrategyByStrategyName() aStrategyName: " + aStrategyName );
+		logger.debug( "selectDropDownStrategyByStrategyName() aStrategyName: {}", aStrategyName );
 		
 		if ( getStrategiesList().size() != strategiesDropDown.getItemCount() )
 		{
@@ -162,7 +161,7 @@ public class SWTStrategySelectionPanel
 			
 			if ( aStrategyName.equals( tempStrategy.getName() ) )
 			{
-				logger.debug( "selectDropDownStrategyByStrategyName() invoking selectDropDownStrategy( " + i + " )" );
+				logger.debug( "selectDropDownStrategyByStrategyName() invoking selectDropDownStrategy( {} )", i );
 				selectDropDownStrategy( i );
 			}
 		}
@@ -170,7 +169,7 @@ public class SWTStrategySelectionPanel
 
 	public void selectDropDownStrategyByStrategyWireValue( String aStrategyWireValue ) 
 	{
-		logger.debug( "selectDropDownStrategyByStrategyWireValue() aStrategyWireValue: " + aStrategyWireValue );
+		logger.debug( "selectDropDownStrategyByStrategyWireValue() aStrategyWireValue: {}", aStrategyWireValue );
 		
 		if ( getStrategiesList().size() != strategiesDropDown.getItemCount() )
 		{
@@ -183,7 +182,7 @@ public class SWTStrategySelectionPanel
 			
 			if ( aStrategyWireValue.equals( tempStrategy.getWireValue() ) )
 			{
-				logger.debug( "selectDropDownStrategyByStrategyWireValue() invoking selectDropDownStrategy( " + i + " )" );
+				logger.debug( "selectDropDownStrategyByStrategyWireValue() invoking selectDropDownStrategy( {} )", i );
 				selectDropDownStrategy( i );
 			}
 		}

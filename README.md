@@ -2,13 +2,11 @@
 
 #### The Open Source Java Solution for FIXatdl
 
-atdl4j is an open source and not-for-profit Java implementation of [FIXatdl](http://www.fixprotocol.org/FIXatdl), the FIX Protocol Algorithmic Trading Definition Language standard developed by FIX Protocol Limited (FPL).
-
-Please see [the atdl4j Homepage](http://atdl4j.org) for an overview.
+atdl4j is an open source and not-for-profit Java implementation of [FIXatdl](https://www.fixtrading.org/standards/fixatdl/), the FIX Protocol Algorithmic Trading Definition Language standard developed by [FIX Protocol Limited (FPL)](https://www.fixtrading.org/).
 
 ## Features
 
-* Compatible with Java 6 and upper versions
+* Compatible with Java 8 and upper versions
 * Displays algo input screens based on the latest industry-standard FIXatdl 1.1 XML schema
 * Reads and generates algorithm-specific FIX message content
 * Can be integrated into a trading system, or run as a standalone testing/validation tool.
@@ -49,15 +47,15 @@ If you are intending to implement a full-stack trading system with FIX order cap
 
 ## Key Contributors
 
-* Scott Atwell, American Century
+* [Scott Atwell](https://github.com/scottatwell), American Century Investments
 * [John Shields](https://github.com/johnnyshields)
 * Danilo Tuler, Investtools
 * Renato Gallart, Investtools
 
 ## License
 
-atdlj is licensed under the MIT license. Refer to LICENSE file for details
+atdl4j is licensed under the MIT license. Refer to LICENSE file for details
 
 FIX Protocol and FIXatdl are trademarks or service marks of FIX Protocol Limited
 
-[Looking for a .NET implementation of FIXatdl? Check out atdl4net](http://atdl4net.org)
+[Looking for a .NET implementation of FIXatdl? Check out atdl4net](https://github.com/atdl4net/atdl4net)

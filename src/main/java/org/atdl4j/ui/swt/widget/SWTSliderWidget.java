@@ -27,7 +27,7 @@ public class SWTSliderWidget
 
 	public Widget createWidget(Composite parent, int style)
 	{
-		sliderLabels = new ArrayList<Label>();
+		sliderLabels = new ArrayList<>();
 		String tooltip = getTooltip();
 		GridData controlGD = new GridData( SWT.FILL, SWT.FILL, false, false );
 		
@@ -102,6 +102,7 @@ public class SWTSliderWidget
 		return ( (SliderT) control ).getListItem().get( slider.getSelection() ).getEnumID();
 	}
 
+	@Override
 	public String getParameterValue()
 	{
 		return getParameterValueAsEnumWireValue();
@@ -137,7 +138,7 @@ public class SWTSliderWidget
 
 	public List<Control> getControls()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		if (label != null) widgets.add( label );
 		widgets.add( slider );
 		widgets.addAll( sliderLabels );
@@ -146,7 +147,7 @@ public class SWTSliderWidget
 
 	public List<Control> getControlsExcludingLabel()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		widgets.add( slider );
 		widgets.addAll( sliderLabels );
 		return widgets;

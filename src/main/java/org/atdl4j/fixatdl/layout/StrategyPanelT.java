@@ -91,7 +91,7 @@ public class StrategyPanelT {
      */
     public List<StrategyPanelT> getStrategyPanel() {
         if (strategyPanel == null) {
-            strategyPanel = new ArrayList<StrategyPanelT>();
+            strategyPanel = new ArrayList<>();
         }
         return this.strategyPanel;
     }
@@ -120,7 +120,7 @@ public class StrategyPanelT {
      */
     public List<ControlT> getControl() {
         if (control == null) {
-            control = new ArrayList<ControlT>();
+            control = new ArrayList<>();
         }
         return this.control;
     }

@@ -11,7 +11,8 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.data.exception.FIXatdlFormatException;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.layout.ControlT;
@@ -30,7 +31,7 @@ import org.atdl4j.ui.swing.SwingWidget;
  */
 public class SwingStrategyPanelFactory
 {
-	protected static final Logger logger = Logger.getLogger( SwingStrategyPanelFactory.class );
+	protected static final Logger logger = LoggerFactory.getLogger( SwingStrategyPanelFactory.class );
 	
 	private static SwingWidgetFactory swingWidgetFactory = new SwingWidgetFactory();
 
@@ -38,30 +39,29 @@ public class SwingStrategyPanelFactory
 	// Can also process options for a group frame instead of a single panel
 	public Map<String, SwingWidget<?>> createStrategyPanelAndWidgets(JPanel parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style, Atdl4jWidgetFactory aAtdl4jWidgetFactory) throws FIXatdlFormatException
 	{
-		logger.debug( "createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style)" + " invoked with parms parent: "
-				+ parent + " panel: " + panel + " parameters: " + parameters + " style: " + style );
+		logger.debug( "createStrategyPanelAndWidgets(Composite parent, StrategyPanelT panel, Map<String, ParameterT> parameters, int style) invoked with parms parent: {} panel: {} parameters: {} style: {}", parent, panel, parameters, style );
 	
-		Map<String, SwingWidget<?>> controlWidgets = new HashMap<String, SwingWidget<?>>();
+		Map<String, SwingWidget<?>> controlWidgets = new HashMap<>();
 	
 		// -- Handles StrategyPanel's Collapsible, Title, Border, etc.  Sets its layout and layoutData and data. --
 		JPanel c = SwingStrategyPanelHelper.createStrategyPanelContainer( panel, parent, style );
 		parent.add(c);
 		
-		if ( panel.getStrategyPanel().size() > 0 && panel.getControl().size() > 0 )
+		if ( !panel.getStrategyPanel().isEmpty() && !panel.getControl().isEmpty() )
 		{
 			// -- Wrap each Control with an auto-built StrategyPanel if setting is true --
 			if ( aAtdl4jWidgetFactory.getAtdl4jOptions().isAccommodateMixOfStrategyPanelsAndControls() )
 			{
 				// -- FIXatdl 1.1 spec recommends against vs. prohibits.  Mixed list may not be displayed 'in sequence' of file. --
-				logger.warn( "StrategyPanel contains both StrategyPanel (" + panel.getStrategyPanel().size() +") and Control ( " + panel.getControl().size() + " elements.\nSee Atdl4jOptions.setAccommodateMixOfStrategyPanelsAndControls() as potential work-around, though Controls will appear after StrategyPanels." );
-				
+				logger.warn( "StrategyPanel contains both StrategyPanel ({}) and Control ({}) elements.\nSee Atdl4jOptions.setAccommodateMixOfStrategyPanelsAndControls() as potential work-around, though Controls will appear after StrategyPanels.", panel.getStrategyPanel().size(), panel.getControl().size() );
+
 				StrategyPanelT tempPanel = new StrategyPanelT();
 				tempPanel.setCollapsible( Boolean.FALSE );
 				tempPanel.setCollapsed( Boolean.FALSE );
 				tempPanel.setOrientation( panel.getOrientation() );
 				tempPanel.setColor( panel.getColor() );
 				
-				logger.warn( "Creating a StrategyPanel to contain " + panel.getControl().size() + " Controls." );
+				logger.warn( "Creating a StrategyPanel to contain {} Controls.", panel.getControl().size() );
 				tempPanel.getControl().addAll( panel.getControl() );
 				panel.getControl().clear();
 				panel.getStrategyPanel().add(  tempPanel );
@@ -130,11 +130,10 @@ public class SwingStrategyPanelFactory
    * Display panel's children inside the given parent
    * @param parent
    * @param panel
-   * @param parameters
    * @param style
-   * @param aAtdl4jWidgetFactory
    * @param widgets
    * @param depth
+   * @param gcUpdater
    * @return
    * @throws FIXatdlFormatException
    */
@@ -179,8 +178,9 @@ public class SwingStrategyPanelFactory
     gc = gcUpdater.size(1, gc);
     for (ControlT c : panel.getControl()) {
       gc = gcUpdater.panel(rowIndex, gc);
-      if (logger.isDebugEnabled()) {
-        logger.debug("Control :" + c.getLabel() + " rowIndex=" + rowIndex);
+      if (logger.isDebugEnabled())
+      {
+        logger.debug("Control :{} rowIndex={}", c.getLabel(), rowIndex );
       }
 
       SwingWidget< ? > swingWidget = widgets.get(c.getID());
@@ -197,10 +197,10 @@ public class SwingStrategyPanelFactory
         int compIndex = 0;
 
         for (Component comp : brickComponents) {
-          if (logger.isDebugEnabled()) {
-            if (comp instanceof JLabel) {
-              logger.debug("Label " + ((JLabel) comp).getText());
-            }
+          if ( ( logger.isDebugEnabled() )
+	       && ( comp instanceof JLabel ) )
+          {
+            logger.debug("Label {}", ((JLabel) comp).getText() );
           }
         
           if (compIndex == (size - 1)) {

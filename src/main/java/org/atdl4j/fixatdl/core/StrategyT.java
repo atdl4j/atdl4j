@@ -260,7 +260,7 @@ public class StrategyT {
      */
     public List<ParameterT> getParameter() {
         if (parameter == null) {
-            parameter = new ArrayList<ParameterT>();
+            parameter = new ArrayList<>();
         }
         return this.parameter;
     }
@@ -289,7 +289,7 @@ public class StrategyT {
      */
     public List<EditT> getEdit() {
         if (edit == null) {
-            edit = new ArrayList<EditT>();
+            edit = new ArrayList<>();
         }
         return this.edit;
     }
@@ -366,7 +366,7 @@ public class StrategyT {
      */
     public List<StrategyEditT> getStrategyEdit() {
         if (strategyEdit == null) {
-            strategyEdit = new ArrayList<StrategyEditT>();
+            strategyEdit = new ArrayList<>();
         }
         return this.strategyEdit;
     }

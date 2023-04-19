@@ -28,12 +28,12 @@ import org.atdl4j.fixatdl.core.StrategyT;
  */
 public class InputAndFilterData
 {
-	public static String FIX_DEFINED_FIELD_PREFIX = "FIX_";
+	public static final String FIX_DEFINED_FIELD_PREFIX = "FIX_";
 	
 	private List<StrategyFilterInputData> strategyFilterInputDataList = null;  // -- Use more than one when multiple individual orders are associated with a single algo panel display --
 	
-	public static String INPUT_FIELD_NAME_INCREMENT_POLICY_LotSize = "FIX_FIXatdl_LotSize";
-	public static String INPUT_FIELD_NAME_INCREMENT_POLICY_Tick = "FIX_FIXatdl_Tick";
+	public static final String INPUT_FIELD_NAME_INCREMENT_POLICY_LOT_SIZE = "FIX_FIXatdl_LotSize";
+	public static final String INPUT_FIELD_NAME_INCREMENT_POLICY_TICK = "FIX_FIXatdl_Tick";
 	
 	private boolean inputCxlReplaceMode = false;
 	
@@ -135,7 +135,7 @@ public class InputAndFilterData
 	{
 		if ( getInputHiddenFieldNameValueMap() == null )
 		{
-			setInputHiddenFieldNameValueMap( new HashMap<String, String>() );
+			setInputHiddenFieldNameValueMap( new HashMap<>() );
 		}
 		
 		getInputHiddenFieldNameValueMap().putAll( aMap );
@@ -146,7 +146,7 @@ public class InputAndFilterData
 	 * Checks applicability of aStrategy against each StrategyFilterInputData within getStrategyFilterInputDataList().
 	 * Returns true only if aStrategy meets criteria for all (least common denominator).
 	 * 
-	 * @param strategy
+	 * @param aStrategy
 	 * @return
 	 */
 	public boolean isStrategySupported(StrategyT aStrategy)
@@ -160,7 +160,7 @@ public class InputAndFilterData
 		{
 			for ( StrategyFilterInputData tempStrategyFilterInputData : getStrategyFilterInputDataList() )
 			{
-				if ( tempStrategyFilterInputData.isStrategySupported( aStrategy ) == false )
+				if (!tempStrategyFilterInputData.isStrategySupported(aStrategy))
 				{
 					return false;
 				}
@@ -179,7 +179,7 @@ public class InputAndFilterData
 	{
 		if ( getInputHiddenFieldNameValueMap() == null )
 		{
-			setInputHiddenFieldNameValueMap( new HashMap<String, String>() );
+			setInputHiddenFieldNameValueMap( new HashMap<>() );
 		}
 		
 		if ( aFieldValue != null )
@@ -202,7 +202,7 @@ public class InputAndFilterData
 	{
 		if ( getInputHiddenFieldNameValueMap() == null )
 		{
-			setInputHiddenFieldNameValueMap( new HashMap<String, String>() );
+			setInputHiddenFieldNameValueMap( new HashMap<>() );
 		}
 		
 		getInputHiddenFieldNameValueMap().put( (FIX_DEFINED_FIELD_PREFIX + aFieldName), aFieldValue );
@@ -210,9 +210,9 @@ public class InputAndFilterData
 	
 	/**
 	 */
-	public BigDecimal getInputIncrementPolicy_LotSize()
+	public BigDecimal getInputIncrementPolicyLotSize()
 	{
-		String tempValue = getInputHiddenFieldValue( INPUT_FIELD_NAME_INCREMENT_POLICY_LotSize );
+		String tempValue = getInputHiddenFieldValue( INPUT_FIELD_NAME_INCREMENT_POLICY_LOT_SIZE );
 		if ( tempValue != null )
 		{
 			return new BigDecimal( tempValue );
@@ -225,9 +225,9 @@ public class InputAndFilterData
 	
 	/**
 	 */
-	public BigDecimal getInputIncrementPolicy_Tick()
+	public BigDecimal getInputIncrementPolicyTick()
 	{
-		String tempValue = getInputHiddenFieldValue( INPUT_FIELD_NAME_INCREMENT_POLICY_Tick );
+		String tempValue = getInputHiddenFieldValue( INPUT_FIELD_NAME_INCREMENT_POLICY_TICK );
 		if ( tempValue != null )
 		{
 			return new BigDecimal( tempValue );
@@ -240,29 +240,29 @@ public class InputAndFilterData
 
 	/**
 	 */
-	public void setInputIncrementPolicy_LotSize( BigDecimal aLotSize )
+	public void setInputIncrementPolicyLotSize( BigDecimal aLotSize )
 	{
 		if ( aLotSize != null )
 		{
-			setInputHiddenFieldNameValuePair( INPUT_FIELD_NAME_INCREMENT_POLICY_LotSize, aLotSize.toString() );
+			setInputHiddenFieldNameValuePair( INPUT_FIELD_NAME_INCREMENT_POLICY_LOT_SIZE, aLotSize.toString() );
 		}
 		else
 		{
-			setInputHiddenFieldNameValuePair( INPUT_FIELD_NAME_INCREMENT_POLICY_LotSize, null);
+			setInputHiddenFieldNameValuePair( INPUT_FIELD_NAME_INCREMENT_POLICY_LOT_SIZE, null);
 		}
 	}
 	
 	/**
 	 */
-	public void setInputIncrementPolicy_Tick( BigDecimal aTick )
+	public void setInputIncrementPolicyTick( BigDecimal aTick )
 	{
 		if ( aTick != null )
 		{
-			setInputHiddenFieldNameValuePair( INPUT_FIELD_NAME_INCREMENT_POLICY_Tick, aTick.toString() );
+			setInputHiddenFieldNameValuePair( INPUT_FIELD_NAME_INCREMENT_POLICY_TICK, aTick.toString() );
 		}
 		else
 		{
-			setInputHiddenFieldNameValuePair( INPUT_FIELD_NAME_INCREMENT_POLICY_Tick, null );
+			setInputHiddenFieldNameValuePair( INPUT_FIELD_NAME_INCREMENT_POLICY_TICK, null );
 		}
 	}
 
@@ -329,7 +329,7 @@ public class InputAndFilterData
 	{
 		if ( aStrategyFilterInputData != null )
 		{
-			List<StrategyFilterInputData> tempList = new ArrayList<StrategyFilterInputData>();
+			List<StrategyFilterInputData> tempList = new ArrayList<>();
 			tempList.add( aStrategyFilterInputData );
 			setStrategyFilterInputDataList( tempList );
 		}

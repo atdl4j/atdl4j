@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
@@ -12,6 +11,8 @@ import org.atdl4j.fixatdl.flow.StateRuleT;
 import org.atdl4j.fixatdl.validation.OperatorT;
 import org.atdl4j.ui.Atdl4jWidget;
 import org.atdl4j.ui.impl.AbstractHiddenFieldWidget;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Validator that validates input against another existing field.
@@ -22,7 +23,7 @@ import org.atdl4j.ui.impl.AbstractHiddenFieldWidget;
 public class Field2OperatorValidationRule extends
 		AbstractOperatorValidationRule {
 
-	private static final Logger logger = Logger.getLogger(Field2OperatorValidationRule.class);
+	private static final Logger logger = LoggerFactory.getLogger(Field2OperatorValidationRule.class);
 	
 	private String field;
 
@@ -85,11 +86,11 @@ public class Field2OperatorValidationRule extends
 			{
 				fieldValue2 = convertFieldValueToDesiredType( fieldValue, fieldValue2 );
 			}
-			else if ( ( target != null ) && ( target instanceof AbstractHiddenFieldWidget ) )
+			else if ( target instanceof AbstractHiddenFieldWidget )
 			{
 				fieldValue = convertFieldValueToDesiredType( fieldValue2, fieldValue );
 			}
-			else if ( ( target2 != null ) && ( target2 instanceof AbstractHiddenFieldWidget ) )
+			else if ( target2 instanceof AbstractHiddenFieldWidget )
 			{
 				fieldValue2 = convertFieldValueToDesiredType( fieldValue, fieldValue2 );
 			}
@@ -123,15 +124,15 @@ public class Field2OperatorValidationRule extends
 		}
 		else if( aFieldWithDesiredType instanceof Double ) 
 		{
-			return new Double( aFieldValue.toString() );
+			return Double.valueOf( aFieldValue.toString() );
 		}
 		else if( aFieldWithDesiredType instanceof Integer ) 
 		{
-			return new Integer( aFieldValue.toString() );
+			return Integer.valueOf( aFieldValue.toString() );
 		}
 		else
 		{
-			logger.warn( "convertFieldValueToDesiredType() unhandled Class type: " + aFieldWithDesiredType.getClass().getName() );			
+			logger.warn( "convertFieldValueToDesiredType() unhandled Class type: {}", aFieldWithDesiredType.getClass().getName() );
 			return aFieldValue;
 		}
 	}

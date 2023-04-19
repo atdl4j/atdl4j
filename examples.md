@@ -2,6 +2,9 @@
 
 ## Swing
 
+
+See SwingAtdl4jTesterApp.java
+
 ```java
 // Embed the strategy panel in your own JFrame/JDialog
 JFrame frame = new JFrame();
@@ -17,7 +20,7 @@ Atdl4jOptions options = new Atdl4jOptions();
 SwingAtdl4jCompositePanel atdlPanel = new SwingAtdl4jCompositePanel();
 JPanel strategyPanel = (JPanel) atdlPanel.buildAtdl4jCompositePanel(frame, options);
 
-String file = "path_to_atdl_file.xml";
+String file = "path_to_atdl_file.xml"; // (see src/test/resources for example FIXatdl files)
 atdlPanel.parseFixatdlFile(file);
 atdlPanel.loadScreenWithFilteredStrategies();
 
@@ -27,4 +30,6 @@ frame.setVisible(true);
 ```
 
 ## SWT
+
+See SWTAtdl4jTesterApp.java
 

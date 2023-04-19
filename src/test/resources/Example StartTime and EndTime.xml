@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+
+	 <Strategy name="ExampleStartAndEndTime" uiRep="Start And End Time" wireValue="3" providerID="TEST">
+
+    <Parameter name="StartTimeReqd" xsi:type="UTCTimestamp_t" fixTag="9999" use="required"/>
+		<Parameter name="EndTimeReqd" xsi:type="UTCTimestamp_t" fixTag="9998" use="required"/>
+
+    <Parameter name="StartTime" xsi:type="UTCTimestamp_t" fixTag="9997" use="optional"/>
+		<Parameter name="EndTime" xsi:type="UTCTimestamp_t" fixTag="9996" use="optional"/>
+
+    <Parameter name="EffectiveTime" xsi:type="UTCTimestamp_t" fixTag="168" use="optional"/>
+		<Parameter name="ExpireTime" xsi:type="UTCTimestamp_t" fixTag="126" use="optional"/>
+
+	
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel title="Strategy Parameters" collapsible="false" orientation="VERTICAL">
+		
+		      <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="Required Fields">
+		
+              <lay:Control ID="c_StartTimeReqd" 	   xsi:type="lay:Clock_t"
+                  label="Start Time"   parameterRef="StartTimeReqd"/>
+                  
+              <lay:Control ID="c_EndTimeReqd" 	   xsi:type="lay:Clock_t"
+                  label="End Time"   parameterRef="EndTimeReqd"/>
+                  
+					</lay:StrategyPanel>
+    
+		      <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="Optional using CheckBox">
+		
+              <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+										<lay:Control ID="c_EnableStartTime" xsi:type="lay:CheckBox_t" label="Start Time" initValue="false"/>
+				            <lay:Control ID="StartTimeClock" xsi:type="lay:Clock_t" label="" parameterRef="StartTime">
+											<flow:StateRule enabled="false" value="{NULL}">
+												<val:Edit field="c_EnableStartTime" operator="EQ" value="false"/>
+											</flow:StateRule>
+										</lay:Control>
+                </lay:StrategyPanel>
+									
+                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_EnableEndTime" xsi:type="lay:CheckBox_t" label="End Time" initValue="false"/>
+			            <lay:Control ID="EndTimeClock" xsi:type="lay:Clock_t" label="" parameterRef="EndTime">
+										<flow:StateRule enabled="false" value="{NULL}">
+											<val:Edit field="c_EnableEndTime" operator="EQ" value="false"/>
+										</flow:StateRule>
+									</lay:Control>
+                </lay:StrategyPanel>
+                  
+					</lay:StrategyPanel>
+                  
+		      <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL" title="Optional using Now/End of Day Radio Buttons">
+		
+              <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="Start Time">
+                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+							<lay:Control ID="c_NoEffectiveTime" xsi:type="lay:RadioButton_t" label="Now" initValue="true" radioGroup="EffectiveTimeRB"/>
+                </lay:StrategyPanel>
+                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_EnableEffectiveTimeRB" xsi:type="lay:RadioButton_t" label="" radioGroup="EffectiveTimeRB"/>
+			            <lay:Control ID="EffectiveTimeClock" xsi:type="lay:Clock_t" label="" parameterRef="EffectiveTime">
+										<flow:StateRule enabled="false" value="{NULL}">
+											<val:Edit field="c_EnableEffectiveTimeRB" operator="EQ" value="false"/>
+										</flow:StateRule>
+									</lay:Control>
+                </lay:StrategyPanel>
+              </lay:StrategyPanel>
+								
+              <lay:StrategyPanel collapsible="false" orientation="VERTICAL" title="End Time">
+                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+							<lay:Control ID="c_NoExpireTime" xsi:type="lay:RadioButton_t" label="End of Day" initValue="true" radioGroup="ExpireTimeRB"/>
+                </lay:StrategyPanel>
+                <lay:StrategyPanel collapsible="false" orientation="HORIZONTAL">
+									<lay:Control ID="c_EnableExpireTimeRB" xsi:type="lay:RadioButton_t" label="" radioGroup="ExpireTimeRB"/>
+			            <lay:Control ID="ExpireTimeClock" xsi:type="lay:Clock_t" label="" parameterRef="ExpireTime">
+										<flow:StateRule enabled="false" value="{NULL}">
+											<val:Edit field="c_EnableExpireTimeRB" operator="EQ" value="false"/>
+										</flow:StateRule>
+									</lay:Control>
+                </lay:StrategyPanel>
+              </lay:StrategyPanel>
+                  
+					</lay:StrategyPanel>
+		
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+
+    <val:StrategyEdit errorMessage="Start time must be less than end time.  [StartTimeReqd/EndTimeReqd]">
+       <val:Edit field="EndTimeReqd" operator="GT" field2="StartTimeReqd"/>
+    </val:StrategyEdit>
+
+    <val:StrategyEdit errorMessage="Start time must be less than end time.  [StartTime/EndTime check boxes]">
+    	<val:Edit logicOperator="OR">
+        <val:Edit field="StartTime" operator="NX"/>
+        <val:Edit field="EndTime" operator="NX"/>
+        <val:Edit field="EndTime" operator="GT" field2="StartTime"/>
+      </val:Edit>
+    </val:StrategyEdit>
+
+    <val:StrategyEdit errorMessage="Start time must be less than end time.  [EffectiveTime/ExpireTime radio buttons]">
+    	<val:Edit logicOperator="OR">
+        <val:Edit field="ExpireTime" operator="NX"/>
+        <val:Edit field="EffectiveTime" operator="NX"/>
+        <val:Edit field="ExpireTime" operator="GT" field2="EffectiveTime"/>
+      </val:Edit>
+    </val:StrategyEdit>
+
+	</Strategy>
+
+
+
+	
+	<Strategy name="AnotherTest" uiRep="AnotherTest" wireValue="22" fixMsgType="D" providerID="ABC">
+
+		<Parameter name="EffectiveTime" xsi:type="UTCTimestamp_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="168" definedByFIX="true">
+		  <Description>Start time of order. Set to market open if not specified.</Description>
+		</Parameter>
+		<Parameter name="ExpireTime" xsi:type="UTCTimestamp_t" use="optional" mutableOnCxlRpl="true" revertOnCxlRpl="false" fixTag="126" definedByFIX="true">
+		  <Description>End time of order. Set to market close if not specified.</Description>
+		</Parameter>
+
+  <lay:StrategyLayout>
+    <lay:StrategyPanel orientation="VERTICAL" border="None" collapsible="false">
+
+<!-- Start Clock -->
+<lay:StrategyPanel orientation="VERTICAL" border="Line" title="Start Time" collapsible="false">
+  <lay:StrategyPanel orientation="HORIZONTAL" border="None" collapsible="false">
+    <lay:Control ID="c_disableStartClock" xsi:type="lay:RadioButton_t" label="Now" initValue="true" radioGroup="g_startClock" tooltip="Begin trading immediately"/>
+  </lay:StrategyPanel>
+  <lay:StrategyPanel orientation="HORIZONTAL" border="None" collapsible="false">
+    <lay:Control ID="c_enableStartClock" xsi:type="lay:RadioButton_t" initValue="false" radioGroup="g_startClock" tooltip="Specify Start Time"/>
+    <lay:Control ID="c_EffectiveTime" xsi:type="lay:Clock_t" parameterRef="EffectiveTime" tooltip="Specify Start Time">
+      <flow:StateRule enabled="false" value="{NULL}">
+        <val:Edit field="c_enableStartClock" operator="EQ" value="false"/>
+      </flow:StateRule>
+    </lay:Control>
+  </lay:StrategyPanel>
+</lay:StrategyPanel>
+<!-- End Clock -->
+<lay:StrategyPanel orientation="VERTICAL" border="Line" title="End Time" collapsible="false">
+  <lay:StrategyPanel orientation="HORIZONTAL" border="None" collapsible="false">
+    <lay:Control ID="c_disableEndClock" xsi:type="lay:RadioButton_t" initValue="true" label="Now" radioGroup="g_endClock" tooltip="Trade until end of day"/>
+  </lay:StrategyPanel>
+  <lay:StrategyPanel orientation="HORIZONTAL" border="None" collapsible="false">
+    <lay:Control ID="c_enableEndClock" xsi:type="lay:RadioButton_t" initValue="false" radioGroup="g_endClock" tooltip="Specify End Time"/>
+    <lay:Control ID="c_ExpireTime" xsi:type="lay:Clock_t" parameterRef="ExpireTime" tooltip="Specify End Time">
+      <flow:StateRule enabled="false" value="{NULL}">
+        <val:Edit field="c_enableEndClock" operator="EQ" value="false"/>
+      </flow:StateRule>
+    </lay:Control>
+  </lay:StrategyPanel>
+</lay:StrategyPanel>
+      </lay:StrategyPanel>
+
+
+  </lay:StrategyLayout>
+</Strategy>      
+      
+
+</Strategies>

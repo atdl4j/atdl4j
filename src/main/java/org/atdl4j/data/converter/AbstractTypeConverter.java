@@ -1,16 +1,16 @@
 package org.atdl4j.data.converter;
 
-import org.apache.log4j.Logger;
 import org.atdl4j.data.ControlTypeConverter;
 import org.atdl4j.data.ParameterHelper;
 import org.atdl4j.data.ParameterTypeConverter;
-import org.atdl4j.data.TypeConverterFactory;
 import org.atdl4j.data.TypeConverterFactoryConfig;
 import org.atdl4j.fixatdl.core.EnumPairT;
 import org.atdl4j.fixatdl.core.ParameterT;
 import org.atdl4j.fixatdl.core.PercentageT;
 import org.atdl4j.fixatdl.layout.CheckBoxT;
 import org.atdl4j.fixatdl.layout.ControlT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base class for ParameterTypeConverter and ControlTypeConverter interfaces
@@ -22,7 +22,7 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 {
 	private ParameterT parameter;  // used by ParameterTypeConverter
 	private ParameterTypeConverter<?> parameterTypeConverter;  // used by ControlTypeConverter
-	private static final Logger logger = Logger.getLogger(ParameterTypeConverter.class);
+	private static final Logger logger = LoggerFactory.getLogger(AbstractTypeConverter.class);
 	
 	
 	/**
@@ -175,7 +175,7 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 		
 		if ( ( tempParameter == null ) && ( getParameterTypeConverter() != null ) )
 		{
-			tempParameter = getParameterTypeConverter().getParameter();;
+			tempParameter = getParameterTypeConverter().getParameter();
 		}
 		
 		if ( tempParameter != null )
@@ -200,34 +200,30 @@ public abstract class AbstractTypeConverter<E extends Comparable<?>>
 	}
 	
 	public abstract E convertParameterValueToControlValue(Object aValue);
-	
-
 
 	public Object adjustParameterValueForEnumRefValue( Object aParameterValue, ParameterT aParameter, ControlT aControl )
 	{
-		logger.debug("aParameterValue: " + aParameterValue + " aParameter: " + aParameter + " aControl: " + aControl );
-		if ( ( aParameterValue != null ) && ( aParameter != null ) && ( aControl != null ) )
+		logger.debug("aParameterValue: {} aParameter: {} aControl: {}", aParameterValue, aParameter, aControl );
+		if ( ( ( aParameterValue != null ) && ( aParameter != null ) && ( aControl != null ) )
+		&& ( aControl instanceof CheckBoxT ) )
 		{
-			if ( aControl instanceof CheckBoxT )
-			{
-				CheckBoxT tempCheckBox = (CheckBoxT) aControl;
-				
-				EnumPairT tempCheckedEnumPair = ParameterHelper.getEnumPairForEnumID( aParameter, tempCheckBox.getCheckedEnumRef() );
-				EnumPairT tempUncheckedEnumPair = ParameterHelper.getEnumPairForEnumID( aParameter, tempCheckBox.getUncheckedEnumRef() );
-				String tempParameterValueString = aParameterValue.toString();
-				logger.debug("tempParameterValueString: " + tempParameterValueString + " tempCheckedEnumPair: " + tempCheckedEnumPair + " tempUncheckedEnumPair: " + tempUncheckedEnumPair );
+			CheckBoxT tempCheckBox = (CheckBoxT) aControl;
 
-				if ( ( tempCheckedEnumPair != null ) && ( tempParameterValueString.equals( tempCheckedEnumPair.getWireValue() ) ) )
-				{
-					return Boolean.TRUE.toString();
-				}
-				else if ( ( tempUncheckedEnumPair != null ) && ( tempParameterValueString.equals( tempUncheckedEnumPair.getWireValue() ) ) )
-				{
-					return Boolean.FALSE.toString();
-				}
+			EnumPairT tempCheckedEnumPair = ParameterHelper.getEnumPairForEnumID( aParameter, tempCheckBox.getCheckedEnumRef() );
+			EnumPairT tempUncheckedEnumPair = ParameterHelper.getEnumPairForEnumID( aParameter, tempCheckBox.getUncheckedEnumRef() );
+			String tempParameterValueString = aParameterValue.toString();
+			logger.debug("tempParameterValueString: {} tempCheckedEnumPair: {} tempUncheckedEnumPair: {}", tempParameterValueString, tempCheckedEnumPair, tempUncheckedEnumPair );
+
+			if ( ( tempCheckedEnumPair != null ) && ( tempParameterValueString.equals( tempCheckedEnumPair.getWireValue() ) ) )
+			{
+				return Boolean.TRUE.toString();
+			}
+			else if ( ( tempUncheckedEnumPair != null ) && ( tempParameterValueString.equals( tempUncheckedEnumPair.getWireValue() ) ) )
+			{
+				return Boolean.FALSE.toString();
 			}
 		}
-		
+
 		return aParameterValue;
 	}
 

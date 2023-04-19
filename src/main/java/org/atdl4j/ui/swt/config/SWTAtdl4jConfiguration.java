@@ -12,7 +12,7 @@ import org.atdl4j.config.AbstractAtdl4jConfiguration;
 public class SWTAtdl4jConfiguration
 		extends AbstractAtdl4jConfiguration
 {
-	private static String PACKAGE_PATH_ORG_ATDL4J_UI_SWT = "org.atdl4j.ui.swt.";
+	private static final String PACKAGE_PATH_ORG_ATDL4J_UI_SWT = "org.atdl4j.ui.swt.";
 	
 	public SWTAtdl4jConfiguration()
 	{

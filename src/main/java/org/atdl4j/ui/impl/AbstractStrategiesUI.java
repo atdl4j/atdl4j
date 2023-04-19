@@ -7,9 +7,9 @@ package org.atdl4j.ui.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.fixatdl.core.StrategiesT;
@@ -31,13 +31,13 @@ import org.atdl4j.ui.app.StrategiesUIListener;
 public abstract class AbstractStrategiesUI
 		implements StrategiesUI
 {
-	protected static final Logger logger = Logger.getLogger( AbstractStrategiesUI.class );
+	protected static final Logger logger = LoggerFactory.getLogger( AbstractStrategiesUI.class );
 	
 	private Atdl4jOptions atdl4jOptions = null;
 
-	private List<StrategiesUIListener> listenerList = new Vector<StrategiesUIListener>();
+	private List<StrategiesUIListener> listenerList = new ArrayList<>();
 	
-	private List<AtdlWidgetListener> widgetListeners = new ArrayList<AtdlWidgetListener>();
+	private List<AtdlWidgetListener> widgetListeners = new ArrayList<>();
 
 	private boolean preCached = false;
 	

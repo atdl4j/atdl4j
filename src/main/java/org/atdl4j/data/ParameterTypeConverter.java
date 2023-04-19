@@ -27,7 +27,7 @@ Used by: AbstractAtdl4jWidget.convertParameterStringToParameterComparable()
 	 * 
 Used by: AbstractAtdl4jWidget.setFIXValue()
 
-	 * @param aFixValue
+	 * @param aFixWireValue
 	 * @return
 	 */
 	public Object convertFixWireValueToParameterValue(String aFixWireValue);

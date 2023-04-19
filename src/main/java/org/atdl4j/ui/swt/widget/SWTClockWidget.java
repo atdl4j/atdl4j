@@ -1,12 +1,16 @@
 package org.atdl4j.ui.swt.widget;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.Atdl4jConstants;
 import org.atdl4j.data.converter.DateTimeConverter;
@@ -31,8 +35,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 
 /**
  * Clock widget which will display differently depending on the parameter type
@@ -53,10 +55,10 @@ import org.joda.time.DateTimeZone;
  * @author john.shields
  */
 public class SWTClockWidget
-	extends AbstractSWTWidget<Comparable<DateTime>>
+	extends AbstractSWTWidget<Comparable<Instant>>
 {
 
-	private static final Logger logger = Logger.getLogger( SWTClockWidget.class );
+	private static final Logger logger = LoggerFactory.getLogger( SWTClockWidget.class );
 
 	private org.eclipse.swt.widgets.DateTime dateClock;
 	private org.eclipse.swt.widgets.DateTime timeClock;
@@ -118,7 +120,7 @@ public class SWTClockWidget
 				enabledButton.setText( control.getLabel() );
 			}
 			enabledButton.setToolTipText( "Check to enable and specify or uncheck to disable this optional parameter value" );
-			enabledButton.setSelection( false ); // TODO disabled by default ????
+			enabledButton.setSelection( false );
 			enabledButton.addSelectionListener( new SelectionAdapter()
 			{
 				@Override
@@ -193,60 +195,66 @@ public class SWTClockWidget
 		return parent;
 	}
 
-	public DateTimeZone getLocalMktTz() 
+	public ZoneId getLocalMktTz() 
 		throws IllegalArgumentException
 	{
 		// This will throw IllegalArgumentException if ID cannot be resolved
-		return DateTimeConverter.convertTimezoneToDateTimeZone( ((ClockT) control).getLocalMktTz() );
+		return DateTimeConverter.convertTimezoneToZoneId( ((ClockT) control).getLocalMktTz() );
 	}
 
-	public DateTime getControlValueRaw()
+	public Instant getControlValueRaw()
 	{
-		if ( ( dateClock == null ) && ( timeClock == null ) )
+		if ( ( (dateClock == null)
+		   && ( (showMonthYear) || (showDay) ) )
+		|| ( (timeClock == null)
+		   && (showTime) ) )
 		{
 			return null; // disabled, no value to use
 		}
 
-		DateTime now = null; 
-		if (useNowAsDate) now = new DateTime( DateTimeZone.getDefault() );		
-		DateTime result = new DateTime( useNowAsDate ? now.getYear() : showMonthYear ? dateClock.getYear() : 1970,
-						useNowAsDate ? now.getMonthOfYear() : showMonthYear ? dateClock.getMonth() + 1 : 1,
-						useNowAsDate ? now.getDayOfMonth() : showDay ? dateClock.getDay() : 1,
-                				showTime ? timeClock.getHours() : 0,
-                				showTime ? timeClock.getMinutes() : 0,
-                				showTime ? timeClock.getSeconds() : 0, 
-                				0, 
-                				DateTimeZone.getDefault() );
-		
+		ZonedDateTime now = null;
+		if (useNowAsDate)
+		{
+			now = ZonedDateTime.now( ZoneId.systemDefault() );
+		}
+		ZonedDateTime result = ZonedDateTime.of( useNowAsDate ? now.getYear() : showMonthYear ? dateClock.getYear() : 1970
+		                                       , useNowAsDate ? now.getMonthValue() : showMonthYear ? dateClock.getMonth() : 1
+		                                       , useNowAsDate ? now.getDayOfMonth() : showDay ? dateClock.getDay() : 1
+		                                       , showTime ? timeClock.getHours() : 0
+		                                       , showTime ? timeClock.getMinutes() : 0
+		                                       , showTime ? timeClock.getSeconds() : 0
+		                                       , 0
+		                                       , ZoneId.systemDefault()
+		                                       );
 
 		// Convert to UTC time for UTCTimestampT and UTCTimeOnlyT.
 		// Performing UTCDateT and MonthYearT coversion could produce an unexpected result.
 		// No conversion is needed for LocalMktTimeT, TZTimestampT, and TZTimeOnlyT.
 		if ( parameter == null || parameter instanceof UTCTimestampT || parameter instanceof UTCTimeOnlyT )
 		{
-			result = result.withZone( DateTimeZone.UTC );
-			logger.debug( "getControlValue() parameter: " + parameter + " result: " + result );
+			result = result.withZoneSameInstant( ZoneId.of("UTC") );
+			logger.debug( "getControlValue() parameter: {} result: {}", parameter, result );
 		}
-		return result;
+		return result.toInstant();
 	}
 
-	public void setValue(Comparable<DateTime> value)
+	public void setValue(Comparable<Instant> value)
 	{
 		// Convert to UTC time for UTCTimestampT and UTCTimeOnlyT.
 		// Performing UTCDateT and MonthYearT coversion could produce an unexpected result.
 		// No conversion is needed for LocalMktTimeT, TZTimestampT, and TZTimeOnlyT.
 		if ( parameter == null || parameter instanceof UTCTimestampT || parameter instanceof UTCTimeOnlyT )
 		{
-			logger.debug( "setValue() parameter: " + parameter + " value: " + value );
+			logger.debug( "setValue() parameter: {} value: {}", parameter, value );
 			// -- no need to adjust DateTime --
 		}
 		
 		// -- Force control to display time portion in local
-		DateTime tempLocalTzDateTime = ((DateTime)value).withZone( DateTimeZone.getDefault() );
+		ZonedDateTime tempLocalTzDateTime = ZonedDateTime.ofInstant((Instant)value, ZoneId.systemDefault() );
 		
 		if ( showMonthYear )
 		{
-			dateClock.setMonth( tempLocalTzDateTime.getMonthOfYear() - 1 );
+			dateClock.setMonth( tempLocalTzDateTime.getMonthValue() - 1 );
 			dateClock.setYear( tempLocalTzDateTime.getYear() );
 		}
 		if ( showDay )
@@ -255,15 +263,15 @@ public class SWTClockWidget
 		}
 		if ( showTime )
 		{
-			timeClock.setHours( tempLocalTzDateTime.getHourOfDay() );
-			timeClock.setMinutes( tempLocalTzDateTime.getMinuteOfHour() );
-			timeClock.setSeconds( tempLocalTzDateTime.getSecondOfMinute() );
+			timeClock.setHours( tempLocalTzDateTime.getHour() );
+			timeClock.setMinutes( tempLocalTzDateTime.getMinute() );
+			timeClock.setSeconds( tempLocalTzDateTime.getSecond() );
 		}
 	}
 
 	public List<Control> getControls()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		if ( enabledButton != null )
 		{
 			widgets.add( enabledButton );
@@ -287,7 +295,7 @@ public class SWTClockWidget
 
 	public List<Control> getControlsExcludingLabel()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 
 		if ( showMonthYear )
 		{
@@ -352,21 +360,20 @@ public class SWTClockWidget
 		{
 			// -- Note that this will throw IllegalArgumentException if timezone ID
 			// specified cannot be resolved --
-			DateTimeZone tempLocalMktTz = getLocalMktTz();
-			logger.debug( "control.getID(): " + control.getID() + " aValue: " + aValue + " getLocalMktTz(): " + tempLocalMktTz );
+			ZoneId tempLocalMktTz = getLocalMktTz();
+			logger.debug( "control.getID(): {} aValue: {} getLocalMktTz(): {}", control.getID(), aValue, tempLocalMktTz );
 
 			// -- localMktTz is required when using/interpreting aValue --
 			if ( tempLocalMktTz == null )
 			{
-				throw new IllegalArgumentException( "localMktTz is required when aValue (" + aValue + ") is specified. (Control.ID: "
-						+ control.getID() + ")" );
+				throw new IllegalArgumentException( "localMktTz is required when aValue (" + aValue + ") is specified. (Control.ID: " + control.getID() + ")" );
 			}
 
-			DateTime tempNow = new DateTime( tempLocalMktTz );
+			ZonedDateTime tempNow = ZonedDateTime.now( tempLocalMktTz );
 
-			DateTime tempInit = new DateTime( 
+			ZonedDateTime tempInit = ZonedDateTime.of( 
 					( showMonthYear && aValue.getYear() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getYear() : tempNow.getYear(), 
-					( showMonthYear && aValue.getMonth() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getMonth() : tempNow.getMonthOfYear(), 
+					( showMonthYear && aValue.getMonth() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getMonth() : tempNow.getMonthValue(), 
 					( showMonthYear && aValue.getDay() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getDay() : tempNow.getDayOfMonth(), 
 					( showMonthYear && aValue.getHour() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getHour() : 0,
 					( showMonthYear && aValue.getMinute() != DatatypeConstants.FIELD_UNDEFINED ) ? aValue.getMinute() : 0,
@@ -382,7 +389,7 @@ public class SWTClockWidget
 			}
 			
 			// -- Make sure that the value is rendered on the display in local timezone --
-			setValue( tempInit.withZone( DateTimeZone.getDefault() ) );
+			setValue( tempInit.withZoneSameInstant( ZoneId.systemDefault() ).toInstant() );
 		}
 	}
 	
@@ -400,7 +407,7 @@ public class SWTClockWidget
 		else
 		{
 			// -- reinit the time to present time --
-			setValue( new DateTime() );
+			setValue( Instant.now() );
 		}
 	}
 
@@ -420,30 +427,30 @@ public class SWTClockWidget
 	{
 		super.setFIXValue( aFIXValue );
 		
-		DateTime tempFIXValueTime = getControlValueRaw();
-		DateTime tempCurrentTime = new DateTime();
+		Instant tempFIXValueTime = getControlValueRaw();		
+		Instant tempCurrentTime = Instant.now();
 		
 		// -- Check to see if the time set is < current time --
 		if ( tempCurrentTime.isAfter( tempFIXValueTime ) )
 		{
-			logger.debug( "setFIXValue(" + aFIXValue + ") resulted in time < present (" + tempFIXValueTime + " < " + tempCurrentTime + ")" );
+			logger.debug( "setFIXValue({}) resulted in time < present ({} < {})", aFIXValue, tempFIXValueTime, tempCurrentTime );
 			
 			Integer tempClockPastTimeSetFIXValueRule = getAtdl4jOptions().getClockPastTimeSetFIXValueRule( getControl() );
-			logger.debug( "Control: " + getControl().getID() + " tempClockPastTimeSetFIXValueRule: " + tempClockPastTimeSetFIXValueRule );
+			logger.debug( "Control: {} tempClockPastTimeSetFIXValueRule: {}", getControl().getID(), tempClockPastTimeSetFIXValueRule );
 			
 			if ( Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS.equals( tempClockPastTimeSetFIXValueRule ) )
 			{
 				// -- keep as-is --
-				logger.debug("Per Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS rule -- Retaining: " + tempFIXValueTime );
+				logger.debug("Per Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_USE_AS_IS rule -- Retaining: {}", tempFIXValueTime );
 			}
 			else if ( Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT.equals( tempClockPastTimeSetFIXValueRule ) )
 			{
-				logger.debug("Per Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT rule -- Setting: " + tempCurrentTime + " ( vs. " + tempFIXValueTime + ")" );
+				logger.debug("Per Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_CURRENT rule -- Setting: {} ( vs. {})", tempCurrentTime, tempFIXValueTime );
 				setValue( tempCurrentTime );
 			} 
 			else if ( Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL.equals( tempClockPastTimeSetFIXValueRule ) )
 			{
-				logger.debug("Per Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL rule -- Setting control to 'null value' ( vs. " + tempFIXValueTime + ")" );
+				logger.debug("Per Atdl4jOptions.CLOCK_PAST_TIME_SET_FIX_VALUE_RULE_SET_TO_NULL rule -- Setting control to 'null value' ( vs. {})", tempFIXValueTime );
 				setValueAsString( Atdl4jConstants.VALUE_NULL_INDICATOR );
 			} 
 		}

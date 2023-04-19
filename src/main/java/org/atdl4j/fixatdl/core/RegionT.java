@@ -98,7 +98,7 @@ public class RegionT {
      */
     public List<RegionT.Country> getCountry() {
         if (country == null) {
-            country = new ArrayList<RegionT.Country>();
+            country = new ArrayList<>();
         }
         return this.country;
     }

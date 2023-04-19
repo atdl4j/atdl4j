@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 public class SWTVisibleComposite
 		extends Composite
 {
-	public static Point POINT_0_0 = new Point( 0, 0 );
+	public static final Point POINT_0_0 = new Point( 0, 0 );
 	
 	/**
 	 * @param aParent
@@ -36,6 +36,7 @@ public class SWTVisibleComposite
 	 * Override
 	 * @see org.eclipse.swt.widgets.Composite#computeSize(int, int, boolean)
 	 */
+	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed)
 	{
 		if ( !isVisible() )
@@ -53,6 +54,7 @@ public class SWTVisibleComposite
 	 * @see http://www.eclipsezone.com/eclipse/forums/t88689.html
 	 * @see org.eclipse.swt.widgets.Composite#computeSize(int, int, boolean)
 	 */
+	@Override
 	protected void checkSubclass()
 	{
 		// Disable the check that prevents subclassing of SWT components

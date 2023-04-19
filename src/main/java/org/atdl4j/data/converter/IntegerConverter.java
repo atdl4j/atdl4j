@@ -155,8 +155,8 @@ public class IntegerConverter
 	{
 		if ( aValue != null )
 		{
-			String str = (String) aValue;
-			if ( ( str == null ) || ( str.trim().length() == 0 ) )
+			String str = aValue;
+			if ( str.trim().length() == 0 )
 			{
 				return null;
 			}
@@ -214,7 +214,7 @@ public class IntegerConverter
 		else if ( aParameterValue instanceof String )
 		{
 			String str = (String) aParameterValue;
-			if ( ( str == null ) || ( str.trim().length() == 0 ) )
+			if ( str.trim().length() == 0 )
 			{
 				return null;
 			}
@@ -256,7 +256,7 @@ public class IntegerConverter
 		else if ( aValue instanceof String )
 		{
 			String str = (String) aValue;
-			if ( ( str == null ) || ( str.trim().length() == 0 ) )
+			if ( str.trim().length() == 0 )
 			{
 				return null;
 			}
@@ -278,7 +278,7 @@ public class IntegerConverter
 		else if ( aValue instanceof Boolean )
 		{
 			Boolean bool = (Boolean) aValue;
-			return new BigInteger( bool ? "1" : "0" );
+			return new BigInteger( Boolean.TRUE.equals( bool ) ? "1" : "0" );
 		}
 		else
 		{

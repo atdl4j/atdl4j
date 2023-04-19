@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+
+	 <Strategy name="NoFilters" uiRep="No Filters" wireValue="3" providerID="TEST">
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="No Filters"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="NewOrderSingle" uiRep="New Order Single" wireValue="3" providerID="TEST" fixMsgType="D">
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="fixMsgType=D"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="NewOrderList" uiRep="New Order List" wireValue="3" providerID="TEST" fixMsgType="E">
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="fixMsgType=E"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="AmericasOnly" uiRep="Americas Only" wireValue="3" providerID="TEST">
+      <Regions>
+          <Region name="TheAmericas" inclusion="Include"/>
+      </Regions>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Region name=TheAmericas inclusion=Include"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="EMEAOnly" uiRep="EMEA Only" wireValue="3" providerID="TEST">
+      <Regions>
+          <Region name="EuropeMiddleEastAfrica" inclusion="Include"/>
+      </Regions>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Region name=EuropeMiddleEastAfrica inclusion=Include"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="AsiaOnly" uiRep="Asia Only" wireValue="3" providerID="TEST">
+      <Regions>
+          <Region name="AsiaPacificJapan" inclusion="Include"/>
+      </Regions>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Region name=AsiaPacificJapan inclusion=Include"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="EuropeAndAsiaOnly" uiRep="Europe and Asia Only" wireValue="3" providerID="TEST">
+      <Regions>
+          <Region name="AsiaPacificJapan" inclusion="Include"/>
+          <Region name="EuropeMiddleEastAfrica" inclusion="Include"/>
+      </Regions>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Region name=AsiaPacificJapan inclusion=Include  Region name=EuropeMiddleEastAfrica inclusion=Include"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="ExcludeEMEA" uiRep="Exclude EMEA" wireValue="3" providerID="TEST">
+      <Regions>
+          <Region name="EuropeMiddleEastAfrica" inclusion="Exclude"/>
+      </Regions>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Region name=EuropeMiddleEastAfrica inclusion=Exclude"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="USOnly" uiRep="U.S. Only" wireValue="3" providerID="TEST">
+      <Regions>
+				<Region name="TheAmericas" inclusion="Include">
+						<Country inclusion="Include" CountryCode="US"/>
+	      </Region>
+      </Regions>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Region name=TheAmericas inclusion=Include  Country inclusion=Include CountryCode=US"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="USAndBrazilOnly" uiRep="U.S. and Brazil Only" wireValue="3" providerID="TEST">
+      <Regions>
+				<Region name="TheAmericas" inclusion="Include">
+						<Country inclusion="Include" CountryCode="US"/>
+						<Country inclusion="Include" CountryCode="BR"/>
+	      </Region>
+      </Regions>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Region name=TheAmericas inclusion=Include  Country inclusion=Include CountryCode=US  Country inclusion=Include CountryCode=BR"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="AsiaExJapan" uiRep="Asia Excluding Japan" wireValue="3" providerID="TEST">
+      <Regions>
+				<Region name="AsiaPacificJapan" inclusion="Include">
+						<Country inclusion="Exclude" CountryCode="JP"/>
+	      </Region>
+      </Regions>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Region name=AsiaPacificJapan inclusion=Include  Country inclusion=Exclude CountryCode=JP"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="NasdaqOnly" uiRep="Nasdaq Only" wireValue="3" providerID="TEST">
+			<Markets>
+				<Market MICCode="XNAS" inclusion="Include"/>
+			</Markets>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Market MICCode=XNAS inclusion=Include"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+	
+	 <Strategy name="TSEOrHKGOnly" uiRep="TSE or HKG Only" wireValue="3" providerID="TEST">
+			<Markets>
+				<Market MICCode="XTSE" inclusion="Include"/>
+				<Market MICCode="XHKG" inclusion="Include"/>
+			</Markets>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Market MICCode=XTSE inclusion=Include  Market MICCode=XHKG inclusion=Include"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="ExcludeASX" uiRep="Exclude ASX" wireValue="3" providerID="TEST">
+			<Markets>
+				<Market MICCode="XASX" inclusion="Exclude"/>
+			</Markets>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="Market MICCode=XASX inclusion=Exclude"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+
+	 <Strategy name="EquitiesOnly" uiRep="Equities Only" wireValue="3" providerID="TEST">
+			<SecurityTypes>
+				<SecurityType name="CS" inclusion="Include"/>
+			</SecurityTypes>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="SecurityType name=CS inclusion=Include"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+	
+	 <Strategy name="FuturesOnly" uiRep="Futures Only" wireValue="3" providerID="TEST">
+			<SecurityTypes>
+				<SecurityType name="FUT" inclusion="Include"/>
+			</SecurityTypes>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="SecurityType name=FUT inclusion=Include"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+	
+	 <Strategy name="EquitiesAndFuturesOnly" uiRep="Equities and Futures Only" wireValue="3" providerID="TEST">
+			<SecurityTypes>
+				<SecurityType name="CS" inclusion="Include"/>
+				<SecurityType name="FUT" inclusion="Include"/>
+			</SecurityTypes>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="SecurityType name=CS inclusion=Include  SecurityType name=FUT inclusion=Include"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+	
+	 <Strategy name="ExcludeFX" uiRep="Exclude FX" wireValue="3" providerID="TEST">
+			<SecurityTypes>
+				<SecurityType name="FXSPOT" inclusion="Exclude"/>
+				<SecurityType name="FXFWD" inclusion="Exclude"/>
+			</SecurityTypes>
+			<lay:StrategyLayout>
+				<lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+	              <lay:Control ID="c_Label_1" 	   xsi:type="lay:Label_t" label="SecurityType name=FXSPOT inclusion=Exclude  SecurityType name=FXFWD inclusion=Exclude"/>
+	      </lay:StrategyPanel>
+		</lay:StrategyLayout>
+	</Strategy>
+	
+</Strategies>

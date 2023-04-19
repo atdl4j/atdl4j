@@ -8,7 +8,8 @@ import java.awt.Window;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.fixatdl.core.StrategyT;
 import org.atdl4j.ui.Atdl4jWidget;
@@ -25,9 +26,9 @@ import org.atdl4j.ui.app.impl.AbstractAtdl4jCompositePanel;
  * @version 1.0, Feb 28, 2010
  */
 public class SwingAtdl4jCompositePanel
-		extends AbstractAtdl4jCompositePanel
+	extends AbstractAtdl4jCompositePanel
 {
-	public final Logger logger = Logger.getLogger(SwingAtdl4jCompositePanel.class);
+	public static final Logger logger = LoggerFactory.getLogger(SwingAtdl4jCompositePanel.class);
 	private Window parentComposite;
 	private JPanel strPanel;
 	private JPanel strategySelectionPanel;

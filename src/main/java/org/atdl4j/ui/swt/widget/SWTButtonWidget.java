@@ -62,7 +62,7 @@ public class SWTButtonWidget
 
 	public List<Control> getControls()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		if ( label != null )
 		{
 			widgets.add( label );
@@ -73,7 +73,7 @@ public class SWTButtonWidget
 
 	public List<Control> getControlsExcludingLabel()
 	{
-		List<Control> widgets = new ArrayList<Control>();
+		List<Control> widgets = new ArrayList<>();
 		widgets.add( button );
 		return widgets;
 	}
@@ -99,6 +99,7 @@ public class SWTButtonWidget
 	}
 
 	// Parameter value looks up checkedEnumRef and uncheckedEnumRef
+	@Override
 	public Object getParameterValue()
 	{
 		if ( getControlValue() == null )
@@ -156,7 +157,7 @@ public class SWTButtonWidget
 	{
 		if ( ( button != null ) && ( ! button.isDisposed() ) )
 		{
-			button.setSelection( (aControlInitValue != null ) ? ((Boolean) aControlInitValue).booleanValue() : false );
+			button.setSelection( Boolean.TRUE.equals( aControlInitValue ) );
 		}
 	}
 

@@ -1,7 +1,7 @@
 package org.atdl4j.ui.swt.app.impl;
 
-import org.apache.log4j.Logger;
-import org.atdl4j.config.Atdl4jConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jInputAndFilterDataSelectionPanel;
@@ -23,13 +23,12 @@ import org.eclipse.swt.widgets.Shell;
 public class SWTAtdl4jInputAndFilterDataSelectionPanel
 		extends AbstractAtdl4jInputAndFilterDataSelectionPanel
 {
-	public final Logger logger = Logger.getLogger(SWTAtdl4jInputAndFilterDataSelectionPanel.class);
+	public final Logger logger = LoggerFactory.getLogger(SWTAtdl4jInputAndFilterDataSelectionPanel.class);
 	private Composite parentComposite;
 	
 	private Button atdl4jInputAndFilterDataPanelButton;
 	private Shell atdl4jInputAndFilterDataPanelShell;
-	private Button debugModeButton;
-	
+
 	public Object buildAtdl4jInputAndFilterDataSelectionPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
 	{
 		return buildAtdl4jInputAndFilterDataSelectionPanel( (Composite) aParentOrShell, aAtdl4jOptions, aAtdl4jUserMessageHandler );
@@ -37,7 +36,7 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 	
 	public Composite buildAtdl4jInputAndFilterDataSelectionPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler)
 	{
-		parentComposite = (Composite) aParentOrShell;
+		parentComposite = aParentOrShell;
 
 		// -- Delegate back to AbstractAtdl4jInputAndFilterDataSelectionPanel -- 
 		init( aParentOrShell, aAtdl4jOptions, aAtdl4jUserMessageHandler );
@@ -47,6 +46,7 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 		atdl4jInputAndFilterDataPanelButton.setText( "Input And Filter Data" );
 		atdl4jInputAndFilterDataPanelButton.addSelectionListener(new SelectionAdapter() 
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				buttonInputAndFilterDataSelected();
@@ -75,8 +75,7 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 		}
 		
 		getAtdl4jInputAndFilterDataPanel().loadScreenWithAtdl4jOptions();
-		getDebugModeButton().setSelection( Atdl4jConfig.getConfig().isDebugLoggingLevel() );
-		
+
 		// -- Open/Pop-up the dialog window --
 		atdl4jInputAndFilterDataPanelShell.open();	
 	}
@@ -113,6 +112,7 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 		tempOkButton.setText( "OK" );
 		tempOkButton.addSelectionListener(new SelectionAdapter() 
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				buttonOkSelected();
@@ -123,6 +123,7 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 		tempCancelButton.setText( "Cancel" );
 		tempCancelButton.addSelectionListener(new SelectionAdapter() 
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				buttonCancelSelected();
@@ -133,37 +134,10 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 		Button tempBlankButton = new Button(tempFooter, SWT.NONE);
 		tempBlankButton.setVisible(false);
 
-		setDebugModeButton( new Button(tempFooter, SWT.CHECK) );		
-		getDebugModeButton().setText("Debug Mode");
-
-		getDebugModeButton().addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(SelectionEvent e) 
-			{
-				Atdl4jConfig.getConfig().setDebugLoggingLevel( getDebugModeButton().getSelection() );
-			}
-		});
-		
 		tempAtdl4jInputAndFilterDataPanelShell.layout( true );
 		tempAtdl4jInputAndFilterDataPanelShell.pack();
 		
 		return tempAtdl4jInputAndFilterDataPanelShell;
-	}
-
-	/**
-	 * @return the debugModeButton
-	 */
-	public Button getDebugModeButton()
-	{
-		return this.debugModeButton;
-	}
-
-	/**
-	 * @param aDebugModeButton the debugModeButton to set
-	 */
-	public void setDebugModeButton(Button aDebugModeButton)
-	{
-		this.debugModeButton = aDebugModeButton;
 	}
 
 }

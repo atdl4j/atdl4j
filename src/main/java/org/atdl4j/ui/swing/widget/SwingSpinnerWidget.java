@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import org.atdl4j.data.converter.DecimalConverter;
@@ -34,8 +35,6 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 	private JLabel label;
 	private JButton buttonUp;
 	private JButton buttonDown;
-	private static final BigDecimal DEFAULT_INNER_INCREMENT = new BigDecimal(1);
-	private static final BigDecimal DEFAULT_OUTER_INCREMENT = new BigDecimal(1);
 	private int digits = 0;
 	private JPanel wrapper;
 
@@ -61,16 +60,18 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
           spinner.setValue(((BigDecimal) value).add(increment));
         }
 	}
-	
-	
+
+
+	@Override
 	public void setVisible(boolean visible){
 		if (wrapper != null)
 			wrapper.setVisible(visible);
 		else 
 			super.setVisible(visible);
 	}
-	
-	
+
+
+	@Override
 	public void createWidget(JPanel parent) {
 	  List< ? extends Component> components = getBrickComponents();
 	  
@@ -104,8 +105,8 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
       buttonPanel.setBorder(BorderFactory.createLoweredBevelBorder());
       GridBagConstraints gc = new GridBagConstraints();
       gc.gridx=0;
-      buttonUp = new BasicArrowButtonFixedSize(BasicArrowButton.NORTH);
-      buttonDown = new BasicArrowButtonFixedSize(BasicArrowButton.SOUTH);
+      buttonUp = new BasicArrowButtonFixedSize(SwingConstants.NORTH);
+      buttonDown = new BasicArrowButtonFixedSize(SwingConstants.SOUTH);
       buttonPanel.add(buttonUp, gc);
       buttonPanel.add(buttonDown, gc);
     }
@@ -141,7 +142,7 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 	protected void applyInitialValue() {
 		Double initValue = (Double) ControlHelper.getInitValue(control, getAtdl4jOptions());
 		if (initValue != null) {
-			setValue(new BigDecimal(initValue));
+			setValue(BigDecimal.valueOf(initValue));
 		} else {
             setValue(null);
 		}
@@ -152,7 +153,7 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 	}
 
 	public List<Component> getComponents() {
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		widgets.add(label);
 		widgets.add(spinner);
 		if (control instanceof DoubleSpinnerT)
@@ -164,7 +165,7 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
 	}
 	
 	public List<Component> getComponentsExcludingLabel() {
-		List<Component> widgets = new ArrayList<Component>();
+		List<Component> widgets = new ArrayList<>();
 		widgets.add(spinner);
 		if (control instanceof DoubleSpinnerT)
 		{
@@ -221,7 +222,7 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
   @Override
   public List< ? extends Component> createBrickComponents() {
     
-    List<Component> components = new ArrayList<Component>();
+    List<Component> components = new ArrayList<>();
     
     String tooltip = getTooltip();
     
@@ -292,7 +293,7 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
     SpinnerNumberModelNull model = (SpinnerNumberModelNull)spinner.getModel();
     
     // Set min/max/precision if a parameter is attached
-    if ( parameterConverter != null && parameterConverter instanceof DecimalConverter )
+    if ( parameterConverter instanceof DecimalConverter )
     {
         DecimalConverter tempDecimalConverter = (DecimalConverter) parameterConverter;
         
@@ -321,7 +322,7 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
             model.setMaximum( tempControlMax.setScale( digits, RoundingMode.HALF_UP )  );
         }
     }
-    else if ( parameterConverter != null && parameterConverter instanceof IntegerConverter )
+    else if ( parameterConverter instanceof IntegerConverter )
     {
         IntegerConverter tempIntegerConverter = (IntegerConverter) parameterConverter;
         
@@ -384,11 +385,11 @@ public class SwingSpinnerWidget extends AbstractSwingWidget<BigDecimal> {
             if ( digits != 0 )
             {
                 // -- Set the increment to the precision associated with digits (eg ".01" when digits=2, ".001" when digits=3) --
-                model.setStepSize( new BigDecimal( Math.pow( 10, -digits ) ).setScale( digits, RoundingMode.HALF_UP ) );
+                model.setStepSize( BigDecimal.valueOf( Math.pow( 10, -digits ) ).setScale( digits, RoundingMode.HALF_UP ) );
             }
             else
             {
-                model.setStepSize( new BigDecimal( "1" ) );
+                model.setStepSize( BigDecimal.ONE );
             }
         }
             

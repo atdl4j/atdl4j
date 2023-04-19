@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+  <!-- Slider Sample -->
+  <Strategy name="Slider Sample" uiRep="Slider Sample" wireValue="1" providerID="ABC">
+
+		<Parameter name="ExecutionStyle" xsi:type="Int_t" fixTag="9999" use="required">
+        <EnumPair enumID="Very Passive"    wireValue="1"/>
+        <EnumPair enumID="Passive"         wireValue="2"/>
+        <EnumPair enumID="Neutral"         wireValue="3"/>
+        <EnumPair enumID="Aggressive"      wireValue="4"/>
+        <EnumPair enumID="Very Aggressive" wireValue="5"/>
+    </Parameter>
+
+
+    <lay:StrategyLayout>
+
+				<lay:StrategyPanel title="Execution Style" collapsible="false" orientation="HORIZONTAL">
+            <lay:Control ID="ExecutionStyleSlider" xsi:type="lay:Slider_t" initValue="Neutral"
+                label="Execution Style" parameterRef="ExecutionStyle">
+                <lay:ListItem uiRep="Very Passive" enumID="Very Passive"/>
+                <lay:ListItem uiRep="Passive" enumID="Passive"/>
+                <lay:ListItem uiRep="Neutral" enumID="Neutral"/>
+                <lay:ListItem uiRep="Aggressive" enumID="Aggressive"/>
+                <lay:ListItem uiRep="Very Aggressive" enumID="Very Aggressive"/>
+           </lay:Control>
+                  
+        </lay:StrategyPanel>
+
+    </lay:StrategyLayout>
+
+  </Strategy>
+
+</Strategies>

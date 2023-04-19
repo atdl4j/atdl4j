@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+
+	 <Strategy name="ClockTests" uiRep="Clock Tests" wireValue="3" providerID="TEST">
+
+<!--  -->		
+		<Parameter name="ClockBasic" xsi:type="UTCTimestamp_t" fixTag="9994" use="optional"/>
+		<Parameter name="ClockNYConst" xsi:type="UTCTimestamp_t" fixTag="9993" use="optional" constValue="07:30:00" localMktTz="America/New_York"/>
+		<Parameter name="ClockNYInit" xsi:type="UTCTimestamp_t" fixTag="9991" use="optional"/>
+		<Parameter name="ClockNYInit_NowIfLater" xsi:type="UTCTimestamp_t" fixTag="9990" use="optional"/>
+		<Parameter name="ClockNYMin" xsi:type="UTCTimestamp_t" fixTag="9989" use="optional" minValue="07:30:00" localMktTz="America/New_York"/>
+		<Parameter name="ClockNYMax" xsi:type="UTCTimestamp_t" fixTag="9987" use="optional" maxValue="17:30:00" localMktTz="America/New_York"/>
+	
+		<lay:StrategyLayout>
+	
+			<lay:StrategyPanel title="Strategy Parameters" collapsible="false" orientation="VERTICAL">
+		
+		      <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+		
+		          <lay:StrategyPanel collapsible="false" orientation="VERTICAL">
+		              <lay:Control ID="c_ClockBasic" 	   xsi:type="lay:Clock_t"
+		                  label="Clock (no restrictions)"   parameterRef="ClockBasic"/>
+		              <lay:Control ID="c_ClockNYConst" 	   xsi:type="lay:Clock_t"
+		                  label="Clock (const 07:30 NY)"   parameterRef="ClockNYConst"/>
+		              <lay:Control ID="c_ClockNYInit" 	   xsi:type="lay:Clock_t"
+		              		initValue="07:30:00" localMktTz="America/New_York"
+		                  label="Clock (init 07:30 NY)"   parameterRef="ClockNYInit"/>
+		              <lay:Control ID="c_ClockNYInit_NowIfLater" 	   xsi:type="lay:Clock_t"
+		              		initValue="07:30:00" initValueMode="1" localMktTz="America/New_York"
+		                  label="Clock (init 07:30 NY, now if later)"   parameterRef="ClockNYInit_NowIfLater"/>
+		              <lay:Control ID="c_ClockNYMin" 	   xsi:type="lay:Clock_t"
+		                  label="Clock (min 07:30 NY)"   parameterRef="ClockNYMin"/>
+		              <lay:Control ID="c_ClockNYMax" 	   xsi:type="lay:Clock_t"
+		                  label="Clock (max 17:30 NY)"   parameterRef="ClockNYMax"/>
+		          </lay:StrategyPanel>
+		          
+		      </lay:StrategyPanel>
+		
+			</lay:StrategyPanel>
+
+		</lay:StrategyLayout>
+
+	</Strategy>
+	
+</Strategies>

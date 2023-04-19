@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Strategies
+    xmlns="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    xmlns:val="http://www.fixprotocol.org/FIXatdl-1-1/Validation"
+    xmlns:lay="http://www.fixprotocol.org/FIXatdl-1-1/Layout"
+    xmlns:flow="http://www.fixprotocol.org/FIXatdl-1-1/Flow"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.fixprotocol.org/FIXatdl-1-1/Core"
+    imageLocation="/images/banner.gif"
+    strategyIdentifierTag="847"
+    versionIdentifierTag="958">
+
+  <!-- Slider Sample -->
+  <Strategy name="MinMaxLengthSample" uiRep="Min/Max Length Sample" wireValue="1" providerID="ABC">
+
+		<Parameter name="StringNoConstraints" xsi:type="String_t" fixTag="9999"/>
+		<Parameter name="StringReqd" xsi:type="String_t" fixTag="9998" use="required"/>
+
+		<Parameter name="StringMin5" xsi:type="String_t" fixTag="9997" minLength="5"/>
+		<Parameter name="StringMin5Reqd" xsi:type="String_t" fixTag="9996" minLength="5" use="required"/>
+
+		<Parameter name="StringMax10" xsi:type="String_t" fixTag="9995" maxLength="10"/>
+		<Parameter name="StringMax10Reqd" xsi:type="String_t" fixTag="9994" maxLength="10" use="required"/>
+
+
+    <lay:StrategyLayout>
+
+				<lay:StrategyPanel title="Execution Style" collapsible="false" orientation="VERTICAL">
+            <lay:Control ID="c_StringNoConstraints" xsi:type="lay:TextField_t" label="StringNoConstraints" parameterRef="StringNoConstraints"/>
+            <lay:Control ID="c_StringReqd" xsi:type="lay:TextField_t" label="StringReqd" parameterRef="StringReqd"/>
+            <lay:Control ID="c_StringMin5" xsi:type="lay:TextField_t" label="StringMin5" parameterRef="StringMin5"/>
+            <lay:Control ID="c_StringMin5Reqd" xsi:type="lay:TextField_t" label="StringMin5Reqd" parameterRef="StringMin5Reqd"/>
+            <lay:Control ID="c_StringMax10" xsi:type="lay:TextField_t" label="StringMax10" parameterRef="StringMax10"/>
+            <lay:Control ID="c_StringMax10Reqd" xsi:type="lay:TextField_t" label="StringMax10Reqd" parameterRef="StringMax10Reqd"/>
+        </lay:StrategyPanel>
+
+    </lay:StrategyLayout>
+
+  </Strategy>
+
+</Strategies>

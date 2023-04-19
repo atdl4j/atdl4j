@@ -2,7 +2,8 @@ package org.atdl4j.data.validation;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.data.ValidationRule;
 import org.atdl4j.data.exception.ValidationException;
@@ -19,7 +20,7 @@ public class ValueOperatorValidationRule
 		extends AbstractOperatorValidationRule
 {
 
-	private static final Logger logger = Logger.getLogger( ValueOperatorValidationRule.class );
+	private static final Logger logger = LoggerFactory.getLogger( ValueOperatorValidationRule.class );
 
 	private String field;
 
@@ -55,7 +56,7 @@ public class ValueOperatorValidationRule
 				  ( field.startsWith( InputAndFilterData.FIX_DEFINED_FIELD_PREFIX ) )&&
 				  ( operator == OperatorT.NX ) )
 			{
-				logger.debug( "Special handling to accept NOT EXISTS (\"NX\") check for FIX_DEFINED_FIELD_PREFIX field: " + field + " avoiding: \"No parameter defined for field\".");
+				logger.debug( "Special handling to accept NOT EXISTS (\"NX\") check for FIX_DEFINED_FIELD_PREFIX field: {} avoiding: \"No parameter defined for field\".", field );
 				return;
 			}
 
@@ -68,20 +69,6 @@ public class ValueOperatorValidationRule
 			throw new ValidationException( null, tempMsg );
 		}
 
-		/**
-		 * Object fieldValue = parent instanceof StateRuleT ?
-		 * target.getControlValueAsComparable() :
-		 * target.getParameterValueAsComparable(); // 2/1/2010 Scott Atwell
-		 * (handle StateRule specifying "0" vs. displayed "0.00") Object v = value
-		 * != null ? target.convertStringToComparable(value) : null;
-		 * 
-		 * AbstractAtdl4jWidget had (thus returning Parameter value even when we are
-		 * comparing against Control's value for StateRuleT (divided it into two
-		 * methods): public Comparable<?> convertStringToComparable(String string)
-		 * throws JAXBException { if (parameterConverter != null) return
-		 * parameterConverter.convertValueToComparable(string); else return
-		 * controlConverter.convertValueToComparable(string); }
-		 **/
 		Object fieldValue;
 		Object v;
 		if ( parent instanceof StateRuleT ) // Uses Control "display" values

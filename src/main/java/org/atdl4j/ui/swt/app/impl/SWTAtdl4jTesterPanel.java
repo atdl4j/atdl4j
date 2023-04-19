@@ -4,7 +4,8 @@
  */
 package org.atdl4j.ui.swt.app.impl;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.data.exception.ValidationException;
@@ -38,7 +39,7 @@ import org.eclipse.swt.widgets.Text;
 public class SWTAtdl4jTesterPanel
 		extends AbstractAtdl4jTesterPanel
 {
-	public final Logger logger = Logger.getLogger(SWTAtdl4jTesterPanel.class);
+	public final Logger logger = LoggerFactory.getLogger(SWTAtdl4jTesterPanel.class);
 	private Composite parentComposite;
 	
 	private Composite inputAndFilterDataAndLoadMessageComposite;
@@ -62,23 +63,6 @@ public class SWTAtdl4jTesterPanel
 
 		// -- Delegate back to AbstractAtdl4jTesterPanel -- 
 		init( aParentOrShell, aAtdl4jOptions );
-		
-//TODO any "tester-specific stuff" to add???
-		
-//TODO		
-//		if (getAtdl4jOptions().isShowTimezoneSelector())
-//		{
-//
-//		    Label tzLabel = new Label(headerComposite, SWT.NONE);
-//		    tzLabel.setText("Timezone:");
-//		    // dropDownList
-//		    Combo tzDropDown = new Combo(headerComposite, SWT.READ_ONLY | SWT.BORDER);
-//		    GridData tzData = new GridData(SWT.FILL, SWT.CENTER, true, true);
-//		    tzData.horizontalSpan = 2;
-//		    tzDropDown.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-//			    false));
-//		}
-
 
 		inputAndFilterDataAndLoadMessageComposite = new Group( aParentOrShell, SWT.NONE );
 		((Group) inputAndFilterDataAndLoadMessageComposite).setText( "Testing Input" );
@@ -105,16 +89,7 @@ public class SWTAtdl4jTesterPanel
 
 		// -- Build the SWT MenuItems --
 		createMenuItems();
-	
-		
-		// -- Implied --
-/**		
-		setVisibleTestingInputSection( true );
-		setVisibleFileSelectionSection( true );
-		setVisibleValidateOutputSection( true );
-		setVisibleOkCancelButtonSection( true );
-**/
-		
+
 		return parentComposite;
 	}
 	
@@ -186,7 +161,8 @@ public class SWTAtdl4jTesterPanel
 		validateButton.setText("Validate Output");
 		validateButton.addSelectionListener(new SelectionAdapter() 
 		{
-			public void widgetSelected(SelectionEvent e) 
+			@Override
+			public void widgetSelected(SelectionEvent e)
 			{
                 		try {
                 		    validateButtonSelected();
@@ -252,7 +228,8 @@ public class SWTAtdl4jTesterPanel
 		okButton.setToolTipText( "Validate and accept the specified strategy and parameters" );
 		okButton.addSelectionListener(new SelectionAdapter() 
 		{
-			public void widgetSelected(SelectionEvent e) 
+			@Override
+			public void widgetSelected(SelectionEvent e)
 			{
 				okButtonSelected();
 			}
@@ -265,7 +242,8 @@ public class SWTAtdl4jTesterPanel
 		cancelButton.setToolTipText( "Cancel ignoring any specified changes" );
 		cancelButton.addSelectionListener(new SelectionAdapter() 
 		{
-			public void widgetSelected(SelectionEvent e) 
+			@Override
+			public void widgetSelected(SelectionEvent e)
 			{
 				cancelButtonSelected();
 			}
@@ -291,8 +269,12 @@ public class SWTAtdl4jTesterPanel
 
 	protected void packLayout()
 	{
-		getShell().layout();
-		getShell().pack();
+		Shell tmpShell = getShell();
+		if (tmpShell != null)
+		{
+			tmpShell.layout();
+			tmpShell.pack();
+		}
 	}
 	
 	

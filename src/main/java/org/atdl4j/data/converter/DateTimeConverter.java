@@ -1,5 +1,9 @@
 package org.atdl4j.data.converter;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -15,13 +19,9 @@ import org.atdl4j.fixatdl.core.UTCDateOnlyT;
 import org.atdl4j.fixatdl.core.UTCTimeOnlyT;
 import org.atdl4j.fixatdl.core.UTCTimestampT;
 import org.atdl4j.fixatdl.timezones.Timezone;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 public class DateTimeConverter
-		extends AbstractTypeConverter<Comparable<DateTime>>
+		extends AbstractTypeConverter<Comparable<Instant>>
 {
 	Timezone timezone = null;
 	public static DatatypeFactory javaxDatatypeFactory;
@@ -78,41 +78,41 @@ public class DateTimeConverter
 		return "yyyyMMdd-HH:mm:ss";
 	}
 
-	public static DateTimeZone convertTimezoneToDateTimeZone( Timezone aTimezone )
+	public static ZoneId convertTimezoneToZoneId( Timezone aTimezone )
 	{
 		if ( aTimezone != null )
 		{
-			return DateTimeZone.forID( aTimezone.value() );
+			return ZoneId.of( aTimezone.value() );
 		}
 		else
 		{
 			return null;
 		}
+		
 	}
 	
-	public static DateTime convertXMLGregorianCalendarToDateTime( XMLGregorianCalendar aXMLGregorianCalendar, Timezone aTimezone )
+	public static ZonedDateTime convertXMLGregorianCalendarToZonedDateTime( XMLGregorianCalendar aXMLGregorianCalendar, Timezone aTimezone )
 	{
-		// -- DateTime(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) --
 		int tempSubsecond = 0;
 		if ( aXMLGregorianCalendar.getFractionalSecond() != null )
 		{
 			tempSubsecond = aXMLGregorianCalendar.getFractionalSecond().intValue();
 		}
 		
-		DateTimeZone tempDateTimeZone = convertTimezoneToDateTimeZone( aTimezone );
-		if ( tempDateTimeZone == null )
+		ZoneId tempZoneId = convertTimezoneToZoneId( aTimezone );
+		if ( tempZoneId == null )
 		{
-			tempDateTimeZone = DateTimeZone.getDefault();
-		}
+			tempZoneId = ZoneId.systemDefault();
+		}		
 		
-		return new DateTime( aXMLGregorianCalendar.getYear(), 
+		return ZonedDateTime.of( aXMLGregorianCalendar.getYear(), 
 									aXMLGregorianCalendar.getMonth(),
 									aXMLGregorianCalendar.getDay(),
 									aXMLGregorianCalendar.getHour(),
 									aXMLGregorianCalendar.getMinute(),
 									aXMLGregorianCalendar.getSecond(),
 									tempSubsecond, 
-									tempDateTimeZone );
+									tempZoneId );
 	}
 
 	public static XMLGregorianCalendar convertDailyValueToValue( XMLGregorianCalendar aDailyValue, Timezone aTimezone )
@@ -121,27 +121,27 @@ public class DateTimeConverter
 		if ( aDailyValue != null )
 		{
 			// -- Init calendar date portion equal to "current date" local/default --
-			DateTime tempDateTime = new DateTime();
+			ZonedDateTime tempZonedDateTime = ZonedDateTime.now();
 			
 			if ( aTimezone != null )
 			{
-				DateTimeZone tempDateTimeZone = DateTimeZone.forID( aTimezone.value() );
-				if ( tempDateTimeZone != null )
+				ZoneId tempZoneId = ZoneId.of( aTimezone.value() );
+				if ( tempZoneId != null )
 				{
-					int tempOffsetMillis = tempDateTimeZone.getOffset( System.currentTimeMillis() );
-					// -- convert milliseconds to minutes --
-					aDailyValue.setTimezone( tempOffsetMillis / 60000 );
+					int tempOffsetSeconds = tempZoneId.getRules().getOffset( Instant.now() ).getTotalSeconds();
+					// -- convert seconds to minutes --
+					aDailyValue.setTimezone( tempOffsetSeconds / 60 );
 					
 					// -- Set calendar date portion equal to "current date" of the Timezone --
 					// -- (eg Asian security trading in Japan during the morning of Feb 15 might be local of 9pm ET Feb 14.  
 					// -- 	Want to ensure we use Feb 15, not Feb 14 if localMktTz is for Japan) --
-					tempDateTime = new DateTime( tempDateTimeZone );
+					tempZonedDateTime = ZonedDateTime.now( tempZoneId );
 				}
 			}
 			
-			aDailyValue.setMonth( tempDateTime.getMonthOfYear() );
-			aDailyValue.setDay( tempDateTime.getDayOfMonth() );
-			aDailyValue.setYear( tempDateTime.getYear() );
+			aDailyValue.setMonth( tempZonedDateTime.getMonthValue() );
+			aDailyValue.setDay( tempZonedDateTime.getDayOfMonth() );
+			aDailyValue.setYear( tempZonedDateTime.getYear() );
 		}
 		
 		return aDailyValue;
@@ -187,46 +187,33 @@ public class DateTimeConverter
 		return getJavaxDatatypeFactory().newXMLGregorianCalendar( new GregorianCalendar() );
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.atdl4j.data.ControlTypeConverter#convertControlValueToControlComparable(java.lang.Object)
 	 */
 	@Override
-	public DateTime convertControlValueToControlComparable(Object aValue)
+	public Instant convertControlValueToControlComparable(Object aValue)
 	{
-		if ( aValue instanceof DateTime )
+		if ( aValue instanceof Instant )
 		{
-			return (DateTime) aValue;
+			return (Instant) aValue;
+		}
+		else if ( aValue instanceof ZonedDateTime )
+		{
+			return ((ZonedDateTime) aValue).toInstant();
 		}
 		else if ( aValue instanceof XMLGregorianCalendar )
 		{
-			return convertXMLGregorianCalendarToDateTime( (XMLGregorianCalendar) aValue, getTimezone() );
+			return convertXMLGregorianCalendarToZonedDateTime( (XMLGregorianCalendar) aValue, getTimezone() ).toInstant();
 		}
 		else if ( aValue instanceof String )
 		{
 			String str = (String) aValue;
 			String format = getFormatString();
-			DateTimeFormatter fmt = DateTimeFormat.forPattern( format );
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern( format );
 
 			try
-			{  
-				if ( ( getParameterTypeConverter() == null ) ||
-					  ( getParameterTypeConverter().getParameter() == null ) || 
-					  ( getParameterTypeConverter().getParameter() instanceof UTCTimeOnlyT ) || 
-					  ( getParameterTypeConverter().getParameter() instanceof UTCTimestampT ) )
-				{
-					DateTime tempDateTime = fmt.parseDateTime( str ); 
-					return tempDateTime.withZone( DateTimeZone.UTC );
-				}
-
-				/*
-				 * else if (getParameter() instanceof TZTimestamp || getParameter() instanceof
-				 * TZTimeOnlyT) { return fmt.withOffsetParsed().parseDateTime(str);
-				 * }
-				 */
-				else
-				{
-					return fmt.parseDateTime( str );
-				}
+			{
+				return ZonedDateTime.parse(str, fmt).toInstant();
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -247,11 +234,15 @@ public class DateTimeConverter
 	{
 		if ( aValue instanceof XMLGregorianCalendar )
 		{
-			return convertXMLGregorianCalendarToDateTime( (XMLGregorianCalendar) aValue, getTimezone() ); 
+			return convertXMLGregorianCalendarToZonedDateTime( (XMLGregorianCalendar) aValue, getTimezone() ).toInstant(); 
+		}
+		else if ( aValue instanceof ZonedDateTime )
+		{
+			return ((ZonedDateTime) aValue).toInstant();
 		}
 		else
 		{
-			return (DateTime) aValue;
+			return aValue;
 		}
 	}
 
@@ -259,15 +250,19 @@ public class DateTimeConverter
 	 * @see org.atdl4j.data.ControlTypeConverter#convertParameterValueToControlValue(java.lang.Object)
 	 */
 	@Override
-	public DateTime convertParameterValueToControlValue(Object aValue)
+	public Instant convertParameterValueToControlValue(Object aValue)
 	{
-		if ( aValue instanceof DateTime )
+		if ( aValue instanceof Instant )
 		{
-			return (DateTime) aValue;
+			return (Instant) aValue;
+		}
+		else if ( aValue instanceof ZonedDateTime )
+		{
+			return ((ZonedDateTime) aValue).toInstant();
 		}
 		else if ( aValue instanceof XMLGregorianCalendar )
 		{
-			return convertXMLGregorianCalendarToDateTime( (XMLGregorianCalendar) aValue, getTimezone() );
+			return convertXMLGregorianCalendarToZonedDateTime( (XMLGregorianCalendar) aValue, getTimezone() ).toInstant();
 		}
 		else
 		{
@@ -279,7 +274,7 @@ public class DateTimeConverter
 	 * @see org.atdl4j.data.ControlTypeConverter#convertStringToControlValue(java.lang.String)
 	 */
 	@Override
-	public DateTime convertStringToControlValue(String aString)
+	public Instant convertStringToControlValue(String aString)
 	{
 		return convertControlValueToControlComparable( aString );
 	}
@@ -292,9 +287,9 @@ public class DateTimeConverter
 	{
 		if ( aFixWireValue != null )
 		{
-			String str = (String) aFixWireValue;
+			String str = aFixWireValue;
 			String format = getFormatString();
-			DateTimeFormatter fmt = DateTimeFormat.forPattern( format );
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern( format );
 
 			try
 			{  
@@ -302,12 +297,11 @@ public class DateTimeConverter
 						getParameter() instanceof UTCTimeOnlyT || 
 						getParameter() instanceof UTCTimestampT )
 				{
-					DateTime tempDateTime = fmt.withZone( DateTimeZone.UTC ).parseDateTime( str );
-					return tempDateTime;
+					return ZonedDateTime.parse(str, fmt.withZone( ZoneId.of("UTC"))).toInstant();
 				}
 				else
 				{
-					return fmt.parseDateTime( str );
+					return ZonedDateTime.parse(str, fmt).toInstant();
 				}
 			}
 			catch (IllegalArgumentException e)
@@ -329,9 +323,9 @@ public class DateTimeConverter
 	{
 		if ( aParameterString != null )
 		{
-			String str = (String) aParameterString;
+			String str = aParameterString;
 			String format = getFormatString();
-			DateTimeFormatter fmt = DateTimeFormat.forPattern( format );
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern( format );
 
 			try
 			{  
@@ -339,11 +333,11 @@ public class DateTimeConverter
 						getParameter() instanceof UTCTimeOnlyT || 
 						getParameter() instanceof UTCTimestampT )
 				{
-					return fmt.withZone( DateTimeZone.UTC ).parseDateTime( str ); 
+					return ZonedDateTime.parse(str, fmt.withZone( ZoneId.of("UTC"))).toInstant();
 				}
 				else
 				{
-					return fmt.parseDateTime( str );
+					return ZonedDateTime.parse(str, fmt).toInstant();
 				}
 			}
 			catch (IllegalArgumentException e)
@@ -364,12 +358,17 @@ public class DateTimeConverter
 	@Override
 	public String convertParameterValueToFixWireValue(Object aParameterValue)
 	{
-		DateTime date = convertParameterValueToParameterComparable( aParameterValue ); 
-		
-		if ( date != null )
+		if ( aParameterValue == null )
 		{
-			DateTimeFormatter fmt = DateTimeFormat.forPattern( getFormatString() );
-			return fmt.withZone( DateTimeZone.UTC ).print( date );
+			return null;
+		}
+		
+		ZonedDateTime tempZonedDateTime = ZonedDateTime.ofInstant(convertParameterValueToParameterComparable( aParameterValue ), ZoneId.of("UTC" ) ); 
+		
+		if ( tempZonedDateTime != null )
+		{
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern( getFormatString() );
+			return tempZonedDateTime.format( fmt );
 		}
 		else
 		{
@@ -381,26 +380,30 @@ public class DateTimeConverter
 	 * @see org.atdl4j.data.ParameterTypeConverter#convertParameterValueToParameterComparable(java.lang.Object)
 	 */
 	@Override
-	public DateTime convertParameterValueToParameterComparable(Object aParameterValue)
+	public Instant convertParameterValueToParameterComparable(Object aParameterValue)
 	{
-		if ( aParameterValue instanceof DateTime )
+		if ( aParameterValue instanceof Instant )
 		{
-			DateTime tempDateTime = (DateTime) aParameterValue;
+			return (Instant) aParameterValue;
+		}
+		else if ( aParameterValue instanceof ZonedDateTime )
+		{
+			ZonedDateTime tempZonedDateTime = (ZonedDateTime) aParameterValue;
 			
 			if ( getParameter() == null || 
 					getParameter() instanceof UTCTimeOnlyT || 
 					getParameter() instanceof UTCTimestampT )
 			{
-				return tempDateTime.withZone( DateTimeZone.UTC );
+				return tempZonedDateTime.withZoneSameInstant( ZoneId.of( "UTC" ) ).toInstant();
 			}
 			else
 			{
-				return tempDateTime;
+				return tempZonedDateTime.toInstant();
 			}
 		}
 		else if ( aParameterValue instanceof XMLGregorianCalendar )
 		{
-			return convertXMLGregorianCalendarToDateTime( (XMLGregorianCalendar) aParameterValue, getTimezone() );
+			return convertXMLGregorianCalendarToZonedDateTime( (XMLGregorianCalendar) aParameterValue, getTimezone() ).toInstant();
 		}
 		else
 		{
@@ -414,20 +417,25 @@ public class DateTimeConverter
 	@Override
 	public String convertParameterValueToComparisonString(Object aParameterValue)
 	{
-		DateTime tempDateTime = convertParameterValueToParameterComparable( aParameterValue );
+		if ( aParameterValue == null )
+		{
+			return null;
+		}
+		
+		ZonedDateTime tempDateTime = ZonedDateTime.ofInstant( convertParameterValueToParameterComparable( aParameterValue ), ZoneId.systemDefault() );
 	
 		if ( tempDateTime != null )
 		{
 			String format = getFormatString();
-			DateTimeFormatter fmt = DateTimeFormat.forPattern( format );
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern( format );
 			
 			if ( getParameter() == null || 
 					getParameter() instanceof UTCTimeOnlyT || 
 					getParameter() instanceof UTCTimestampT )
 			{
-				tempDateTime = tempDateTime.withZone( DateTimeZone.UTC );
+				tempDateTime = tempDateTime.withZoneSameInstant( ZoneId.of ("UTC" ) );
 			}
-			return fmt.print( tempDateTime );
+			return tempDateTime.format(fmt);
 		}
 		else
 		{
