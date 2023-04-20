@@ -11,7 +11,7 @@ import org.atdl4j.config.Atdl4jOptions;
  */
 public interface Atdl4jInputAndFilterDataPanel
 {
-	public Object buildAtdl4jInputAndFilterDataPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions);
+	public Object buildAtdl4jInputAndFilterDataPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler );
 
 	public Atdl4jOptions getAtdl4jOptions();
 	

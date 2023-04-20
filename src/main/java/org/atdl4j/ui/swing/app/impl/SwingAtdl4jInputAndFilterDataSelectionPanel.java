@@ -101,7 +101,7 @@ public class SwingAtdl4jInputAndFilterDataSelectionPanel
 		tempDialog.setTitle( "atdl4j Input and Filter Data / Configuration Settings" );
 		tempDialog.setModal(true);
 		
-		getAtdl4jInputAndFilterDataPanel().buildAtdl4jInputAndFilterDataPanel(tempDialog, getAtdl4jOptions());
+		getAtdl4jInputAndFilterDataPanel().buildAtdl4jInputAndFilterDataPanel(tempDialog, getAtdl4jOptions(), getAtdl4jUserMessageHandler());
 		
 		JPanel footerPanel = new JPanel();
 		tempDialog.getContentPane().add(footerPanel, BorderLayout.SOUTH);

@@ -7,6 +7,9 @@ import java.math.RoundingMode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.jidesoft.utils.StringUtils;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.events.SelectionListener;
@@ -41,16 +44,23 @@ public class SWTNullableSpinner extends Composite
 				
 		text.addListener(SWT.Verify, new Listener() {
 			public void handleEvent(Event e) {
-				verify(e);
+				verifyPartialString(e);
 			}
 		});
-
-		text.addListener(SWT.Modify, new Listener() {
+		
+		// Validates the text after focus is lost from the text panel (avoids interfering with user input until they are complete, then validates)
+		text.addListener(SWT.FocusOut, new Listener() {
 			public void handleEvent(Event e) {
-				stripExtraDecimalPoints();
+				verifyCompleteString();
 			}
 		});
-
+		
+		// Handle the enter key on the Text field
+		text.addListener(SWT.DefaultSelection, new Listener() {
+			public void handleEvent(Event e) {
+				verifyCompleteString();				
+			}
+		});
 
 		text.addListener(SWT.Traverse, new Listener() {
 			public void handleEvent(Event e) {
@@ -84,27 +94,61 @@ public class SWTNullableSpinner extends Composite
 
 		text.setFont(getFont());
 	}
-
-	void verify(Event e) 
+	
+	/**
+    * Validates the current text is a valid big decimal. 
+    * Scales the current text to the appropriate decimal precision (see Atdl4jOptions.defaultDigitsForSpinnerControl*)
+	*/
+	void verifyCompleteString() 
 	{
+		String tmpText = text.getText();
+		
+		if ( ( tmpText == null ) || ( tmpText.equals( "" ) ) )
+		{
+			return;
+		}
+		
 		try 
 		{
-			if (e.text==null||e.text.equals("")) return;
+			BigDecimal tmpValue = new BigDecimal( tmpText ); // validate text as a big decimal
+			BigDecimal tmpValueScaled = scaleValue( tmpValue );
 			
-			if ( ( e.text.equals( "." ) )	|| ( e.text.endsWith( "." ) ) )
-			{
-				// -- Let it go, assume user is entering the decimal place portion and just entered the "." part thus far --
-			}
-			else
-			{
-				new BigDecimal( e.text ); // validate text as a big decimal
-			}
+			text.setText( tmpValueScaled.toPlainString() );
 		} 
 		catch (NumberFormatException ex) 
 		{
-			e.doit = false;
+			text.setText("");
 		}
 	}
+	
+	/**
+	    * Validates the partial text meets the correct decimal precision
+		*/
+		void verifyPartialString( Event e ) 
+		{
+			String tmpText = text.getText();
+			
+			if ( ( tmpText == null ) || ( tmpText.equals( "" ) ) )
+			{
+				return;
+			}
+			
+			String tmpNewText = tmpText.substring(0, e.start) + e.text + tmpText.substring(e.end);
+			
+			final int indexOfDecimal = tmpNewText.indexOf('.');
+			
+			if ( indexOfDecimal < 0 )
+			{
+				return;
+			}
+			
+			int numDecimals = tmpNewText.length() - 1 - indexOfDecimal;
+			
+			if ( numDecimals > getDigits() )
+			{
+				e.doit = false;
+			}
+		}
 
 	void traverse(Event e) {
 		switch (e.detail) {
@@ -179,28 +223,61 @@ public class SWTNullableSpinner extends Composite
 		super.setFont(font);
 		text.setFont(font);
 	}
+	
+	public BigDecimal scaleValue(BigDecimal aValue) 
+	{
+		
+		if ( aValue != null )
+		{		
+			BigDecimal tempValueScaled = aValue.setScale( getDigits(), RoundingMode.HALF_UP );	
+			
+			if ( ! aValue.equals( tempValueScaled ) )
+			{
+				String tempNewValueString = tempValueScaled.toPlainString();
+				logger.debug( "tempValue: {} tempValueScaled: {} tempValueScaled.toPlainString(): {}", aValue, tempValueScaled, tempNewValueString );
+				int tempCaretPosition = text.getCaretPosition();
+				logger.debug( "getCaretPosition(): {}", text.getCaretPosition() ); 
+				// -- Handle user entering ".12" and formatter converting to "0.12" -- avoid result of "0.21") --
+				if ( ( tempCaretPosition == 2 ) && 
+					  ( text.getText().charAt(0) == '.' ) && 
+					  ( tempNewValueString.startsWith( "0." ) ) )
+				{
+					// -- we're notified at ".1" but formatted value is converting to "0.1" --
+					logger.debug("Incrementing CaretPosition (was {}) to account for formatted string having \".\" converted to \"0.\" automatically.", tempCaretPosition );
+					tempCaretPosition++;
+				}
+			}
+	
+			if ( ( getMinimum() != null ) && ( tempValueScaled != null ) && ( tempValueScaled.compareTo( getMinimum() ) < 0 ) )
+			{
+				tempValueScaled = getMinimum();
+			}
+			else if ( ( getMaximum() != null ) && ( tempValueScaled != null ) && ( tempValueScaled.compareTo( getMaximum() ) > 0 ) )
+			{
+				tempValueScaled = getMaximum();
+			} 
+			
+			return tempValueScaled;			
+		}
+		else
+		{
+			return null;
+		}
+	}
 
 	public void setValue(BigDecimal aValue) 
 	{
-		BigDecimal tempValue = aValue;
-
-		if ( ( getMinimum() != null ) && ( tempValue != null ) && ( tempValue.compareTo( getMinimum() ) < 0 ) )
-		{
-			tempValue = getMinimum();
-		}
-		else if ( ( getMaximum() != null ) && ( tempValue != null ) && ( tempValue.compareTo( getMaximum() ) > 0 ) )
-		{
-			tempValue = getMaximum();
-		} 
-
-		if ( tempValue != null )
-		{
-			text.setText( tempValue.toPlainString() );
+		BigDecimal tempValueScaled = scaleValue( aValue );		
+		
+		if ( aValue != null )
+		{					
+			text.setText( tempValueScaled.toPlainString() );			
 		}
 		else
 		{
 			text.setText( "" );
 		}
+		
 		text.selectAll();
 		text.setFocus();
 	}
@@ -213,29 +290,32 @@ public class SWTNullableSpinner extends Composite
 		}
 		else
 		{
-			BigDecimal tempValue = new BigDecimal( text.getText() );
-			BigDecimal tempValueScaled = tempValue.setScale( getDigits(), RoundingMode.HALF_UP );			
-			if ( ! tempValue.equals( tempValueScaled ) )
-			{
-				String tempNewValueString = tempValueScaled.toPlainString();
-				logger.debug( "tempValue: {} tempValueScaled: {} tempValueScaled.toPlainString(): {}", tempValue, tempValueScaled, tempNewValueString );
-				int tempCaretPosition = text.getCaretPosition();
-				logger.debug( "getCaretPosition(): {}", text.getCaretPosition() );
-				// -- Handle user entering ".12" and formatter converting to "0.12" -- avoid result of "0.21") --
-				if ( ( tempCaretPosition == 2 ) && 
-					  ( text.getText().charAt(0) == '.' ) && 
-					  ( tempNewValueString.startsWith( "0." ) ) )
-				{
-					// -- we're notified at ".1" but formatted value is converting to "0.1" --
-					logger.debug("Incrementing CaretPosition (was {}) to account for formatted string having \".\" converted to \"0.\" automatically.", tempCaretPosition );
-					tempCaretPosition++;
-				}
-				
-				text.setText( tempNewValueString );
-				text.setSelection( tempCaretPosition, tempCaretPosition );
-			}
+			BigDecimal tempValue = new BigDecimal( text.getText() );			
 			
-			return tempValueScaled;
+			return tempValue;
+						
+//			BigDecimal tempValueScaled = tempValue.setScale( getDigits(), RoundingMode.HALF_UP );			
+//			if ( ! tempValue.equals( tempValueScaled ) )
+//			{
+//				String tempNewValueString = tempValueScaled.toPlainString();
+//				logger.debug( "tempValue: {} tempValueScaled: {} tempValueScaled.toPlainString(): {}", tempValue, tempValueScaled, tempNewValueString );
+//				int tempCaretPosition = text.getCaretPosition();
+//				logger.debug( "getCaretPosition(): {}", text.getCaretPosition() ); 
+//				// -- Handle user entering ".12" and formatter converting to "0.12" -- avoid result of "0.21") --
+//				if ( ( tempCaretPosition == 2 ) && 
+//					  ( text.getText().charAt(0) == '.' ) && 
+//					  ( tempNewValueString.startsWith( "0." ) ) )
+//				{
+//					// -- we're notified at ".1" but formatted value is converting to "0.1" --
+//					logger.debug("Incrementing CaretPosition (was {}) to account for formatted string having \".\" converted to \"0.\" automatically.", tempCaretPosition );
+//					tempCaretPosition++;
+//				}
+//				
+//				text.setText( tempNewValueString );
+//				text.setSelection( tempCaretPosition, tempCaretPosition );
+//			}
+//			
+//			return tempValueScaled;
 		}
 	}
 	
