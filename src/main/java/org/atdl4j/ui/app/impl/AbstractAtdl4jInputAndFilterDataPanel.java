@@ -11,6 +11,7 @@ import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.InputAndFilterData;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel;
 import org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanelListener;
+import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 
 /**
  * Represents the base, non-GUI system-specific Atdl4jOptions and InputAndFilterData GUI component.
@@ -57,13 +58,16 @@ public abstract class AbstractAtdl4jInputAndFilterDataPanel
 	
 	Atdl4jOptions atdl4jOptions;
 	Object parentOrShell;  // SWT: Shell, Swing: JFrame, JDialog, etc
+	private Atdl4jUserMessageHandler atdl4jUserMessageHandler;
 	
 	private List<Atdl4jInputAndFilterDataPanelListener> listenerList = new ArrayList<>();
 
-	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions )
+	protected void init( Object aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler )
 	{
 		setAtdl4jOptions( aAtdl4jOptions );
 		setParentOrShell( aParentOrShell );
+		
+		setAtdl4jUserMessageHandler( aAtdl4jUserMessageHandler );
 	}
 
 	/**
@@ -116,6 +120,14 @@ public abstract class AbstractAtdl4jInputAndFilterDataPanel
 		{
 			tempListener.inputAndFilterDataSpecified( aInputAndFilterData );
 		}
+	}
+
+	public Atdl4jUserMessageHandler getAtdl4jUserMessageHandler() {
+		return atdl4jUserMessageHandler;
+	}
+
+	public void setAtdl4jUserMessageHandler(Atdl4jUserMessageHandler atdl4jUserMessageHandler) {
+		this.atdl4jUserMessageHandler = atdl4jUserMessageHandler;
 	}
 
 

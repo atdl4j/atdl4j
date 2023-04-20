@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jConfig;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.StrategyFilterInputData;
 import org.atdl4j.data.Atdl4jConstants;
+import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jInputAndFilterDataPanel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -23,6 +22,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents the SWT-specific Atdl4jOptions and InputAndFilterData GUI component.
@@ -65,17 +66,17 @@ public class SWTAtdl4jInputAndFilterDataPanel
 	private Text textIncrementPolicyLotSize;
 	private Text textIncrementPolicyTick;
 
-	public Object buildAtdl4jInputAndFilterDataPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions)
+	public Object buildAtdl4jInputAndFilterDataPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler )
 	{
-		return buildAtdl4jInputAndFilterDataPanel( (Composite) aParentOrShell, aAtdl4jOptions );
+		return buildAtdl4jInputAndFilterDataPanel( (Composite) aParentOrShell, aAtdl4jOptions, aAtdl4jUserMessageHandler );
 	}
 	
-	public Composite buildAtdl4jInputAndFilterDataPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions)
+	public Composite buildAtdl4jInputAndFilterDataPanel(Composite aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler )
 	{
 		parentComposite = aParentOrShell;
 
 		// -- Delegate back to AbstractAtdl4jInputAndFilterDataPanel -- 
-		init( aParentOrShell, aAtdl4jOptions );
+		init( aParentOrShell, aAtdl4jOptions, aAtdl4jUserMessageHandler );
 		
 		// -- Build the SWT.Composite from Atdl4jCompositePanel --
 		buildCoreAtdl4jSettingsPanel( aParentOrShell );
@@ -353,7 +354,8 @@ public class SWTAtdl4jInputAndFilterDataPanel
 		if ( ( tempStrategyFilterInputData.getCountry_CountryCode() != null ) &&
 			  ( tempStrategyFilterInputData.getRegion_name() == null ) )
 		{
-			throw new IllegalArgumentException("Region is required when Country is specified.");
+			getAtdl4jUserMessageHandler().displayMessage( "Error", "Region is required when Country is specified." );
+			return false;
 		}
 		
 		tempStrategyFilterInputData.setMarket_MICCode( getDropDownItemSelected( dropDownListStrategyFilterMICCode ) );

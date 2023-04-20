@@ -103,7 +103,7 @@ public class SWTAtdl4jInputAndFilterDataSelectionPanel
 		tempAtdl4jInputAndFilterDataPanelShell.setText( "atdl4j Input and Filter Data / Configuration Settings" );
 		tempAtdl4jInputAndFilterDataPanelShell.setLayout( new GridLayout() );
 		
-		getAtdl4jInputAndFilterDataPanel().buildAtdl4jInputAndFilterDataPanel( tempAtdl4jInputAndFilterDataPanelShell, getAtdl4jOptions() );
+		getAtdl4jInputAndFilterDataPanel().buildAtdl4jInputAndFilterDataPanel( tempAtdl4jInputAndFilterDataPanelShell, getAtdl4jOptions(), getAtdl4jUserMessageHandler() );
 
 		Composite tempFooter = new Composite( tempAtdl4jInputAndFilterDataPanelShell, SWT.NONE );
 		tempFooter.setLayout( new FillLayout( SWT.HORIZONTAL ) );

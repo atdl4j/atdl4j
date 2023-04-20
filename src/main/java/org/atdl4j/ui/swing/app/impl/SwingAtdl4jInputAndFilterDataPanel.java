@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.atdl4j.config.Atdl4jOptions;
 import org.atdl4j.config.StrategyFilterInputData;
 import org.atdl4j.data.Atdl4jConstants;
+import org.atdl4j.ui.app.Atdl4jUserMessageHandler;
 import org.atdl4j.ui.app.impl.AbstractAtdl4jInputAndFilterDataPanel;
 
 /**
@@ -52,17 +53,17 @@ public class SwingAtdl4jInputAndFilterDataPanel
 	 * @see org.atdl4j.ui.app.Atdl4jInputAndFilterDataPanel#buildAtdl4jInputAndFilterDataPanel(java.lang.Object, org.atdl4j.config.Atdl4jOptions)
 	 */
 	@Override
-	public Object buildAtdl4jInputAndFilterDataPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions) 
+	public Object buildAtdl4jInputAndFilterDataPanel(Object aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler ) 
 	{
-		return buildAtdl4jInputAndFilterDataPanel( (JDialog) aParentOrShell, aAtdl4jOptions);
+		return buildAtdl4jInputAndFilterDataPanel( (JDialog) aParentOrShell, aAtdl4jOptions, aAtdl4jUserMessageHandler);
 	}
 	
-	public JDialog buildAtdl4jInputAndFilterDataPanel(JDialog aParentOrShell, Atdl4jOptions aAtdl4jOptions)
+	public JDialog buildAtdl4jInputAndFilterDataPanel(JDialog aParentOrShell, Atdl4jOptions aAtdl4jOptions, Atdl4jUserMessageHandler aAtdl4jUserMessageHandler )
 	{
 		parentDialog = (JDialog) aParentOrShell;
 		
 		// -- Delegate back to AbstractAtdl4jInputAndFilterDataPanel -- 
-		init( aParentOrShell, aAtdl4jOptions );
+		init( aParentOrShell, aAtdl4jOptions, aAtdl4jUserMessageHandler );
 		
 		// -- Build the Swing.JPanel from Atdl4jCompositePanel --
 		buildCoreAtdl4jSettingsPanel( aParentOrShell );
@@ -198,7 +199,8 @@ public class SwingAtdl4jInputAndFilterDataPanel
 		if ( ( tempStrategyFilterInputData.getCountry_CountryCode() != null ) &&
 				  ( tempStrategyFilterInputData.getRegion_name() == null ) )
 		{
-			throw new IllegalArgumentException("Region is required when Country is specified.");
+			getAtdl4jUserMessageHandler().displayMessage( "Error", "Region is required when Country is specified." );
+			return false;
 		}
 		
 		tempStrategyFilterInputData.setMarket_MICCode(getDropDownItemSelected(strategyFilterMICCodeCombo));
